@@ -1,0 +1,13 @@
+export {default as Dashboard} from './Dashboard/Superadmin/superAdminDashboard.jsx'
+export {default as Home} from './Home/SuperAdmin/home.jsx'
+export {default as Login} from './Login/Login.jsx'
+export {default as ForgotLogin} from './Forgot Login/forgotLogin.jsx'
+export {default as Trucks} from './Trucks/trucks.jsx'
+export {default as Settings} from './Settings/settings.jsx'
+export {default as Queries} from './Queries/queries.jsx'
+export {default as Orders} from './Orders/orders.jsx'
+export {default as Customers} from './Employees/Customers/customers.jsx'
+export {default as Drivers} from './Employees/Drivers/drivers.jsx'
+export {default as Employees} from './Employees/Employees/employees.jsx'
+export {default as Invoices} from './Employees/Invoices/invoices.jsx'
+

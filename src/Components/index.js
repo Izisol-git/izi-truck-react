@@ -5,3 +5,6 @@ export {default as Button} from "./Buttons/button.jsx";
 export {default as Navbar} from "./Navbar/navbarY.jsx";
 export {   TruckLoadPieChart} from "./Charts/truckLoadPieChart.jsx";
 export {default as OrdersChartPlaceholder} from "./Charts/ordersChartPlaceholder.jsx";
+export {default as Pagination} from "./Pagination/pagination.jsx";
+export {default as MUITable} from "./Pagination/MUIpaginition.jsx";
+export {default as EmployeeModal} from "./Modal/employeeModal.jsx";

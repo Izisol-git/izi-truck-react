@@ -8,3 +8,5 @@ export {default as OrdersChartPlaceholder} from "./Charts/ordersChartPlaceholder
 export {default as Pagination} from "./Pagination/pagination.jsx";
 export {default as MUITable} from "./Pagination/MUIpaginition.jsx";
 export {default as EmployeeModal} from "./Modal/employeeModal.jsx";
+export {default as ProfileInfoCard} from "./Modal/ProfileInfoCard.jsx";
+export {default as AddEmployesModal} from "./Modal/addEmployesModal.jsx";

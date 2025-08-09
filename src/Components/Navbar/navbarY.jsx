@@ -57,9 +57,9 @@ function NavbarY() {
                                  onMouseLeave={() => setNavbarModal(false)}
                                  key={index}
                                  className={item.navigate === localStorage.getItem("navIndex") ?
-                                     "z-[1000000]  px-4 bg-blue  text-white transition-all duration-300 ease-in-out"
+                                     "z-[10]  px-4 bg-blue  text-white transition-all duration-300 ease-in-out"
                                      :
-                                     "z-[1000000] text-blue  px-4 hover:bg-blue hover:text-white transition-all duration-1000 ease-in-out"}>
+                                     "z-[10] text-blue  px-4 hover:bg-blue hover:text-white transition-all duration-1000 ease-in-out"}>
                                 <div className={'center h-full w-full'}>
                                     <i className={item.icon}></i>
                                     <p>
@@ -70,7 +70,7 @@ function NavbarY() {
                                 {
                                     item.arry &&
                                     <div
-                                        className={`shadow -mx-4 text-blue ${navbarModal ? "max-h-96 " : "max-h-0 "} w-[calc(100% + 32px)] z-[1000000] transition-all duration-500 overflow-hidden bg-white ease-in-out      `}>
+                                        className={`shadow -mx-4 text-blue ${navbarModal ? "max-h-96 " : "max-h-0 "} w-[calc(100% + 32px)]   transition-all duration-500 overflow-hidden bg-white ease-in-out      `}>
                                         <div onClick={()=> {
                                             navigate('/users/customers')
                                             localStorage.setItem("navIndex", item.navigate)
@@ -107,6 +107,7 @@ function NavbarY() {
                 </div>
 
                 <div className="center  gap-4">
+                    <i className="fa-solid fa-bell text-blue text-lg"></i>
                     <LanguageDropdown/>
                     {isSun ?
                         <i onClick={sunToggle} className={'fas fa-moon font-bold cursor-pointer text-blue'}></i> :

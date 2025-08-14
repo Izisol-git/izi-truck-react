@@ -1,5 +1,6 @@
 /** @type {import('tailwindcss').Config} */
 import daisyui from 'daisyui';
+import scrollbarHide from 'tailwind-scrollbar-hide';
 
 export default {
     darkMode: 'class',
@@ -11,6 +12,7 @@ export default {
         extend: {
             colors: {
               blue : '#1D2D5B',
+              blue$400 : 'rgb(79, 70, 229)',
               bacWhite: '#F2F6F9',
             },
             fontFamily: {
@@ -18,7 +20,7 @@ export default {
             }
         },
     },
-    plugins: [daisyui],
+    plugins: [daisyui , scrollbarHide],
     daisyui: {
         themes: false,
     },

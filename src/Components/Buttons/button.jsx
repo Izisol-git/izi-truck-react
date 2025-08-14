@@ -1,14 +1,15 @@
 import React from 'react';
 
-function Button({value, onClick}) {
+function Button({value, onClick , icon , color}) {
     return (
         <>
             <button
                 onClick={onClick}
                 type={'button'}
-                className="w-full bg-blue  text-white py-2 rounded hover:bg-blue-900 transition"
+                style={{backgroundColor: color}}
+                className={`w-full py-2 px-3 bg-blue  text-white   rounded hover:bg-blue-900 transition`}
             >
-                {value}
+                {icon} {value}
             </button>
         </>
     );

@@ -13,7 +13,14 @@ import {
     TablePagination,
     TextField,
 } from "@mui/material";
-import {ProfileInfoCard} from "../index.js";
+import {AddEmployesModal, ProfileInfoCard} from "../index.js";
+import {useDispatch, useSelector} from "react-redux";
+import {
+    openModal,
+    openModalComments,
+    openModalHistory
+} from "../../features/EmployeSModalToggle/employesModalToggle.js";
+import {useNavigate} from "react-router-dom";
 
 // Demo ma'lumotlar
 const createData = (id, name, status1, phone, personalPhone, startdata, enddata) => {
@@ -36,16 +43,18 @@ const initialRows = Array.from({length: 100}, (_, i) => {
     const enddata = "28.08.2018";
     return createData(i + 1, name, status1, phone, personalPhone, startdata, enddata);
 });
-const MUITable = () => {
+const EmployeesPagination = ({arry , navigateURL}) => {
+    const dispatch = useDispatch();
+    const isOpenMOdal = useSelector((state) => state.employesModal.isOpen);
     const [rows, setRows] = useState(initialRows);
     const [orderDirection, setOrderDirection] = useState("asc");
     const [orderBy, setOrderBy] = useState("id");
     const [page, setPage] = useState(0);
     const [rowsPerPage, setRowsPerPage] = useState(10);
     const [filterText, setFilterText] = useState("");
-    const [isOpen, setIsOpen] = useState(false);
-
-
+    const [isOpen, setIsOpen] = useState(-1);
+    const navigate = useNavigate();
+    // const editEmployesArry = ["sdv" ,"asdf"]
 
 
     const handleSortRequest = (property) => {
@@ -131,38 +140,44 @@ const MUITable = () => {
                         }}
 
                     />
-                    <TablePagination
-                        component="div"
-                        count={filteredRows.length}
-                        page={page}
-                        onPageChange={handleChangePage}
-                        rowsPerPage={rowsPerPage}
-                        onRowsPerPageChange={handleChangeRowsPerPage}
-                        labelRowsPerPage="Har sahifada:"
-                        sx={{
-                            width: "max-content",
-                        }}
-                        rowsPerPageOptions={[10, 25, 50, 100]}
-                        SelectProps={{
-                            sx: {
-                                width: "60px", // kenglik
-                                fontSize: "14px", // matn o'lchami
-                                color: "#1e40af", // matn rangi
-                                backgroundColor: "#f0f9ff", // fon rangi
-                                borderRadius: "8px", // burchaklar
-                                "& .MuiOutlinedInput-notchedOutline": {
-                                    borderColor: "blue", // border rangi
+
+
+                    <div className="flex items-center ">
+                        <img className={'w-8 h-8 cursor-pointer'} src="../../../public/xls.png" alt="excel"/>
+
+                        <TablePagination
+                            component="div"
+                            count={filteredRows.length}
+                            page={page}
+                            onPageChange={handleChangePage}
+                            rowsPerPage={rowsPerPage}
+                            onRowsPerPageChange={handleChangeRowsPerPage}
+                            labelRowsPerPage="Har sahifada:"
+                            sx={{
+                                width: "max-content",
+                            }}
+                            rowsPerPageOptions={[10, 25, 50, 100]}
+                            SelectProps={{
+                                sx: {
+                                    width: "60px", // kenglik
+                                    fontSize: "14px", // matn o'lchami
+                                    color: "#1e40af", // matn rangi
+                                    backgroundColor: "#f0f9ff", // fon rangi
+                                    borderRadius: "8px", // burchaklar
+                                    "& .MuiOutlinedInput-notchedOutline": {
+                                        borderColor: "blue", // border rangi
+                                    },
+                                    "&:hover .MuiOutlinedInput-notchedOutline": {},
+                                    "&.Mui-focused .MuiOutlinedInput-notchedOutline": {
+                                        borderColor: "green",
+                                    },
+                                    "& .MuiSelect-select": {
+                                        padding: "10px",
+                                    },
                                 },
-                                "&:hover .MuiOutlinedInput-notchedOutline": {},
-                                "&.Mui-focused .MuiOutlinedInput-notchedOutline": {
-                                    borderColor: "green",
-                                },
-                                "& .MuiSelect-select": {
-                                    padding: "10px",
-                                },
-                            },
-                        }}
-                    />
+                            }}
+                        />
+                    </div>
 
                 </div>
 
@@ -182,77 +197,37 @@ const MUITable = () => {
                                         ID
                                     </TableSortLabel>
                                 </TableCell>
-                                <TableCell>
-                                    <TableSortLabel
-                                        active={orderBy === "name"}
-                                        direction={orderBy === "name" ? orderDirection : "asc"}
-                                        onClick={() => handleSortRequest("name")}
-                                    >
-                                        Ism
-                                    </TableSortLabel>
-                                </TableCell>
-                                <TableCell>
-                                    <TableSortLabel
-                                        active={orderBy === "age"}
-                                        direction={orderBy === "age" ? orderDirection : "asc"}
-                                        onClick={() => handleSortRequest("status")}
-                                    >
-                                        Status
-                                    </TableSortLabel>
-                                </TableCell>
-                                <TableCell>
-                                    <TableSortLabel
-                                        active={orderBy === "age"}
-                                        direction={orderBy === "age" ? orderDirection : "asc"}
-                                        onClick={() => handleSortRequest("phone")}
-                                    >
-                                        phone
-                                    </TableSortLabel>
-                                </TableCell>
-                                <TableCell>
-                                    <TableSortLabel
-                                        active={orderBy === "age"}
-                                        direction={orderBy === "age" ? orderDirection : "asc"}
-                                        onClick={() => handleSortRequest("personalPhone")}
-                                    >
-                                        personalPhone
-                                    </TableSortLabel>
-                                </TableCell>
-                                <TableCell>
-                                    <TableSortLabel
-                                        active={orderBy === "age"}
-                                        direction={orderBy === "age" ? orderDirection : "asc"}
-                                        onClick={() => handleSortRequest("startdata")}
-                                    >
-                                        startdata
-                                    </TableSortLabel>
-                                </TableCell>
-                                <TableCell>
-                                    <TableSortLabel
-                                        active={orderBy === "age"}
-                                        direction={orderBy === "age" ? orderDirection : "asc"}
-                                        onClick={() => handleSortRequest("enddata")}
-                                    >
-                                        enddata
-                                    </TableSortLabel>
-                                </TableCell>
-                                <TableCell>
-                                    <TableSortLabel
-                                        active={orderBy === "age"}
-                                        direction={orderBy === "age" ? orderDirection : "asc"}
-                                        onClick={() => handleSortRequest("age")}
-                                    >
-                                        Yosh
-                                    </TableSortLabel>
-                                </TableCell>
+
+
+                                {
+                                    arry.map((row, index) => (
+                                        row.active && (
+                                            <TableCell key={index}>
+
+                                                <TableSortLabel
+
+                                                    active={index === 0 ? orderBy === "id" : orderBy === row.title}
+                                                    direction={orderBy === row.title ? orderDirection : "asc"}
+                                                    onClick={() => handleSortRequest(row.title)}
+                                                >
+                                                    {row.title}
+                                                </TableSortLabel>
+                                            </TableCell>
+                                        )
+                                    ))
+                                }
+
+
                             </TableRow>
                         </TableHead>
 
                         <TableBody>
                             {paginatedRows.map((row, index) => (
-
+                                <>
                                     <TableRow
-                                        onClick={() => setIsOpen(true)}
+                                        onClick={() => {
+                                            isOpen !== row.id-1  ? setIsOpen(row.id-1) : setIsOpen(-1)
+                                        }}
 
                                         sx={{
                                             transition: "all 300ms ease-in-out",
@@ -262,11 +237,11 @@ const MUITable = () => {
                                             cursor: "pointer",
                                             boxShadow: "0 2px 8px rgba(0, 0, 0, 0.04)"
                                         }}
-                                        key={row.id}>
-                                        <TableCell>{row.id}  </TableCell>
-
-                                        <TableCell>{row.name}</TableCell>
-                                        <TableCell>
+                                        key={index}
+                                    >
+                                        <TableCell>{row.id}</TableCell>
+                                        {arry[0].active && <TableCell>{row.name}</TableCell>}
+                                        {arry[1].active && <TableCell>
                                             {
                                                 row.status1 ?
                                                     <div
@@ -279,35 +254,65 @@ const MUITable = () => {
                                             }
 
 
-                                        </TableCell>
-                                        <TableCell>{row.phone}</TableCell>
-                                        <TableCell>{row.personalPhone}</TableCell>
-                                        <TableCell>{row.startdata}</TableCell>
-                                        <TableCell>{row.enddata}</TableCell>
-                                        <TableCell>
+                                        </TableCell>}
+                                        {arry[2].active && <TableCell>{row.phone}</TableCell>}
+                                        {arry[3].active && <TableCell>{row.personalPhone}</TableCell>}
+                                        {arry[4].active && <TableCell>{row.startdata}</TableCell>}
+                                        {arry[5].active && <TableCell>{row.enddata}</TableCell>}
+                                        {arry[6].active && <TableCell>
                                             <div className="flex items-center gap-1 ">
-                                                <div
-                                                    className=" bg-yellow-500 w-[30px] h-[30px] rounded center text-[14px] group">
+                                                <div onClick={(e) => {
+                                                    e.stopPropagation();
+                                                    dispatch(openModal())
+
+                                                }}
+                                                     className=" bg-yellow-500 w-[30px] h-[30px] rounded center text-[14px] group">
                                                     <i
                                                         className="fa-solid fa-pen-to-square   text-white group-hover:scale-125 transition-all duration-300 ease-in-out "></i>
                                                 </div>
-                                                <div
+                                                <div onClick={(e)=> {
+                                                    e.stopPropagation();
+                                                    navigate(`/users/${navigateURL}/detail/${row.id}`)
+                                                }}
                                                     className="bg-[#5E83D4] w-[30px] h-[30px] rounded center text-[14px] group">
                                                     <i className="fa-solid fa-eye   text-white group-hover:scale-125 transition-all duration-300 ease-in-out"></i>
                                                 </div>
-                                                <div
+                                                <div onClick={(e)=> {
+                                                    e.stopPropagation();
+                                                    dispatch(openModalHistory())
+
+                                                }}
                                                     className="bg-[#38CB6E] w-[30px] h-[30px] rounded center text-[14px] group">
                                                     <i className="fa-regular fa-clock   text-white group-hover:scale-125 transition-all duration-300 ease-in-out"></i>
                                                 </div>
-                                                <div
+                                                <div onClick={(e)=>{
+                                                    e.stopPropagation();
+                                                    dispatch(openModalComments())
+                                                }}
+                                                    className="bg-purple-500 w-[30px] h-[30px] rounded center text-[14px] group  ">
+                                                    <i className="fa-solid fa-comment-dots text-white group-hover:scale-125 transition-all duration-300 ease-in-out"></i>
+                                                </div>
+                                                <div onClick={(e)=>{
+                                                    e.stopPropagation();
+                                                }}
                                                     className="bg-red-500 w-[30px] h-[30px] rounded center text-[14px] group  ">
                                                     <i className="fa-solid fa-trash  text-white group-hover:scale-125 transition-all duration-300 ease-in-out"></i>
                                                 </div>
+                                            </div>
+                                        </TableCell>}
 
-
+                                    </TableRow>
+                                    <TableRow >
+                                        <TableCell sx={{padding:0 , overflow:"hidden" , background:"#F9FBFD"}} colSpan={8}>
+                                            <div
+                                                // onMouseLeave={()=> setIsOpen(-1)}
+                                                className={isOpen === row.id-1 ? "    max-h-96 center transition-all duration-300 ease-in-out" : " max-h-0  center  transition-all duration-300 ease-in-out"}>
+                                                <ProfileInfoCard  />
                                             </div>
                                         </TableCell>
                                     </TableRow>
+
+                                < />
 
 
                             ))}
@@ -325,10 +330,11 @@ const MUITable = () => {
 
             </Paper>
 
-            <ProfileInfoCard isOpen={isOpen} onClose={() => setIsOpen(false)} />
+
+            <AddEmployesModal/>
 
         </>
     );
 };
 
-export default MUITable;
+export default EmployeesPagination;

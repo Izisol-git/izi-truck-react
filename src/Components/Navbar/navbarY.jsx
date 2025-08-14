@@ -2,9 +2,12 @@ import React, {useState} from 'react';
 import {LanguageDropdown, ProfileDropdown} from "../index.js";
 import {SunDim, Moon} from 'lucide-react'
 import {useNavigate} from "react-router-dom";
+import {useDispatch} from "react-redux";
+import {openInvoicesModal} from "../../features/EmployeSModalToggle/employesModalToggle.js";
 
 
 function NavbarY() {
+    const dispatch = useDispatch();
 
     const navigate = useNavigate();
     const [isSun, setIsSun] = useState(false);
@@ -90,7 +93,8 @@ function NavbarY() {
                                             className="py-2 border-b hover:bg-blue hover:text-white px-2 w-full">Employees
                                         </div>
                                         <div  onClick={()=> {
-                                            navigate('/users/invoices')
+                                            navigate('/invoices')
+                                            dispatch(openInvoicesModal())
                                             localStorage.setItem("navIndex", item.navigate)
                                         }}
                                             className="py-2 border-b hover:bg-blue hover:text-white px-2 w-full">Invoices

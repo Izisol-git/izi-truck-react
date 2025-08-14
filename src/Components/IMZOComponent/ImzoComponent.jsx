@@ -1,10 +1,13 @@
 import { useEffect, useState } from "react";
+import {useDispatch, useSelector} from "react-redux";
+import {closeInvoicesModal} from "../../features/EmployeSModalToggle/employesModalToggle.js";
 
-export default function ImzoComponent({ isOpen, onClose, onSignSuccess }) {
+export default function ImzoComponent({  onSignSuccess }) {
     const [certs, setCerts] = useState([]);
     const [selectedKey, setSelectedKey] = useState(null);
     const [loading, setLoading] = useState(true);
-
+    const isOpen = useSelector((state) =>  state.employesModal.isOpenInvoicesModal);
+    const dispatch = useDispatch();
     const EIMZO_MAJOR = 3;
     const EIMZO_MINOR = 27;
 
@@ -95,7 +98,7 @@ export default function ImzoComponent({ isOpen, onClose, onSignSuccess }) {
                 if (onSignSuccess) {
                     onSignSuccess({ pkcs7, hex, tin: selectedKey.TIN });
                 }
-                onClose();
+                dispatch(closeInvoicesModal())
             }, wsError);
         }, wsError);
     }
@@ -128,7 +131,7 @@ export default function ImzoComponent({ isOpen, onClose, onSignSuccess }) {
                 )}
 
                 <div className="mt-4 flex justify-end gap-2">
-                    <button onClick={onClose} className="px-4 py-2 bg-gray-400 rounded">Bekor qilish</button>
+                    <button onClick={()=> dispatch(closeInvoicesModal())} className="px-4 py-2 bg-gray-400 rounded">Bekor qilish</button>
                     <button onClick={sign} className="px-4 py-2 bg-blue text-white rounded">Imzolash</button>
                 </div>
             </div>

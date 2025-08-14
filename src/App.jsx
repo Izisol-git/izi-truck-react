@@ -9,10 +9,10 @@ import {
     Trucks,
     Settings,
     Customers,
-    Invoices, Employees , Drivers
+    Invoices, Employees, Drivers, EmployeesDetail, DriversDetail, CustomersDetail, AddOrders, EditOrders
 } from './pages/index.js'
 import {BrowserRouter, Routes, Route} from "react-router-dom";
-import {SuperAdminLayouts} from "./layouts/index.js"
+import {SuperAdminLayouts, UserLayouts} from "./layouts/index.js"
 
 
 function App() {
@@ -21,22 +21,32 @@ function App() {
     return (
         <BrowserRouter>
             <Routes>
-                <Route path="/login" element={<Login/>}/>
-                <Route path="/forgot-password" element={<ForgotLogin/>}/>
-                <Route element={<SuperAdminLayouts/>}>
-                    <Route path="/home" element={<Home/>}/>
-                    <Route path="/dashboard" element={<Dashboard/>}/>
-                    <Route path="/queries" element={<Queries/>}/>
-                    <Route path="/orders" element={<Orders/>}/>
-                    <Route path="/trucks" element={<Trucks/>}/>
-                    <Route path="/users/customers" element={<Customers/>}/>
-                    <Route path="/users/invoices" element={<Invoices/>}/>
-                    <Route path="/users/employees" element={<Employees/>}/>
-                    <Route path="/users/drivers" element={<Drivers/>}/>
-                    <Route path="/settings" element={<Settings/>}/>
+                <Route path="/login" element={<Login />} />
+                <Route path="/forgot-password" element={<ForgotLogin />} />
+
+                <Route element={<SuperAdminLayouts />}>
+                    <Route path="home" element={<Home />} />
+                    <Route path="dashboard" element={<Dashboard />} />
+                    <Route path="queries" element={<Queries />} />
+                    <Route path="orders" element={<Orders />} />
+                    <Route path="orders/create" element={<AddOrders />} />
+                    <Route path="orders/edit" element={<EditOrders />} />
+                    <Route path="trucks" element={<Trucks />} />
+                    <Route path="settings" element={<Settings />} />
+
+                    <Route path="users" element={<UserLayouts />}>
+                        <Route path="employees" element={<Employees />} />
+                        <Route path="employees/detail/:id" element={<EmployeesDetail />} />
+                        <Route path="customers/detail/:id" element={<CustomersDetail />} />
+                        <Route path="drivers/detail/:id" element={<DriversDetail />} />
+                        <Route path="customers" element={<Customers />} />
+                        <Route path="drivers" element={<Drivers />} />
+                    </Route>
+                    <Route path="invoices" element={<Invoices />} />
                 </Route>
             </Routes>
         </BrowserRouter>
+
     );
 }
 

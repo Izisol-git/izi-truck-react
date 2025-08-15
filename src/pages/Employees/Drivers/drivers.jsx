@@ -24,10 +24,10 @@ function Drivers() {
         <div>
             <div className={'bg-bacWhite flex '}>
                 <div className="w-[90%] mx-auto">
-                    <UserNavbar openModal={() => dispatch(openModal())} value={'Drivers'} columnsArry={columnsArry}
+                    <UserNavbar   value={'Drivers'} columnsArry={columnsArry}
                                 setColumnsArry={setColumnsArry}/>
                     <EmployeesPagination arry={columnsArry} setColumnsArry={setColumnsArry} navigateURL={'drivers'}/>
-                    <AddEmployesModal h1={"Drivers"} inputModalArray={inputModalArray}/>
+                    {/*<AddEmployesModal h1={"Drivers"} inputModalArray={inputModalArray}/>*/}
                     <Timeline/>
                 </div>
             </div>

@@ -1,9 +1,11 @@
 import React, {useState} from 'react';
 
 import {useDispatch, useSelector} from "react-redux";
+import {useNavigate} from "react-router-dom";
 
-const  UserNavbar =({value , columnsArry , setColumnsArry , openModal})=> {
+const  UserNavbar =({value , columnsArry , setColumnsArry })=> {
     const dispatch = useDispatch();
+    const navigate = useNavigate();
     const isOpen = useSelector((state) =>  state.employesModal.isOpen);
     const [dropdown, setDropdown] = useState(false);
     const changeColumnsArry =(index)=> {
@@ -17,7 +19,9 @@ const  UserNavbar =({value , columnsArry , setColumnsArry , openModal})=> {
         <div className="flex items-center  py-5 justify-between">
             <p className={'text-2xl text-blue font-semibold'}>{value}</p>
             <div className="center gap-4">
-                <button onClick={openModal}
+                <button onClick={()=>{
+                    navigate('/users/drivers/create')
+                }}
                         className={'py-2 px-3 bg-[#38CB6E] text-white rounded hover:ring-2 ring-[#38CB6E] outline-none'}>
                     <i className={'fas fa-plus mr-2'}></i>Добавить
                 </button>

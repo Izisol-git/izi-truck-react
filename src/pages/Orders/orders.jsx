@@ -1,8 +1,10 @@
 import React, {useEffect, useRef, useState} from 'react';
-import {MyCalendar, InputMUI, SelectMUI, OrdersCard} from "../../Components/index.js";
+import {MyCalendar, InputMUI, SelectMUI, OrdersCard, OffersOrders} from "../../Components/index.js";
 import {OrdersDropDown} from "../../Components/index.js";
 import TouchRipple from "@mui/material/ButtonBase/TouchRipple";
 import {useNavigate} from "react-router-dom";
+import {useDispatch} from "react-redux";
+import {openOffersModal} from "../../features/EmployeSModalToggle/employesModalToggle.js";
 
 
 
@@ -10,6 +12,7 @@ function Orders() {
     const [activeStatus, setActiveStatus] = useState("all");
     const [showSearch, setShowSearch] = useState('false');
     const navigate = useNavigate();
+    const dispatch = useDispatch();
     const sampleOrder = {
         sales: "NURULLAEVA HILOLA KAHRAMONOVNA",
         operation: "XASANOV FARXOD TAXIROVICH",
@@ -95,7 +98,10 @@ function Orders() {
                         </button>
 
                         <button
-                            onClick={(e) => handleClick(e, rippleRefs.suggest)}
+                            onClick={(e) => {
+                                handleClick(e, rippleRefs.suggest)
+                                dispatch(openOffersModal())
+                            }}
                             className="relative overflow-hidden rounded bg-[#EAB308] text-white py-2 px-3"
                         >
                             <i className="fas fa-comment-alt mr-2"></i>Taklif kiritish
@@ -103,7 +109,10 @@ function Orders() {
                         </button>
 
                         <button
-                            onClick={(e) => handleClick(e, rippleRefs.view)}
+                            onClick={(e) => {
+                                handleClick(e, rippleRefs.view)
+                                navigate('/orders/replies')
+                            }}
                             className="relative overflow-hidden rounded bg-[#5E83D4] text-white py-2 px-3"
                         >
                             <i className="fas fa-eye mr-2"></i> Takliflarni ko‘rish
@@ -124,7 +133,7 @@ function Orders() {
                 </div>
             </div>
             <div
-                className={` ${ showSearch === 'true' ? 'max-h-96' : 'max-h-0'} transition-all duration-300 ease-in-out w-full   center overflow-hidden`}>
+                className={` ${ showSearch === 'true' ? 'max-h-96' : 'max-h-0'} transition-all w-[90%] mx-auto duration-300 ease-in-out  bg-white rounded-lg center overflow-hidden`}>
                 <div  className={"w-full overflow-hidden p-4   grid grid-cols-4 gap-5 "}>
                     <div className={''}>
                         <InputMUI variant={'outlined'} label={'Order ID yoki Yuk nomi'} />
@@ -135,13 +144,13 @@ function Orders() {
                     </div>
                     <div className={'relative'}>
                         <MyCalendar />
-                        <p className={'absolute text-[12px] pt-1 px-1 font-medium -top-[14px] left-2 text-[#3B82F6] bg-bacWhite'}>Kelish
+                        <p className={'absolute text-[12px] pt-1 px-1 font-medium -top-[14px] left-2 text-[#3B82F6] bg-white'}>Kelish
                             vaqti</p>
 
                     </div>
                     <div className={'relative'}>
                         <MyCalendar/>
-                        <p className={'absolute text-[12px] pt-1 px-1 font-medium -top-[14px] left-2 text-[#3B82F6] bg-bacWhite'}>Ketish vaqti</p>
+                        <p className={'absolute text-[12px] pt-1 px-1 font-medium -top-[14px] left-2 text-[#3B82F6] bg-white'}>Ketish vaqti</p>
                     </div>
 
                     <div className={'mx-auto col-span-full center gap-5'}>
@@ -167,7 +176,7 @@ function Orders() {
                 </div>
 
             </div>
-            <div className={'w-[90%] mx-auto py-5'}>
+            <div className={'w-[90%] mx-auto pb-5'}>
 
                 <OrdersCard
                     order={sampleOrder}
@@ -176,6 +185,7 @@ function Orders() {
                     // onActDate={() => console.log("act date")}
                 />
             </div>
+            <OffersOrders/>
         </div>
     );
 }

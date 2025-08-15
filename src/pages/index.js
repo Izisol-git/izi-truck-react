@@ -16,4 +16,6 @@ export {default as Invoices} from './Employees/Invoices/invoices.jsx'
 export {default as UserNavbar} from './Employees/UserNavbar/userNavbar.jsx'
 export {default as AddOrders} from './Orders/addOrders.jsx'
 export {default as EditOrders} from './Orders/editOrders.jsx'
+export {default as ShowOffers} from './Orders/showOffers.jsx'
+export {default as AddDrivers} from './Employees/Drivers/addDrivers.jsx'
 

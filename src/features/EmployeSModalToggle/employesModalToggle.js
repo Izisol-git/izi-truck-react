@@ -11,6 +11,8 @@ const employesModalSlice = createSlice({
         isCloseComments: false,
         isOpenInvoicesModal: false,
         isCloseInvoicesModal: false,
+        isOpenOffersModal: false,
+        isCloseOffersModal: false,
     },
     reducers: {
         openModal: (state) => {
@@ -45,8 +47,16 @@ const employesModalSlice = createSlice({
             state.isCloseInvoicesModal = true;
             state.isOpenInvoicesModal = false;
         },
+        openOffersModal: (state) => {
+            state.isOpenOffersModal = true;
+            state.isCloseOffersModal = false;
+        },
+        closeOffersModal: (state) => {
+            state.isCloseOffersModal = true;
+            state.isOpenOffersModal = false;
+        },
     },
 });
 
-export const { openModal , closeModal, closeInvoicesModal , openInvoicesModal, closeModalHistory , openModalHistory , closeModalComments , openModalComments } = employesModalSlice.actions;
+export const { openModal , closeModal, closeOffersModal , openOffersModal, closeInvoicesModal , openInvoicesModal, closeModalHistory , openModalHistory , closeModalComments , openModalComments } = employesModalSlice.actions;
 export default employesModalSlice.reducer;

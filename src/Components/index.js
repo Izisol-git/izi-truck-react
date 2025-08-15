@@ -25,3 +25,6 @@ export {default as CurrencyInput} from "./Inputs/currencyInput.jsx";
 export {default as LocationInput} from "./Inputs/leaflet.jsx";
 export {default as SwitchMUI} from "./Switch/switchMUI.jsx";
 export {default as OrdersForm} from "./OrdersForm/ordersFrom.jsx";
+export {default as OffersOrders} from "./Modal/offersOrders.jsx";
+export {default as InputFileUpload} from "./Buttons/fileButton.jsx";
+export {default as ShowOffersTable} from "./TableMUI/showOffersTable.jsx";

@@ -6,7 +6,7 @@ function SuperAdminDashboard() {
 
     const dashboardCard = [
         {
-            title: "Total Revenue",
+            title: "Total Orders",
             icon: <svg className="fill-primary z-50" xmlns="http://www.w3.org/2000/svg"
                        viewBox="0 0 24 24">
                 <path className="fill-primary"
@@ -18,7 +18,7 @@ function SuperAdminDashboard() {
             percent: "20%",
         },
         {
-            title: "Total Revenue",
+            title: "Total Drivers",
             icon: <svg className="fill-secondary"   xmlns="http://www.w3.org/2000/svg"
                          viewBox="0 0 24 24">
                 <path className="fill-secondary"
@@ -30,7 +30,7 @@ function SuperAdminDashboard() {
             percent: "1.8%",
         },
         {
-            title: "Total Revenue",
+            title: "Total Clients",
             icon: <svg className="fill-warning"   xmlns="http://www.w3.org/2000/svg"
                          viewBox="0 0 24 24" id="shopping-bag">
                 <path className="fill-warning" fill="#4B5563"
@@ -42,7 +42,7 @@ function SuperAdminDashboard() {
             percent: "1.8%",
         },
         {
-            title: "Total Revenue",
+            title: "Total Employees",
             icon: <svg className="fill-success"   xmlns="http://www.w3.org/2000/svg"
                         viewBox="0 0 24 24">
                 <path className="fill-success"

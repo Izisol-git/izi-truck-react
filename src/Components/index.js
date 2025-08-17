@@ -28,3 +28,6 @@ export {default as OrdersForm} from "./OrdersForm/ordersFrom.jsx";
 export {default as OffersOrders} from "./Modal/offersOrders.jsx";
 export {default as InputFileUpload} from "./Buttons/fileButton.jsx";
 export {default as ShowOffersTable} from "./TableMUI/showOffersTable.jsx";
+export {default as SkeletonMUI} from "./Loading/skeleton.jsx";
+export {default as Loading} from "./Loading/loading.jsx";
+export {default as PaginationFooter} from "./Pagination/paginationFooter/paginationfooter.jsx";

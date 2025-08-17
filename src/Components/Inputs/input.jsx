@@ -10,7 +10,7 @@ function Input({value, onChange, placeholder, id, type, autocomplete}) {
                 id={id}
                 placeholder={placeholder}
                 value={value}
-                onChange={onChange}
+                onChange={(e)=> onChange(e.target.value)}
                 autoComplete={autocomplete}
                 className="w-full px-4 py-2 border-blue border rounded  outline-none ring-[#3E3C6B] focus:ring-[1.5px] "
             />

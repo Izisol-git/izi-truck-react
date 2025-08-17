@@ -7,6 +7,7 @@ import {EmployeesPagination, InvoicesPagination} from '../../../Components/index
 import InvoicesRadioGroup from "../../../Components/RadioGroup/invoicesRadioGroup.jsx";
 import {useDispatch} from "react-redux";
 import {openInvoicesModal} from "../../../features/EmployeSModalToggle/employesModalToggle.js";
+import axios from "axios";
 // import InvoicesPagination from "../../../Components/Pagination/InvoicesPagination.jsx";
 
 
@@ -17,7 +18,55 @@ const Invoices = () => {
 
     function handleSignSuccess({ pkcs7, hex, tin }) {
         console.log("✅ Imzo muvaffaqiyatli", { pkcs7, hex, tin });
+
+        const sendData = {
+            data: pkcs7,   // ⚡️ backend "data" kutyapti
+            hex: hex,
+            tin: tin
+        };
+
+        const token = localStorage.getItem("token");
+
+        axios.post("http://192.168.10.77:8080/api/save_pkcs7", sendData, {
+            headers: {
+                "Authorization": `Bearer ${token}`,
+                "Content-Type": "application/json"
+            }
+        })
+            .then(res => {
+                console.log("✅ Success:", res.data);
+            })
+            .catch(err => {
+                console.error("❌ Error:", err.response?.data || err.message);
+            });
     }
+
+
+
+    // function handleInvoices() {
+    //
+    //
+    //
+    //
+    //     const token = localStorage.getItem("token");
+    //
+    //     axios.get("http://192.168.10.77:8080/api/invoices", {
+    //         headers: {
+    //             "Authorization": `Bearer ${token}`,
+    //             "Content-Type": "application/json"
+    //         }
+    //     })
+    //         .then(res => {
+    //             console.log("✅ Success:", res.data);
+    //         })
+    //         .catch(err => {
+    //             console.error("❌ Error:", err.response?.data || err.message);
+    //         });
+    // }
+    //
+
+
+
     const dispatch = useDispatch();
 
 

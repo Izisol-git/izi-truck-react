@@ -13,6 +13,8 @@ const employesModalSlice = createSlice({
         isCloseInvoicesModal: false,
         isOpenOffersModal: false,
         isCloseOffersModal: false,
+        employeesPaginationPage : localStorage.getItem('EmployeesPge'),
+        addEditToggle: true,
     },
     reducers: {
         openModal: (state) => {
@@ -55,8 +57,20 @@ const employesModalSlice = createSlice({
             state.isCloseOffersModal = true;
             state.isOpenOffersModal = false;
         },
+        changeEmployeesPge: (state , action) => {
+            state.employeesPaginationPage = action.payload;
+            localStorage.setItem('EmployeesPage' , action.payload);
+            console.log(action);
+            console.log(state.employeesPaginationPage);
+        },
+        EditToggle: (state) => {
+            state.addEditToggle = false;
+        },
+        AddToggle: (state) => {
+            state.addEditToggle = true;
+        }
     },
 });
 
-export const { openModal , closeModal, closeOffersModal , openOffersModal, closeInvoicesModal , openInvoicesModal, closeModalHistory , openModalHistory , closeModalComments , openModalComments } = employesModalSlice.actions;
+export const { openModal , closeModal, changeEmployeesPge, AddToggle , EditToggle, closeOffersModal , openOffersModal, closeInvoicesModal , openInvoicesModal, closeModalHistory , openModalHistory , closeModalComments , openModalComments } = employesModalSlice.actions;
 export default employesModalSlice.reducer;

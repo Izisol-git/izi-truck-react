@@ -4,13 +4,25 @@ import VisibilityOffOutlinedIcon from '@mui/icons-material/VisibilityOffOutlined
 import {Button, Input} from "../../Components/index.js";
 import {Checkbox, FormControlLabel} from "@mui/material";
 import {useNavigate} from "react-router-dom";
+import {getCurrentUser, loginUser} from "../../features/Auth/authThunks.js";
+import {useDispatch} from "react-redux";
 
 const Login = () => {
     const navigate = useNavigate();
     const [showPassword, setShowPassword] = useState(false);
+    const [email, setEmail] = useState();
+    const [password    , setPassword  ] = useState();
+    const dispatch = useDispatch();
 
     const togglePassword = () => {
         setShowPassword(!showPassword);
+    }
+
+    const postLogin = async () => {
+        const result = await dispatch(loginUser({email, password}));
+        // if (loginUser.fulfilled.match(result)) {
+        //     dispatch(getCurrentUser());
+        // }
     }
 
     return (
@@ -45,12 +57,12 @@ const Login = () => {
                         <div className="mb-4  ">
                             <label htmlFor={"login-input"}
                                    className="block mb-1 font-semibold   text-blue">Login</label>
-                            <Input type={'text'} autocomplete={'username'} placeholder={'Login...'} id={'login-input'}/>
+                            <Input onChange={setEmail} type={'text'} autocomplete={'username'} placeholder={'Login...'} id={'login-input'}/>
                         </div>
                         <div className="mb-4">
                             <label className="block mb-1 font-semibold text-blue">Parol</label>
                             <div className="relative ">
-                                <Input type={showPassword ? 'text' : 'password'} placeholder={'********'}
+                                <Input onChange={setPassword} type={showPassword ? 'text' : 'password'} placeholder={'********'}
                                        id={'password-input'} autocomplete={'current-password'}/>
                                 {
                                     showPassword ? <VisibilityOffOutlinedIcon onClick={() => togglePassword()}
@@ -67,7 +79,7 @@ const Login = () => {
                                 label="Men shartlarga roziman"
                             />
                         </div>
-                        <Button value={'Kirish'}/>
+                        <Button onClick={()=> postLogin()} value={'Kirish'}/>
                         <p onClick={()=> navigate('/forgot-password')} className={'cursor-pointer underline text-blue text-center hover:text-black mt-4'}>Forgot your password?</p>
                     </form>
                 </div>

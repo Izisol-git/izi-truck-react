@@ -1,6 +1,6 @@
 import React, { useEffect, useRef } from "react";
 
-const ProfileInfoCard = ({width , shadow }) => {
+const ProfileInfoCard = ({width , shadow , data }) => {
     const user = {
         name: "Super Admin Kholikulov",
         roles: ["Super Admin", "Admin"],
@@ -26,18 +26,15 @@ const ProfileInfoCard = ({width , shadow }) => {
 
                 <div className="flex flex-col space-y-4   border-r-4 border-dashed">
                     <div className="flex flex-col  justify-center h-full items-center gap-4   ">
-                        <img src={
-                                user.avatar
-                                    ? user.avatar
-                                    : "https://ui-avatars.com/api/?name=Super+Admin&background=1D4ED8&color=fff"
-                            }
+                        <img src={data.avatar !== '' ? ' ../../../public/profile.png' : '../../../public/profile.png'}
+
                             alt="User avatar"
-                            className="w-44 h-44 rounded-[30px] object-cover shadow"
+                            className="w-44 h-44   object-cover  "
                         />
                         <div className={'text-center'}>
                             <p className="text-sm  text-gray-500">Employee name:</p>
                             <p className="bg-blue-100 text-blue-700  py-1 rounded inline-block font-medium">
-                                {user.name}
+                                {data.user.name}
                             </p>
                         </div>
                     </div>
@@ -46,59 +43,82 @@ const ProfileInfoCard = ({width , shadow }) => {
                 <div className="flex flex-col space-y-4 border-r-4 border-dashed ">
 
                     <div>
-                        <p className="text-sm text-gray-500">Roles:</p>
+                        <p className="text-sm text-gray-500">Create data:</p>
                         <div className="flex flex-wrap gap-2 mt-1">
-                            {user.roles.map((role, i) => (
+
                                 <span
-                                    key={i}
-                                    className="bg-green-300 text-gray-700   px-3 py-1 rounded font-semibold text-sm"
+
+                                    className="  text-base font-semibold text-gray-700"
                                 >
-                                  {role}
+                                  {new Date(data.created_at).toISOString().split("T")[0]}
                                 </span>
-                            ))}
+
+                        </div>
+                    </div>
+                    <div>
+                        <p className="text-sm text-gray-500">End data:</p>
+                        <div className="flex flex-wrap gap-2 mt-1">
+
+                                <span
+
+                                    className="  text-base font-semibold text-gray-700"
+                                >
+                                  {new Date(data.updated_at).toISOString().split("T")[0]}
+                                </span>
+
                         </div>
                     </div>
 
 
                     <div>
                         <p className="text-sm text-gray-500">Email:</p>
-                        <p className="text-base font-semibold text-gray-700">{user.email}</p>
+                        <p className="text-base font-semibold text-gray-700">{data.user.email}</p>
                     </div>
-
-                    <div>
-                        <p className="text-sm text-gray-500">User ID (Telegram):</p>
-                        <p className="text-base font-semibold text-gray-700">
-                            {user.telegramId}
-                        </p>
-                    </div>
-
                     <div>
                         <p className="text-sm text-gray-500">Status:</p>
-                        <p className="text-base font-semibold text-gray-700">{user.status}</p>
+                        {data.status === '1' ?
+                            <span className="bg-green-300 text-gray-700 font-semibold px-3 py-1 rounded inline-block  ">
+                          Active
+                        </span> :
+                            <span className="bg-yellow-300 text-gray-700 font-semibold px-3 py-1 rounded inline-block  ">
+                          Invalid
+                        </span>}
                     </div>
                 </div>
                 <div className="flex flex-col space-y-4  ">
+                    <div>
+                    <p className="text-sm text-gray-500">User ID (Telegram):</p>
+                        <p className="text-base font-semibold text-gray-700">
+                            {data.tg_user_id}
+                        </p>
+                    </div>
+                    <div>
+                        <p className="text-sm text-gray-500">User nick name (Telegram):</p>
+                        <p className="text-base font-semibold text-gray-700">
+                            {data.tg_nick_name}
+                        </p>
+                    </div>
 
                     <div>
-                        <p className="text-sm text-gray-500">Contract:</p>
+                        <p className="text-sm text-gray-500">Tin:</p>
                         <span className="bg-green-300 text-gray-700 font-semibold px-3 py-1 rounded inline-block  ">
-                          {user.contract}
+                          {data.tin}
                         </span>
                     </div>
 
-                    <div>
-                        <p className="text-sm text-gray-500">INN:</p>
-                        <p className="text-base font-semibold text-gray-700">{user.inn}</p>
-                    </div>
+                    {/*<div>*/}
+                    {/*    <p className="text-sm text-gray-500">INN:</p>*/}
+                    {/*    <p className="text-base font-semibold text-gray-700">{user.inn}</p>*/}
+                    {/*</div>*/}
 
-                    <div>
-                        <p className="text-sm text-gray-500">
-                            Псевдоним пользователя (Telegram):
-                        </p>
-                        <p className="text-base font-semibold text-gray-700">
-                            {user.telegramNick}
-                        </p>
-                    </div>
+                    {/*<div>*/}
+                    {/*    <p className="text-sm text-gray-500">*/}
+                    {/*        Псевдоним пользователя (Telegram):*/}
+                    {/*    </p>*/}
+                    {/*    <p className="text-base font-semibold text-gray-700">*/}
+                    {/*        {user.telegramNick}*/}
+                    {/*    </p>*/}
+                    {/*</div>*/}
                 </div>
             </div>
 

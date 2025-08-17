@@ -15,9 +15,9 @@ function NavbarY() {
     // const [navIndex, setNavIndex] = useState(localStorage.getItem("navIndex"));
     const navabrArry = [
         {label: 'Bosh sahifa', icon: 'fas fa-home mr-2', navigate: '/home'},
-        {label: 'So‘rovlar', icon: 'fas fa-search mr-2', navigate: '/queries'},
+        // {label: 'So‘rovlar', icon: 'fas fa-search mr-2', navigate: '/queries'},
         {label: 'Buyurtmalar', icon: 'fas fa-shopping-cart mr-2', navigate: '/orders'},
-        {label: 'Yuk mashinalari', icon: 'fas fa-truck mr-2', navigate: '/trucks'},
+        // {label: 'Yuk mashinalari', icon: 'fas fa-truck mr-2', navigate: '/trucks'},
         {
             label: 'Foydalanuvchilar', icon: 'fas fa-users mr-2', navigate: '/employees', arry: [
                 {name: 'Customers', icon: '"fas fa-user-friends mr-2'},

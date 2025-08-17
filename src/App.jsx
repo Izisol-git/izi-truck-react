@@ -1,4 +1,4 @@
-import React from 'react';
+import React, {useEffect} from 'react';
 import {
     Dashboard,
     Login,
@@ -23,9 +23,17 @@ import {
 import {BrowserRouter, Routes, Route} from "react-router-dom";
 import {SuperAdminLayouts, UserLayouts} from "./layouts/index.js"
 import {OffersOrders} from "./Components/index.js";
+import {useDispatch} from "react-redux";
+import {getCurrentUser, loginUser} from "./features/Auth/authThunks.js";
 
 
 function App() {
+
+    const dispatch = useDispatch();
+
+    useEffect(() => {
+        dispatch(getCurrentUser());
+    } , [dispatch])
 
 
     return (

@@ -18,13 +18,17 @@ import {
     AddOrders,
     EditOrders,
     ShowOffers,
-    AddDrivers
-} from './pages/index.js'
+    AddDrivers,
+    EditDrivers,
+    ShowOrdersId
+}
+from './pages/index.js'
 import {BrowserRouter, Routes, Route} from "react-router-dom";
 import {SuperAdminLayouts, UserLayouts} from "./layouts/index.js"
 import {OffersOrders} from "./Components/index.js";
 import {useDispatch} from "react-redux";
 import {getCurrentUser, loginUser} from "./features/Auth/authThunks.js";
+
 
 
 function App() {
@@ -33,7 +37,7 @@ function App() {
 
     useEffect(() => {
         dispatch(getCurrentUser());
-    } , [dispatch])
+    } , [])
 
 
     return (
@@ -43,13 +47,14 @@ function App() {
                 <Route path="/forgot-password" element={<ForgotLogin />} />
 
                 <Route element={<SuperAdminLayouts />}>
-                    <Route path="home" element={<Home />} />
                     <Route path="dashboard" element={<Dashboard />} />
+                    {/*<Route path="dashboard" element={<Dashboard />} />*/}
                     <Route path="queries" element={<Queries />} />
                     <Route path="orders" element={<Orders />} />
                     <Route path="orders/create" element={<AddOrders />} />
                     <Route path="orders/replies" element={<ShowOffers />} />
-                    <Route path="orders/edit" element={<EditOrders />} />
+                    <Route path="orders/edit/:id" element={<EditOrders />} />
+                    <Route path="orders/:id" element={<ShowOrdersId />} />
                     <Route path="trucks" element={<Trucks />} />
                     <Route path="settings" element={<Settings />} />
 
@@ -59,6 +64,7 @@ function App() {
                         <Route path="customers/detail/:id" element={<CustomersDetail />} />
                         <Route path="drivers/detail/:id" element={<DriversDetail />} />
                         <Route path="drivers/create" element={<AddDrivers />} />
+                        <Route path="drivers/edit" element={<EditDrivers />} />
                         <Route path="customers" element={<Customers />} />
                         <Route path="drivers" element={<Drivers />} />
                     </Route>

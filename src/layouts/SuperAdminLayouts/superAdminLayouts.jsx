@@ -1,16 +1,17 @@
 import React from 'react';
 import {Navbar} from "../../Components/index.js";
-import { Outlet } from 'react-router-dom';
+import {Navigate, Outlet} from 'react-router-dom';
+import {useSelector} from "react-redux";
 
 function SuperAdminLayouts() {
-    return (
-        <div>
-            <Navbar/>
-            <main>
-                <Outlet/>
-            </main>
-        </div>
-    );
+    const token = useSelector(state => state.auth.token);
+    return token ? <div>
+        <Navbar/>
+        <main>
+            <Outlet/>
+        </main>
+    </div> : <Navigate to="/login"/>;
+
 }
 
 export default SuperAdminLayouts;

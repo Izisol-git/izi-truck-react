@@ -15,6 +15,12 @@ const employesModalSlice = createSlice({
         isCloseOffersModal: false,
         employeesPaginationPage : localStorage.getItem('EmployeesPge'),
         addEditToggle: true,
+        addEditToggleDrivers: true,
+        clientsUpdetId:null,
+        editDriversArry: {},
+        driversId : null,
+        dbOrders:'',
+
     },
     reducers: {
         openModal: (state) => {
@@ -68,9 +74,24 @@ const employesModalSlice = createSlice({
         },
         AddToggle: (state) => {
             state.addEditToggle = true;
+        },
+        EditToggleDrivers: (state) => {
+            state.addEditToggleDrivers = false;
+        },
+        AddToggleDrivers: (state) => {
+            state.addEditToggleDrivers = true;
+        },
+        DriversId: (state , action) => {
+            state.driversId= action.payload;
+        },
+        ClientsUpdetId: (state , action) => {
+            state.clientsUpdetId = action.payload;
+        },
+        changeDbOrders: (state , action) => {
+            state.dbOrders= action.payload;
         }
     },
 });
 
-export const { openModal , closeModal, changeEmployeesPge, AddToggle , EditToggle, closeOffersModal , openOffersModal, closeInvoicesModal , openInvoicesModal, closeModalHistory , openModalHistory , closeModalComments , openModalComments } = employesModalSlice.actions;
+export const { openModal ,changeDbOrders , closeModal,DriversId, ClientsUpdetId,EditToggleDrivers , AddToggleDrivers, changeEmployeesPge, AddToggle , EditToggle, closeOffersModal , openOffersModal, closeInvoicesModal , openInvoicesModal, closeModalHistory , openModalHistory , closeModalComments , openModalComments } = employesModalSlice.actions;
 export default employesModalSlice.reducer;

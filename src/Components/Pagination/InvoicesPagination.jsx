@@ -1,4 +1,4 @@
-import * as React from 'react';
+import  React , {useState} from 'react';
 import Paper from '@mui/material/Paper';
 import Table from '@mui/material/Table';
 import TableBody from '@mui/material/TableBody';
@@ -7,118 +7,192 @@ import TableContainer from '@mui/material/TableContainer';
 import TableHead from '@mui/material/TableHead';
 import TablePagination from '@mui/material/TablePagination';
 import TableRow from '@mui/material/TableRow';
+import {
+    EditToggle,
+    openModal,
+    openModalComments,
+    openModalHistory
+} from "../../features/EmployeSModalToggle/employesModalToggle.js";
+import {ProfileInfoCard} from "../index.js";
+import {useDispatch, useSelector} from "react-redux";
+import {useNavigate} from "react-router-dom";
+import axios from "axios";
 
-const columns = [
-    { id: 'name', label: 'Name', minWidth: 170 },
-    { id: 'code', label: 'ISO\u00a0Code', minWidth: 100 },
-    {
-        id: 'population',
-        label: 'Population',
-        minWidth: 170,
-        align: 'right',
-        format: (value) => value.toLocaleString('en-US'),
-    },
-    {
-        id: 'size',
-        label: 'Size\u00a0(km\u00b2)',
-        minWidth: 170,
-        align: 'right',
-        format: (value) => value.toLocaleString('en-US'),
-    },
-    {
-        id: 'density',
-        label: 'Density',
-        minWidth: 170,
-        align: 'right',
-        format: (value) => value.toFixed(2),
-    },
-];
 
-function createData(name, code, population, size) {
-    const density = population / size;
-    return { name, code, population, size, density };
-}
 
-const rows = [
-    createData('India', 'IN', 1324171354, 3287263),
-    createData('China', 'CN', 1403500365, 9596961),
-    createData('Italy', 'IT', 60483973, 301340),
-    createData('United States', 'US', 327167434, 9833520),
-    createData('Canada', 'CA', 37602103, 9984670),
-    createData('Australia', 'AU', 25475400, 7692024),
-    createData('Germany', 'DE', 83019200, 357578),
-    createData('Ireland', 'IE', 4857000, 70273),
-    createData('Mexico', 'MX', 126577691, 1972550),
-    createData('Japan', 'JP', 126317000, 377973),
-    createData('France', 'FR', 67022000, 640679),
-    createData('United Kingdom', 'GB', 67545757, 242495),
-    createData('Russia', 'RU', 146793744, 17098246),
-    createData('Nigeria', 'NG', 200962417, 923768),
-    createData('Brazil', 'BR', 210147125, 8515767),
-];
+const InvoicesPagination = ({row , index , data , setEmployeesId , arry , navigateURL})=> {
 
-const InvoicesPagination = ()=> {
-    const [page, setPage] = React.useState(0);
-    const [rowsPerPage, setRowsPerPage] = React.useState(10);
 
-    const handleChangePage = (event, newPage) => {
-        setPage(newPage);
+
+
+    // const dispatch = useDispatch();
+    // const isOpenMOdal = useSelector((state) => state.employesModal.isOpen);
+
+    const [isOpen, setIsOpen] = useState(-1);
+    // const navigate = useNavigate();
+    // const findId = (id) => {
+    //     const newData = data.find((employee) => employee.id === id);
+    //     setEmployeesId(newData)
+    //     console.log(newData)
+    // }
+// console.log(row)
+
+    const DOC_TYPES = {
+        "000": "-",
+        "001": "Счет-фактура",
+        "002": "Счет-фактура без акта",
+        "005": "Акт",
+        "006": "Доверенность",
+        "007": "Договор",
+        "008": "Счет-фактура (ФАРМ)",
+        "021": "Счет-фактура Возврат",
+        "061": "Доверенность (только в Didox)",
+        "081": "Счет-фактура (ФАРМ) Возврат"
+    };
+    const INVOICE_STATUSES = {
+        0: "Черновик",
+        1: "Ожидают подписи партнера",
+        2: "Ожидает вашей подписи",
+        3: "Подписан",
+        4: "Отказ от подписи",
+        5: "Удален",
+        6: "Ожидают подписи агента",
+        40: "НЕ ДЕЙСТВИТЕЛЬНЫЙ",
+        50: "Аннулирован ГНК",
     };
 
-    const handleChangeRowsPerPage = (event) => {
-        setRowsPerPage(+event.target.value);
-        setPage(0);
-    };
 
     return (
-        <Paper sx={{ width: '100%', overflow: 'hidden' }}>
-            <TableContainer sx={{ maxHeight: 440 }}>
-                <Table stickyHeader aria-label="sticky table">
-                    <TableHead>
-                        <TableRow>
-                            {columns.map((column) => (
-                                <TableCell
-                                    key={column.id}
-                                    align={column.align}
-                                    style={{ minWidth: column.minWidth }}
-                                >
-                                    {column.label}
-                                </TableCell>
-                            ))}
-                        </TableRow>
-                    </TableHead>
-                    <TableBody>
-                        {rows
-                            .slice(page * rowsPerPage, page * rowsPerPage + rowsPerPage)
-                            .map((row) => {
-                                return (
-                                    <TableRow hover role="checkbox" tabIndex={-1} key={row.code}>
-                                        {columns.map((column) => {
-                                            const value = row[column.id];
-                                            return (
-                                                <TableCell key={column.id} align={column.align}>
-                                                    {column.format && typeof value === 'number'
-                                                        ? column.format(value)
-                                                        : value}
-                                                </TableCell>
-                                            );
-                                        })}
-                                    </TableRow>
-                                );
-                            })}
-                    </TableBody>
-                </Table>
-            </TableContainer>
-            <TablePagination
-                rowsPerPageOptions={[10, 25, 100]}
-                component="div"
-                count={rows.length}
-                rowsPerPage={rowsPerPage}
-                page={page}
-                onPageChange={handleChangePage}
-                onRowsPerPageChange={handleChangeRowsPerPage}
-            />
-        </Paper>
+         <>
+             <TableRow
+                 onClick={() => {
+                     isOpen !== row.id - 1 ? setIsOpen(row.id - 1) : setIsOpen(-1);
+                 }}
+                 sx={{
+                     transition: "all 300ms ease-in-out",
+                     "&:hover": {
+                         backgroundColor: "#F2F6F9",
+                     },
+                     cursor: "pointer",
+                     boxShadow: "0 2px 8px rgba(0, 0, 0, 0.04)",
+                 }}
+                 key={index}
+             >
+                 {/* # */}
+                 <TableCell>{index + 1}</TableCell>
+
+                 {/* Тип документа */}
+                 {arry[0].active && (
+                     <TableCell>{DOC_TYPES[row.doctype] ?? row.type ?? "–"}</TableCell>
+                 )}
+
+                 {/* Дата обновления */}
+                 {arry[1].active && (
+                     <TableCell>
+                         {row.created
+                             ? new Date(row.created).toLocaleDateString("ru-RU")
+                             : row.doc_date
+                                 ? new Date(row.doc_date).toLocaleDateString("ru-RU")
+                                 : "–"}
+                     </TableCell>
+                 )}
+
+                 {/* Контрагент */}
+                 {arry[2].active && (
+                     <TableCell>{row.partnerCompany ?? row.owner_name ?? "–"}</TableCell>
+                 )}
+
+                 {/* ИНН */}
+                 {arry[3].active && (
+                     <TableCell>{row.partnerTin ?? row.document_json?.buyer?.tin ?? "–"}</TableCell>
+                 )}
+
+                 {/* Номер документа */}
+                 {arry[4].active && (
+                     <TableCell>{row.name ?? row.contract_number ?? "–"}</TableCell>
+                 )}
+
+                 {/* Номер и дата договора */}
+                 {arry[5].active && (
+                     <TableCell>
+                         {row.contract_number && row.contract_date ? (
+                             <>
+                                 <div>{row.contract_number}</div>
+                                 <div>{new Date(row.contract_date).toLocaleDateString("ru-RU")}</div>
+                             </>
+                         ) : (
+                             row.contract_info ?? "–"
+                         )}
+                     </TableCell>
+                 )}
+
+                 {/* Стоимость поставки с НДС */}
+                 {arry[6].active && (
+                     <TableCell sx={{ fontWeight: "600" }}>
+                         {Number(row.total_delivery_sum_with_vat ?? 0).toLocaleString("ru-RU", {
+                             minimumFractionDigits: 2,
+                             maximumFractionDigits: 2,
+                         })}{" "}
+                         so'm
+                     </TableCell>
+                 )}
+
+                 {/* PDF yuklab olish */}
+                 {arry[7].active && (
+                     <TableCell>
+                         <p
+                             className="cursor-pointer  text-center px-3 py-1 bg-blue text-white rounded hover:bg-blue-700 text-sm"
+                             onClick={() => {
+                                 const token = localStorage.getItem("token");
+
+                                 axios
+                                     .get(
+                                         `http://192.168.10.77:9090/api/invoices/download/${row?.doc_id}`,
+                                         {
+                                             responseType: "blob", // ⚡️ PDF faylni blob qilib olish
+                                             headers: {Authorization: `Bearer ${token}`},
+                                         }
+                                     )
+                                     .then((res) => {
+                                         // Faylni brauzerda yaratish
+                                         const url = window.URL.createObjectURL(new Blob([res.data], {type: "application/pdf"}));
+                                         const link = document.createElement("a");
+                                         link.href = url;
+                                         link.setAttribute("download", "invoice.pdf"); // Yuklab olinadigan fayl nomi
+                                         document.body.appendChild(link);
+                                         link.click();
+                                         link.remove();
+                                     })
+                                     .catch((err) => {
+                                         console.error("Download error:", err);
+                                     });
+                             }}
+                         >
+                             PDF
+                         </p>
+
+                         {/*<a*/}
+                         {/*    href={`/api/download/${row.doc_id}`}*/}
+                         {/*    target="_blank"*/}
+                         {/*    rel="noopener noreferrer"*/}
+                         {/*    className="inline-block px-3 py-1 bg-blue text-white rounded hover:bg-blue-700 text-sm"*/}
+                         {/*>*/}
+                         {/*    PDF*/}
+                         {/*</a>*/}
+                     </TableCell>
+                 )}
+             </TableRow>
+
+             <TableRow>
+                 <TableCell sx={{padding: 0, overflow: "hidden", background: "#F9FBFD"}} colSpan={8}>
+                     <div
+                         // onMouseLeave={()=> setIsOpen(-1)}
+                         className={isOpen === row.id - 1 ? "    max-h-96 center transition-all duration-300 ease-in-out" : " max-h-0  center  transition-all duration-300 ease-in-out"}>
+                         {/*<ProfileInfoCard data={row} />*/}
+                     </div>
+                 </TableCell>
+             </TableRow>
+         </>
     );
 }
 

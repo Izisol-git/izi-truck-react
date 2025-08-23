@@ -1,11 +1,11 @@
-import React, {useState} from "react";
+import React, {useEffect, useState} from "react";
 import VisibilityOutlinedIcon from '@mui/icons-material/VisibilityOutlined';
 import VisibilityOffOutlinedIcon from '@mui/icons-material/VisibilityOffOutlined';
 import {Button, Input} from "../../Components/index.js";
 import {Checkbox, FormControlLabel} from "@mui/material";
 import {useNavigate} from "react-router-dom";
 import {getCurrentUser, loginUser} from "../../features/Auth/authThunks.js";
-import {useDispatch} from "react-redux";
+import {useDispatch, useSelector} from "react-redux";
 
 const Login = () => {
     const navigate = useNavigate();
@@ -13,17 +13,28 @@ const Login = () => {
     const [email, setEmail] = useState();
     const [password    , setPassword  ] = useState();
     const dispatch = useDispatch();
+    const {loading} = useSelector((state) => state.auth);
 
     const togglePassword = () => {
         setShowPassword(!showPassword);
     }
 
     const postLogin = async () => {
-        const result = await dispatch(loginUser({email, password}));
-        // if (loginUser.fulfilled.match(result)) {
-        //     dispatch(getCurrentUser());
-        // }
-    }
+        try {
+            const result = await dispatch(loginUser({ email, password })).unwrap();
+
+            navigate("/dashboard");
+        } catch (err) {
+            console.error(err);
+        }
+    };
+
+    useEffect(()=>{
+        if(localStorage.getItem("token")){
+            navigate("/dashboard");
+        }
+    } , [])
+
 
     return (
         <div className="flex h-screen overflow-hidden">
@@ -79,7 +90,7 @@ const Login = () => {
                                 label="Men shartlarga roziman"
                             />
                         </div>
-                        <Button onClick={()=> postLogin()} value={'Kirish'}/>
+                        <Button onClick={()=> postLogin()} value={!loading ? 'Kirish' : 'Loading....'}/>
                         <p onClick={()=> navigate('/forgot-password')} className={'cursor-pointer underline text-blue text-center hover:text-black mt-4'}>Forgot your password?</p>
                     </form>
                 </div>

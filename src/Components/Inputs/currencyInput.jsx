@@ -7,14 +7,12 @@ import {
     Box
 } from "@mui/material";
 
-export default function CurrencyInput({label}) {
-    const [currency, setCurrency] = useState("USD");
-    const [amount, setAmount] = useState("");
-
+export default function CurrencyInput({ label, onChange, value, carrierCurrency, setCarrierCurrency }) {
     const currencies = [
-        { code: "USD", label: "USD" },
-        { code: "UZS", label: "UZS" },
-        { code: "EUR", label: "EUR" },
+        { code: "1", label: "USD" },
+        { code: "2", label: "UZS" },
+        { code: "3", label: "RUB" },
+        { code: "4", label: "EUR" },
     ];
 
     return (
@@ -24,14 +22,14 @@ export default function CurrencyInput({label}) {
                 label={label}
                 type="number"
                 fullWidth
-                value={amount}
-                onChange={(e) => setAmount(e.target.value)}
+                value={value || ""}
+                onChange={onChange}
                 InputProps={{
                     endAdornment: (
                         <InputAdornment position="end">
                             <Select
-                                value={currency}
-                                onChange={(e) => setCurrency(e.target.value)}
+                                value={carrierCurrency || ""}
+                                onChange={(e) => setCarrierCurrency(e.target.value)} // faqat code string saqlanadi
                                 variant="standard"
                                 disableUnderline
                                 sx={{ minWidth: 60 }}
@@ -42,6 +40,7 @@ export default function CurrencyInput({label}) {
                                     </MenuItem>
                                 ))}
                             </Select>
+
                         </InputAdornment>
                     ),
                 }}

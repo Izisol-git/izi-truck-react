@@ -1,6 +1,7 @@
 import { useEffect, useState } from "react";
 import {useDispatch, useSelector} from "react-redux";
 import {closeInvoicesModal} from "../../features/EmployeSModalToggle/employesModalToggle.js";
+import {getInvoices, LogoutInvoice} from "../../features/Invoices/invoicesThunks.js";
 
 export default function ImzoComponent({  onSignSuccess }) {
     const [certs, setCerts] = useState([]);
@@ -87,6 +88,11 @@ export default function ImzoComponent({  onSignSuccess }) {
         );
     }
 
+    const EimzoLogout = async  () => {
+        const res = await dispatch(LogoutInvoice());
+        console.log(res);
+    }
+
     function sign() {
         if (!selectedKey) {
             alert("Iltimos, sertifikat tanlang!");
@@ -97,6 +103,7 @@ export default function ImzoComponent({  onSignSuccess }) {
             window.EIMZOClient.createPkcs7(keyId, selectedKey.TIN, null, function (pkcs7, hex) {
                 if (onSignSuccess) {
                     onSignSuccess({ pkcs7, hex, tin: selectedKey.TIN });
+                    EimzoLogout()
                 }
                 dispatch(closeInvoicesModal())
             }, wsError);

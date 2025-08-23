@@ -2,7 +2,7 @@ import React, {useState} from 'react';
 
 import {useDispatch, useSelector} from "react-redux";
 import {useNavigate} from "react-router-dom";
-import {AddToggle} from "../../../features/EmployeSModalToggle/employesModalToggle.js";
+import {AddToggle, AddToggleDrivers} from "../../../features/EmployeSModalToggle/employesModalToggle.js";
 
 const UserNavbar = ({value, columnsArry, setColumnsArry, openModal}) => {
     const dispatch = useDispatch();
@@ -22,6 +22,7 @@ const UserNavbar = ({value, columnsArry, setColumnsArry, openModal}) => {
             <div className="center gap-4">
                 <button onClick={() => {
                     openModal ? openModal() : navigate('/users/drivers/create')
+                    openModal ? openModal() :  dispatch(AddToggleDrivers())
                     dispatch(AddToggle())
                 }}
                         className={'py-2 px-3 bg-[#38CB6E] text-white rounded hover:ring-2 ring-[#38CB6E] outline-none'}>

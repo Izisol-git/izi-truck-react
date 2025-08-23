@@ -4,11 +4,33 @@ import RadioGroup from '@mui/material/RadioGroup';
 import FormControlLabel from '@mui/material/FormControlLabel';
 import FormControl from '@mui/material/FormControl';
 import TouchRipple from "@mui/material/ButtonBase/TouchRipple";
-import { useState, useRef } from "react";
+import {useState, useRef, useEffect} from "react";
+import {getInvoices, getInvoicesStatus} from "../../features/Invoices/invoicesThunks.js";
+import {openInvoicesModal} from "../../features/EmployeSModalToggle/employesModalToggle.js";
+import {useDispatch} from "react-redux";
 
-export const InvoicesRadioGroup = ({ statusList }) => {
-    const [activeRadio, setActiveRadio] = useState();
+export const InvoicesRadioGroup = ({ statusList  ,setEmployeesData ,setTotal }) => {
 
+    const dispatch = useDispatch();
+
+
+    useEffect(() => {
+
+        // const fetchInvoices = async () => {
+        //     try{
+        //
+        //         // setTotal(res.payload)
+        //         // setEmployeesData(res.payload.data )
+        //         // console.log(res )
+        //     }
+        //     catch(e){
+        //         // dispatch(openInvoicesModal())
+        //         // console.log(e);
+        //     }
+        // }
+        // fetchInvoices()
+
+    } , [activeRadio])
 
     return (
         <FormControl>
@@ -26,7 +48,18 @@ export const InvoicesRadioGroup = ({ statusList }) => {
                             setTimeout(() => {
                                 rippleRef.current.stop(event);
                             }, 300);
-                            setActiveRadio(index);
+
+                            if(index === 7){
+                                localStorage.setItem('statusList', 40);
+                                setActiveRadio(40);
+                            }else if(index === 8){
+                                localStorage.setItem('statusList', 50);
+                                setActiveRadio(50);
+                            }else {
+                                localStorage.setItem('statusList', index);
+                                setActiveRadio(index);
+                            }
+                            console.log(localStorage.getItem('statusList'));
                         };
 
                         return (

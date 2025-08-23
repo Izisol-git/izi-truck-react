@@ -1,6 +1,6 @@
 import React, { useEffect, useRef } from "react";
 
-const ProfileInfoCard = ({width , shadow , data }) => {
+const ProfileInfoCardEmployees = ({width , shadow , data }) => {
     const user = {
         name: "Super Admin Kholikulov",
         roles: ["Super Admin", "Admin"],
@@ -15,8 +15,6 @@ const ProfileInfoCard = ({width , shadow , data }) => {
 
     const modalRef = useRef(null);
 
-
-
     return (
 
             <div
@@ -26,7 +24,7 @@ const ProfileInfoCard = ({width , shadow , data }) => {
 
                 <div className="flex flex-col space-y-4   border-r-4 border-dashed">
                     <div className="flex flex-col  justify-center h-full items-center gap-4   ">
-                        <img src={data.avatar !== '' ? ' ../../../public/profile.png' : '../../../public/profile.png'}
+                        <img src={data?.avatar !== '' ? ' ../../../public/profile.png' : '../../../public/profile.png'}
 
                             alt="User avatar"
                             className="w-44 h-44   object-cover  "
@@ -34,7 +32,7 @@ const ProfileInfoCard = ({width , shadow , data }) => {
                         <div className={'text-center'}>
                             <p className="text-sm  text-gray-500">Employee name:</p>
                             <p className="bg-blue-100 text-blue-700  py-1 rounded inline-block font-medium">
-                                {data.user.name}
+                                {data?.user.name}
                             </p>
                         </div>
                     </div>
@@ -50,7 +48,12 @@ const ProfileInfoCard = ({width , shadow , data }) => {
 
                                     className="  text-base font-semibold text-gray-700"
                                 >
-                                  {new Date(data.created_at).toISOString().split("T")[0]}
+                                  {
+                                      data?.created_at ?
+                                          new Date(data.created_at).toISOString().split("T")[0]
+                                          :
+                                          "—"
+                                  }
                                 </span>
 
                         </div>
@@ -63,7 +66,12 @@ const ProfileInfoCard = ({width , shadow , data }) => {
 
                                     className="  text-base font-semibold text-gray-700"
                                 >
-                                  {new Date(data.updated_at).toISOString().split("T")[0]}
+                                   {
+                                       data?.updated_at ?
+                                           new Date(data.created_at).toISOString().split("T")[0]
+                                           :
+                                           "—"
+                                   }
                                 </span>
 
                         </div>
@@ -72,11 +80,11 @@ const ProfileInfoCard = ({width , shadow , data }) => {
 
                     <div>
                         <p className="text-sm text-gray-500">Email:</p>
-                        <p className="text-base font-semibold text-gray-700">{data.user.email}</p>
+                        <p className="text-base font-semibold text-gray-700">{data?.user.email}</p>
                     </div>
                     <div>
                         <p className="text-sm text-gray-500">Status:</p>
-                        {data.status === '1' ?
+                        {data?.status === '1' ?
                             <span className="bg-green-300 text-gray-700 font-semibold px-3 py-1 rounded inline-block  ">
                           Active
                         </span> :
@@ -87,22 +95,28 @@ const ProfileInfoCard = ({width , shadow , data }) => {
                 </div>
                 <div className="flex flex-col space-y-4  ">
                     <div>
-                    <p className="text-sm text-gray-500">User ID (Telegram):</p>
+                        <p className="text-sm text-gray-500">User ID (Telegram):</p>
                         <p className="text-base font-semibold text-gray-700">
-                            {data.tg_user_id}
+                            {data?.phone_number}
+                        </p>
+                    </div>
+                    <div>
+                        <p className="text-sm text-gray-500">User ID (Telegram):</p>
+                        <p className="text-base font-semibold text-gray-700">
+                            {data?.tg_user_id}
                         </p>
                     </div>
                     <div>
                         <p className="text-sm text-gray-500">User nick name (Telegram):</p>
                         <p className="text-base font-semibold text-gray-700">
-                            {data.tg_nick_name}
+                            {data?.tg_nick_name}
                         </p>
                     </div>
 
                     <div>
                         <p className="text-sm text-gray-500">Tin:</p>
                         <span className="bg-green-300 text-gray-700 font-semibold px-3 py-1 rounded inline-block  ">
-                          {data.tin}
+                          {data?.tin}
                         </span>
                     </div>
 
@@ -125,4 +139,4 @@ const ProfileInfoCard = ({width , shadow , data }) => {
     );
 };
 
-export default ProfileInfoCard;
+export default ProfileInfoCardEmployees;

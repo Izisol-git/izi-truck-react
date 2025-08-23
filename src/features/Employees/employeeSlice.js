@@ -1,5 +1,5 @@
 import { createSlice } from "@reduxjs/toolkit";
-import { getEmployees, addEmployee, deleteEmployee } from "./employeeThunks";
+import {getEmployees, addEmployee, deleteEmployee, updateEmployee} from "./employeeThunks";
 
 const employeeSlice = createSlice({
     name: "employees",
@@ -30,7 +30,7 @@ const employeeSlice = createSlice({
                 state.loadingAddEmployee = true;
 
             })
-            // Add
+
             .addCase(addEmployee.fulfilled, (state, action) => {
                 // state.items.push(action.payload);
                 state.loadingAddEmployee = false;
@@ -38,6 +38,20 @@ const employeeSlice = createSlice({
             .addCase(addEmployee.rejected, (state, action) => {
                 state.loadingAddEmployee = false;
             })
+
+            .addCase(updateEmployee.pending, (state) => {
+                state.loadingAddEmployee = true;
+
+            })
+
+            .addCase(updateEmployee.fulfilled, (state, action) => {
+                // state.items.push(action.payload);
+                state.loadingAddEmployee = false;
+            })
+            .addCase(updateEmployee.rejected, (state, action) => {
+                state.loadingAddEmployee = false;
+            })
+
 
             // Delete
             .addCase(deleteEmployee.fulfilled, (state, action) => {

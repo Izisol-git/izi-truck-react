@@ -1,10 +1,17 @@
 import React, { useState, useRef, useEffect } from "react";
+import {useDispatch, useSelector} from "react-redux";
+import {logout} from "../../features/Auth/authSlice.js";
+import {useNavigate} from "react-router-dom";
 
 const ProfileDropdown = () => {
     const [open, setOpen] = useState(false);
     const dropdownRef = useRef();
+    const dispatch = useDispatch();
 
     const toggleDropdown = () => setOpen(!open);
+
+    const {user} = useSelector((state) => state.auth);
+    const navigate = useNavigate();
 
     useEffect(() => {
         const handleClickOutside = (event) => {
@@ -30,7 +37,9 @@ const ProfileDropdown = () => {
             {open && (
                 <div className="absolute right-0 mt-2 w-48 bg-white rounded-md shadow-lg ring-1 ring-black ring-opacity-5 z-50">
                     <div className="py-1">
-                        <p className="px-4 py-2 text-sm font-semibold text-blue border-b">Full name</p>
+                        <p className="px-4 py-2 text-sm font-semibold text-blue border-b">Name: {
+                            user?.user?.name
+                         }  </p>
 
                         <div
                             href="/settings"
@@ -39,7 +48,11 @@ const ProfileDropdown = () => {
                             Sozlamalar
                         </div>
                         <button
-                            onClick={() => alert("Chiqildi")}
+                            onClick={() => {
+                                dispatch(logout())
+                                navigate("/login")
+
+                            }}
                             className="w-full text-left px-4 py-2 text-sm font-semibold text-red-600 hover:bg-red-50"
                         >
                             Chiqish

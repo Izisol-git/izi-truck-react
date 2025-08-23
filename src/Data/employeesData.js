@@ -1,10 +1,10 @@
 export const inputModalArray = [
-    { type: 'text', label: 'Full name', value: '' },
-    { type: 'text', label: 'Phone number', value: '' },
-    { type: 'text', label: 'User ID (Telegram)', value: '' },
-    { type: 'text', label: 'User Nickname (Telegram)', value: '' },
-    { type: 'email', label: 'Email', value: '' },
-    { type: 'password', label: 'Password', value: '' },
-    { type: 'text', label: 'Code', value: '' },
-    { type: 'text', label: 'INN', value: '' }
+    { type: 'text', label: 'Full name', value: '' , post : 'name'},
+    { type: 'text', label: 'Phone number', value: '' , post : 'phone_number'},
+    { type: 'text', label: 'User ID (Telegram)', value: '', post : 'tg_user_id' },
+    { type: 'text', label: 'User Nickname (Telegram)', value: '', post : 'tg_nick_name' },
+    { type: 'email', label: 'Email', value: '', post : 'email' },
+    { type: 'password', label: 'Password', value: '' , post : 'password'},
+    { type: 'text', label: 'Code', value: '', post : 'code'},
+    { type: 'text', label: 'INN', value: '' , post : 'tin'}
 ];

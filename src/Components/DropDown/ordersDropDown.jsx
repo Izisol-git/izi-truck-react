@@ -2,7 +2,11 @@ import * as React from 'react';
 import Button from '@mui/material/Button';
 import ButtonGroup from '@mui/material/ButtonGroup';
 
-const OrdersDropDown = ({activeStatus ,setActiveStatus}) => {
+const OrdersDropDown = ({activeStatus ,setActiveStatus , setFilters , filters}) => {
+
+
+
+
 
 
 
@@ -10,7 +14,10 @@ const OrdersDropDown = ({activeStatus ,setActiveStatus}) => {
         <>
             <ButtonGroup sx={{border:'1px solid '}} variant="text">
                 <Button
-                    onClick={() => setActiveStatus("all")}
+                    onClick={() => {
+                        setActiveStatus(null)
+                        setFilters({...filters , search_status:2})
+                    }}
                     sx={{
                         paddingRight:'15px',
                         paddingLeft:'15px',
@@ -18,7 +25,7 @@ const OrdersDropDown = ({activeStatus ,setActiveStatus}) => {
                         color: "#1D2D5B",
 
                         backgroundColor:
-                            activeStatus === "all" ? "rgba(29,45,91,0.3)" : "whit",
+                            activeStatus === null ? "rgba(29,45,91,0.3)" : "whit",
                         "&:hover": {
                             borderColor: "#162447",
                             backgroundColor: "rgba(29,45,91,0.15)",
@@ -29,14 +36,18 @@ const OrdersDropDown = ({activeStatus ,setActiveStatus}) => {
                 </Button>
 
                 <Button
-                    onClick={() => setActiveStatus("none")}
+                    onClick={() => {
+                        setActiveStatus(0)
+                        setFilters({...filters , search_status:0})
+
+                    }}
                     sx={{
                         color: "#1D2D5B",
                         borderColor: "#1D2D5B",
                         paddingRight:'15px',
                         paddingLeft:'15px',
                         backgroundColor:
-                            activeStatus === "none" ? "rgba(29,45,91,0.3)" : "whit",
+                            activeStatus === 0 ? "rgba(29,45,91,0.3)" : "whit",
                         "&:hover": {
                             borderColor: "#162447",
                             backgroundColor: "rgba(29,45,91,0.15)",
@@ -48,14 +59,18 @@ const OrdersDropDown = ({activeStatus ,setActiveStatus}) => {
                 </Button>
 
                 <Button
-                    onClick={() => setActiveStatus("yes")}
+                    onClick={() => {
+                        setActiveStatus(1)
+                        setFilters({...filters , search_status:1})
+
+                    }}
                     sx={{
                         color: "#1D2D5B",
                         borderColor: "#1D2D5B",
                         paddingRight:'15px',
                         paddingLeft:'15px',
                         backgroundColor:
-                            activeStatus === "yes" ? "rgba(29,45,91,0.3)" : "whit",
+                            activeStatus === 1 ? "rgba(29,45,91,0.3)" : "whit",
                         "&:hover": {
                             borderColor: "#162447",
                             backgroundColor: "rgba(29,45,91,0.15)",

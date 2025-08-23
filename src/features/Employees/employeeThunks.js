@@ -1,5 +1,6 @@
 import { createAsyncThunk } from "@reduxjs/toolkit";
 import EmployeeService from "../../Api/Employees/employeesService.js";
+import ClientsService from "../../API/customers/ClientsService.js";
 
 // Xodimlarni olish
 export const getEmployees = createAsyncThunk(
@@ -38,6 +39,18 @@ export const updateEmployee = createAsyncThunk(
         }
     }
 );
+
+export const EmployeesId = createAsyncThunk(
+    "clients/deleteClient",
+    async (id, { rejectWithValue }) => {
+        try {
+            return await EmployeeService.employeesId(id);
+        } catch (err) {
+            return rejectWithValue(err.response?.data || "Failed to delete client");
+        }
+    }
+);
+
 
 // Xodim o‘chirish
 export const deleteEmployee = createAsyncThunk(

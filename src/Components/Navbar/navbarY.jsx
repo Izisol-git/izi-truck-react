@@ -14,7 +14,7 @@ function NavbarY() {
     const [navbarModal, setNavbarModal] = useState(false);
     // const [navIndex, setNavIndex] = useState(localStorage.getItem("navIndex"));
     const navabrArry = [
-        {label: 'Bosh sahifa', icon: 'fas fa-home mr-2', navigate: '/home'},
+        {label: 'Bosh sahifa', icon: 'fas fa-home mr-2', navigate: '/dashboard'},
         // {label: 'So‘rovlar', icon: 'fas fa-search mr-2', navigate: '/queries'},
         {label: 'Buyurtmalar', icon: 'fas fa-shopping-cart mr-2', navigate: '/orders'},
         // {label: 'Yuk mashinalari', icon: 'fas fa-truck mr-2', navigate: '/trucks'},
@@ -94,7 +94,7 @@ function NavbarY() {
                                         </div>
                                         <div  onClick={()=> {
                                             navigate('/invoices')
-                                            dispatch(openInvoicesModal())
+
                                             localStorage.setItem("navIndex", item.navigate)
                                         }}
                                             className="py-2 border-b hover:bg-blue hover:text-white px-2 w-full">Invoices

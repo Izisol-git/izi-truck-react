@@ -1,10 +1,18 @@
 import React from 'react';
-import {AddEmployesModal, Button, ProfileInfoCard, TableEmployeesMUI, Timeline} from "../index.js";
-import {openModal, openModalHistory} from "../../features/EmployeSModalToggle/employesModalToggle.js";
+import {
+    AddEmployesModal,
+    Button,
+    ProfileInfoCard,
+    ProfileInfoCardDrivers,
+    ProfileInfoClients,
+    TableEmployeesMUI,
+    Timeline
+} from "../index.js";
+import {EditToggle, openModal, openModalHistory} from "../../features/EmployeSModalToggle/employesModalToggle.js";
 import {useNavigate} from "react-router-dom";
 import {useDispatch} from "react-redux";
 
-function Details({Contracts, inputModalArray , btnValue }) {
+function Details({Contracts, inputModalArray , btnValue  , data}) {
     const navigate = useNavigate();
     const dispatch = useDispatch();
     return (
@@ -20,7 +28,10 @@ function Details({Contracts, inputModalArray , btnValue }) {
                                     value={'History'}/>
                         </div>
                         <div className={'w-max'}>
-                            <Button onClick={() => dispatch(openModal())} color={'#38CB6E'}
+                            <Button onClick={() => {
+                                dispatch(EditToggle())
+                                btnValue === 'Drivers' ? navigate(`/users/${btnValue.toLowerCase()}/edit`, btnValue) :   dispatch(openModal())
+                            }} color={'#38CB6E'}
                                     icon={<i className="fa-solid fa-pen-to-square"></i>}
                                     value={'Edit'}/>
                         </div>
@@ -29,8 +40,14 @@ function Details({Contracts, inputModalArray , btnValue }) {
                         </div>
                     </div>
                 </div>
-                <ProfileInfoCard width={'90%'}
-                                 shadow={'0 10px 15px -3px rgba(0, 0, 0, 0.1), 0 4px 6px -4px rgba(0, 0, 0, 0.1)'}/>
+                {
+                    btnValue === "Employees" ? <ProfileInfoCard width={'90%'} data={data}
+                                                                shadow={'0 10px 15px -3px rgba(0, 0, 0, 0.1), 0 4px 6px -4px rgba(0, 0, 0, 0.1)'}/>
+                        : btnValue === "Customers" ? <ProfileInfoClients width={'90%'} data={data}
+                    shadow={'0 10px 15px -3px rgba(0, 0, 0, 0.1), 0 4px 6px -4px rgba(0, 0, 0, 0.1)'}/> :
+                            btnValue === 'Drivers' ? <ProfileInfoCardDrivers width={'90%'} data={data}
+                            shadow={'0 10px 15px -3px rgba(0, 0, 0, 0.1), 0 4px 6px -4px rgba(0, 0, 0, 0.1)'}/> : ''
+                }
                 <div className={'bg-white w-[90%] mt-4 py-4 px-6  mx-auto shadow-2xl rounded'}>
                     <div className={'my-5'}><p className={'text-2xl text-blue font-semibold'}>Contracts</p>
                     </div>
@@ -45,7 +62,7 @@ function Details({Contracts, inputModalArray , btnValue }) {
 
                 <Timeline/>
 
-                <AddEmployesModal inputModalArray={inputModalArray}/>
+                <AddEmployesModal h1={btnValue} employeesId={data}  inputModalArray={inputModalArray}/>
             </div>
         </div>
     );

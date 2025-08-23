@@ -18,10 +18,11 @@ const PaginationFooter =({total})=> {
     };
 
 
+
     return (
         <Stack spacing={2}>
             <Pagination
-                count={Math.ceil(total / 15)}
+                count={total?.last_page}
                 page={page}
                 onChange={handleChange}
                 variant="outlined"

@@ -3,30 +3,64 @@ import React, {useEffect, useState} from 'react';
 import {SelectMUI, InputMUI, ButtonMUI, RadioGroup} from "../index.js";
 import {Button} from "@mui/material";
 import {useDispatch, useSelector} from "react-redux";
-import {closeModal, EditToggle} from "../../features/EmployeSModalToggle/employesModalToggle.js";
+import {closeModal} from "../../features/EmployeSModalToggle/employesModalToggle.js";
 import {addEmployee, updateEmployee} from "../../features/Employees/employeeThunks.js";
 import {components as res} from "daisyui/imports.js";
+import {addClient, ClientId, editClient, getClientsSelect} from "../../features/customers/clientsThunks.js";
+import filter from "daisyui/components/filter/index.js";
 
-function AddEmployesModal({h1, inputModalArray = [], data, employeesId}) {
+function AddEmployesModal({h1, inputModalArray = [], data, employeesId, setEmployeesId}) {
     const [inputVariant, setInputVariant] = useState("outlined");
     const {loadingAddEmployee} = useSelector((state) => state.employees);
+    const {loadingClient} = useSelector((state) => state.customers);
+    const {loadingAddDrivers} = useSelector((state) => state.drivers);
+    // const loading = h1 === "Employees" ? loadingAddEmployee : h1 === "Customers" ? loadingClients : h1 === "Drivers" ? loadingDrivers : false;
     const addEditToggle = useSelector((state) => state.employesModal.addEditToggle);
     const dispatch = useDispatch();
     const isOpen = useSelector((state) => state.employesModal.isOpen);
+    const [selectArry, setSelectArry] = useState();
+    const [options, setOptions] = useState();
+    const {clientsUpdetId} = useSelector((state) => state.employesModal);
 
-    const [employeesIndex, setEmployeesIndex] = useState(
-        {
-            name: employeesId?.user.name,
-            email: employeesId?.user.email,
-            password: "password",
-            tin: employeesId?.tin,
-            phone_number: employeesId?.phone_number,
-            tg_user_id: employeesId?.tg_user_id,
-            tg_nick_name: employeesId?.tg_nick_name,
-            code: employeesId?.code,
-            avatar: employeesId?.avatar
-        }
+    const [inputModal, setInputModal] = useState(
+        inputModalArray.reduce((acc, item) => {
+            acc[item.post] = item.value;
+            return acc;
+        }, {})
     );
+
+    // console.log(inputModal)
+
+
+    const getSelect = async () => {
+        const res = await dispatch(getClientsSelect())
+        const newArray = res.payload.contracts.map(({customer, id}) => ({title: customer, id}));
+        setOptions(newArray);
+        console.log(newArray);
+    }
+
+    const ClientSId = async (id) => {
+        const res = await dispatch(ClientId(id))
+
+        setSelectArry(res.payload.data)
+
+    }
+    // company_name phone_number fio id
+
+    useEffect(() => {
+        if (h1 === 'Customers') {
+            getSelect()
+        }
+    }, [])
+
+
+    // console.log(employeesId)
+
+
+    // const updatedValues = employeesId.reduce((acc, item) => {
+    //     acc[item.post] = item.value;
+    //     return acc;
+    // }, {});
 
 
     const [addEmployees, setAddEmployees] = useState({
@@ -40,37 +74,38 @@ function AddEmployesModal({h1, inputModalArray = [], data, employeesId}) {
         code: "",
         avatar: ""
     });
-
-    // const showEditValue = ()=>{
-    //     setAddEmployees(
-    //
-    //     )
-    // }
-
-
     useEffect(() => {
-        if (employeesId && addEditToggle === false) {
-            setAddEmployees({
-                ...employeesId,
-                name: employeesId.user?.name || "",
-                email: employeesId.user?.email || ""
-            });
-        } else {
-            setAddEmployees({
-                name: "",
-                email: "",
-                password: "",
-                tin: "",
-                phone_number: "",
-                tg_user_id: "",
-                tg_nick_name: "",
-                code: "",
-                avatar: ""
-            })
+        if (employeesId && addEditToggle === false && h1 === "Customers") {
+            // const newData = options?.find((customer_id) => customer_id.id === employeesId?.id);
+            // console.log(newData);
+            setInputModal(prev => ({
+                ...prev,
+                company_name: employeesId?.company_name,
+                phone_number: employeesId?.phone_number,
+                customer_id: employeesId?.id,
+                fio: employeesId?.fio,
+            }));
+            console.log(options?.find((customer_id) => customer_id.id === 256)?.title);
+            console.log(employeesId?.id);
         }
-    }, [employeesId, addEditToggle, isOpen]);
-
-    // console.log(employeesId)
+        if (employeesId && addEditToggle === false && h1 === "Employees") {
+            // const newData = options?.find((customer_id) => customer_id.id === employeesId?.id);
+            // console.log(newData);
+            setInputModal(prev => ({
+                ...prev,
+                code: employeesId?.code,
+                email: employeesId?.user.email,
+                name: employeesId?.user.name,
+                password: employeesId?.password,
+                phone_number: employeesId?.phone_number,
+                tg_nick_name: employeesId?.tg_nick_name,
+                tg_user_id: employeesId?.tg_user_id,
+                tin: employeesId?.tin,
+            }));
+            console.log(options?.find((customer_id) => customer_id.id === 256)?.title);
+            console.log(employeesId?.id);
+        }
+    }, [addEditToggle, employeesId]);
 
 
     useEffect(() => {
@@ -81,91 +116,74 @@ function AddEmployesModal({h1, inputModalArray = [], data, employeesId}) {
         }
     }, [isOpen]);
 
-    // console.log(addEmployees)
-
-    const addEmployeesModal = (value, label) => {
-        switch (label) {
-            case "Full name":
-                label = "name";
-                break;
-            case "Email":
-                label = "email";
-                break;
-            case "Password":
-                label = "password";
-                break;
-            case "INN":
-                label = "tin";
-                break;
-            case "User ID (Telegram)":
-                label = "tg_user_id";
-                break;
-            case "User Nickname (Telegram)":
-                label = "tg_nick_name";
-                break;
-            case "Code":
-                label = "code";
-                break;
-            case "Phone number":
-                label = "phone_number";
-                break;
-        }
-        setAddEmployees((prev) => ({
-            ...prev,
-            [label]: label === "tg_user_id"
-                ? (value ? Number(value) : null) // faqat tg_user_id number bo‘lishi kerak
-                : value
-        }));
-
-        console.log(addEmployees);
-
-    };
-
     const AddEmployees = async () => {
-        try {
-            // dispatch thunk va natijani unwrap qilamiz
-            await dispatch(addEmployee(addEmployees)).unwrap();
-            clearEmployeesModal();
-            dispatch(closeModal());
-        } catch (error) {
-            console.error("Xatolik:", error);
+        if (h1 === 'Customers') {
+            try {
+                await dispatch(addClient(inputModal)).unwrap();
+                clearEmployeesModal();
+                dispatch(closeModal());
+
+            } catch (error) {
+                console.error("Xatolik:", error);
+            }
+        }
+
+        if (h1 === 'Employees') {
+            try {
+                // dispatch thunk va natijani unwrap qilamiz
+                await dispatch(addEmployee(inputModal)).unwrap();
+                clearEmployeesModal();
+                dispatch(closeModal());
+            } catch (error) {
+                console.error("Xatolik:", error);
+            }
         }
     };
+
 
     const PutEmployees = async () => {
+        if (h1 === 'Employees') {
+            try {
+                await dispatch(updateEmployee({id: employeesId.id, employeeData: inputModal})).unwrap();
+                clearEmployeesModal();
+                dispatch(closeModal());
+                // setEmployeesId(Object.fromEntries(Object.keys(employeesId).map(key => [key, ""])));
+                console.log(inputModal)
+            } catch (error) {
+                console.error("Xatolik:", error);
+                console.log({name: addEmployees?.name});
+            }
+        }
 
-
-        try {
-            // dispatch thunk va natijani unwrap qilamiz
-            // const obj = {
-            //     name: addEmployees?.user.name,
-            //     email: addEmployees.email,
-            //     password: "",
-            //     tin: addEmployees.tin,
-            //     phone_number: addEmployees.phone_number,
-            //     tg_user_id: addEmployees.tg_user_id,
-            //     tg_nick_name: addEmployees.tg_nick_name,
-            //     code: addEmployees.code,
-            //     avatar: addEmployees.avatar
-            // }
-            // console.log(obj);
-            await dispatch(updateEmployee(1494,)).unwrap();
-            clearEmployeesModal();
-            dispatch(closeModal());
-        } catch (error) {
-            console.error("Xatolik:", error);
-            console.log({name: addEmployees?.user.name});
+        if (h1 === 'Customers') {
+            console.log(inputModal)
+            try {
+                await dispatch(editClient({id: employeesId.id, clientData: inputModal})).unwrap();
+                clearEmployeesModal();
+                dispatch(closeModal());
+                setEmployeesId(Object.fromEntries(Object.keys(employeesId).map(key => [key, ""])));
+            } catch (error) {
+                console.error("Xatolik:", error);
+            }
         }
     };
-
+    const inputvalue = (e, key) => {
+        const {value} = e.target;
+        setInputModal((prev) => ({
+            ...prev,
+            [key]: value,
+        }));
+    };
 
     const clearEmployeesModal = () => {
-        for (const index in addEmployees) {
-            addEmployees[index] = "";
-        }
-
+        const formData = inputModalArray.reduce((acc, item) => {
+            acc[item.post] = item.value;
+            return acc;
+        }, {});
+        setInputModal(formData);
     }
-
+    console.log(inputModal);
+    console.log(employeesId);
 
     return (
         <div>
@@ -178,6 +196,8 @@ function AddEmployesModal({h1, inputModalArray = [], data, employeesId}) {
                         <div onClick={() => {
                             dispatch(closeModal())
                             clearEmployeesModal()
+                            setEmployeesId(Object.fromEntries(Object.keys(employeesId).map(key => [key, ""])));
+
                         }}
                              className={'w-[30px] h-[30px] cursor-pointer hover:bg-gray-100 rounded center'}>
                             <i className={'fas fa-times text-blue '}></i>
@@ -189,31 +209,33 @@ function AddEmployesModal({h1, inputModalArray = [], data, employeesId}) {
                                 item.type === "select" ? (
                                     <div key={index} className="w-full">
                                         <SelectMUI
+                                            options={options || []}
                                             variant={inputVariant}
-                                            label={item.label}
+
+                                            addEditToggle={addEditToggle}
+                                            label={item?.label}
                                             placeholder={item.label}
-                                            value={addEmployees[item.key] || ""} // 🔑 state bilan bog‘lash
-                                            onChange={(e) => addEmployeesModal(e.target.value, item.label)}
+                                            value={
+                                                addEditToggle
+                                                    ? inputModal.customer_id
+                                                        ? options?.find(opt => opt.id === inputModal.customer_id) || null
+                                                        : null
+                                                    : options?.find(opt => opt.id === employeesId?.customer_id) || null
+                                            }
+                                            onChange={(newValue) =>
+                                                setInputModal({...inputModal, customer_id: newValue?.id ?? null})
+                                            }
                                         />
+
+
                                     </div>
                                 ) : (
                                     <div key={index} className="w-[50%] flex px-2">
                                         <InputMUI
-                                            onChange={(e) => addEmployeesModal(e.target.value, item.label)}
+                                            onChange={(e) => inputvalue(e, item.post)}
                                             variant={inputVariant}
                                             label={item.label}
-                                            value={addEmployees[
-                                                // label → field name mapping
-                                                item.label === "Full name" ? "name" :
-                                                    item.label === "Email" ? "email" :
-                                                        item.label === "Password" ? "password" :
-                                                            item.label === "INN" ? "tin" :
-                                                                item.label === "Phone number" ? "phone_number" :
-                                                                    item.label === "User ID (Telegram)" ? "tg_user_id" :
-                                                                        item.label === "User Nickname (Telegram)" ? "tg_nick_name" :
-                                                                            item.label === "Code" ? "code" :
-                                                                                ""
-                                                ] || ""}   // 🔑 controlled input
+                                            value={inputModal[item.post] ?? ""}
                                         />
                                     </div>
                                 )
@@ -245,7 +267,7 @@ function AddEmployesModal({h1, inputModalArray = [], data, employeesId}) {
                                     PutEmployees()
                                 }}
                             variant="outlined" color="primary">
-                        {loadingAddEmployee ? "Sending..." : "send"}
+                        {loadingClient || loadingAddEmployee || loadingAddDrivers ? "Sending..." : "send"}
                     </Button>
                     <Button sx={{
                         width: "50%"
@@ -253,6 +275,7 @@ function AddEmployesModal({h1, inputModalArray = [], data, employeesId}) {
                             onClick={() => {
                                 dispatch(closeModal())
                                 clearEmployeesModal()
+                                setEmployeesId(Object.fromEntries(Object.keys(employeesId).map(key => [key, ""])));
                             }}
                             variant="outlined" color="error">
                         Close

@@ -5,7 +5,7 @@ const EmployeeService = {
         const res = await axios.get(`/employees?page=${page}`);
         return res.data;
     },
-    async getById(id) {
+    async employeesId(id) {
         const res = await axios.get(`/employees/${id}`);
         return res.data;
     },
@@ -14,7 +14,7 @@ const EmployeeService = {
         return res.data;
     },
     async update(id, employeeData) {
-        const res = await axios.put(`/employees/1494`, employeeData);
+        const res = await axios.put(`/employees/${id}`, employeeData);
         return res.data;
     },
     async remove(id) {

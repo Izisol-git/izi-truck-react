@@ -22,6 +22,16 @@ export const getShowOrders = createAsyncThunk(
         }
     }
 );
+export const addDidoxId  = createAsyncThunk(
+    "orders/getOrders",
+    async ({id , obj}, { rejectWithValue }) => {
+        try {
+            return await OrdersService.addDidox(id , obj);
+        } catch (err) {
+            return rejectWithValue(err.response?.data || "Failed to fetch orders");
+        }
+    }
+);
 
 export const getOrdersId = createAsyncThunk(
     "orders/getOrders",

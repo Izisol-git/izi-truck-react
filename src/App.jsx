@@ -20,9 +20,9 @@ import {
     ShowOffers,
     AddDrivers,
     EditDrivers,
-    ShowOrdersId
+    ShowOrdersId, Didox
 }
-from './pages/index.js'
+    from './pages/index.js'
 import {BrowserRouter, Routes, Route} from "react-router-dom";
 import {SuperAdminLayouts, UserLayouts} from "./layouts/index.js"
 import {OffersOrders} from "./Components/index.js";
@@ -56,6 +56,7 @@ function App() {
                     <Route path="orders/edit/:id" element={<EditOrders />} />
                     <Route path="orders/:id" element={<ShowOrdersId />} />
                     <Route path="trucks" element={<Trucks />} />
+                    <Route path="orders/:id/didox" element={<Didox />} />
                     <Route path="settings" element={<Settings />} />
 
                     <Route path="users" element={<UserLayouts />}>

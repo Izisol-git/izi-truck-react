@@ -14,6 +14,10 @@ class OrdersService  {
         const res = await api.get(`/orders/${id}?db=${db}`);
         return res.data;
     }
+    static async addDidox(id , obj) {
+        const res = await api.post(`/orders/didox/${id}` , obj);
+        return res.data;
+    }
     static async add(data) {
         const res = await api.post(`/orders` , data);
         return res.data;

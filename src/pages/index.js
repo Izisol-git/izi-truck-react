@@ -20,4 +20,5 @@ export {default as ShowOffers} from './Orders/showOffers.jsx'
 export {default as AddDrivers} from './Employees/Drivers/addDrivers.jsx'
 export {default as EditDrivers} from './Employees/Drivers/editDrivers.jsx'
 export {default as ShowOrdersId} from './Orders/showOrdersID.jsx'
+export {default as Didox} from './Didox/didox.jsx'
 

@@ -6,7 +6,7 @@ import {
     OrdersCard,
     OffersOrders,
     Loading,
-    PaginationFooter, SkeletonMUI
+    PaginationFooter, SkeletonMUI, OffersOrdersCarrier
 } from "../../Components/index.js";
 import {OrdersDropDown} from "../../Components/index.js";
 import TouchRipple from "@mui/material/ButtonBase/TouchRipple";
@@ -14,8 +14,6 @@ import {useNavigate, useSearchParams} from "react-router-dom";
 import {useDispatch, useSelector} from "react-redux";
 import {openOffersModal} from "../../features/EmployeSModalToggle/employesModalToggle.js";
 import {getFilteredOrders} from "../../features/orders/ordersThunks.js";
-import {getClients} from "../../features/customers/clientsThunks.js";
-
 
 
 function Orders() {
@@ -23,6 +21,7 @@ function Orders() {
     const [showSearch, setShowSearch] = useState('false');
     const navigate = useNavigate();
     const dispatch = useDispatch();
+    const [open, setOpen] = useState(false)
     const sampleOrder = {
         sales: "NURULLAEVA HILOLA KAHRAMONOVNA",
         operation: "XASANOV FARXOD TAXIROVICH",
@@ -51,42 +50,45 @@ function Orders() {
         serviceType: "FTL",
         transportType: "Автоперевозка",
     };
-    console.log(window.location.protocol.toLowerCase())
+
+
+
+
+    // console.log(window.location.protocol.toLowerCase())
     const [searchParams] = useSearchParams();
     const pageqq = searchParams.get("page") || 1;
-    const  [total, setTotal] = useState();
+    const [total, setTotal] = useState();
     const [ordersId, setOrdersId] = useState();
     const [ordersData, setOrdersData] = useState();
     const {loading} = useSelector((state) => state.orders);
 
 
-
     const company = [
-        { label: 'EGS', value: 'egs' },
-        { label: 'INCOTRUCK', value: 'incotruck' },
-        { label: 'EASTLINE EXPRESS', value: 'eastline' },
-        { label: 'TRANSEKA', value: 'transceka' },
+        {label: 'EGS', value: 'egs'},
+        {label: 'INCOTRUCK', value: 'incotruck'},
+        {label: 'EASTLINE EXPRESS', value: 'eastline'},
+        {label: 'TRANSEKA', value: 'transceka'},
     ];
     const [filters, setFilters] = useState({
         search: "",
-        search_status: null ,
+        search_status: null,
         db: "",
         from_date: "",
         to_date: "",
     });
 
     const findOrders = async () => {
-        const res = await dispatch(getFilteredOrders({filters:filters, pageqq: pageqq} )).unwrap()
+        const res = await dispatch(getFilteredOrders({filters: filters, pageqq: pageqq})).unwrap()
         setOrdersData(res.orders.data)
         setTotal(res)
         console.log(res)
     }
 
 
-    useEffect(()=>{
+    useEffect(() => {
         findOrders()
         console.log(ordersData)
-    } , [pageqq , dispatch]);
+    }, [pageqq, dispatch]);
 
 
     // useEffect(() => {
@@ -123,8 +125,6 @@ function Orders() {
     }, []);
 
 
-
-
     useEffect(() => {
         const value = localStorage.getItem("showSearch");
         if (value !== 'true' || value !== 'false') {
@@ -132,12 +132,12 @@ function Orders() {
         }
     }, [])
 
-    const showSearchFunc =()=> {
+    const showSearchFunc = () => {
         const value = localStorage.getItem("showSearch");
-        if (value !== 'true'  ) {
+        if (value !== 'true') {
             localStorage.setItem('showSearch', 'true');
             setShowSearch('true');
-        }else {
+        } else {
             localStorage.setItem('showSearch', 'false');
             setShowSearch('false');
         }
@@ -160,7 +160,6 @@ function Orders() {
         }
     };
 
-console.log(filters)
 
 
     return (
@@ -168,8 +167,10 @@ console.log(filters)
             <div className=" w-[90%] mx-auto py-5">
                 <div className={'flex items-center justify-between'}>
                     <div className="flex items-center gap-2">
-                        <OrdersDropDown filters={filters} setFilters={setFilters}  activeStatus={activeStatus} setActiveStatus={setActiveStatus}/>
+                        <OrdersDropDown filters={filters} setFilters={setFilters} activeStatus={activeStatus}
+                                        setActiveStatus={setActiveStatus}/>
                     </div>
+
 
                     <div className="flex items-center gap-2">
                         <button
@@ -219,25 +220,26 @@ console.log(filters)
                 </div>
             </div>
             <div
-                className={` ${ showSearch === 'true' ? 'max-h-96' : 'max-h-0'} transition-all w-[90%] mx-auto duration-500 ease-in-out  bg-white rounded-lg center overflow-hidden`}>
-                <div  className={"w-full overflow-hidden p-4   grid grid-cols-4 gap-5 "}>
+                className={` ${showSearch === 'true' ? 'max-h-96' : 'max-h-0'} transition-all w-[90%] mx-auto duration-500 ease-in-out  bg-white rounded-lg center overflow-hidden`}>
+                <div className={"w-full overflow-hidden p-4   grid grid-cols-4 gap-5 "}>
                     <div className={''}>
                         <InputMUI value={filters.search}
-                                  onChange={(e) => setFilters({ ...filters, search: e.target.value })} variant={'outlined'} label={'Order ID yoki Yuk nomi'} />
+                                  onChange={(e) => setFilters({...filters, search: e.target.value})}
+                                  variant={'outlined'} label={'Order ID yoki Yuk nomi'}/>
                     </div>
                     <div className={''}>
                         <SelectMUI
-                            onChange={(val) => setFilters({ ...filters , db : val.value })}
-                            options={company}  variant={'outlined'} label={'Kompaniyani tanlang'}
-                                   value={company.find((obj)=> obj.value === filters.db )}
-                                   placeholder={'Kompaniyani tanlang'}/>
+                            onChange={(val) => setFilters({...filters, db: val.value})}
+                            options={company} variant={'outlined'} label={'Kompaniyani tanlang'}
+                            value={company.find((obj) => obj.value === filters.db)}
+                            placeholder={'Kompaniyani tanlang'}/>
                     </div>
                     <div className={'relative'}>
-                        <MyCalendar  value={filters.from_date}
-                                     onChange={(val) => setFilters({ ...filters, from_date: val})}
+                        <MyCalendar value={filters.from_date}
+                                    onChange={(val) => setFilters({...filters, from_date: val})}
 
-                                     // value={formData?.act_date}
-                                     // onChange={(val) => setFormData({...formData, act_date: val})}
+                            // value={formData?.act_date}
+                            // onChange={(val) => setFormData({...formData, act_date: val})}
                         />
 
                         <p className={'absolute text-[12px] pt-1 px-1 font-medium -top-[14px] left-2 text-[#3B82F6] bg-white'}>Kelish
@@ -245,9 +247,10 @@ console.log(filters)
 
                     </div>
                     <div className={'relative'}>
-                        <MyCalendar  value={filters.to_date}
-                                     onChange={(val) => setFilters({ ...filters, to_date: val })}  />
-                        <p className={'absolute text-[12px] pt-1 px-1 font-medium -top-[14px] left-2 text-[#3B82F6] bg-white'}>Ketish vaqti</p>
+                        <MyCalendar value={filters.to_date}
+                                    onChange={(val) => setFilters({...filters, to_date: val})}/>
+                        <p className={'absolute text-[12px] pt-1 px-1 font-medium -top-[14px] left-2 text-[#3B82F6] bg-white'}>Ketish
+                            vaqti</p>
                     </div>
 
                     <div className={'mx-auto col-span-full center gap-5'}>
@@ -278,11 +281,11 @@ console.log(filters)
 
                 {
                     loading ? <Loading/> :
-                    ordersData?.map((order) => (
-                        <>
-                            <OrdersCard key={order.id} order={order} />
-                        </>
-                    ))
+                        ordersData?.map((order) => (
+                            <>
+                                <OrdersCard key={order.id} order={order}/>
+                            </>
+                        ))
                 }
 
                 {/*<OrdersCard*/}
@@ -297,7 +300,10 @@ console.log(filters)
                     <PaginationFooter total={total}/>
                 </div>
             </div>
-            <OffersOrders/>
+            {/*<OffersOrders/>*/}
+
+            <OffersOrdersCarrier/>
+
         </div>
     );
 }

@@ -400,6 +400,7 @@ function OrdersFrom({mode}) {
                                     <button
                                         onClick={(e) => {
                                             handleClick(e, rippleRefs.add)
+                                            navigate(`/orders/${id}/didox`)
                                         }}
                                         className="relative overflow-hidden rounded bg-[#A855F7] text-white py-2 px-3"
                                     >
@@ -473,7 +474,7 @@ function OrdersFrom({mode}) {
                                         />
                                     </div>
                                     <div className={''}>
-                                        <InputMUI value={user.user.name ?? ''}
+                                        <InputMUI value={user?.user?.name ?? ''}
                                                   onChange={(e) =>
                                                       setFormData({...formData, receiver_contact: e.target.value})
                                                   } variant={'outlined'} label={'Перевозчик'}

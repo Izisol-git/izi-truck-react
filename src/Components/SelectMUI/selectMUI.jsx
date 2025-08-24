@@ -12,8 +12,9 @@ export default function SelectMUI({ label, placeholder, variant,  value, onChang
                 options={options}
                 value={value || null}
                 defaultValue={null}
+                // isOptionEqualToValue={(option, value) => option.id === value.id}
                 onChange={(event, newValue) => onChange && onChange(newValue)}
-                getOptionLabel={(option) => option?.title || option?.company_name || option?.name || option?.label || '' }
+                getOptionLabel={(option) => option?.title || option?.company_name || option?.name || option?.label || '' || option?.value || '' }
                 renderInput={(params) => (
                     <TextField
                         {...params}

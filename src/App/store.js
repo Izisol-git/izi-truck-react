@@ -8,6 +8,7 @@ import driversReducer from "../features/Drivers/driversSlice.js";
 import customersReducer from "../features/customers/clientsSlice.js";
 import ordersReducer from "../features/orders/ordersSlice.js";
 import invoicesReducer from "../features/Invoices/invoicesSlice.js";
+import suggestionsReducer from "../features/suggestions/suggestionsSlice.js";
 export const store = configureStore({
     reducer: {
         counter: counterReducer,
@@ -18,5 +19,6 @@ export const store = configureStore({
         customers : customersReducer,
         orders : ordersReducer,
         invoices : invoicesReducer,
+        suggestions : suggestionsReducer,
     },
 });

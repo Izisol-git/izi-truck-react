@@ -1,13 +1,14 @@
 import React, {useEffect, useState} from 'react';
-import {useDispatch, useSelector} from "react-redux";
-import {closeModalHistory, closeOffersModal} from "../../features/EmployeSModalToggle/employesModalToggle.js";
+import {closeOffersModal} from "../../features/EmployeSModalToggle/employesModalToggle.js";
 import {InputMUI} from "../index.js";
 import InputFileUpload from "../Buttons/fileButton.jsx";
 import {Button} from "@mui/material";
-import {addSuggestions} from "../../features/suggestions/suggestionsThunks.js";
+import {useDispatch, useSelector} from "react-redux";
 
-function OffersOrders() {
+function OffersOrdersCarrier(props) {
     const isOpenOffersModal = useSelector(state => state.employesModal.isOpenOffersModal);
+    const dispatch = useDispatch();
+
     const [suggestionsData, setSuggestionsData] = useState(
         {
             route: '',
@@ -30,24 +31,11 @@ function OffersOrders() {
         )
     } , [isOpenOffersModal])
 
-    console.log(suggestionsData);
-
-    const Suggestions = async (data) => {
-
-        try {
-            const res = await dispatch(addSuggestions( suggestionsData)).unwrap();
-            console.log(res);
-        } catch (e) {
-            console.error(e);
-        }
-    }
-
-
     useEffect(() => {
         document.body.style.overflow = isOpenOffersModal ? "hidden" : "auto";
     }, [isOpenOffersModal]);
 
-    const dispatch = useDispatch();
+
     return (
         <>
             <div
@@ -64,9 +52,49 @@ function OffersOrders() {
 
                 <div className={'pb-4'}>
                     <div className={'flex items-center justify-between p-4'}>
-                        <p className={'text-blue font-bold '}>Taklifingizni yozing</p>
+                        <p className={'text-blue font-bold '}>Sizga mos taklif bor</p>
                         <div onClick={() => dispatch(closeOffersModal())} className={'w-[30px] center h-[30px] hover:bg-gray-200 rounded '}>
                             <i className="fa-solid fa-xmark text-blue"></i>
+                        </div>
+                    </div>
+
+                    <div className={'px-4 py-2'}>
+                        <div className="grid grid-cols-1 md:grid-cols-2 gap-x-12 gap-y-6 text-sm">
+                            {/* Yo'nalish */}
+                            <div className="flex items-start gap-2">
+                                <MapPin className="w-5 h-5 text-indigo-500 shrink-0 mt-0.5"/>
+                                <div>
+                                    <p className="font-semibold text-gray-700">Yo'nalish:</p>
+                                    <p className="text-gray-600">{data.direction}</p>
+                                </div>
+                            </div>
+
+                            {/* Yuk nomi */}
+                            <div className="flex items-start gap-2">
+                                <Package className="w-5 h-5 text-indigo-500 shrink-0 mt-0.5"/>
+                                <div>
+                                    <p className="font-semibold text-gray-700">Yuk nomi:</p>
+                                    <p className="text-gray-600">{data.cargoName}</p>
+                                </div>
+                            </div>
+
+                            {/* Yuk og'irligi */}
+                            <div className="flex items-start gap-2">
+                                <Weight className="w-5 h-5 text-indigo-500 shrink-0 mt-0.5"/>
+                                <div>
+                                    <p className="font-semibold text-gray-700">Yuk og'irligi:</p>
+                                    <p className="text-gray-600">{data.weight} kg</p>
+                                </div>
+                            </div>
+
+                            {/* Treyler ma'lumoti */}
+                            <div className="flex items-start gap-2">
+                                <TruckIcon className="w-5 h-5 text-indigo-500 shrink-0 mt-0.5"/>
+                                <div>
+                                    <p className="font-semibold text-gray-700">Treyler ma'lumoti:</p>
+                                    <p className="text-gray-600">{data.trailerInfo}</p>
+                                </div>
+                            </div>
                         </div>
                     </div>
 
@@ -79,14 +107,20 @@ function OffersOrders() {
                     <div className={' px-4 py-2'}>
                         <InputMUI
                             value={suggestionsData.cargo_name || ''}
-                            onChange={(value) => setSuggestionsData({...suggestionsData, cargo_name: value.target.value})}
+                            onChange={(value) => setSuggestionsData({
+                                ...suggestionsData,
+                                cargo_name: value.target.value
+                            })}
                             variant={'outlined'} label={'Yuk nomi'}/>
                     </div>
                     <div className={' px-4 py-2'}>
                         <InputMUI
                             type={'number'}
                             value={suggestionsData.cargo_weight || ''}
-                            onChange={(value) => setSuggestionsData({...suggestionsData, cargo_weight: value.target.value})}
+                            onChange={(value) => setSuggestionsData({
+                                ...suggestionsData,
+                                cargo_weight: value.target.value
+                            })}
                             variant={'outlined'} label={"Yuk og'irligi"}/>
                     </div>
                     <div className={' px-4 py-2'}>
@@ -115,7 +149,7 @@ function OffersOrders() {
                             borderColor: "#1D2D5B", width: "50%", color: "#1D2D5B"
                         }} variant="outlined" color="primary"
 
-                                onClick={Suggestions}
+
 
                         >
                             Send
@@ -132,4 +166,4 @@ function OffersOrders() {
     );
 }
 
-export default OffersOrders;
+export default OffersOrdersCarrier;

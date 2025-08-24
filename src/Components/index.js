@@ -38,3 +38,4 @@ export {default as DriversPagination} from "./Pagination/DriversPagination.jsx";
 export {default as CustomersPagination} from "./Pagination/CustomersPagination.jsx";
 export {default as AddCustomersModal} from "./Modal/addCustomersModal.jsx";
 export {default as ActData} from "./Modal/actData.jsx";
+export {default as OffersOrdersCarrier} from "./Modal/offersOrdersCarrier.jsx";

@@ -6,21 +6,25 @@ import {
     OrdersCard,
     OffersOrders,
     Loading,
-    PaginationFooter, SkeletonMUI, OffersOrdersCarrier
+    PaginationFooter,  OffersOrdersCarrier
 } from "../../Components/index.js";
 import {OrdersDropDown} from "../../Components/index.js";
 import TouchRipple from "@mui/material/ButtonBase/TouchRipple";
 import {useNavigate, useSearchParams} from "react-router-dom";
 import {useDispatch, useSelector} from "react-redux";
-import {openOffersModal} from "../../features/EmployeSModalToggle/employesModalToggle.js";
+import {openExcelModal, openOffersModal} from "../../features/EmployeSModalToggle/employesModalToggle.js";
 import {getFilteredOrders} from "../../features/orders/ordersThunks.js";
+import {getSuggestions} from "../../features/suggestions/suggestionsThunks.js";
+import ExcelModal from "../../Components/Modal/excelModal.jsx";
 
 
 function Orders() {
+    const {user} = useSelector((state) => state.auth);
     const [activeStatus, setActiveStatus] = useState(null);
     const [showSearch, setShowSearch] = useState('false');
     const navigate = useNavigate();
     const dispatch = useDispatch();
+    const [suggestions, setSuggestions] = useState();
     const [open, setOpen] = useState(false)
     const sampleOrder = {
         sales: "NURULLAEVA HILOLA KAHRAMONOVNA",
@@ -52,8 +56,6 @@ function Orders() {
     };
 
 
-
-
     // console.log(window.location.protocol.toLowerCase())
     const [searchParams] = useSearchParams();
     const pageqq = searchParams.get("page") || 1;
@@ -77,11 +79,20 @@ function Orders() {
         to_date: "",
     });
 
-    const findOrders = async () => {
+    const getSuggestion = async () => {
+        try {
+            const res = await dispatch(getSuggestions()).unwrap()
+            setSuggestions(res)
+            console.log(res)
+        } catch (err) {
+            console.log(err);
+        }
+    }
+
+    const findOrders = async (filters, pageqq) => {
         const res = await dispatch(getFilteredOrders({filters: filters, pageqq: pageqq})).unwrap()
         setOrdersData(res.orders.data)
         setTotal(res)
-        console.log(res)
     }
 
 
@@ -146,6 +157,7 @@ function Orders() {
 
     // Har bir button uchun alohida ref
     const rippleRefs = {
+        xls: useRef(null),
         add: useRef(null),
         suggest: useRef(null),
         view: useRef(null),
@@ -161,18 +173,32 @@ function Orders() {
     };
 
 
-
     return (
         <div className={'bg-bacWhite'}>
             <div className=" w-[90%] mx-auto py-5">
                 <div className={'flex items-center justify-between'}>
                     <div className="flex items-center gap-2">
-                        <OrdersDropDown filters={filters} setFilters={setFilters} activeStatus={activeStatus}
+                        <OrdersDropDown pageqq={pageqq} onClick={findOrders} filters={filters} setFilters={setFilters}
+                                        activeStatus={activeStatus}
                                         setActiveStatus={setActiveStatus}/>
                     </div>
 
 
                     <div className="flex items-center gap-2">
+                        {/*<div className="flex items-center ">*/}
+                        {/*    <img className={'w-8 h-8 cursor-pointer'} src="../../../public/xls.png" alt="excel"/>*/}
+                        {/*</div>*/}
+                        <button
+                            onClick={(e) => {
+                                handleClick(e, rippleRefs.xls)
+                                dispatch(openExcelModal())
+                            }}
+                            className="relative overflow-hidden rounded bg-green-500 text-white py-2 px-3"
+                        >
+                            <i className="fa-solid fa-table mr-2"></i> excel
+
+                            <TouchRipple ref={rippleRefs.xls} center={false}/>
+                        </button>
                         <button
                             onClick={(e) => {
                                 handleClick(e, rippleRefs.add)
@@ -188,6 +214,7 @@ function Orders() {
                             onClick={(e) => {
                                 handleClick(e, rippleRefs.suggest)
                                 dispatch(openOffersModal())
+                                getSuggestion()
                             }}
                             className="relative overflow-hidden rounded bg-[#EAB308] text-white py-2 px-3"
                         >
@@ -216,12 +243,13 @@ function Orders() {
                             show search button <i className="fa-solid fa-angle-right"></i>
                             <TouchRipple ref={rippleRefs.search} center={false}/>
                         </button>
+
                     </div>
                 </div>
             </div>
             <div
                 className={` ${showSearch === 'true' ? 'max-h-96' : 'max-h-0'} transition-all w-[90%] mx-auto duration-500 ease-in-out  bg-white rounded-lg center overflow-hidden`}>
-                <div className={"w-full overflow-hidden p-4   grid grid-cols-4 gap-5 "}>
+                <div className={"w-full overflow-hidden p-4   grid grid-cols-5 gap-5 "}>
                     <div className={''}>
                         <InputMUI value={filters.search}
                                   onChange={(e) => setFilters({...filters, search: e.target.value})}
@@ -252,6 +280,19 @@ function Orders() {
                         <p className={'absolute text-[12px] pt-1 px-1 font-medium -top-[14px] left-2 text-[#3B82F6] bg-white'}>Ketish
                             vaqti</p>
                     </div>
+                    <button
+                            onClick={()=>setFilters({
+                                search: "",
+                                search_status: null,
+                                db: "",
+                                from_date: "",
+                                to_date: "",
+                            })}
+                        className="w-full relative overflow-hidden rounded font-semibold bg-transparent border-2 text-blue border-blue   transition-all duration-300 ease-in-out  hover:text-white hover:bg-blue py-1 px-2"
+                    >
+                        Clear input
+
+                    </button>
 
                     <div className={'mx-auto col-span-full center gap-5'}>
                         <button
@@ -264,7 +305,7 @@ function Orders() {
 
                         </button>
                         <button
-                            onClick={findOrders}
+                            onClick={() => findOrders(filters, pageqq)}
 
                             className="w-36 relative overflow-hidden rounded font-semibold bg-transparent border-2 text-blue border-blue transition-all duration-300 ease-in-out  hover:text-white hover:bg-blue py-2 px-3"
                         >
@@ -288,21 +329,20 @@ function Orders() {
                         ))
                 }
 
-                {/*<OrdersCard*/}
-                {/*    total={total}*/}
-                {/*    order={sampleOrder}*/}
-                {/*    // onEdit={() => console.log("edit")}*/}
-                {/*    // onDelete={() => console.log("delete")}*/}
-                {/*    // onActDate={() => console.log("act date")}*/}
-                {/*/>*/}
-
                 <div className={'flex items-center justify-end'}>
                     <PaginationFooter total={total}/>
                 </div>
             </div>
-            {/*<OffersOrders/>*/}
 
-            <OffersOrdersCarrier/>
+
+            {
+                user?.user?.roles[0]?.name === 'super-admin' ? <OffersOrders/> :
+                    <OffersOrdersCarrier setSuggestions={setSuggestions} suggestions={suggestions}/>
+            }
+
+
+            <ExcelModal/>
+
 
         </div>
     );

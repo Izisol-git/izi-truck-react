@@ -2,7 +2,7 @@ import * as React from 'react';
 import Button from '@mui/material/Button';
 import ButtonGroup from '@mui/material/ButtonGroup';
 
-const OrdersDropDown = ({activeStatus ,setActiveStatus , setFilters , filters}) => {
+const OrdersDropDown = ({activeStatus ,setActiveStatus , setFilters , filters , onClick , pageqq}) => {
 
 
 
@@ -17,6 +17,7 @@ const OrdersDropDown = ({activeStatus ,setActiveStatus , setFilters , filters}) 
                     onClick={() => {
                         setActiveStatus(null)
                         setFilters({...filters , search_status:2})
+                        onClick({...filters , search_status:2} , pageqq);
                     }}
                     sx={{
                         paddingRight:'15px',
@@ -39,7 +40,7 @@ const OrdersDropDown = ({activeStatus ,setActiveStatus , setFilters , filters}) 
                     onClick={() => {
                         setActiveStatus(0)
                         setFilters({...filters , search_status:0})
-
+                        onClick({...filters , search_status:0} , pageqq);
                     }}
                     sx={{
                         color: "#1D2D5B",
@@ -62,7 +63,7 @@ const OrdersDropDown = ({activeStatus ,setActiveStatus , setFilters , filters}) 
                     onClick={() => {
                         setActiveStatus(1)
                         setFilters({...filters , search_status:1})
-
+                        onClick({...filters , search_status:1} , pageqq);
                     }}
                     sx={{
                         color: "#1D2D5B",

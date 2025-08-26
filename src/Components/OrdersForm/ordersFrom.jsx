@@ -16,6 +16,7 @@ import RadioGroup from "@mui/material/RadioGroup";
 import FormControlLabel from "@mui/material/FormControlLabel";
 import Radio from "@mui/material/Radio";
 import FormControl from "@mui/material/FormControl";
+import {isArray} from "chart.js/helpers";
 
 function OrdersFrom({mode}) {
     const navigate = useNavigate();
@@ -29,6 +30,8 @@ function OrdersFrom({mode}) {
     const {id} = useParams();
 
     const [formData, setFormData] = useState({
+        trailer_floor_volume : '',
+        cargo_volume : '',
         client_id: {},
         nds: {},
         service_type: {},
@@ -47,6 +50,7 @@ function OrdersFrom({mode}) {
         country_of_destination: {},
         point_of_destination: {},
         customs_clearance1: "",
+        mode: "",
         customs_clearance2: "",
         weight_of_cargo: "",
         status_of_cargo: {},
@@ -103,7 +107,7 @@ function OrdersFrom({mode}) {
         try {
             const res = await dispatch(getOrdersId(id)).unwrap();
             console.log(res.order);
-            console.log(res);
+            // console.log(res);
             setCarrierCurrency(res?.order?.carrier_currency_transfer)
             setMarginCurrency(res?.order?.margin_currency_transfer)
             setItemsPriceCurrency(res?.order?.items_price_currency)
@@ -136,8 +140,8 @@ function OrdersFrom({mode}) {
                 items_price: Number(res?.order?.items_price),
                 // location_of_destination: (String(res?.order?.location_of_destination[0]) + ' , ' + String(res?.order?.location_of_destination[1])),
                 // location_of_departure: (String(res?.order?.location_of_departure[0] + " , " + res?.order?.location_of_departure[1])),
-                location_of_destination: res?.order?.destination_lat_lng,
-                location_of_departure: res?.order?.departure_lat_lng,
+                location_of_destination: res?.order?.location_of_destination ? JSON.parse(res?.order?.location_of_destination).map(String).join(", ")  : '' ,
+                location_of_departure: res?.order?.location_of_departure ? JSON.parse(res?.order?.location_of_departure).map(String)    .join(", ")  : '' ,
                 // location_of_departure: res?.order?.location_of_departure,
                 customs_clearance1: res?.order?.customs_clearance1,
                 customs_clearance2: res?.order?.customs_clearance2,
@@ -170,12 +174,15 @@ function OrdersFrom({mode}) {
         setFormData({...rows})
         setFormData({
             ...formData,
-            location_of_departure: (String(formData.location_of_departure[0] + " , " + formData.location_of_departure[1])),
-            location_of_destination: (String(formData.location_of_destination[0]) + ' , ' + String(formData.location_of_destination[1]))
+            // location_of_departure: formData.location_of_departure.map(String).join(", "),
+            // location_of_destination: formData.location_of_destination.map(String).join(", "),
         })
 
+
+
         try {
-            const res = await dispatch(editOrder({id: id, editData: formData})).unwrap();
+            const res = await dispatch(editOrder({id: id, editData: {...formData , service_type : formData.service_type.id}})).unwrap();
+            navigate("/orders")
             console.log(res)
         } catch (error) {
             console.log(error);
@@ -231,6 +238,8 @@ function OrdersFrom({mode}) {
         // console.log(formData)
         const obj = {
             // ...formData,
+            trailer_floor_volume : formData.trailer_floor_volume,
+            cargo_volume : formData.cargo_volume,
             carrier_currency_transfer: carrierCurrency,
             fraxt_currency_transfer: fraxtCurrency,
             margin_currency_transfer: marginCurrency,
@@ -240,6 +249,7 @@ function OrdersFrom({mode}) {
             country_of_departure: formData.country_of_departure.id,
             country_of_destination: formData.country_of_destination.id,
             nds: formData.nds.value,
+            mode: formData.mode,
             payment_condition: formData.payment_condition.id,
             point_of_departure: formData.point_of_departure.id,
             point_of_destination: formData.point_of_destination.id,
@@ -255,8 +265,12 @@ function OrdersFrom({mode}) {
             fraxt_price_transfer: formData.fraxt_price_transfer,
             margin_transfer: formData.margin_transfer,
             items_price: Number(formData.items_price),
-            location_of_destination: formData?.location_of_destination,
-            location_of_departure: formData?.location_of_departure,
+            location_of_destination: isArray(formData.location_of_destination)
+                ? String(formData.location_of_destination[0]) + "," + String(formData.location_of_destination[1])
+                : null,
+            location_of_departure: isArray(formData.location_of_departure)
+                ? String(formData.location_of_departure[0]) + "," + String(formData.location_of_departure[1])
+                : null,
             customs_clearance1: formData.customs_clearance1,
             customs_clearance2: formData.customs_clearance2,
             weight_of_cargo: formData.weight_of_cargo,
@@ -327,8 +341,6 @@ function OrdersFrom({mode}) {
 
     const options = [
         {title: '1'},
-        {title: '2'},
-        {title: '3'},
     ];
     const typePayment = [
         {title: "Предоплата"},
@@ -529,12 +541,12 @@ function OrdersFrom({mode}) {
                             <SelectMUI
                                 {...{
                                     value:
-                                        mode !== "add"
-                                            ? typeService.find((opt) => opt.id === formData?.service_type) || null
+                                        mode !== "add" && mode !== 'edit'
+                                            ? typeService.find((opt) => opt.id === Number()) || null
                                             : formData?.service_type,
                                 }}
                                 onChange={(val) => {
-                                    mode !== "add" ? setFormData({
+                                    mode !== "add" && mode !== 'edit' ? setFormData({
                                         ...formData,
                                         service_type: val.id
                                     }) : setFormData({...formData, service_type: val})
@@ -547,20 +559,20 @@ function OrdersFrom({mode}) {
                         </div>
                     </div>
                     {
-                        formData?.service_type?.id === 1 || formData?.service_type?.id === 6 ?
+                        Number(formData?.service_type?.id) === 1 || Number(formData?.service_type?.id) === 6 || Number(formData?.service_type) === 1 || Number(formData?.service_type) === 6 ?
 
                             <div className={'flex items-center gap-4 mt-5'}>
                                 <div className={"w-full "}>
-                                    <InputMUI value={formData?.receiver_contact ?? ''}
+                                    <InputMUI value={formData?.trailer_floor_volume ?? ''}
                                               onChange={(e) =>
-                                                  setFormData({...formData, receiver_contact: e.target.value})
+                                                  setFormData({...formData, trailer_floor_volume: e.target.value})
                                               } variant={'outlined'} label={'Контакты получателя (декларант)'}
                                     />
                                 </div>
                                 <div className={"w-full "}>
-                                    <InputMUI value={formData?.receiver_contact ?? ''}
+                                    <InputMUI value={formData?.cargo_volume ?? ''}
                                               onChange={(e) =>
-                                                  setFormData({...formData, receiver_contact: e.target.value})
+                                                  setFormData({...formData, cargo_volume: e.target.value})
                                               } variant={'outlined'} label={'Контакты получателя (декларант)'}
                                     />
                                 </div>
@@ -643,7 +655,7 @@ function OrdersFrom({mode}) {
                                        {...{
                                            value:
                                                mode !== "add"
-                                                   ? options.find((opt) => String(opt.title) === String(formData?.transport_value)) || null
+                                                   ? options.find((opt) =>  opt.title === formData?.transport_value) || null
                                                    : formData?.transport_value,
                                        }}
                                        onChange={(val) => {
@@ -675,19 +687,32 @@ function OrdersFrom({mode}) {
                                        }}
                             />
                         </div>
+
+
+                        {
+                            String(formData?.transport_type?.id) === '3' ?  <><InputMUI
+                                value={formData?.mode ?? ''}
+                                onChange={(e) =>
+                                    setFormData({...formData, mode: e.target.value})
+                                }
+                                variant={'outlined'} label={'Режим'}
+                            /></>  :  ''
+                        }
+
+
                     </div>
                 </div>
                 <div className={'w-[90%] bg-white px-4  mx-auto py-5 rounded-md shadow mt-5'}>
                     <div className={'grid grid-cols-4 gap-4'}>
                         <div className={" col-span-2"}>
                             <LocationInput
-                                value={typeof formData?.location_of_departure === "string" ? formData?.location_of_departure.split(',').map(Number) : formData?.location_of_departure || null}
+                                value={ formData?.location_of_departure || null}
                                 onChange={(pos) => setFormData({...formData, location_of_departure: pos})}
                                 label={'Локация отправителя'}/>
                         </div>
                         <div className={"  col-span-2"}>
                             <LocationInput
-                                value={typeof formData?.location_of_destination === 'string' ? formData?.location_of_destination.split(',') : formData?.location_of_destination || null}
+                                value={ formData?.location_of_destination || null}
 
                                 onChange={(pos) => setFormData({...formData, location_of_destination: pos})}
                                 label={'Локация получателя'}/>
@@ -703,7 +728,7 @@ function OrdersFrom({mode}) {
                                        {...{
                                            value:
                                                mode !== "add"
-                                                   ? data?.countries?.find((opt) => String(opt.id) === String(formData?.country_of_departure)) || null
+                                                   ? data?.countries?.find((opt) => opt.id === formData?.country_of_departure) || null
                                                    : formData?.country_of_departure,
                                        }}
                                        onChange={(val) => {
@@ -732,7 +757,7 @@ function OrdersFrom({mode}) {
                                        {...{
                                            value:
                                                mode !== "add"
-                                                   ? stateDataOne?.cities_from?.find((opt) => String(opt.id) === String(formData?.point_of_departure)) || null
+                                                   ? stateDataOne?.cities_from?.find((opt) => opt.id === formData?.point_of_departure) || null
                                                    : formData?.point_of_departure,
                                        }}
                                        onChange={(val) => {
@@ -762,7 +787,7 @@ function OrdersFrom({mode}) {
                                        {...{
                                            value:
                                                mode !== "add"
-                                                   ? data?.countries?.find((opt) => String(opt.id) === String(formData?.country_of_destination)) || null
+                                                   ? data?.countries?.find((opt) =>  opt.id  === formData?.country_of_destination) || null
                                                    : formData?.country_of_destination,
                                        }}
                                        onChange={(val) => {
@@ -792,7 +817,7 @@ function OrdersFrom({mode}) {
                                        {...{
                                            value:
                                                mode !== "add"
-                                                   ? stateDataTwo?.cities_to?.find((opt) => String(opt.id) === String(formData?.point_of_destination)) || null
+                                                   ? stateDataTwo?.cities_to?.find((opt) => opt.id === formData?.point_of_destination) || null
                                                    : formData?.point_of_destination,
                                        }}
                                        onChange={(val) => {
@@ -1070,10 +1095,11 @@ function OrdersFrom({mode}) {
                             Close
                         </button>
                         <button onClick={() => {
-                            if (mode === 'edit') {
-                                EditOrder(id, formData);
-                            } else if (mode === 'Add') {
+                            if(mode === "add") {
                                 addOrders()
+                            }
+                            if(mode === "edit") {
+                                EditOrder(id, formData)
                             }
                         }}
                                 className="w-36 relative overflow-hidden rounded font-semibold bg-transparent border-2 text-blue border-blue transition-all duration-300 ease-in-out  hover:text-white hover:bg-blue py-2 px-3"

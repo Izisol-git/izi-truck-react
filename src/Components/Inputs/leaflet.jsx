@@ -22,10 +22,13 @@ L.Icon.Default.mergeOptions({
         "https://cdnjs.cloudflare.com/ajax/libs/leaflet/1.7.1/images/marker-shadow.png"
 });
 
+// 📍 Xarita ustiga bosganda markerni qo‘yadigan komponent
 function LocationPicker({ position, setPosition }) {
     useMapEvents({
         click(e) {
-            setPosition([e.latlng.lat, e.latlng.lng]);
+            if (e?.latlng ) {
+                setPosition([e.latlng?.lat || "", e.latlng?.lng || ""]);
+            }
         }
     });
     return position ? <Marker position={position} /> : null;
@@ -33,14 +36,14 @@ function LocationPicker({ position, setPosition }) {
 
 const LocationInput = ({ label, value, onChange }) => {
     const [open, setOpen] = useState(false);
-    const [position, setPosition] = useState(null);
+
+    // 📍 Boshlang‘ich qiymat: Toshkent
+    const [position, setPosition] = useState([41.3111, 69.2797]);
 
     // Agar tashqi `value` o‘zgarsa, ichki state ham yangilansin
     useEffect(() => {
-        console.log(typeof value)
         if (value && Array.isArray(value)) {
             setPosition(value);
-            console.log(value)
         }
     }, [value]);
 
@@ -53,7 +56,7 @@ const LocationInput = ({ label, value, onChange }) => {
         <Box sx={{ display: "flex", alignItems: "center", mb: 2 }}>
             <TextField
                 label={label}
-                value={position ? `${position[0]}, ${position[1]}` : ""}
+                value={position  ? `${position[0]}, ${position[1]}` : ""}
                 fullWidth
                 size="small"
                 InputProps={{
@@ -78,8 +81,7 @@ const LocationInput = ({ label, value, onChange }) => {
                 <DialogTitle>Lokatsiyani tanlang</DialogTitle>
                 <DialogContent>
                     <MapContainer
-                        key={position ? position.join(",") : "default"} // Har safar position o‘zgarsa map qayta render bo‘ladi
-                        center={position && Array.isArray(position) ? position : [41.3111, 69.2797]}
+                        center={position}
                         zoom={12}
                         style={{ height: "400px", width: "100%" }}
                     >
@@ -87,7 +89,7 @@ const LocationInput = ({ label, value, onChange }) => {
                             attribution='&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a>'
                             url="https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png"
                         />
-                        {position && <Marker position={position} />} {/* 🔹 Marker faqat position bo‘lsa */}
+                        <Marker position={position} /> {/* 🔹 Default marker */}
                         <LocationPicker position={position} setPosition={handlePositionChange} />
                     </MapContainer>
 

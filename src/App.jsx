@@ -23,21 +23,65 @@ import {
     ShowOrdersId, Didox
 }
     from './pages/index.js'
-import {BrowserRouter, Routes, Route} from "react-router-dom";
+import {BrowserRouter, Routes, Route, Navigate} from "react-router-dom";
 import {SuperAdminLayouts, UserLayouts} from "./layouts/index.js"
 import {OffersOrders} from "./Components/index.js";
 import {useDispatch} from "react-redux";
-import {getCurrentUser, loginUser} from "./features/Auth/authThunks.js";
+import {getCurrentUser} from "./features/Auth/authThunks.js";
 
+function safeSetTag(obj, sym, value) {
+    try {
+        var desc = Object.getOwnPropertyDescriptor(obj, sym);
+        if (!desc || desc.writable) {
+            obj[sym] = value;
+        }
+    } catch (e) {
+        // ignore errors on readonly symbols
+    }
+}
 
+// 2️⃣ Patched _getRawTag funksiyasi
+function patchedGetRawTag(value) {
+    var symToStringTag = Symbol.toStringTag;
+    var isOwn = Object.prototype.hasOwnProperty.call(value, symToStringTag);
+    var tag = value[symToStringTag];
+    var unmasked;
+
+    try {
+        safeSetTag(value, symToStringTag, undefined);
+        unmasked = Object.prototype.toString.call(value);
+    } catch (e) {
+        unmasked = Object.prototype.toString.call(value);
+    } finally {
+        if (isOwn) {
+            safeSetTag(value, symToStringTag, tag);
+        }
+    }
+
+    return unmasked;
+}
+
+// 3️⃣ Lodash _getRawTag ni override qilish (agar Lodash allaqachon import qilingan bo‘lsa)
+if (typeof _ !== 'undefined' && _.runInContext) {
+    try {
+        var lodashInternal = _.__proto__ || _;
+        if (lodashInternal._getRawTag) {
+            lodashInternal._getRawTag = patchedGetRawTag;
+            console.info('✅ Lodash _getRawTag patched successfully.');
+        }
+    } catch (e) {
+        console.warn('⚠️ Lodash patch failed:', e);
+    }
+}
 
 function App() {
 
     const dispatch = useDispatch();
-
     useEffect(() => {
         dispatch(getCurrentUser());
-    } , [])
+    }, [dispatch]);
+
+
 
 
     return (
@@ -47,8 +91,8 @@ function App() {
                 <Route path="/forgot-password" element={<ForgotLogin />} />
 
                 <Route element={<SuperAdminLayouts />}>
+                    <Route path="/" element={<Navigate to="/dashboard" replace />} />
                     <Route path="dashboard" element={<Dashboard />} />
-                    {/*<Route path="dashboard" element={<Dashboard />} />*/}
                     <Route path="queries" element={<Queries />} />
                     <Route path="orders" element={<Orders />} />
                     <Route path="orders/create" element={<AddOrders />} />

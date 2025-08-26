@@ -46,29 +46,23 @@ class OrdersService  {
         const res = await api.get(`/orders/create?country_of_destination=${id}`);
         return res.data;
     }
+    static async exportOrdersExcel(selectedKeys) {
+        const query = selectedKeys.map((k) => `export_keys[]=${k}`).join("&");
+        const res = await api.get(`/orders/export_excel?${query}`, {
+            responseType: "blob", // excel fayl blob bo'ladi
+        });
+        return res.data;
+    }
 
     // 🔥 Filter bilan olish
     static async getFiltered(filters = {} , pageqq ) {
         let query = `/orders?page=${pageqq}`;
-
         if (filters.search) query += `&search=${filters.search}`;
         if (filters.db) query += `&db=${filters.db}`;
         if (filters.from_date ) query += `&from_date=${filters.from_date}`;
         if (filters.to_date) query += `&to_date=${filters.to_date}`;
         if (filters.search_status === 0 || filters.search_status === 1 || filters.search_status === null) query += `&search_status=${filters.search_status}`;
-
         const res = await api.get(query)
-        // {
-            // params: {
-            //     // db: filters.db || null,
-            //     search: filters.search || null,
-            //     from_date: filters.from_date || null,
-            //     to_date: filters.to_date || null,
-            //     // per_page: filters.per_page || 24,
-            //     search_status: filters.search_status || null,
-            // },
-        // }
-
         return res.data;
     }
 

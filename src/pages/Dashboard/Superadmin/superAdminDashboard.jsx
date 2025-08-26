@@ -1,8 +1,15 @@
-import React from 'react';
+import React, {useEffect} from 'react';
 import {ArrowTrendingUpIcon} from '@heroicons/react/24/solid';
 import {OrdersChartPlaceholder, TruckLoadPieChart} from "../../../Components/index.js";
+import {useDispatch} from "react-redux";
+import {getCurrentUser} from "../../../features/Auth/authThunks.js";
 
 function SuperAdminDashboard() {
+    const dispatch = useDispatch();
+
+    useEffect(() => {
+        dispatch(getCurrentUser());
+    } , [])
 
     const dashboardCard = [
         {

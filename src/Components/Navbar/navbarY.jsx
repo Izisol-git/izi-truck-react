@@ -1,7 +1,7 @@
 import React, {useState} from 'react';
 import {LanguageDropdown, ProfileDropdown} from "../index.js";
 import {SunDim, Moon} from 'lucide-react'
-import {useNavigate} from "react-router-dom";
+import {useLocation, useNavigate} from "react-router-dom";
 import {useDispatch} from "react-redux";
 import {openInvoicesModal} from "../../features/EmployeSModalToggle/employesModalToggle.js";
 
@@ -10,6 +10,7 @@ function NavbarY() {
     const dispatch = useDispatch();
 
     const navigate = useNavigate();
+    const location = useLocation();
     const [isSun, setIsSun] = useState(false);
     const [navbarModal, setNavbarModal] = useState(false);
     // const [navIndex, setNavIndex] = useState(localStorage.getItem("navIndex"));
@@ -31,6 +32,7 @@ function NavbarY() {
     const sunToggle = () => {
         setIsSun(!isSun);
     }
+    console.log(location.pathname);
 
     return (
         <div className={'border-b h-[70px]  px-8'}>
@@ -50,7 +52,7 @@ function NavbarY() {
 
                                 if(!item.arry) {
                                     navigate(item.navigate)
-                                    localStorage.setItem("navIndex", item.navigate)
+                                    // localStorage.setItem("navIndex", item.navigate)
                                 }
 
                                 if (item.arry) {
@@ -59,7 +61,7 @@ function NavbarY() {
                             }}
                                  onMouseLeave={() => setNavbarModal(false)}
                                  key={index}
-                                 className={item.navigate === localStorage.getItem("navIndex") ?
+                                 className={location.pathname.startsWith(item.navigate) || (item.arry && location.pathname.startsWith('/users/employees')) || (item.arry && location.pathname.startsWith('/users/customers')) || (item.arry && location.pathname.startsWith('/users/drivers')) || (item.arry && location.pathname === '/invoices')   ?
                                      "z-[10]  px-4 bg-blue  text-white transition-all duration-300 ease-in-out"
                                      :
                                      "z-[10] text-blue  px-4 hover:bg-blue hover:text-white transition-all duration-1000 ease-in-out"}>
@@ -76,26 +78,25 @@ function NavbarY() {
                                         className={`shadow -mx-4 text-blue ${navbarModal ? "max-h-96 " : "max-h-0 "} w-[calc(100% + 32px)]   transition-all duration-500 overflow-hidden bg-white ease-in-out      `}>
                                         <div onClick={()=> {
                                             navigate('/users/customers')
-                                            localStorage.setItem("navIndex", item.navigate)
+                                            // localStorage.setItem("navIndex", item.navigate)
                                         }}
                                             className="py-2 border-b hover:bg-blue hover:text-white px-2 w-full">Customers
                                         </div>
                                         <div  onClick={()=> {
                                             navigate('/users/drivers')
-                                            localStorage.setItem("navIndex", item.navigate)
+                                            // localStorage.setItem("navIndex", item.navigate)
                                         }}
                                             className="py-2 border-b hover:bg-blue hover:text-white px-2 w-full">Drivers
                                         </div>
                                         <div  onClick={()=> {
                                             navigate('/users/employees')
-                                            localStorage.setItem("navIndex", item.navigate)
+                                            // localStorage.setItem("navIndex", item.navigate)
                                         }}
                                             className="py-2 border-b hover:bg-blue hover:text-white px-2 w-full">Employees
                                         </div>
                                         <div  onClick={()=> {
                                             navigate('/invoices')
-
-                                            localStorage.setItem("navIndex", item.navigate)
+                                            // localStorage.setItem("navIndex", item.navigate)
                                         }}
                                             className="py-2 border-b hover:bg-blue hover:text-white px-2 w-full">Invoices
                                         </div>

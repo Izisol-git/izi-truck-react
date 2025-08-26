@@ -88,7 +88,7 @@ export const addOrder = createAsyncThunk(
     }
 );
 export const actDataAdd = createAsyncThunk(
-    "orders/addOrder",
+    "orders/actDataAdd",
     async ({id , act_date}, { rejectWithValue }) => {
         try {
             return await OrdersService.actDataAdd(id , act_date);
@@ -133,6 +133,30 @@ export const deleteOrder = createAsyncThunk(
             return await OrdersService.delete(id);
         } catch (err) {
             return rejectWithValue(err.response?.data || "Failed to delete order");
+        }
+    }
+);
+
+
+// Excel export thunk
+export const exportOrdersExcel = createAsyncThunk(
+    "orders/exportOrdersExcel",
+    async (selectedKeys, { rejectWithValue }) => {
+        try {
+            const blob = await OrdersService.exportOrdersExcel(selectedKeys);
+
+            // Faylni yuklab olish
+            const url = window.URL.createObjectURL(new Blob([blob]));
+            const link = document.createElement("a");
+            link.href = url;
+            link.setAttribute("download", "orders.xlsx");
+            document.body.appendChild(link);
+            link.click();
+            link.remove();
+
+            return true;
+        } catch (error) {
+            return rejectWithValue(error.response?.data || error.message);
         }
     }
 );

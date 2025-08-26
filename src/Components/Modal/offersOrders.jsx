@@ -8,6 +8,7 @@ import {addSuggestions} from "../../features/suggestions/suggestionsThunks.js";
 
 function OffersOrders() {
     const isOpenOffersModal = useSelector(state => state.employesModal.isOpenOffersModal);
+    const {addLoadingSuggestions} = useSelector((state)=>state.suggestions);
     const [suggestionsData, setSuggestionsData] = useState(
         {
             route: '',
@@ -36,6 +37,7 @@ function OffersOrders() {
 
         try {
             const res = await dispatch(addSuggestions( suggestionsData)).unwrap();
+            dispatch(closeOffersModal())
             console.log(res);
         } catch (e) {
             console.error(e);
@@ -108,7 +110,9 @@ function OffersOrders() {
 
                         <Button sx={{
                             width: "50%"
-                        }} variant="outlined" color="error">
+                        }} variant="outlined" color="error"
+                                onClick={()=> dispatch(closeOffersModal())}
+                        >
                             Close
                         </Button>
                         <Button sx={{
@@ -118,7 +122,7 @@ function OffersOrders() {
                                 onClick={Suggestions}
 
                         >
-                            Send
+                            { addLoadingSuggestions ? 'sending...' :'Send'}
                         </Button>
                     </div>
 

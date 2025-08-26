@@ -13,6 +13,8 @@ const employesModalSlice = createSlice({
         isCloseInvoicesModal: false,
         isOpenOffersModal: false,
         isCloseOffersModal: false,
+        isOpenExcelModal: false,
+        isCloseExcelModal: false,
         employeesPaginationPage : localStorage.getItem('EmployeesPge'),
         addEditToggle: true,
         addEditToggleDrivers: true,
@@ -63,6 +65,14 @@ const employesModalSlice = createSlice({
             state.isCloseOffersModal = true;
             state.isOpenOffersModal = false;
         },
+        openExcelModal: (state) => {
+            state.isOpenExcelModal = true;
+            state.isCloseExcelModal = false;
+        },
+        closeExcelModal: (state) => {
+            state.isCloseExcelModal = true;
+            state.isOpenExcelModal = false;
+        },
         changeEmployeesPge: (state , action) => {
             state.employeesPaginationPage = action.payload;
             localStorage.setItem('EmployeesPage' , action.payload);
@@ -93,5 +103,5 @@ const employesModalSlice = createSlice({
     },
 });
 
-export const { openModal ,changeDbOrders , closeModal,DriversId, ClientsUpdetId,EditToggleDrivers , AddToggleDrivers, changeEmployeesPge, AddToggle , EditToggle, closeOffersModal , openOffersModal, closeInvoicesModal , openInvoicesModal, closeModalHistory , openModalHistory , closeModalComments , openModalComments } = employesModalSlice.actions;
+export const { openModal ,changeDbOrders , openExcelModal , closeExcelModal ,  closeModal,DriversId, ClientsUpdetId,EditToggleDrivers , AddToggleDrivers, changeEmployeesPge, AddToggle , EditToggle, closeOffersModal , openOffersModal, closeInvoicesModal , openInvoicesModal, closeModalHistory , openModalHistory , closeModalComments , openModalComments } = employesModalSlice.actions;
 export default employesModalSlice.reducer;

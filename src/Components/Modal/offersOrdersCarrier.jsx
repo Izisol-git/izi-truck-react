@@ -1,32 +1,73 @@
 import React, {useEffect, useState} from 'react';
 import {closeOffersModal} from "../../features/EmployeSModalToggle/employesModalToggle.js";
-import {InputMUI} from "../index.js";
+import {InputMUI, MyCalendar} from "../index.js";
 import InputFileUpload from "../Buttons/fileButton.jsx";
-import {Button} from "@mui/material";
+import {Button, TextareaAutosize} from "@mui/material";
 import {useDispatch, useSelector} from "react-redux";
+import {MapPin, Package, TruckIcon, Weight} from "lucide-react";
+import {addSuggestionsReply} from "../../features/suggestions/suggestionsThunks.js";
+import {createAsyncThunk} from "@reduxjs/toolkit";
+import api from "../../API/api.js";
 
-function OffersOrdersCarrier(props) {
+function OffersOrdersCarrier({suggestions}) {
     const isOpenOffersModal = useSelector(state => state.employesModal.isOpenOffersModal);
     const dispatch = useDispatch();
+    const {user} = useSelector(state => state.auth);
+    const {addLoadingSuggestionsId} = useSelector((state)=>state.suggestions);
 
     const [suggestionsData, setSuggestionsData] = useState(
         {
-            route: '',
-            cargo_name: '',
-            cargo_weight: '',
-            trailer_spec: '',
-            price: ''
+            suggestion_id:'',
+            carrier_id: '',
+            reply_price: '',
+            available_vehicles: '',
+            estimated_arrival: '',
+            responsible_phone: '',
+            textura:'',
         }
     );
+    const data = {
+        direction: suggestions?.route,
+        cargoName: suggestions?.cargo_name,
+        weight: suggestions?.cargo_weight,
+        trailerInfo: suggestions?.trailer_info,
+    }
+
+    const addSuggestionsId= async () => {
+
+        const obj = {
+            ...suggestionsData,
+            suggestion_id: suggestions?.id,
+            carrier_id: user?.user?.id
+        }
+
+        // setSuggestionsData({...suggestionsData , suggestion_id: suggestions?.id, carrier_id: user?.user?.id });
+
+        try {
+            const res = await dispatch(addSuggestionsReply({id : suggestions?.id , data: obj}));
+            dispatch(closeOffersModal())
+        }catch(err) {
+            console.log(err);
+        }
+    }
+
+
+
+    // useEffect(()=>{
+    //     getSuggestion()
+    // } , [])
+
 
     useEffect(() => {
         setSuggestionsData(
             {
-                route: '',
-                cargo_name: '',
-                cargo_weight: '',
-                trailer_spec: '',
-                price: ''
+                suggestion_id: '',
+                carrier_id: '',
+                reply_price: '',
+                available_vehicles: '',
+                estimated_arrival: '',
+                responsible_phone: '',
+                textura:'',
             }
         )
     } , [isOpenOffersModal])
@@ -34,7 +75,7 @@ function OffersOrdersCarrier(props) {
     useEffect(() => {
         document.body.style.overflow = isOpenOffersModal ? "hidden" : "auto";
     }, [isOpenOffersModal]);
-
+console.log(suggestionsData)
 
     return (
         <>
@@ -45,7 +86,7 @@ function OffersOrdersCarrier(props) {
                 onClick={() => dispatch(closeOffersModal())}
             ></div>
 
-            <div className={`fixed top-1/2 left-1/2 w-[30%] max-h-[90vh] bg-white dark:bg-gray-900 dark:text-gray-200 border border-gray-200 dark:border-gray-700 shadow-2xl rounded overflow-y-auto transform transition-all duration-500 ease-out z-[1100]
+            <div className={`fixed top-1/2 left-1/2 w-[50%] max-h-[90vh] bg-white dark:bg-gray-900 dark:text-gray-200 border border-gray-200 dark:border-gray-700 shadow-2xl rounded overflow-y-auto transform transition-all duration-500 ease-out z-[1100]
                   ${isOpenOffersModal ? "opacity-100 scale-100 -translate-x-1/2 -translate-y-1/2" : "opacity-0 scale-90 -translate-x-1/2 -translate-y-1/2 pointer-events-none"}
                 `}>
 
@@ -97,62 +138,75 @@ function OffersOrdersCarrier(props) {
                             </div>
                         </div>
                     </div>
+                    <div className={'px-4 py-2'}>
+                        <p className={'text-blue font-bold '}>Javobingiz:</p>
+                    </div>
 
-                    <div className={' px-4 py-2'}>
-                        <InputMUI
-                            value={suggestionsData.route || ''}
-                            onChange={(value) => setSuggestionsData({...suggestionsData, route: value.target.value})}
-                            variant={'outlined'} label={'Marshrut'}/>
-                    </div>
-                    <div className={' px-4 py-2'}>
-                        <InputMUI
-                            value={suggestionsData.cargo_name || ''}
-                            onChange={(value) => setSuggestionsData({
-                                ...suggestionsData,
-                                cargo_name: value.target.value
-                            })}
-                            variant={'outlined'} label={'Yuk nomi'}/>
-                    </div>
-                    <div className={' px-4 py-2'}>
+
+
+                    <div className={' px-4 py-2  flex items-center gap-4'}>
                         <InputMUI
                             type={'number'}
-                            value={suggestionsData.cargo_weight || ''}
+                            value={suggestionsData.reply_price || ''}
                             onChange={(value) => setSuggestionsData({
                                 ...suggestionsData,
-                                cargo_weight: value.target.value
+                                reply_price: value.target.value
                             })}
-                            variant={'outlined'} label={"Yuk og'irligi"}/>
-                    </div>
-                    <div className={' px-4 py-2'}>
+                            variant={'outlined'} label={"Narxi"}/>
                         <InputMUI
-                            value={suggestionsData.trailer_spec || ''}
-                            onChange={(value) => setSuggestionsData({...suggestionsData, trailer_spec: value.target.value})}
-                            variant={'outlined'} label={"Tirkama xususiyati"}/>
+                            type={'number'}
+                            value={suggestionsData.available_vehicles || ''}
+                            onChange={(value) => setSuggestionsData({...suggestionsData, available_vehicles: value.target.value})}
+                            variant={'outlined'} label={"Mavjud mashinalar"}/>
                     </div>
-                    <div className={' px-4 py-2'}>
+
+                    <div className={' px-4 py-2  grid grid-cols-2 gap-4'}>
+                        <div className={'relative'}>
+                            <MyCalendar
+                                value={suggestionsData.estimated_arrival }
+                                onChange={(val) => setSuggestionsData({...suggestionsData, estimated_arrival: val})}
+                            />
+
+                            <p className={'absolute text-[12px] pt-1 px-1 font-medium -top-[14px] left-2 text-[#3B82F6] bg-white'}>Yetib borish sanasi</p>
+
+                        </div>
+
                         <InputMUI
-                            value={suggestionsData.price || ''}
-                            onChange={(value) => setSuggestionsData({...suggestionsData, price: value.target.value})}
-                            variant={'outlined'} label={"Taklif summasi"}/>
+                            value={suggestionsData.responsible_phone || ''}
+                            onChange={(value) => setSuggestionsData({...suggestionsData, responsible_phone: value.target.value})}
+                            variant={'outlined'} label={"Masul shahs teleefoni"}/>
                     </div>
                     <div className={' px-4 py-2'}>
-                        <InputFileUpload/>
+                        <TextareaAutosize
+                            aria-label="empty textarea"
+                            placeholder="Empty"
+                            value={suggestionsData?.textura || ""} // kontrolli qilish
+                            onChange={(e) =>
+                                setSuggestionsData(prev => ({ ...prev, textura: e.target.value }))
+                            }
+                            minRows={3} // height o'rniga
+                            style={{ width: '100%', border: '2px solid #e5e7eb', borderRadius: 4, padding: 10 }}
+                        />
+
                     </div>
                     <div className={' px-4 py-2 flex gap-4'}>
 
                         <Button sx={{
                             width: "50%"
-                        }} variant="outlined" color="error">
+                        }} variant="outlined" color="error"
+
+                        onClick={()=> dispatch(closeOffersModal())}
+                        >
                             Close
                         </Button>
                         <Button sx={{
                             borderColor: "#1D2D5B", width: "50%", color: "#1D2D5B"
                         }} variant="outlined" color="primary"
 
-
+                        onClick={addSuggestionsId}
 
                         >
-                            Send
+                            { addLoadingSuggestionsId ? 'sending...' :'Send'}
                         </Button>
                     </div>
 

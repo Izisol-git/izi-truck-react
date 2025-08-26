@@ -147,7 +147,7 @@ const InvoicesPagination = ({row , index , data , setEmployeesId , arry , naviga
 
                                  axios
                                      .get(
-                                         `http://192.168.10.77:9090/api/invoices/download/${row?.doc_id}`,
+                                         `https://backend.izitruck.uz/api/invoices/download/${row?.doc_id}`,
                                          {
                                              responseType: "blob", // ⚡️ PDF faylni blob qilib olish
                                              headers: {Authorization: `Bearer ${token}`},

@@ -8,8 +8,9 @@ import {
     Slide,
 } from "@mui/material";
 import { MyCalendar } from "../index.js";
-import {useDispatch} from "react-redux";
+import {useDispatch, useSelector} from "react-redux";
 import {actDataAdd} from "../../features/orders/ordersThunks.js";
+import {useEffect} from "react";
 
 // Tepadan chiqadigan animatsiya
 const Transition = React.forwardRef(function Transition(props, ref) {
@@ -18,19 +19,28 @@ const Transition = React.forwardRef(function Transition(props, ref) {
 
 const ActData = ({ setOpen, open, form, setForm , id }) => {
     const handleChange = (date) => {
-        setForm({ ...form, act_date: date });
+        setForm({act_date: date} );
     };
+
     const dispatch = useDispatch();
+    const {actLoading} = useSelector((state) => state.orders);
 
-    const handleSubmit = () => {
-        console.log("Form data:", form);
-        setOpen(false);
+
+    useEffect(() => {
+        setForm({act_date : ''})
+    } , [open])
+
+
+    const ActDataSend = async () => {
+
+        try {
+           const res =  await dispatch(actDataAdd({ id: id, act_date: form })).unwrap();
+
+            setOpen(false);   // ✅ faqat success bo‘lganda
+        } catch (err) {
+            console.log("Xatolik:", err);
+        }
     };
-
-    const ActDataSend =async ()=>{
-        const res = await dispatch(actDataAdd({id:id , act_date:form}))
-        console.log(form)
-    }
 
     return (
         <Dialog
@@ -69,7 +79,7 @@ const ActData = ({ setOpen, open, form, setForm , id }) => {
                     p: 3,
                 }}
             >
-                <MyCalendar onChange={handleChange}  />
+                <MyCalendar value={form?.act_date || ""} onChange={handleChange}  />
             </DialogContent>
 
             <DialogActions
@@ -83,7 +93,6 @@ const ActData = ({ setOpen, open, form, setForm , id }) => {
                 </Button>
                 <Button
                     onClick={()=>{
-                        handleSubmit()
                         ActDataSend()
                     }}
                     variant="contained"
@@ -92,7 +101,9 @@ const ActData = ({ setOpen, open, form, setForm , id }) => {
                         "&:hover": { bgcolor: "#162347" },
                     }}
                 >
-                    Saqlash
+                    {
+                        actLoading ? "Saqlanmoqda..." : "Saqlash"
+                    }
                 </Button>
             </DialogActions>
         </Dialog>

@@ -77,7 +77,7 @@ const Invoices = () => {
         const token = localStorage.getItem("token");
 
         axios
-            .post("http://192.168.10.77:9090/api/save_pkcs7", sendData, {
+            .post("https://backend.izitruck.uz/api/save_pkcs7", sendData, {
                 headers: {
                     Authorization: `Bearer ${token}`,
                     "Content-Type": "application/json",

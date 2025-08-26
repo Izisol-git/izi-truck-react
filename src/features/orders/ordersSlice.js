@@ -1,10 +1,11 @@
-import { createSlice } from "@reduxjs/toolkit";
-import {getOrders, addOrder, editOrder, deleteOrder, getFilteredOrders} from "./ordersThunks.js";
+import {createSlice} from "@reduxjs/toolkit";
+import {addOrder, editOrder, deleteOrder, getFilteredOrders, exportOrdersExcel, actDataAdd} from "./ordersThunks.js";
 
 const initialState = {
     orders: [],
     loading: false,
-
+    exporting: false,
+    actLoading: false,
     error: null,
 };
 
@@ -24,6 +25,19 @@ const ordersSlice = createSlice({
         });
         builder.addCase(getFilteredOrders.rejected, (state, action) => {
             state.loading = false;
+            state.error = action.payload;
+        });
+        // act data
+        builder.addCase(actDataAdd.pending, (state) => {
+            state.actLoading = true;
+            state.error = null;
+        });
+        builder.addCase(actDataAdd.fulfilled, (state, action) => {
+            state.actLoading = false;
+            // state.orders = action.payload;
+        });
+        builder.addCase(actDataAdd.rejected, (state, action) => {
+            state.actLoading = false;
             state.error = action.payload;
         });
 
@@ -69,6 +83,18 @@ const ordersSlice = createSlice({
             state.loading = false;
             state.error = action.payload;
         });
+        // Excel export
+        builder.addCase(exportOrdersExcel.pending, (state) => {
+            state.exporting = true;
+            state.error = null;
+        })
+        builder.addCase(exportOrdersExcel.fulfilled, (state) => {
+                state.exporting = false;
+            })
+        builder.addCase(exportOrdersExcel.rejected, (state, action) => {
+                state.exporting = false;
+                state.error = action.payload;
+            });
     }
 });
 

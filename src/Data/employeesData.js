@@ -6,5 +6,6 @@ export const inputModalArray = [
     { type: 'email', label: 'Email', value: '', post : 'email' },
     { type: 'password', label: 'Password', value: '' , post : 'password'},
     { type: 'text', label: 'Code', value: '', post : 'code'},
-    { type: 'text', label: 'INN', value: '' , post : 'tin'}
+    { type: 'text', label: 'INN', value: '' , post : 'tin'},
+    { type: 'select', label: 'user type', value: '' , post : 'type'},
 ];

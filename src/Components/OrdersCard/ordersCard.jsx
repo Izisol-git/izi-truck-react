@@ -1,4 +1,4 @@
-import React from "react";
+import React , {useState} from "react";
 import {changeDbOrders, openModal} from "../../features/EmployeSModalToggle/employesModalToggle.js";
 import {useDispatch, useSelector} from "react-redux";
 import {useNavigate} from "react-router-dom";
@@ -28,8 +28,8 @@ const OrderCard = ({order, onEdit, onDelete, onActDate, key}) => {
     const dispatch = useDispatch();
     const navigate = useNavigate();
     const {loading} = useSelector((state) => state.orders);
-    const [open, setOpen] = React.useState(false);
-    const [formAct, setFormAct] = React.useState({
+    const [open, setOpen] = useState(false);
+    const [formAct, setFormAct] =  useState({
         act_date: "",
     });
     // console.log(order);
@@ -74,7 +74,7 @@ const OrderCard = ({order, onEdit, onDelete, onActDate, key}) => {
                                     </div>
                                     <button
                                         onClick={() => {
-                                            onActDate
+                                            // onActDate
                                             setOpen(true)
                                         }}
                                         className="  rounded   bg-blue px-3 py-1.5 text-xs font-semibold text-white hover:bg-blue-600"

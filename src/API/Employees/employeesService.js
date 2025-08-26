@@ -17,6 +17,10 @@ const EmployeeService = {
         const res = await axios.put(`/employees/${id}`, employeeData);
         return res.data;
     },
+    async getContractId(id) {
+        const res = await axios.get(`/employee_contracts/${id}`);
+        return res.data;
+    },
     async remove(id) {
         const res = await axios.delete(`/employees/${id}`);
         return res.data;

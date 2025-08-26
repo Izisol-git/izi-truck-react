@@ -39,6 +39,16 @@ export const updateEmployee = createAsyncThunk(
         }
     }
 );
+export const getContracts = createAsyncThunk(
+    "employees/getContracts",
+    async (id, { rejectWithValue }) => {
+        try {
+            return await EmployeeService.getContractId(id);
+        } catch (err) {
+            return rejectWithValue(err.response?.data || "Failed to update employee");
+        }
+    }
+);
 
 export const EmployeesId = createAsyncThunk(
     "clients/deleteClient",

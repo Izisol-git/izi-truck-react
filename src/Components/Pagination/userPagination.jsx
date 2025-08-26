@@ -54,14 +54,10 @@ const UserPagination = ({arry , navigateURL , data , total , setEmployeesId, emp
                             "& .MuiOutlinedInput-root": {
                                 "& fieldset": {
                                     borderColor: "#1D2D5B",
-
                                     height: "55px",
-
-
                                 },
                                 "&:hover fieldset": {
                                     borderColor: "#1D2D5B",
-
                                 },
                                 "&.Mui-focused fieldset": {
                                     borderColor: "#1D2D5B",

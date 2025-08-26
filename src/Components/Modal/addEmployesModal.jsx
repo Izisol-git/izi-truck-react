@@ -5,11 +5,9 @@ import {Button} from "@mui/material";
 import {useDispatch, useSelector} from "react-redux";
 import {closeModal} from "../../features/EmployeSModalToggle/employesModalToggle.js";
 import {addEmployee, updateEmployee} from "../../features/Employees/employeeThunks.js";
-import {components as res} from "daisyui/imports.js";
 import {addClient, ClientId, editClient, getClientsSelect} from "../../features/customers/clientsThunks.js";
-import filter from "daisyui/components/filter/index.js";
 
-function AddEmployesModal({h1, inputModalArray = [], data, employeesId, setEmployeesId}) {
+function AddEmployesModal({h1, inputModalArray = [], employeesId, setEmployeesId}) {
     const [inputVariant, setInputVariant] = useState("outlined");
     const {loadingAddEmployee} = useSelector((state) => state.employees);
     const {loadingClient} = useSelector((state) => state.customers);
@@ -21,6 +19,7 @@ function AddEmployesModal({h1, inputModalArray = [], data, employeesId, setEmplo
     const [selectArry, setSelectArry] = useState();
     const [options, setOptions] = useState();
     const {clientsUpdetId} = useSelector((state) => state.employesModal);
+    const {user} = useSelector((state) => state.auth);
 
     const [inputModal, setInputModal] = useState(
         inputModalArray.reduce((acc, item) => {
@@ -35,9 +34,13 @@ function AddEmployesModal({h1, inputModalArray = [], data, employeesId, setEmplo
     const getSelect = async () => {
         const res = await dispatch(getClientsSelect())
         const newArray = res.payload.contracts.map(({customer, id}) => ({title: customer, id}));
-        setOptions(newArray);
+        if(h1 === 'Customers') {
+            setOptions(newArray);
+        }
         console.log(newArray);
     }
+
+
 
     const ClientSId = async (id) => {
         const res = await dispatch(ClientId(id))
@@ -50,6 +53,13 @@ function AddEmployesModal({h1, inputModalArray = [], data, employeesId, setEmplo
     useEffect(() => {
         if (h1 === 'Customers') {
             getSelect()
+        }
+        if(h1 === 'Employees') {
+            setOptions([
+                {value:1 , name:'carrier'},
+                {value:2 , name:'client'},
+                {value:3 , name:'admin'}
+            ])
         }
     }, [])
 
@@ -141,6 +151,7 @@ function AddEmployesModal({h1, inputModalArray = [], data, employeesId, setEmplo
     };
 
 
+
     const PutEmployees = async () => {
         if (h1 === 'Employees') {
             try {
@@ -183,7 +194,7 @@ function AddEmployesModal({h1, inputModalArray = [], data, employeesId, setEmplo
         setInputModal(formData);
     }
     console.log(inputModal);
-    console.log(employeesId);
+    console.log(user?.user?.roles[0]?.name);
 
     return (
         <div>
@@ -206,12 +217,11 @@ function AddEmployesModal({h1, inputModalArray = [], data, employeesId, setEmplo
                     <div className={"pt-6  items-center justify-between flex flex-wrap gap-y-4"}>
                         {
                             inputModalArray.map((item, index) => (
-                                item.type === "select" ? (
+                                item.type === "select" && user?.user?.roles[0]?.name === 'super-admin' ? (
                                     <div key={index} className="w-full">
                                         <SelectMUI
                                             options={options || []}
                                             variant={inputVariant}
-
                                             addEditToggle={addEditToggle}
                                             label={item?.label}
                                             placeholder={item.label}

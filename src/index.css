@@ -31,3 +31,30 @@
 .custom-ripple .MuiTouchRipple-root .MuiTouchRipple-child {
     background-color: rgba(29, 45, 91, 0.3); /* #1D2D5B rang, 0.3 opacity */
 }
+
+
+
+/* Scroll umumiy */
+/*::-webkit-scrollbar {*/
+/*    width: 8px;*/
+/*    height: 8px;*/
+/*}*/
+
+/*!* Scrollning fon yo‘li *!*/
+/*::-webkit-scrollbar-track {*/
+/*    background: #f1f1f1; !* light *!*/
+/*}*/
+
+/*.dark ::-webkit-scrollbar-track {*/
+/*    background: #212121; !* dark *!*/
+/*}*/
+
+/*!* Scrollning harakatlanadigan qismi *!*/
+/*::-webkit-scrollbar-thumb {*/
+/*    background: #374151; !* gray-700 *!*/
+/*    border-radius: 4px;*/
+/*}*/
+
+/*::-webkit-scrollbar-thumb:hover {*/
+/*    background: #4b5563; !* gray-600 *!*/
+/*}*/

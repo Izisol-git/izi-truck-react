@@ -81,10 +81,10 @@ function Didox() {
     return (
         <div>
 
-            <div className={'bg-bacWhite w-full min-h-[calc(100dvh-70px)] py-5'}>
+            <div className={'bg-bacWhite w-full min-h-[calc(100dvh-70px)] py-5 dark:bg-darkBg'}>
 
 
-                <div className={'w-[90%] bg-white px-4  mx-auto py-5 rounded-md shadow '}>
+                <div className={'w-[90%] bg-white px-4  mx-auto py-5 rounded-md shadow  dark:bg-darkBgTwo'}>
 
                     <div className="  flex items-center justify-between relative h-[40px] w-full px-2">
                         {/* Chap tomonda back tugma */}
@@ -92,11 +92,12 @@ function Didox() {
                             <Button
                                 icon={<i className="fa-solid fa-arrow-left"></i>}
                                 value={"Orders"}
+                                color={'dark:bg-btnBgDark'}
                             />
                         </div>
 
                         {/* Markazda sarlavha */}
-                        <p className="text-blue font-bold text-xl text-center flex-1">
+                        <p className="text-blue font-bold text-xl text-center flex-1 dark:text-darkText">
                             Didox
                         </p>
                     </div>
@@ -112,6 +113,10 @@ function Didox() {
                                             "&.Mui-checked": {
                                                 color: "#1D2D5B",
                                             },
+                                            "@media (prefers-color-scheme: dark)": {
+                                                color: "#fff",
+                                                "&.Mui-checked": { color: "#fff" },
+                                            },
                                         }}
                                     />
                                 }
@@ -126,6 +131,10 @@ function Didox() {
                                             "&.Mui-checked": {
                                                 color: "#1D2D5B",
                                             },
+                                            "@media (prefers-color-scheme: dark)": {
+                                                color: "#fff",
+                                                "&.Mui-checked": { color: "#fff" },
+                                            },
                                         }}
                                     />
                                 }
@@ -139,6 +148,10 @@ function Didox() {
                                             color: "#1D2D5B",
                                             "&.Mui-checked": {
                                                 color: "#1D2D5B",
+                                            },
+                                            "@media (prefers-color-scheme: dark)": {
+                                                color: "#fff",
+                                                "&.Mui-checked": { color: "#fff" },
                                             },
                                         }}
                                     />
@@ -225,6 +238,7 @@ function Didox() {
                                 <Button onClick={didox}
                                     icon={<i className="fa-solid fa-share mr-2"></i>}
                                     value={"Send"}
+                                        color={'dark:bg-btnBgDark'}
                                 />
                             </div>
                         </div>
@@ -232,7 +246,7 @@ function Didox() {
 
                 </div>
 
-                <div className={'w-[90%] bg-white px-4  mt-5  mx-auto py-5 rounded-md shadow '}>
+                <div className={'w-[90%] bg-white px-4  mt-5  mx-auto py-5 rounded-md shadow  dark:bg-darkBgTwo'}>
                     <p>Отправленные документы</p>
                 </div>
             </div>

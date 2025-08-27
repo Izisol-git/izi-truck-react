@@ -15,7 +15,11 @@ export default function RowRadioButtonsGroup({onchange}) {
     };
     return (
         <FormControl>
-            <FormLabel id="demo-row-radio-buttons-group-label">Input variant</FormLabel>
+            <FormLabel id="demo-row-radio-buttons-group-label" sx={{
+                '.dark &':{
+                    color: 'white',
+                }
+            }}>Input variant</FormLabel>
             <RadioGroup
                 row
                 aria-labelledby="demo-row-radio-buttons-group-label"
@@ -26,13 +30,23 @@ export default function RowRadioButtonsGroup({onchange}) {
                     onchange(event.target.value)
                     console.log(event.target.value)
                 }
-
-
                 }
             >
-                <FormControlLabel value="outlined" control={<Radio />} label="outlined" />
-                <FormControlLabel value="standard" control={<Radio />} label="standard" />
-                <FormControlLabel value="filled" control={<Radio />} label="filled" />
+                <FormControlLabel value="outlined" control={<Radio sx={{
+                    '.dark &':{
+                        color: 'white',
+                    }
+                }}  />} label="outlined" />
+                <FormControlLabel value="standard" control={<Radio sx={{
+                    '.dark &':{
+                        color: 'white',
+                    }
+                }} />} label="standard" />
+                <FormControlLabel value="filled" control={<Radio sx={{
+                    '.dark &':{
+                        color: 'white',
+                    }
+                }} />} label="filled" />
 
 
             </RadioGroup>

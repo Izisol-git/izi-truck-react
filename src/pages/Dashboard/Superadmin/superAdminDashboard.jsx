@@ -62,9 +62,9 @@ function SuperAdminDashboard() {
         }
     ]
     return (
-        <div className="bg-bacWhite  ">
+        <div className="bg-bacWhite dark:bg-darkBg  ">
             <div className={'  w-[90%] py-5  mx-auto'}>
-                <p className={'text-2xl text-blue font-semibold'}>Dashboard</p>
+                <p className={'text-2xl text-blue font-semibold dark:text-darkText'}>Dashboard</p>
             </div>
 
 
@@ -72,44 +72,44 @@ function SuperAdminDashboard() {
                 {
                     dashboardCard.map((item, index) => (
                         <div key={index}
-                             className="bg-white rounded shadow-sm p-4 flex flex-col gap-3 w-full max-w-sm border border-gray-100">
+                             className="bg-white rounded shadow-sm p-4 flex flex-col gap-3 w-full max-w-sm border border-gray-100 dark:bg-darkBgTwo dark:border-navBgHover ">
                             <div className="flex items-start justify-between">
                                 <div className="flex items-center gap-3">
-                                    <div className="  w-[50px] h-[50px] p-2 bg-violet-100     rounded-lg">
+                                    <div className="  w-[50px] h-[50px] p-2 bg-violet-100     rounded-lg dark:bg-navBgHover">
                                         {item.icon}
                                     </div>
-                                    <p className="text-sm text-gray-600 font-medium">{item.title}</p>
+                                    <p className="text-sm text-gray-600 font-medium dark:text-darkText">{item.title}</p>
                                 </div>
                                 <div
-                                    className="flex items-center gap-1 bg-violet-100 text-violet-600 text-sm px-2 py-1 rounded-full">
+                                    className="flex items-center gap-1 bg-violet-100 text-violet-600 text-sm px-2 py-1 rounded-full dark:bg-navBgHover">
                                     <ArrowTrendingUpIcon className="w-4 h-4"/>
                                     <span>{item.percent}</span>
                                 </div>
                             </div>
-                            <h2 className="text-2xl font-bold text-gray-900">{item.amount}</h2>
-                            <p className="text-sm text-gray-400">{item.data}</p>
+                            <h2 className="text-2xl font-bold text-gray-900 dark:text-darkText">{item.amount}</h2>
+                            <p className="text-sm text-gray-400 dark:text-[#00a77e]">{item.data}</p>
                         </div>
                     ))
                 }
 
                 <div
-                    className="bg-white rounded     shadow-sm col-span-2   p-4 flex flex-col gap-3 w-full      ">
-                    <h2 className="text-lg text-center text-blue font-semibold mb-4">📦 Buyurtmalar</h2>
+                    className="bg-white rounded     shadow-sm col-span-2   p-4 flex flex-col gap-3 w-full     dark:bg-darkBgTwo ">
+                    <h2 className="text-lg text-center text-blue font-semibold mb-4 dark:text-darkText">📦 Buyurtmalar</h2>
                     <OrdersChartPlaceholder/>
                 </div>
                 <div
-                    className="bg-white rounded center shadow-sm col-span-2 p-4 flex flex-col gap-3 w-full     border-red-500  ">
-                    <h2 className="text-lg text-blue font-semibold mb-4 ">🚛 Truck Load (%)</h2>
+                    className="bg-white rounded center shadow-sm col-span-2 p-4 flex flex-col gap-3 w-full     border-red-500  dark:bg-darkBgTwo ">
+                    <h2 className="text-lg text-blue font-semibold mb-4 dark:text-darkText">🚛 Truck Load (%)</h2>
                     <TruckLoadPieChart/>
                 </div>
 
                 <div
-                    className="bg-white rounded     shadow-sm col-span-2   p-4 flex flex-col gap-3 w-full      ">
-                    <h2 className="text-lg text-center text-blue font-semibold mb-4">📋 So‘nggi buyurtmalar</h2>
-                    <div className="overflow-x-auto rounded-box border border-base-content/5 bg-base-100">
-                        <table className="table">
-                            <thead>
-                            <tr className={'text-blue  '}>
+                    className="bg-white rounded     shadow-sm col-span-2   p-4 flex flex-col gap-3 w-full    dark:bg-darkBgTwo   ">
+                    <h2 className="text-lg text-center text-blue font-semibold mb-4 dark:text-darkText">📋 So‘nggi buyurtmalar</h2>
+                    <div className="overflow-x-auto rounded-lg dark:bg-darkBgTwo      bg-base-100">
+                        <table className="table dark:text-darkText">
+                            <thead className={'dark:text-darkText dark:font-bold'}>
+                            <tr className={'   '}>
                                 <th>ID</th>
                                 <th>Mijoz</th>
                                 <th>Manzil</th>
@@ -134,19 +134,19 @@ function SuperAdminDashboard() {
                     </div>
                 </div>
                 <div
-                    className="bg-white rounded   shadow-sm col-span-2 p-4 flex flex-col gap-3 w-full     border-red-500  ">
-                    <h2 className="text-lg text-blue text-center font-semibold mb-4 ">👷‍♂️ Haydovchilar holati</h2>
+                    className="bg-white rounded   shadow-sm col-span-2 p-4 flex flex-col gap-3 w-full     border-red-500 dark:bg-darkBgTwo ">
+                    <h2 className="text-lg text-blue text-center font-semibold mb-4 dark:text-darkText ">👷‍♂️ Haydovchilar holati</h2>
                     <div className="p-2 flex flex-col gap-3">
                         <div className="flex items-center justify-between  w-full">
-                            <p className={'font-semibold text-blue'}>👷 Sh.Ergashev</p>
-                            <p className={'text-[#16a34a]'}>Band</p>
+                            <p className={'font-semibold text-blue dark:text-darkText'}>👷 Sh.Ergashev</p>
+                            <p className={'text-[#16a34a] '}>Band</p>
                         </div>
                         <div className="flex items-center justify-between  w-full">
-                            <p className={'font-semibold text-blue'}>👷 N.Karimov</p>
+                            <p className={'font-semibold text-blue dark:text-darkText'}>👷 N.Karimov</p>
                             <p className={'text-yellow-500'}>Kutmoqda</p>
                         </div>
                         <div className="flex items-center justify-between  w-full">
-                            <p className={'font-semibold text-blue'}>👷 D.Saidov</p>
+                            <p className={'font-semibold text-blue dark:text-darkText'}>👷 D.Saidov</p>
                             <p className={'text-red-500'}>Ta’til</p>
                         </div>
                     </div>

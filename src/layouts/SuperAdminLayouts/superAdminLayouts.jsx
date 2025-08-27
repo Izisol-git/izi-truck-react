@@ -5,9 +5,9 @@ import {useSelector} from "react-redux";
 
 function SuperAdminLayouts() {
     const token = useSelector(state => state.auth.token);
-    return token ? <div>
+    return token ? <div >
         <Navbar/>
-        <main>
+        <main >
             <Outlet/>
         </main>
     </div> : <Navigate to="/login"/>;

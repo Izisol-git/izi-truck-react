@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from "react";
 import {
     Box,
-    Button,
+
     Dialog,
     DialogTitle,
     DialogContent,
@@ -10,6 +10,7 @@ import {
 import { MapContainer, TileLayer, Marker, useMapEvents } from "react-leaflet";
 import "leaflet/dist/leaflet.css";
 import L from "leaflet";
+import {Button} from "../index.js";
 
 // Default marker icon fix for Leaflet
 delete L.Icon.Default.prototype._getIconUrl;
@@ -42,8 +43,8 @@ const LocationInput = ({ label, value, onChange }) => {
 
     // Agar tashqi `value` o‘zgarsa, ichki state ham yangilansin
     useEffect(() => {
-        if (value && Array.isArray(value)) {
-            setPosition(value);
+        if (typeof value === 'string') {
+            setPosition(value.split(",").map(num => parseFloat(num.trim())));
         }
     }, [value]);
 
@@ -56,30 +57,63 @@ const LocationInput = ({ label, value, onChange }) => {
         <Box sx={{ display: "flex", alignItems: "center", mb: 2 }}>
             <TextField
                 label={label}
-                value={position  ? `${position[0]}, ${position[1]}` : ""}
+                value={position ? `${position[0]}, ${position[1]}` : ""}
                 fullWidth
                 size="small"
                 InputProps={{
                     readOnly: true,
-                    sx: { borderTopRightRadius: 0, borderBottomRightRadius: 0 }
+                    sx: { borderTopRightRadius: 0, borderBottomRightRadius: 0 },
+                }}
+                sx={{
+                    ".dark &": {
+                        "& .MuiInputBase-root": {
+                            backgroundColor: "#444444",
+                            color: "white",
+                        },
+                        "& label": {
+                            color: "#9CA3AF",
+                        },
+                        "& label.Mui-focused": {
+                            color: "white",
+                        },
+                        "& .MuiOutlinedInput-root": {
+                            "& fieldset": {
+                                borderColor: "#666666",
+                            },
+                            "&:hover fieldset": {
+                                borderColor: "#888888",
+                            },
+                            "&.Mui-focused fieldset": {
+                                borderColor: "white",
+                            },
+                        },
+                    },
                 }}
             />
-            <Button
-                variant="contained"
-                sx={{
-                    borderTopLeftRadius: 0,
-                    borderBottomLeftRadius: 0,
-                    height: "40px",
-                    background: "#1D2D5B"
-                }}
-                onClick={() => setOpen(true)}
-            >
-                Xarita
-            </Button>
 
-            <Dialog open={open} onClose={() => setOpen(false)} maxWidth="md" fullWidth>
-                <DialogTitle>Lokatsiyani tanlang</DialogTitle>
-                <DialogContent>
+            <Button
+                width={'w-max'}
+                variant="contained"
+                rounded={'rounded-r'}
+                onClick={() => setOpen(true)}
+                value={'Xarita'}
+                color={'dark:bg-btnBgDark'}
+            />
+
+
+
+            <Dialog  open={open} onClose={() => setOpen(false)} maxWidth="md" fullWidth>
+                <DialogTitle sx={{
+                    '.dark &':{
+                        backgroundColor: '#444444',
+                        color: 'white'
+                    }
+                }} >Lokatsiyani tanlang</DialogTitle>
+                <DialogContent sx={{
+                    '.dark &':{
+                        backgroundColor: '#444444'
+                    }
+                }}>
                     <MapContainer
                         center={position}
                         zoom={12}
@@ -95,12 +129,13 @@ const LocationInput = ({ label, value, onChange }) => {
 
                     <Box textAlign="right" mt={2}>
                         <Button
-                            onClick={() => setOpen(false)}
+                            color={'dark:bg-btnBgDark'}
+                            width={'w-max'}
                             variant="contained"
-                            sx={{ background: "#1D2D5B" }}
-                        >
-                            Yopish
-                        </Button>
+                            onClick={() => setOpen(false)}
+                            value={'Yopish'}
+                        />
+
                     </Box>
                 </DialogContent>
             </Dialog>

@@ -13,33 +13,90 @@ import Paper from '@mui/material/Paper';
 export default function TableEmployeesMUI({contracts}) {
 
     return (
-        <TableContainer component={Paper} sx={{width:'100%' , marginLeft:'auto', marginRight:'auto' , marginTop:'20px'  }}>
+        <TableContainer component={Paper} sx={{width:'100%' , marginLeft:'auto', marginRight:'auto' , marginTop:'20px' ,
+
+            '.dark &':{
+            bgcolor: '#303030'
+        }
+
+        }}>
 
             <Table  aria-label="simple table">
-                <TableHead sx={{bgcolor: '#F2F6F9'}}>
+                <TableHead sx={{
+                    bgcolor: '#F2F6F9',
+                    '.dark &':{
+                        bgcolor: '#374151',
+                        color: 'white'
+                    }
+
+                }}>
                     <TableRow>
-                        <TableCell>ID</TableCell>
-                        <TableCell  >Contract number</TableCell>
-                        <TableCell  >contractDate</TableCell>
-                        <TableCell  >company</TableCell>
-                        <TableCell  >status</TableCell>
+                        <TableCell sx={{
+                            '.dark &':{
+                                color: 'white'
+                            }
+                        }}>ID</TableCell>
+                        <TableCell sx={{
+                            '.dark &':{
+                                color: 'white'
+                            }
+                        }} >Contract number</TableCell>
+                        <TableCell  sx={{
+                            '.dark &':{
+                                color: 'white'
+                            }
+                        }}>contractDate</TableCell>
+                        <TableCell  sx={{
+                            '.dark &':{
+                                color: 'white'
+                            }
+                        }}>company</TableCell>
+                        <TableCell sx={{
+                            '.dark &':{
+                                color: 'white'
+                            }
+                        }} >status</TableCell>
                     </TableRow>
                 </TableHead>
                 <TableBody>
                     {contracts.map((row, index) => (
                         <TableRow
                             key={row.name}
-                            sx={{ '&:last-child td, &:last-child th': { border: 0 } }}
+                            sx={{ '&:last-child td, &:last-child th': { border: 0 } ,
+                                '.dark &':{
+                                bgcolor: '#303030',
+                            }
+                            }}
                         >
-                            <TableCell component="th" scope="row">
+                            <TableCell sx={{
+                                '.dark &':{
+                                    color: 'white'
+                                }
+                            }}  component="th" scope="row">
                                 {index + 1}
                             </TableCell>
-                            <TableCell component="th" scope="row">
+                            <TableCell sx={{
+                                '.dark &':{
+                                    color: 'white'
+                                }
+                            }}  component="th" scope="row">
                                 {row.contractNumber}
                             </TableCell>
-                            <TableCell >{row.contractDate}</TableCell>
-                            <TableCell >{row.company}</TableCell>
-                            <TableCell>
+                            <TableCell sx={{
+                                '.dark &':{
+                                    color: 'white'
+                                }
+                            }}  >{row.contractDate}</TableCell>
+                            <TableCell sx={{
+                                '.dark &':{
+                                    color: 'white'
+                                }
+                            }}  >{row.company}</TableCell>
+                            <TableCell sx={{
+                                '.dark &':{
+                                    color: 'white'
+                                }
+                            }} >
                                 {row.status === true ? <div
                                     className="w-max py-1 px-3     border border-[#22c55e] text-[#22c55e] rounded-lg">
                                     Active

@@ -69,70 +69,104 @@ const  ExcelModal =()=> {
 
     return (
         <>
+            {/* Overlay */}
             <div
                 className={`fixed inset-0 bg-black/40 dark:bg-black/70 backdrop-blur-sm transition-opacity duration-300 z-[1099] ${
-                    isOpenExcelModal ? "opacity-100" : "opacity-0 pointer-events-none"
+                    isOpenExcelModal
+                        ? "opacity-100"
+                        : "opacity-0 pointer-events-none"
                 }`}
                 onClick={() => dispatch(closeExcelModal())}
             ></div>
 
-            <div className={`fixed top-1/2 left-1/2 w-[50%] max-h-[90vh] bg-white dark:bg-gray-900 dark:text-gray-200 border border-gray-200 dark:border-gray-700 shadow-2xl rounded overflow-y-auto transform transition-all duration-500 ease-out z-[1100]
-                  ${isOpenExcelModal ? "opacity-100 scale-100 -translate-x-1/2 -translate-y-1/2" : "opacity-0 scale-90 -translate-x-1/2 -translate-y-1/2 pointer-events-none"}
-                `}>
-
-                <div className={'flex items-center justify-between p-4'}>
-                    <p className={'text-blue font-bold  text-2xl'}>Export to Excel</p>
-                    <div onClick={() => dispatch(closeExcelModal())}
-                         className={'w-[30px] center h-[30px] hover:bg-gray-200 rounded '}>
-                        <i className="fa-solid fa-xmark text-blue"></i>
+            {/* Modal */}
+            <div
+                className={`fixed top-1/2 left-1/2 w-[50%] max-h-[90vh] 
+                bg-white dark:bg-darkBg 
+                text-gray-800 dark:text-white 
+                border border-gray-200 dark:border-gray-700 
+                shadow-2xl rounded overflow-y-auto 
+                transform transition-all duration-500 ease-out z-[1100]
+                ${
+                    isOpenExcelModal
+                        ? "opacity-100 scale-100 -translate-x-1/2 -translate-y-1/2"
+                        : "opacity-0 scale-90 -translate-x-1/2 -translate-y-1/2 pointer-events-none"
+                }`}
+            >
+                {/* Header */}
+                <div className={"flex items-center justify-between p-4"}>
+                    <p className={"text-blue font-bold text-2xl dark:text-white"}>Export to Excel</p>
+                    <div
+                        onClick={() => dispatch(closeExcelModal())}
+                        className={
+                            "w-[30px] center h-[30px] hover:bg-gray-200 dark:hover:bg-gray-700 rounded cursor-pointer"
+                        }
+                    >
+                        <i className="fa-solid fa-xmark text-blue dark:text-white"></i>
                     </div>
                 </div>
 
-                <div className={'p-6 grid grid-cols-3 gap-4'}>
-                    {
-                        exportValues.map((value, index) => (
-                            <FormControlLabel
-                                control={
-                                    <Checkbox
-                                        checked={selectedKeys.includes(value.id)}
-                                        onChange={(e) => handleCheckboxChange(value.id, e.target.checked)}
-                                        sx={{
+                {/* Content */}
+                <div className={"p-6 grid grid-cols-3 gap-4"}>
+                    {exportValues.map((value, index) => (
+                        <FormControlLabel
+                            key={index}
+                            control={
+                                <Checkbox
+                                    checked={selectedKeys.includes(value.id)}
+                                    onChange={(e) =>
+                                        handleCheckboxChange(value.id, e.target.checked)
+                                    }
+                                    sx={{
+                                        color: "#1D2D5B",
+                                        "&.Mui-checked": {
                                             color: "#1D2D5B",
+                                        },
+                                        // 🔥 Dark mode uchun
+                                        ".dark &": {
+                                            color: "white",
                                             "&.Mui-checked": {
-                                                color: "#1D2D5B",
+                                                color: "white",
                                             },
-                                        }}
-                                    />
-                                }
-                                label={value.value}
-                            />
-                        ))
-                    }
-                    <div className={'col-span-3   flex items-center justify-center mt-4'}>
+                                        },
+                                    }}
+                                />
+                            }
+                            label={value.value}
+                            sx={{
+                                ".dark &": { color: "white" }, // label text dark mode oq
+                            }}
+                        />
+                    ))}
+
+                    {/* Button */}
+                    <div className={"col-span-3 flex items-center justify-center mt-4"}>
                         <button
                             onClick={handleExport}
-
-                            className="relative overflow-hidden mx-auto  rounded bg-blue text-white py-2 px-3  w-2/3"
+                            className="relative overflow-hidden mx-auto rounded
+                     bg-blue dark:bg-btnBgDark
+                     text-white py-2 px-3 w-2/3"
                         >
-
-
-
-
-                            {
-                                exporting ? <Box sx={{ display: 'flex' ,  width:'100%'   }}>
-                                    <CircularProgress sx={{marginX:'auto' }} size={25} color={'white'} />
+                            {exporting ? (
+                                <Box sx={{ display: "flex", width: "100%" }}>
+                                    <CircularProgress
+                                        sx={{ marginX: "auto" }}
+                                        size={25}
+                                        color={"inherit"}
+                                    />
                                 </Box>
-                                    : <><i className="fa-solid  fa-cloud-arrow-down text-white mr-2"></i>"Export"</>
-                            }
-
-
+                            ) : (
+                                <>
+                                    <i className="fa-solid fa-cloud-arrow-down text-white mr-2"></i>
+                                    Export
+                                </>
+                            )}
                         </button>
                     </div>
                 </div>
-
-
             </div>
         </>
+
     );
 }
 

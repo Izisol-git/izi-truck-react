@@ -2,6 +2,7 @@ import * as React from 'react';
 import TextField from '@mui/material/TextField';
 import Autocomplete from '@mui/material/Autocomplete';
 import Stack from '@mui/material/Stack';
+import Paper from "@mui/material/Paper";
 
 export default function SelectMUI({ label, placeholder, variant,  value, onChange, options   }) {
 
@@ -12,18 +13,89 @@ export default function SelectMUI({ label, placeholder, variant,  value, onChang
                 options={options}
                 value={value || null}
                 defaultValue={null}
-                // isOptionEqualToValue={(option, value) => option.id === value.id}
                 onChange={(event, newValue) => onChange && onChange(newValue)}
-                getOptionLabel={(option) => option?.title || option?.company_name || option?.name || option?.label || '' || option?.value || '' }
+                getOptionLabel={(option) =>
+                    option?.title ||
+                    option?.company_name ||
+                    option?.name ||
+                    option?.label ||
+                    option?.value ||
+                    ""
+                }
+                PaperComponent={(props) => (
+                    <Paper
+                        {...props}
+                        sx={{
+                            backgroundColor: "white",
+                            color: "black",
+
+                            // 🔥 Dark mode
+                            ".dark &": {
+                                backgroundColor: "#444444", // dropdown fon
+                                color: "white",
+                            },
+                        }}
+                    />
+                )}
                 renderInput={(params) => (
                     <TextField
                         {...params}
                         label={label}
                         placeholder={placeholder}
                         variant={variant}
+                        sx={{
+                            "& .MuiInputBase-root": {
+                                backgroundColor: "white",
+                                color: "black",
+                            },
+                            "& label": {
+                                color: "#1D2D5B",
+                            },
+                            "& label.Mui-focused": {
+                                color: "#1D2D5B",
+                            },
+                            "& .MuiOutlinedInput-root": {
+                                "& fieldset": {
+                                    borderColor: "#1D2D5B",
+                                },
+                                "&:hover fieldset": {
+                                    borderColor: "#162447",
+                                },
+                                "&.Mui-focused fieldset": {
+                                    borderColor: "#1D2D5B",
+                                },
+                            },
+
+                            // 🔥 Dark mode uchun
+                            ".dark &": {
+                                "& .MuiInputBase-root": {
+                                    backgroundColor: "#444444", // input fon
+                                    color: "white",
+                                },
+                                "& label": {
+                                    color: "#9CA3AF",
+                                },
+                                "& label.Mui-focused": {
+                                    color: "white",
+                                },
+                                "& .MuiOutlinedInput-root": {
+                                    "& fieldset": {
+                                        borderColor: "#666666",
+                                    },
+                                    "&:hover fieldset": {
+                                        borderColor: "#888888",
+                                    },
+                                    "&.Mui-focused fieldset": {
+                                        borderColor: "white",
+                                    },
+                                },
+                            },
+                        }}
                     />
                 )}
             />
         </Stack>
+
+
     );
 }

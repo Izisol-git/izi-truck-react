@@ -35,9 +35,9 @@ const options = {
 };
 
 const OrdersChartPlaceholder = () => (
-    <div className="bg-white rounded shadow-sm p-4 border border-gray-100 w-full">
+    <div className="bg-white rounded shadow-sm p-4 border border-gray-100 w-full dark:bg-darkBgTwo">
 
-        <Line className={'w-full'} data={data} options={options} />
+        <Line   className={'w-full'} data={data} options={options} />
     </div>
 );
 

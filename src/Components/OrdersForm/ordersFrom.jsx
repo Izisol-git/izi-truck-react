@@ -28,7 +28,6 @@ function OrdersFrom({mode}) {
     const [ItemsPointPrice, setItemsPointPrice] = useState(1);
     const {loading} = useSelector((state) => state.orders);
     const {id} = useParams();
-
     const [formData, setFormData] = useState({
         trailer_floor_volume : '',
         cargo_volume : '',
@@ -100,21 +99,25 @@ function OrdersFrom({mode}) {
         // }
     }
 
-    const [fetchedData, setFetchedData] = useState();
+    const [priceData, setPriceData] = useState();
 
 
     const OrdersId = async (id) => {
         try {
             const res = await dispatch(getOrdersId(id)).unwrap();
+            setPriceData(res.prices)
             console.log(res.order);
-            // console.log(res);
+            console.log(res);
             setCarrierCurrency(res?.order?.carrier_currency_transfer)
             setMarginCurrency(res?.order?.margin_currency_transfer)
             setItemsPriceCurrency(res?.order?.items_price_currency)
             setFraxtCurrency(res?.order?.fraxt_currency_transfer)
-            // setItemsPointPrice(res?.order?)
+
 
             const obj = {
+                trailer_floor_volume : res?.order?.trailer_floor_volume,
+                cargo_volume : res?.order?.cargo_volume,
+                mode:res?.order?.mode,
                 carrier_currency_transfer: res?.order?.carrier_currency_transfer,
                 fraxt_currency_transfer: res?.order?.fraxt_currency_transfer,
                 margin_currency_transfer: res?.order?.margin_currency_transfer,
@@ -140,9 +143,9 @@ function OrdersFrom({mode}) {
                 items_price: Number(res?.order?.items_price),
                 // location_of_destination: (String(res?.order?.location_of_destination[0]) + ' , ' + String(res?.order?.location_of_destination[1])),
                 // location_of_departure: (String(res?.order?.location_of_departure[0] + " , " + res?.order?.location_of_departure[1])),
-                location_of_destination: res?.order?.location_of_destination ? JSON.parse(res?.order?.location_of_destination).map(String).join(", ")  : '' ,
-                location_of_departure: res?.order?.location_of_departure ? JSON.parse(res?.order?.location_of_departure).map(String)    .join(", ")  : '' ,
-                // location_of_departure: res?.order?.location_of_departure,
+                location_of_destination: res?.order?.location_of_destination   ,
+                location_of_departure:  res?.order?.location_of_departure  ,
+                // location_of_departure: res?.order?.location_of_departure?.split(",").map(n => parseFloat(n.trim())),
                 customs_clearance1: res?.order?.customs_clearance1,
                 customs_clearance2: res?.order?.customs_clearance2,
                 weight_of_cargo: res?.order?.weight_of_cargo,
@@ -171,17 +174,25 @@ function OrdersFrom({mode}) {
             if (row.point && row.point.id) formData[`point[${index}]`] = row.point.id;
             if (row.point_price) formData[`point_price[${index}]`] = row.point_price;
         });
+        console.log(formData);
         setFormData({...rows})
+        // setFormData({
+        //     location_of_destination: '',
+        //     location_of_departure: '' ,
+        // })
         setFormData({
             ...formData,
-            // location_of_departure: formData.location_of_departure.map(String).join(", "),
-            // location_of_destination: formData.location_of_destination.map(String).join(", "),
+
         })
 
 
 
+
+
+
+
         try {
-            const res = await dispatch(editOrder({id: id, editData: {...formData , service_type : formData.service_type.id}})).unwrap();
+            const res = await dispatch(editOrder({id: id, editData: formData} )).unwrap();
             navigate("/orders")
             console.log(res)
         } catch (error) {
@@ -232,6 +243,8 @@ function OrdersFrom({mode}) {
         [`point[${i + 1}]`]: row.point.id,
         [`point_price[${i + 1}]`]: row.point_price
     }));
+
+    console.log(formData)
 
 
     const addOrders = async () => {
@@ -394,17 +407,19 @@ function OrdersFrom({mode}) {
     };
     return (
         <div>
-            <div className={'bg-bacWhite w-full min-h-[calc(100dvh-70px)] py-5'}>
+            <div className={'bg-bacWhite w-full min-h-[calc(100dvh-70px)] py-5 dark:bg-darkBg'}>
                 {/*<div className={'w-[90%] bg-white px-4  mx-auto py-5 rounded-md shadow'}>*/}
 
                 {/*</div>*/}
-                <div className={'w-[90%] bg-white px-4  mx-auto py-5 rounded-md shadow'}>
+
+
+                <div className={'w-[90%] bg-white px-4  mx-auto py-5 rounded-md shadow dark:bg-darkBgTwo'}>
 
                     <div className={'h-[40px] gap-4 relative text-center center  w-full   mb-10'}>
                         <div className={'w-max  absolute top-0 left-0'} onClick={() => navigate(`/orders`)}>
-                            <Button icon={<i className="fa-solid fa-arrow-left"></i>} value={'Orders'}/>
+                            <Button color={'dark:bg-btnBgDark'}  icon={<i className="fa-solid fa-arrow-left"></i>} value={'Orders'}/>
                         </div>
-                        <p className={'text-blue font-bold text-xl'}>Byurtmani {mode === 'edit' ? "tahrirlash" : mode === 'add' ? "yaratish" : mode === "show" ? "Ko'rish" : ""}</p>
+                        <p className={'text-blue font-bold text-xl dark:text-darkText'}>Byurtmani {mode === 'edit' ? "tahrirlash" : mode === 'add' ? "yaratish" : mode === "show" ? "Ko'rish" : ""}</p>
 
                         {
                             mode === 'show' ?
@@ -445,14 +460,14 @@ function OrdersFrom({mode}) {
                                 <div className={'mb-10'}>
                                     <FormControl>
                                         <RadioGroup row>
-                                            <div className="flex flex-wrap gap-2 text-blue">
+                                            <div className="flex flex-wrap gap-2 text-blue dark:text-darkText">
                                                 {statusList.map((item) => (
                                                     <button
                                                         key={item.value}
                                                         onClick={() => handleRadioChange(item.value)}
                                                         style={{position: "relative", overflow: "hidden"}}
                                                         className={`border-2 px-3 rounded-lg cursor-pointer text-[14px] ${
-                                                            activeRadio === item.value ? "bg-gray-200" : ""
+                                                            activeRadio === item.value ? "bg-gray-200 dark:bg-navBgHover" : ""
                                                         }`}
                                                     >
                                                         <FormControlLabel
@@ -460,8 +475,14 @@ function OrdersFrom({mode}) {
                                                             control={
                                                                 <Radio
                                                                     sx={{
-                                                                        color: "#1D2D5B",
-                                                                        "&.Mui-checked": {color: "#1D2D5B"},
+                                                                        color: "#1D2D5B", // light mode
+                                                                        "&.Mui-checked": { color: "#1D2D5B" },
+
+                                                                        // dark mode
+                                                                        "@media (prefers-color-scheme: dark)": {
+                                                                            color: "#fff",
+                                                                            "&.Mui-checked": { color: "#fff" },
+                                                                        },
                                                                     }}
                                                                     checked={activeRadio === item.value}
                                                                 />
@@ -541,12 +562,12 @@ function OrdersFrom({mode}) {
                             <SelectMUI
                                 {...{
                                     value:
-                                        mode !== "add" && mode !== 'edit'
-                                            ? typeService.find((opt) => opt.id === Number()) || null
+                                        mode !== "add"
+                                            ? typeService.find((opt) => opt.id === Number(formData?.service_type) ) || null
                                             : formData?.service_type,
                                 }}
                                 onChange={(val) => {
-                                    mode !== "add" && mode !== 'edit' ? setFormData({
+                                    mode !== "add"  ? setFormData({
                                         ...formData,
                                         service_type: val.id
                                     }) : setFormData({...formData, service_type: val})
@@ -582,11 +603,11 @@ function OrdersFrom({mode}) {
                     }
 
                 </div>
-                <div className={'w-[90%] bg-white px-4  mx-auto py-5 rounded-md shadow mt-5'}>
+                <div className={'w-[90%] bg-white px-4  mx-auto py-5 rounded-md shadow mt-5 dark:bg-darkBgTwo'}>
                     <div className={'grid grid-cols-3 gap-4'}>
                         <div className={"w-full "}>
                             {/*<p className={'font-semibold text-blue mb-2'}>Стоимость перевозчика</p>*/}
-                            <p className={'text-blue  mb-3'}>Перечисление</p>
+                            <p className={'text-blue  mb-3 dark:text-darkText'}>Перечисление</p>
                             <CurrencyInput value={formData.carrier_price_transfer ?? ''}
                                            setCarrierCurrency={setCarrierCurrency} carrierCurrency={carrierCurrency}
                                            onChange={(e) => setFormData({
@@ -594,10 +615,20 @@ function OrdersFrom({mode}) {
                                                carrier_price_transfer: e.target.value
                                            })}
                                            label={'Стоимость перевозчика'}/>
+
+
+                            <div className={'p-2'}>
+                                {
+                                    Object.entries(priceData?.carrier_price_transfer || {})?.map(([key , value] ) => (
+                                        <p className={'my-1 font-semibold text-gray-600 dark:text-darkText'}>{key}: {value} </p>
+                                    ))
+                                }
+                            </div>
+
                         </div>
                         <div className={"w-full "}>
                             {/*<p className={'font-semibold text-blue mb-2'}>Цена клиента</p>*/}
-                            <p className={'text-blue  mb-3'}>Перечисление</p>
+                            <p className={'text-blue  mb-3 dark:text-darkText'}>Перечисление</p>
                             <CurrencyInput value={formData.fraxt_price_transfer ?? ''}
                                            setCarrierCurrency={setFraxtCurrency}
                                            carrierCurrency={fraxtCurrency}
@@ -606,14 +637,34 @@ function OrdersFrom({mode}) {
                                                fraxt_price_transfer: e.target.value
                                            })} label={'Цена клиента'}/>
 
+
+                            <div className={'p-2'}>
+                                {
+                                    Object.entries(priceData?.fraxt_price_transfer || {})?.map(([key, value]) => (
+                                        <p className={'my-1 font-semibold text-gray-600 dark:text-darkText'}>{key}: {value} </p>
+                                    ))
+                                }
+                            </div>
+
                         </div>
-                        <div className={"w-full "}>
+                        <div className={"w-full  "}>
                             {/*<p className={'font-semibold text-blue mb-2'}>Маржа</p>*/}
-                            <p className={'text-blue  mb-3'}>Перечисление</p>
-                            <CurrencyInput value={formData.margin_transfer ?? ''} setCarrierCurrency={setMarginCurrency}
+                            <p className={'text-blue  mb-3 dark:text-darkText'}>Перечисление</p>
+                            <CurrencyInput disabled={mode === 'edit' && true } value={formData.margin_transfer ?? ''}
+                                           setCarrierCurrency={setMarginCurrency}
                                            carrierCurrency={marginCurrency}
                                            onChange={(e) => setFormData({...formData, margin_transfer: e.target.value})}
                                            label={'Маржа'}/>
+
+                            <div className={'p-2'}>
+                                {
+                                    Object.entries(priceData?.margin_transfer || {})?.map(([key, value]) => (
+                                        <p className={'my-1 font-semibold text-gray-600 dark:text-darkText'}>{key}: {value} </p>
+                                    ))
+                                }
+                            </div>
+
+
                         </div>
                     </div>
                     <div className={'grid grid-cols-3 gap-4 mt-5'}>
@@ -626,7 +677,7 @@ function OrdersFrom({mode}) {
                         </div>
                     </div>
                 </div>
-                <div className={'w-[90%] bg-white px-4  mx-auto py-5 rounded-md shadow mt-5'}>
+                <div className={'w-[90%] bg-white px-4  mx-auto py-5 rounded-md shadow mt-5 dark:bg-darkBgTwo'}>
                     <div className={'grid grid-cols-3 gap-4'}>
                         <div className={"w-full "}>
                             <SelectMUI options={data?.shipment_types || []} variant={'outlined'} label={'Тип перевозки'}
@@ -655,7 +706,7 @@ function OrdersFrom({mode}) {
                                        {...{
                                            value:
                                                mode !== "add"
-                                                   ? options.find((opt) =>  opt.title === formData?.transport_value) || null
+                                                   ? options.find((opt) =>  opt.title === String(formData?.transport_value)) || null
                                                    : formData?.transport_value,
                                        }}
                                        onChange={(val) => {
@@ -676,7 +727,7 @@ function OrdersFrom({mode}) {
                                        {...{
                                            value:
                                                mode !== "add"
-                                                   ? data?.transport_types.find((opt) => opt.id === formData?.transport_type) || null
+                                                   ? data?.transport_types?.find((opt) => opt.id === formData?.transport_type) || null
                                                    : formData?.transport_type,
                                        }}
                                        onChange={(val) => {
@@ -690,7 +741,7 @@ function OrdersFrom({mode}) {
 
 
                         {
-                            String(formData?.transport_type?.id) === '3' ?  <><InputMUI
+                            String(formData?.transport_type?.id) === '3' || String(formData?.transport_type) === '3' ?  <><InputMUI
                                 value={formData?.mode ?? ''}
                                 onChange={(e) =>
                                     setFormData({...formData, mode: e.target.value})
@@ -702,19 +753,19 @@ function OrdersFrom({mode}) {
 
                     </div>
                 </div>
-                <div className={'w-[90%] bg-white px-4  mx-auto py-5 rounded-md shadow mt-5'}>
+                <div className={'w-[90%] bg-white px-4  mx-auto py-5 rounded-md shadow mt-5 dark:bg-darkBgTwo'}>
                     <div className={'grid grid-cols-4 gap-4'}>
                         <div className={" col-span-2"}>
                             <LocationInput
                                 value={ formData?.location_of_departure || null}
-                                onChange={(pos) => setFormData({...formData, location_of_departure: pos})}
+                                onChange={(pos) => setFormData({...formData, location_of_departure: pos.join(',')})}
                                 label={'Локация отправителя'}/>
                         </div>
                         <div className={"  col-span-2"}>
                             <LocationInput
                                 value={ formData?.location_of_destination || null}
 
-                                onChange={(pos) => setFormData({...formData, location_of_destination: pos})}
+                                onChange={(pos) => setFormData({...formData, location_of_destination: pos.join(',')})}
                                 label={'Локация получателя'}/>
                         </div>
                         <div className={"w-full "}>
@@ -728,7 +779,7 @@ function OrdersFrom({mode}) {
                                        {...{
                                            value:
                                                mode !== "add"
-                                                   ? data?.countries?.find((opt) => opt.id === formData?.country_of_departure) || null
+                                                   ? data?.countries?.find((opt) => String(opt.id)  === formData?.country_of_departure) || null
                                                    : formData?.country_of_departure,
                                        }}
                                        onChange={(val) => {
@@ -757,7 +808,7 @@ function OrdersFrom({mode}) {
                                        {...{
                                            value:
                                                mode !== "add"
-                                                   ? stateDataOne?.cities_from?.find((opt) => opt.id === formData?.point_of_departure) || null
+                                                   ? stateDataOne?.cities_from?.find((opt) => String(opt.id)  === formData?.point_of_departure) || null
                                                    : formData?.point_of_departure,
                                        }}
                                        onChange={(val) => {
@@ -787,7 +838,7 @@ function OrdersFrom({mode}) {
                                        {...{
                                            value:
                                                mode !== "add"
-                                                   ? data?.countries?.find((opt) =>  opt.id  === formData?.country_of_destination) || null
+                                                   ? data?.countries?.find((opt) =>  String(opt.id)  === formData?.country_of_destination) || null
                                                    : formData?.country_of_destination,
                                        }}
                                        onChange={(val) => {
@@ -817,7 +868,7 @@ function OrdersFrom({mode}) {
                                        {...{
                                            value:
                                                mode !== "add"
-                                                   ? stateDataTwo?.cities_to?.find((opt) => opt.id === formData?.point_of_destination) || null
+                                                   ? stateDataTwo?.cities_to?.find((opt) => String(opt.id) === formData?.point_of_destination) || null
                                                    : formData?.point_of_destination,
                                        }}
                                        onChange={(val) => {
@@ -856,7 +907,7 @@ function OrdersFrom({mode}) {
                         </div>
                     </div>
                 </div>
-                <div className={'w-[90%] bg-white px-4  mx-auto py-5 rounded-md shadow mt-5'}>
+                <div className={'w-[90%] bg-white px-4  mx-auto py-5 rounded-md shadow mt-5 dark:bg-darkBgTwo'}>
                     <div className={'grid grid-cols-4 gap-4'}>
                         <div className={" col-span-2"}>
                             <InputMUI
@@ -960,7 +1011,7 @@ function OrdersFrom({mode}) {
                         </div>
                     </div>
                 </div>
-                <div className={'w-[90%] bg-white px-4  mx-auto py-5 rounded-md shadow mt-5'}>
+                <div className={'w-[90%] bg-white px-4  mx-auto py-5 rounded-md shadow mt-5 dark:bg-darkBgTwo'}>
                     <div className={'grid grid-cols-3 gap-4'}>
                         <div className={" "}>
                             <SelectMUI options={typePayment} variant={'outlined'} label={'Тип оплаты'}
@@ -1000,14 +1051,14 @@ function OrdersFrom({mode}) {
                         </div>
                     </div>
                 </div>
-                <div className={'w-[90%] bg-white px-4  mx-auto py-5 rounded-md shadow mt-5'}>
+                <div className={'w-[90%] bg-white px-4  mx-auto py-5 rounded-md shadow mt-5 dark:bg-darkBgTwo'}>
                     <div className={'grid grid-cols-2 gap-4'}>
                         <div className={"flex items-center  "}>
                             <SwitchMUI/>
-                            <p className={'font-semibold text-blue  '}>Есть таможенный пункт</p>
+                            <p className={'font-semibold text-blue  dark:text-darkText '}>Есть таможенный пункт</p>
                         </div>
                         <div className={'flex items-center justify-end'}>
-                            <button onClick={handleAdd} className={'px-3 py-2 bg-blue w-max text-white rounded'}>
+                            <button onClick={handleAdd} className={'px-3 py-2 bg-blue w-max text-white rounded dark:bg-btnBgDark'}>
                                 <i className="fa-solid fa-plus mr-2"></i>Add
                             </button>
                         </div>
@@ -1021,7 +1072,7 @@ function OrdersFrom({mode}) {
                                            {...{
                                                value:
                                                    mode !== "add"
-                                                       ? data?.customs.find((opt) => opt.id === formData?.point) || null
+                                                       ? data?.customs?.find((opt) => opt.id === formData?.point) || null
                                                        : formData?.point,
                                            }}
                                            onChange={(val) => {
@@ -1090,7 +1141,7 @@ function OrdersFrom({mode}) {
                             onClick={() => {
                                 navigate('/orders');
                             }}
-                            className="w-36 relative overflow-hidden rounded font-semibold bg-transparent border-2 text-blue border-blue transition-all duration-300 ease-in-out  hover:text-white hover:bg-blue py-2 px-3"
+                            className="w-36 relative overflow-hidden rounded font-semibold bg-transparent border-2 text-blue border-blue transition-all duration-300 ease-in-out  hover:text-white hover:bg-blue py-2 px-3 dark:hover:bg-navBgHover dark:border-darkText dark:text-darkText"
                         >
                             Close
                         </button>
@@ -1102,7 +1153,7 @@ function OrdersFrom({mode}) {
                                 EditOrder(id, formData)
                             }
                         }}
-                                className="w-36 relative overflow-hidden rounded font-semibold bg-transparent border-2 text-blue border-blue transition-all duration-300 ease-in-out  hover:text-white hover:bg-blue py-2 px-3"
+                                className="w-36 relative overflow-hidden rounded font-semibold bg-transparent border-2 text-blue border-blue transition-all duration-300 ease-in-out  hover:text-white hover:bg-blue py-2 px-3 dark:hover:bg-navBgHover dark:border-darkText dark:text-darkText"
                         >
                             {loading ? ('Adding...') : ('Add')}
                         </button>

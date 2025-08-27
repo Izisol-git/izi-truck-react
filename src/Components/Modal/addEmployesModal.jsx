@@ -200,18 +200,18 @@ function AddEmployesModal({h1, inputModalArray = [], employeesId, setEmployeesId
         <div>
             <div
                 // onMouseLeave={()=> dispatch(closeModal())}
-                className={`${isOpen ? "w-1/3 opacity-1" : "w-0 opacity-0"}  fixed overflow-scroll  scrollbar-hide top-0 right-0 bottom-0 h-[100dvh] bg-white shadow-2xl z-10   transition-all duration-300 ease-in-out   flex flex-col justify-between items-start `}>
+                className={`${isOpen ? "w-1/3 opacity-1" : "w-0 opacity-0"}  fixed overflow-scroll  scrollbar-hide top-0 right-0 bottom-0 h-[100dvh] bg-white shadow-2xl z-10   transition-all duration-300 ease-in-out   flex flex-col justify-between items-start dark:bg-darkBgTwo dark:shadow-none `}>
                 <div className={'w-full px-6'}>
-                    <div className={"flex items-center justify-between border-b    border-blue p-4"}>
-                        <p className={'text-blue font-bold text-lg'}>{addEditToggle ? "Add" : "Edit"} {h1}</p>
+                    <div className={"flex items-center justify-between border-b    border-blue p-4 dark:border-darkText"}>
+                        <p className={'text-blue font-bold text-lg dark:text-darkText'}>{addEditToggle ? "Add" : "Edit"} {h1}</p>
                         <div onClick={() => {
                             dispatch(closeModal())
                             clearEmployeesModal()
                             setEmployeesId(Object.fromEntries(Object.keys(employeesId).map(key => [key, ""])));
 
                         }}
-                             className={'w-[30px] h-[30px] cursor-pointer hover:bg-gray-100 rounded center'}>
-                            <i className={'fas fa-times text-blue '}></i>
+                             className={'w-[30px] h-[30px] cursor-pointer hover:bg-gray-100 rounded center dark:hover:bg-navBgHover'}>
+                            <i className={'fas fa-times text-blue dark:text-darkText'}></i>
                         </div>
                     </div>
                     <div className={"pt-6  items-center justify-between flex flex-wrap gap-y-4"}>
@@ -266,7 +266,12 @@ function AddEmployesModal({h1, inputModalArray = [], employeesId, setEmployeesId
 
 
                     <Button sx={{
-                        borderColor: "#1D2D5B", width: "50%", color: "#1D2D5B"
+                        borderColor: "#1D2D5B", width: "50%", color: "#1D2D5B",
+                        '.dark &':{
+                        color: 'white',
+                            backgroundColor: '#2B4764',
+                            borderColor: '#2B4764',
+                        }
                     }}
                             onClick={addEditToggle ?
                                 () => {
@@ -280,7 +285,12 @@ function AddEmployesModal({h1, inputModalArray = [], employeesId, setEmployeesId
                         {loadingClient || loadingAddEmployee || loadingAddDrivers ? "Sending..." : "send"}
                     </Button>
                     <Button sx={{
-                        width: "50%"
+                        width: "50%",
+                        '.dark &':{
+                            color: 'white',
+                            backgroundColor: '#d84c4c',
+                            borderColor: '#2B4764',
+                        }
                     }}
                             onClick={() => {
                                 dispatch(closeModal())

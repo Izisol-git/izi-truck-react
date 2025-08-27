@@ -30,31 +30,32 @@ import {
 } from "../../features/EmployeSModalToggle/employesModalToggle.js";
 import {useNavigate} from "react-router-dom";
 
-const UserPagination = ({arry , navigateURL , data , total , setEmployeesId, employeesId}) => {
-
-
-
-
-
+const UserPagination = ({arry, navigateURL, data, total, setEmployeesId, employeesId}) => {
 
 
     return (
         <>
-            <Paper sx={{width: "100%", p: 2}}>
+            <Paper sx={{
+                width: "100%", p: 2,
+                '.dark &': {
+                    backgroundColor: '#303030',
+                }
+            }}>
                 <div className=" flex items-center justify-between">
                     <TextField
                         label="Qidirish (Ism bo‘yicha)"
                         variant="outlined"
                         fullWidth
+                        size={"small"}
                         margin="normal"
-                        // value={filterText}
-                        // onChange={handleFilterChange}
                         sx={{
-                            width: "40%",
+                            width: "40%", marginBottom: '10px',
                             "& .MuiOutlinedInput-root": {
+                                backgroundColor: "#fff",
                                 "& fieldset": {
                                     borderColor: "#1D2D5B",
-                                    height: "55px",
+                                    height: "110%",
+
                                 },
                                 "&:hover fieldset": {
                                     borderColor: "#1D2D5B",
@@ -65,7 +66,6 @@ const UserPagination = ({arry , navigateURL , data , total , setEmployeesId, emp
                                 "& input": {
                                     color: "#1D2D5B",
                                 },
-                                // Label rangi (normal va focus holatida)
                             },
                             "& .MuiInputLabel-root": {
                                 color: "#1D2D5B",
@@ -74,7 +74,15 @@ const UserPagination = ({arry , navigateURL , data , total , setEmployeesId, emp
                                 color: "#1D2D5B",
                             },
                         }}
-
+                        className="
+                                dark:[&_.MuiOutlinedInput-root]:bg-[#444444]
+                                dark:[&_.MuiOutlinedInput-root_fieldset]:border-white
+                                dark:[&_.MuiOutlinedInput-root:hover_fieldset]:border-white
+                                dark:[&_.MuiOutlinedInput-root.Mui-focused_fieldset]:border-white
+                                dark:[&_.MuiOutlinedInput-root_input]:text-white
+                                dark:[&_.MuiInputLabel-root]:text-white
+                                dark:[&_.MuiInputLabel-root.Mui-focused]:text-white
+                              "
                     />
 
 
@@ -86,12 +94,21 @@ const UserPagination = ({arry , navigateURL , data , total , setEmployeesId, emp
 
                 <TableContainer>
                     <Table>
-                        <TableHead>
+                        <TableHead  >
                             <TableRow sx={{
                                 backgroundColor: "#F9FBFD",
+                                '.dark &': {
+                                    backgroundColor: '#374151',
+                                },
+                                borderColor:'#374151',
 
                             }}>
-                                <TableCell>
+                                <TableCell sx={{
+                                    color: "black",
+                                    ".dark &": {
+                                        color: "white",
+                                    },
+                                }}>
                                     <TableSortLabel
                                         // active={orderBy === "id"}
                                         // direction={orderBy === "id" ? orderDirection : "asc"}
@@ -105,7 +122,12 @@ const UserPagination = ({arry , navigateURL , data , total , setEmployeesId, emp
                                 {
                                     arry.map((row, index) => (
                                         row.active && (
-                                            <TableCell key={index}>
+                                            <TableCell key={index} sx={{
+                                                color: "black",
+                                                ".dark &": {
+                                                    color: "white",
+                                                },
+                                            }}>
 
                                                 <TableSortLabel
 
@@ -189,7 +211,7 @@ const UserPagination = ({arry , navigateURL , data , total , setEmployeesId, emp
                 </TableContainer>
 
                 <div className={'py-4 flex items-center justify-end px-4'}>
-                    <PaginationFooter total={total} />
+                    <PaginationFooter total={total}/>
                 </div>
 
 

@@ -18,7 +18,7 @@ const UserNavbar = ({value, columnsArry, setColumnsArry, openModal}) => {
 
     return (
         <div className="flex items-center  py-5 justify-between">
-            <p className={'text-2xl text-blue font-semibold'}>{value}</p>
+            <p className={'text-2xl text-blue font-semibold dark:text-darkText'}>{value}</p>
             <div className="center gap-4">
                 <button onClick={() => {
                     openModal ? openModal() : navigate('/users/drivers/create')
@@ -32,7 +32,7 @@ const UserNavbar = ({value, columnsArry, setColumnsArry, openModal}) => {
                     <button onMouseLeave={() => {
                         setDropdown(false)
                     }} onClick={() => setDropdown(!dropdown)}
-                            className={'py-2 px-3 bg-blue text-white rounded hover:ring-2 ring-blue outline-none'}>
+                            className={'py-2 px-3 bg-blue text-white rounded hover:ring-2 ring-blue outline-none dark:bg-btnBgDark dark:ring-btnBgDark'}>
                         <i
                             className={'fas fa-columns'}></i>Columns
                     </button>
@@ -52,8 +52,8 @@ const UserNavbar = ({value, columnsArry, setColumnsArry, openModal}) => {
 
                                         changeColumnsArry(index)
                                     }}
-                                    className="py-2 px-4 cursor-pointer flex items-center    hover:bg-blue hover:text-white  gap-3  ">
-                                    <div className="w-[10%]">{item.active &&
+                                    className="py-2 px-4 cursor-pointer flex items-center    hover:bg-blue hover:text-white  gap-3 dark:hover:bg-btnBgDark dark:bg-darkBgTwo dark:text-darkText  ">
+                                    <div className="w-[10%] ">{item.active &&
                                         <i className="fa-solid fa-check"></i>}
                                     </div>
                                     <p className={'w-[90%] whitespace-nowrap'}>{item.title}</p>

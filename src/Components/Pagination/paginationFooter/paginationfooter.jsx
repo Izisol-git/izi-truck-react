@@ -39,6 +39,14 @@ const PaginationFooter =({total})=> {
                     "& .MuiPaginationItem-root:hover": {
                         backgroundColor: "rgba(29,45,91,0.1)",
                     },
+                    ".dark & .MuiPaginationItem-root":{
+                        background: "#303030",
+                        color: "white",
+                        border: "none",
+                    },
+                    ".dark & .Mui-selected":{
+                        background: "#2B4764",
+                    }
                 }}
             />
         </Stack>

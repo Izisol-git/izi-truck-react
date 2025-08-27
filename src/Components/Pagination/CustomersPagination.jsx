@@ -36,29 +36,80 @@ function CustomersPagination({row , index , data , setEmployeesId , arry , navig
                 onClick={() => {
                     isOpen !== row.id - 1 ? setIsOpen(row.id - 1) : setIsOpen(-1)
                 }}
+
                 sx={{
+
+                    // border: "1px solid #E5E7EB", // butun rowga border
+                     // barcha cell border rangini o'zgartiradi
                     transition: "all 300ms ease-in-out",
                     "&:hover": {
                         backgroundColor: "#F2F6F9",
                     },
                     cursor: "pointer",
-                    boxShadow: "0 2px 8px rgba(0, 0, 0, 0.04)"
+                    boxShadow: "0 2px 8px rgba(0, 0, 0, 0.04)",
+
+                    '.dark &':{
+                        "& td, & th": {  borderColor: "#374151" },
+                        "&:hover": {
+                            backgroundColor: "#374151",
+                        },
+                    }
                 }}
                 key={index}
             >
-                <TableCell>{row.id}</TableCell>
-                {arry[0].active && <TableCell>{row.company_name}</TableCell>}
-                {arry[1].active && <TableCell>{row.fio}</TableCell>}
+                <TableCell sx={{
+                    color: "black",
+                    ".dark &": {
+                        color: "white",
+                    },
+                }}>{row.id}</TableCell>
+                {arry[0].active && <TableCell sx={{
+                    color: "black",
+                    ".dark &": {
+                        color: "white",
+                    },
+                }}>{row.company_name}</TableCell>}
+                {arry[1].active && <TableCell sx={{
+                    color: "black",
+                    ".dark &": {
+                        color: "white",
+                    },
+                }}>{row.fio}</TableCell>}
                 {/*{arry[].active && <TableCell>{row.phone_number}</TableCell>}*/}
-                {arry[2].active && <TableCell>{'<--->'}</TableCell>}
-                {arry[3].active && <TableCell>{row.phone_number}</TableCell>}
-                {arry[4].active && <TableCell>{'<--->' }</TableCell>}
+                {arry[2].active && <TableCell sx={{
+                    color: "black",
+                    ".dark &": {
+                        color: "white",
+                    },
+                }}>{'<--->'}</TableCell>}
+                {arry[3].active && <TableCell sx={{
+                    color: "black",
+                    ".dark &": {
+                        color: "white",
+                    },
+                }}>{row.phone_number}</TableCell>}
+                {arry[4].active && <TableCell sx={{
+                    color: "black",
+                    ".dark &": {
+                        color: "white",
+                    },
+                }}>{'<--->' }</TableCell>}
                 {/*{arry[3].active && (*/}
                 {/*    <TableCell>{new Date(row.created_at).toISOString().split("T")[0]}</TableCell>*/}
                 {/*)}*/}
 
-                {arry[5].active && <TableCell>{'<--->'}</TableCell>}
-                {arry[6].active && <TableCell>
+                {arry[5].active && <TableCell sx={{
+                    color: "black",
+                    ".dark &": {
+                        color: "white",
+                    },
+                }}>{'<--->'}</TableCell>}
+                {arry[6].active && <TableCell sx={{
+                    color: "black",
+                    ".dark &": {
+                        color: "white",
+                    },
+                }}>
                     <div className="flex items-center gap-1 ">
                         <div onClick={(e) => {
                             e.stopPropagation();
@@ -68,8 +119,6 @@ function CustomersPagination({row , index , data , setEmployeesId , arry , navig
                             dispatch(openModal())
                             dispatch(EditToggle())
                             dispatch(ClientsUpdetId(row.id))
-
-
                         }}
                              className=" bg-yellow-500 w-[30px] h-[30px] rounded center text-[14px] group">
                             <i
@@ -112,7 +161,7 @@ function CustomersPagination({row , index , data , setEmployeesId , arry , navig
 
             </TableRow>
             <TableRow>
-                <TableCell sx={{padding: 0, overflow: "hidden", background: "#F9FBFD"}} colSpan={8}>
+                <TableCell sx={{padding: 0, overflow: "hidden", background: "#F9FBFD" , border:'0px solid red'}} colSpan={8}>
                     <div
                         // onMouseLeave={()=> setIsOpen(-1)}
                         className={isOpen === row.id - 1 ? "    max-h-96 center transition-all duration-300 ease-in-out" : " max-h-0  center  transition-all duration-300 ease-in-out"}>

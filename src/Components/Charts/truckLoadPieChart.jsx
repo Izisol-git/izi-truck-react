@@ -22,7 +22,7 @@ const options = {
 };
 
 export const TruckLoadPieChart = () => (
-    <div className="bg-white rounded shadow-sm p-4 border border-gray-100 w-full ">
+    <div className="bg-white rounded shadow-sm p-4 border border-gray-100 w-full dark:bg-darkBgTwo ">
         <Doughnut className={'mx-auto'} data={data} options={options} />
     </div>
 );

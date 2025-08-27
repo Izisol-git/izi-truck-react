@@ -16,6 +16,13 @@ const SwitchMUI = () => {
                     "& .MuiSwitch-switchBase.Mui-checked + .MuiSwitch-track": {
                         backgroundColor: "#1D2D5B",
                     },
+                    '.dark  & .MuiSwitch-switchBase.Mui-checked + .MuiSwitch-track  ':{
+                        backgroundColor: "#444444",
+
+                    },
+                    ".dark & .MuiSwitch-switchBase.Mui-checked": {
+                        color: "#2B4764",
+                    }
                 }}
             />
         </div>

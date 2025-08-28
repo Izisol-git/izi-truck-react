@@ -1,6 +1,6 @@
 import { createAsyncThunk } from "@reduxjs/toolkit";
 import EmployeeService from "../../Api/Employees/employeesService.js";
-import ClientsService from "../../API/customers/ClientsService.js";
+
 
 // Xodimlarni olish
 export const getEmployees = createAsyncThunk(
@@ -39,16 +39,18 @@ export const updateEmployee = createAsyncThunk(
         }
     }
 );
-export const getContracts = createAsyncThunk(
-    "employees/getContracts",
-    async (id, { rejectWithValue }) => {
-        try {
-            return await EmployeeService.getContractId(id);
-        } catch (err) {
-            return rejectWithValue(err.response?.data || "Failed to update employee");
-        }
-    }
-);
+
+// export const AddContracts = createAsyncThunk(
+//     "employees/updateEmployee",
+//     async ({ id, employeeData }, { rejectWithValue }) => {
+//         try {
+//             return await EmployeeService.update(id, employeeData);
+//         } catch (err) {
+//             return rejectWithValue(err.response?.data || "Failed to update employee");
+//         }
+//     }
+// );
+
 
 export const EmployeesId = createAsyncThunk(
     "clients/deleteClient",

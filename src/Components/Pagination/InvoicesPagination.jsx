@@ -75,20 +75,41 @@ const InvoicesPagination = ({row , index , data , setEmployeesId , arry , naviga
                      },
                      cursor: "pointer",
                      boxShadow: "0 2px 8px rgba(0, 0, 0, 0.04)",
+                     '.dark &':{
+                         "& td, & th": {  borderColor: "#374151" },
+                         "&:hover": {
+                             backgroundColor: "#374151",
+                         },
+                     }
                  }}
                  key={index}
              >
                  {/* # */}
-                 <TableCell>{index + 1}</TableCell>
+                 <TableCell sx={{
+                     color: "black",
+                     ".dark &": {
+                         color: "white",
+                     },
+                 }}>{index + 1}</TableCell>
 
                  {/* Тип документа */}
                  {arry[0].active && (
-                     <TableCell>{DOC_TYPES[row.doctype] ?? row.type ?? "–"}</TableCell>
+                     <TableCell sx={{
+                         color: "black",
+                         ".dark &": {
+                             color: "white",
+                         },
+                     }}>{DOC_TYPES[row.doctype] ?? row.type ?? "–"}</TableCell>
                  )}
 
                  {/* Дата обновления */}
                  {arry[1].active && (
-                     <TableCell>
+                     <TableCell sx={{
+                         color: "black",
+                         ".dark &": {
+                             color: "white",
+                         },
+                     }}>
                          {row.created
                              ? new Date(row.created).toLocaleDateString("ru-RU")
                              : row.doc_date
@@ -99,22 +120,42 @@ const InvoicesPagination = ({row , index , data , setEmployeesId , arry , naviga
 
                  {/* Контрагент */}
                  {arry[2].active && (
-                     <TableCell>{row.partnerCompany ?? row.owner_name ?? "–"}</TableCell>
+                     <TableCell sx={{
+                         color: "black",
+                         ".dark &": {
+                             color: "white",
+                         },
+                     }}>{row.partnerCompany ?? row.owner_name ?? "–"}</TableCell>
                  )}
 
                  {/* ИНН */}
                  {arry[3].active && (
-                     <TableCell>{row.partnerTin ?? row.document_json?.buyer?.tin ?? "–"}</TableCell>
+                     <TableCell sx={{
+                         color: "black",
+                         ".dark &": {
+                             color: "white",
+                         },
+                     }}>{row.partnerTin ?? row.document_json?.buyer?.tin ?? "–"}</TableCell>
                  )}
 
                  {/* Номер документа */}
                  {arry[4].active && (
-                     <TableCell>{row.name ?? row.contract_number ?? "–"}</TableCell>
+                     <TableCell sx={{
+                         color: "black",
+                         ".dark &": {
+                             color: "white",
+                         },
+                     }}>{row.name ?? row.contract_number ?? "–"}</TableCell>
                  )}
 
                  {/* Номер и дата договора */}
                  {arry[5].active && (
-                     <TableCell>
+                     <TableCell sx={{
+                         color: "black",
+                         ".dark &": {
+                             color: "white",
+                         },
+                     }}>
                          {row.contract_number && row.contract_date ? (
                              <>
                                  <div>{row.contract_number}</div>
@@ -128,7 +169,13 @@ const InvoicesPagination = ({row , index , data , setEmployeesId , arry , naviga
 
                  {/* Стоимость поставки с НДС */}
                  {arry[6].active && (
-                     <TableCell sx={{ fontWeight: "600" }}>
+                     <TableCell   sx={{
+                         color: "black",
+                         fontWeight: "600",
+                         ".dark &": {
+                             color: "white",
+                         },
+                     }}>
                          {Number(row.total_delivery_sum_with_vat ?? 0).toLocaleString("ru-RU", {
                              minimumFractionDigits: 2,
                              maximumFractionDigits: 2,
@@ -139,7 +186,12 @@ const InvoicesPagination = ({row , index , data , setEmployeesId , arry , naviga
 
                  {/* PDF yuklab olish */}
                  {arry[7].active && (
-                     <TableCell>
+                     <TableCell sx={{
+                         color: "black",
+                         ".dark &": {
+                             color: "white",
+                         },
+                     }}>
                          <p
                              className="cursor-pointer  text-center px-3 py-1 bg-blue text-white rounded hover:bg-blue-700 text-sm"
                              onClick={() => {

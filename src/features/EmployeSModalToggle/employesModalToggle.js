@@ -22,7 +22,7 @@ const employesModalSlice = createSlice({
         editDriversArry: {},
         driversId : null,
         dbOrders:'',
-
+        addContractsModal: false,
     },
     reducers: {
         openModal: (state) => {
@@ -69,6 +69,12 @@ const employesModalSlice = createSlice({
             state.isOpenExcelModal = true;
             state.isCloseExcelModal = false;
         },
+        closeContractsModal: (state) => {
+            state.addContractsModal = false;
+        },
+        openContractsModal: (state) => {
+            state.addContractsModal = true;
+        },
         closeExcelModal: (state) => {
             state.isCloseExcelModal = true;
             state.isOpenExcelModal = false;
@@ -103,5 +109,5 @@ const employesModalSlice = createSlice({
     },
 });
 
-export const { openModal ,changeDbOrders , openExcelModal , closeExcelModal ,  closeModal,DriversId, ClientsUpdetId,EditToggleDrivers , AddToggleDrivers, changeEmployeesPge, AddToggle , EditToggle, closeOffersModal , openOffersModal, closeInvoicesModal , openInvoicesModal, closeModalHistory , openModalHistory , closeModalComments , openModalComments } = employesModalSlice.actions;
+export const { openModal ,changeDbOrders , closeContractsModal , openContractsModal , openExcelModal , closeExcelModal ,  closeModal,DriversId, ClientsUpdetId,EditToggleDrivers , AddToggleDrivers, changeEmployeesPge, AddToggle , EditToggle, closeOffersModal , openOffersModal, closeInvoicesModal , openInvoicesModal, closeModalHistory , openModalHistory , closeModalComments , openModalComments } = employesModalSlice.actions;
 export default employesModalSlice.reducer;

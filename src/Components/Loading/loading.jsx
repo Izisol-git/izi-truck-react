@@ -8,7 +8,7 @@ function Loading() {
             flexDirection="column"
             justifyContent="center"
             alignItems="center"
-            height="100vh"
+            height='40vh'
         >
             <CircularProgress />
             <Typography variant="h6" sx={{ mt: 2 }}>

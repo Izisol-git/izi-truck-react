@@ -33,7 +33,7 @@ const InputFileUpload = () => {
             variant="contained"
             tabIndex={-1}
             startIcon={<CloudUploadIcon />}
-            sx={{width:"100%"}}
+            className="w-full border border-transparent dark:border-white dark:text-white dark:bg-transparent"
         >
             Upload files
             <VisuallyHiddenInput
@@ -42,6 +42,7 @@ const InputFileUpload = () => {
                 multiple
             />
         </StyledButton>
+
     );
 };
 

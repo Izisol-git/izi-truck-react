@@ -20,6 +20,7 @@ class ClientsService {
         return res.data;
     }
 
+
     static async clientsId(id) {
         const res = await api.get(`/clients/${id}`);
         return res.data;

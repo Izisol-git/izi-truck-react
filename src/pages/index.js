@@ -21,4 +21,8 @@ export {default as AddDrivers} from './Employees/Drivers/addDrivers.jsx'
 export {default as EditDrivers} from './Employees/Drivers/editDrivers.jsx'
 export {default as ShowOrdersId} from './Orders/showOrdersID.jsx'
 export {default as Didox} from './Didox/didox.jsx'
+export {default as EmployeesContracts} from './Contracts/EmployeesContracts/employeesContracts.jsx'
+export {default as ClientContracts} from './Contracts/ClientContracts/clientContracts.jsx'
+export {default as AddClientContracts} from './Contracts/ClientContracts/addClientContracts.jsx'
+export {default as EditClientContracts} from './Contracts/ClientContracts/editClientContracts.jsx'
 

@@ -9,6 +9,8 @@ import customersReducer from "../features/customers/clientsSlice.js";
 import ordersReducer from "../features/orders/ordersSlice.js";
 import invoicesReducer from "../features/Invoices/invoicesSlice.js";
 import suggestionsReducer from "../features/suggestions/suggestionsSlice.js";
+import contractReducer from "../features/Contracts/contractSlice.js";
+
 export const store = configureStore({
     reducer: {
         counter: counterReducer,
@@ -20,5 +22,6 @@ export const store = configureStore({
         orders : ordersReducer,
         invoices : invoicesReducer,
         suggestions : suggestionsReducer,
+        contracts : contractReducer,
     },
 });

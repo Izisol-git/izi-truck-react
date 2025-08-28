@@ -124,8 +124,8 @@ const Invoices = () => {
     };
 
     return (
-        <div className={"bg-bacWhite min-h-[calc(100dvh-70px)]"}>
-            <div className={"w-[90%] mx-auto flex items-center py-5 justify-between"}>
+        <div className={"bg-bacWhite min-h-[calc(100dvh-70px)] dark:bg-darkBg"}>
+            <div className={"w-[90%] mx-auto flex items-center py-5 justify-between "}>
                 <p className={"text-2xl text-blue font-semibold"}>Invoices</p>
                 <button
                     onClick={() => dispatch(openInvoicesModal())}
@@ -137,18 +137,18 @@ const Invoices = () => {
                 </button>
             </div>
 
-            <div className={"w-[90%] mx-auto flex flex-col gap-5 bg-white h-full p-5"}>
+            <div className={"w-[90%] mx-auto flex flex-col gap-5 bg-white h-full p-5 rounded dark:bg-darkBgTwo"}>
                 <div>
                     <FormControl>
                         <RadioGroup row>
-                            <div className="flex flex-wrap gap-2 text-blue">
+                            <div className="flex flex-wrap gap-2 text-blue dark:text-darkText">
                                 {statusList.map((item) => (
                                     <button
                                         key={item.value}
                                         onClick={() => handleRadioChange(item.value)}
                                         style={{ position: "relative", overflow: "hidden" }}
-                                        className={`border-2 px-3 rounded-lg cursor-pointer text-[14px] ${
-                                            activeRadio === item.value ? "bg-gray-200" : ""
+                                        className={`border-2 px-3 rounded-lg cursor-pointer text-[14px]   ${
+                                            activeRadio === item.value ? "bg-gray-200 dark:bg-navBgHover" : ""
                                         }`}
                                     >
                                         <FormControlLabel
@@ -156,8 +156,14 @@ const Invoices = () => {
                                             control={
                                                 <Radio
                                                     sx={{
-                                                        color: "#1D2D5B",
+                                                        color: "#1D2D5B", // light mode
                                                         "&.Mui-checked": { color: "#1D2D5B" },
+
+                                                        // dark mode
+                                                        "@media (prefers-color-scheme: dark)": {
+                                                            color: "#fff",
+                                                            "&.Mui-checked": { color: "#fff" },
+                                                        },
                                                     }}
                                                     checked={activeRadio === item.value}
                                                 />

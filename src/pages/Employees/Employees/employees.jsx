@@ -55,7 +55,7 @@ function Employees() {
 
     return (
         <div>
-            <div className={'bg-bacWhite flex '}>
+            <div className={'bg-bacWhite flex min-h-[calc(100dvh-70px)] dark:bg-darkBg '}>
                 <div className="w-[90%] mx-auto">
                     <UserNavbar openModal={() => dispatch(openModal())} value={'Employees'} columnsArry={columnsArry}
                                 setColumnsArry={setColumnsArry}/>

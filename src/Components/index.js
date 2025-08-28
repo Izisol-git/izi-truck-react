@@ -40,3 +40,4 @@ export {default as AddCustomersModal} from "./Modal/addCustomersModal.jsx";
 export {default as ActData} from "./Modal/actData.jsx";
 export {default as OffersOrdersCarrier} from "./Modal/offersOrdersCarrier.jsx";
 export {default as excelModal} from "./Modal/excelModal.jsx";
+export {default as ContractsPagination} from "./Pagination/ContractsPagination.jsx";

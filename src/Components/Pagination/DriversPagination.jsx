@@ -37,23 +37,69 @@ function DriversPagination({row , index , data , setEmployeesId , arry , navigat
                         backgroundColor: "#F2F6F9",
                     },
                     cursor: "pointer",
-                    boxShadow: "0 2px 8px rgba(0, 0, 0, 0.04)"
+                    boxShadow: "0 2px 8px rgba(0, 0, 0, 0.04)",
+                    '.dark &':{
+                        "& td, & th": {  borderColor: "#374151" },
+                        "&:hover": {
+                            backgroundColor: "#374151",
+                        },
+                    }
                 }}
                 key={index}
             >
-                <TableCell>{row.id}</TableCell>
-                {arry[0].active && <TableCell>{row.brand}</TableCell>}
-                {arry[1].active && <TableCell>{row.fio}</TableCell>}
+                <TableCell sx={{
+                    color: "black",
+                    ".dark &": {
+                        color: "white",
+                    },
+                }}>{row.id}</TableCell>
+                {arry[0].active && <TableCell sx={{
+                    color: "black",
+                    ".dark &": {
+                        color: "white",
+                    },
+                }}>{row.brand}</TableCell>}
+                {arry[1].active && <TableCell sx={{
+                    color: "black",
+                    ".dark &": {
+                        color: "white",
+                    },
+                }}>{row.fio}</TableCell>}
                 {/*{arry[].active && <TableCell>{row.phone_number}</TableCell>}*/}
-                {arry[2].active && <TableCell>{row.phone_number}</TableCell>}
-                {arry[3].active && <TableCell>{row.number}</TableCell>}
-                {arry[4].active && <TableCell>{row.trailer_number }</TableCell>}
+                {arry[2].active && <TableCell sx={{
+                    color: "black",
+                    ".dark &": {
+                        color: "white",
+                    },
+                }}>{row.phone_number}</TableCell>}
+                {arry[3].active && <TableCell sx={{
+                    color: "black",
+                    ".dark &": {
+                        color: "white",
+                    },
+                }}>{row.number}</TableCell>}
+                {arry[4].active && <TableCell sx={{
+                    color: "black",
+                    ".dark &": {
+                        color: "white",
+                    },
+                }}>{row.trailer_number }</TableCell>}
                 {/*{arry[3].active && (*/}
                 {/*    <TableCell>{new Date(row.created_at).toISOString().split("T")[0]}</TableCell>*/}
                 {/*)}*/}
 
-                {arry[5].active && <TableCell>{'<--->'}</TableCell>}
-                {arry[6].active && <TableCell>
+                {arry[5].active && <TableCell sx={{
+                    color: "black",
+                    ".dark &": {
+                        color: "white",
+                    },
+                }}>{'<--->'}</TableCell>}
+                {arry[6].active && <TableCell sx={{
+                    color: "black",
+                    ".dark &": {
+                        color: "white",
+                    },
+                }}>
                     <div className="flex items-center gap-1 ">
                         <div onClick={(e) => {
                             e.stopPropagation();

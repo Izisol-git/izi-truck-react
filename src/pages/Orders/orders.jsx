@@ -96,7 +96,7 @@ function Orders() {
 
 
     return (
-        <div className={'bg-bacWhite dark:bg-darkBg  '}>
+        <div className={'bg-bacWhite dark:bg-darkBg min-h-[calc(100dvh-70px)] '}>
             <div className=" w-[90%] mx-auto py-5 ">
                 <div className={'flex items-center justify-between  '}>
                     <div className="flex items-center gap-2">

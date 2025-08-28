@@ -155,8 +155,8 @@ function EditDrivers() {
     };
 
     return (
-        <div className="bg-bacWhite w-full min-h-[calc(100dvh-70px)] py-5">
-            <div className="w-[90%] bg-white px-4 mx-auto py-5 rounded-md shadow">
+        <div className="bg-bacWhite w-full min-h-[calc(100dvh-70px)] py-5 dark:bg-darkBg ">
+            <div className="w-[90%] bg-white px-4 mx-auto py-5 rounded-md shadow dark:bg-darkBgTwo">
                 {/* Header */}
                 <div className="h-[40px] gap-4 relative text-center center w-full mb-10">
                     <div
@@ -164,11 +164,12 @@ function EditDrivers() {
                         onClick={() => navigate(`/users/drivers`)}
                     >
                         <Button
+                            color={'dark:bg-btnBgDark'}
                             icon={<i className="fa-solid fa-arrow-left"></i>}
                             value={"Drivers"}
                         />
                     </div>
-                    <p className="text-blue font-bold text-xl">Haydovchilarni Tahrirlash</p>
+                    <p className="text-blue font-bold text-xl dark:text-darkText">Haydovchilarni Tahrirlash</p>
                 </div>
 
                 {/* FIO + telefon */}
@@ -193,7 +194,7 @@ function EditDrivers() {
                             />
                             <button
                                 onClick={handleDriversPhone}
-                                className="px-3 py-2 whitespace-nowrap bg-blue w-max text-white rounded flex items-center"
+                                className="px-3 py-2 whitespace-nowrap bg-blue w-max text-white rounded flex items-center dark:bg-btnBgDark"
                             >
                                 <i className="fa-solid fa-plus mr-2"></i>
                                 Add phone
@@ -230,7 +231,7 @@ function EditDrivers() {
             </div>
 
             {/* Car info */}
-            <div className="w-[90%] bg-white px-4 mx-auto py-5 rounded-md shadow mt-5">
+            <div className="w-[90%] bg-white px-4 mx-auto py-5 rounded-md shadow mt-5 dark:bg-darkBgTwo">
                 <div className="grid grid-cols-3 gap-4">
                     <InputMUI
                         variant="outlined"
@@ -317,7 +318,7 @@ function EditDrivers() {
                     ))}
                     <button
                         onClick={handleAddFile}
-                        className="px-3 py-2 whitespace-nowrap bg-blue w-max text-white rounded flex items-center"
+                        className="px-3 py-2 whitespace-nowrap bg-blue w-max text-white rounded flex items-center dark:bg-btnBgDark"
                     >
                         <i className="fa-solid fa-plus mr-2"></i>
                         Add File
@@ -328,13 +329,13 @@ function EditDrivers() {
                 <div className="py-5 w-full flex items-center justify-end gap-4">
                     <button
                         onClick={() => navigate(`/users/drivers`)}
-                        className="w-36 relative overflow-hidden rounded font-semibold bg-transparent border-2 text-blue border-blue transition-all duration-300 ease-in-out hover:text-white hover:bg-blue py-2 px-3"
+                        className="w-36 relative overflow-hidden rounded font-semibold bg-transparent border-2 text-blue border-blue transition-all duration-300 ease-in-out hover:text-white hover:bg-blue py-2 px-3 dark:hover:bg-navBgHover dark:border-darkText dark:text-darkText"
                     >
                         Close
                     </button>
                     <button
                         onClick={handleSubmit}
-                        className="w-36 relative overflow-hidden rounded font-semibold bg-transparent border-2 text-blue border-blue transition-all duration-300 ease-in-out hover:text-white hover:bg-blue py-2 px-3"
+                        className="w-36 relative overflow-hidden rounded font-semibold bg-transparent border-2 text-blue border-blue transition-all duration-300 ease-in-out hover:text-white hover:bg-blue py-2 px-3 dark:hover:bg-navBgHover dark:border-darkText dark:text-darkText"
                     >
                         {!loading ? "Save" : "Saving..."}
                     </button>

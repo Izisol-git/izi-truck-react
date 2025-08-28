@@ -20,14 +20,15 @@ import {
     ShowOffers,
     AddDrivers,
     EditDrivers,
-    ShowOrdersId, Didox
+    ShowOrdersId, Didox, ClientContracts, EmployeesContracts, EditClientContracts
 }
     from './pages/index.js'
 import {BrowserRouter, Routes, Route, Navigate} from "react-router-dom";
-import {SuperAdminLayouts, UserLayouts} from "./layouts/index.js"
+import {ContractLayouts, SuperAdminLayouts, UserLayouts} from "./layouts/index.js"
 import {OffersOrders} from "./Components/index.js";
 import {useDispatch} from "react-redux";
 import {getCurrentUser} from "./features/Auth/authThunks.js";
+import AddClientContracts from "./pages/Contracts/ClientContracts/addClientContracts.jsx";
 
 function safeSetTag(obj, sym, value) {
     try {
@@ -102,6 +103,13 @@ function App() {
                     <Route path="trucks" element={<Trucks />} />
                     <Route path="orders/:id/didox" element={<Didox />} />
                     <Route path="settings" element={<Settings />} />
+                    <Route path="contracts" element={<ContractLayouts />} >
+                        <Route path="clients" element={<ClientContracts />} />
+                        <Route path="clients/create" element={<AddClientContracts />} />
+                        <Route path="clients/edit/:id" element={<EditClientContracts />} />
+                        <Route path="employees" element={<EmployeesContracts />} />
+                    </Route>
+
 
                     <Route path="users" element={<UserLayouts />}>
                         <Route path="employees" element={<Employees />} />
@@ -112,8 +120,9 @@ function App() {
                         <Route path="drivers/edit" element={<EditDrivers />} />
                         <Route path="customers" element={<Customers />} />
                         <Route path="drivers" element={<Drivers />} />
+                        <Route path="invoices" element={<Invoices />} />
+
                     </Route>
-                    <Route path="invoices" element={<Invoices />} />
                 </Route>
             </Routes>
         </BrowserRouter>

@@ -42,7 +42,7 @@ function Drivers() {
 
     return (
         <div>
-            <div className={'bg-bacWhite flex '}>
+            <div className={'bg-bacWhite flex  dark:bg-darkBg min-h-[calc(100dvh-70px)]'}>
                 <div className="w-[90%] mx-auto">
                     <UserNavbar   value={'Drivers'} columnsArry={columnsArry}
                                 setColumnsArry={setColumnsArry}/>

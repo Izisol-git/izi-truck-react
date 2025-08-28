@@ -38,7 +38,6 @@ function CustomersPagination({row , index , data , setEmployeesId , arry , navig
                 }}
 
                 sx={{
-
                     // border: "1px solid #E5E7EB", // butun rowga border
                      // barcha cell border rangini o'zgartiradi
                     transition: "all 300ms ease-in-out",

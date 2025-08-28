@@ -40,20 +40,56 @@ const EmployeesPagination = ({row , index , data , setEmployeesId , arry , navig
                         backgroundColor: "#F2F6F9",
                     },
                     cursor: "pointer",
-                    boxShadow: "0 2px 8px rgba(0, 0, 0, 0.04)"
+                    boxShadow: "0 2px 8px rgba(0, 0, 0, 0.04)",
+                    '.dark &':{
+                        "& td, & th": {  borderColor: "#374151" },
+                        "&:hover": {
+                            backgroundColor: "#374151",
+                        },
+                    }
                 }}
                 key={index}
             >
-                <TableCell>{row.id}</TableCell>
-                {arry[0].active && <TableCell>{row.user.name}</TableCell>}
-                {arry[1].active && <TableCell>{row.phone_number}</TableCell>}
+                <TableCell  sx={{
+                    color: "black",
+                    ".dark &": {
+                        color: "white",
+                    },
+                }}>{row.id}</TableCell>
+                {arry[0].active && <TableCell  sx={{
+                    color: "black",
+                    ".dark &": {
+                        color: "white",
+                    },
+                }}>{row.user.name}</TableCell>}
+                {arry[1].active && <TableCell  sx={{
+                    color: "black",
+                    ".dark &": {
+                        color: "white",
+                    },
+                }}>{row.phone_number}</TableCell>}
                 {/*{arry[].active && <TableCell>{row.phone_number}</TableCell>}*/}
-                {arry[2].active && <TableCell>{row.tin}</TableCell>}
+                {arry[2].active && <TableCell  sx={{
+                    color: "black",
+                    ".dark &": {
+                        color: "white",
+                    },
+                }}>{row.tin}</TableCell>}
                 {arry[3].active && (
-                    <TableCell>{new Date(row.created_at).toISOString().split("T")[0]}</TableCell>
+                    <TableCell  sx={{
+                        color: "black",
+                        ".dark &": {
+                            color: "white",
+                        },
+                    }}>{new Date(row.created_at).toISOString().split("T")[0]}</TableCell>
                 )}
 
-                {arry[4].active && <TableCell>
+                {arry[4].active && <TableCell  sx={{
+                    color: "black",
+                    ".dark &": {
+                        color: "white",
+                    },
+                }}>
                     {
                         row.status === "1" ?
                             <div
@@ -67,7 +103,12 @@ const EmployeesPagination = ({row , index , data , setEmployeesId , arry , navig
 
 
                 </TableCell>}
-                {arry[5].active && <TableCell>
+                {arry[5].active && <TableCell  sx={{
+                    color: "black",
+                    ".dark &": {
+                        color: "white",
+                    },
+                }}>
                     <div className="flex items-center gap-1 ">
                         <div onClick={(e) => {
                             e.stopPropagation();

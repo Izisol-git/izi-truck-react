@@ -8,11 +8,16 @@ import {
     TableEmployeesMUI,
     Timeline
 } from "../index.js";
-import {EditToggle, openModal, openModalHistory} from "../../features/EmployeSModalToggle/employesModalToggle.js";
+import {
+    EditToggle,
+    openContractsModal,
+    openModal,
+    openModalHistory
+} from "../../features/EmployeSModalToggle/employesModalToggle.js";
 import {useNavigate} from "react-router-dom";
 import {useDispatch} from "react-redux";
 
-function Details({Contracts, inputModalArray , btnValue  , data}) {
+function Details({Contracts, inputModalArray, btnValue, data}) {
     const navigate = useNavigate();
     const dispatch = useDispatch();
     return (
@@ -20,27 +25,28 @@ function Details({Contracts, inputModalArray , btnValue  , data}) {
             <div className={'bg-bacWhite min-h-[calc(100dvh-70px)] dark:bg-darkBg  '}>
                 <div className={'flex items-center justify-between py-5  w-[90%] mx-auto '}>
                     <div className={'w-max '} onClick={() => navigate(`/users/${btnValue.toLowerCase()}`)}>
-                        <Button color={'dark:bg-btnBgDark'} icon={<i className="fa-solid fa-arrow-left"></i>} value={btnValue}/>
+                        <Button color={'dark:bg-btnBgDark'} icon={<i className="fa-solid fa-arrow-left"></i>}
+                                value={btnValue}/>
                     </div>
                     <div className={'flex items-center justify-between gap-2'}>
                         <div onClick={() => dispatch(openModalHistory())} className={'w-max'}>
-                            <Button  color={'dark:bg-btnBgDark'}
-                                     // color={'#EAB308'}
-                                     icon={<i className="fa-regular fa-clock"></i>}
+                            <Button color={'dark:bg-btnBgDark'}
+                                // color={'#EAB308'}
+                                    icon={<i className="fa-regular fa-clock"></i>}
                                     value={'History'}/>
                         </div>
                         <div className={'w-max'}>
                             <Button color={'dark:bg-btnBgDark'} onClick={() => {
                                 dispatch(EditToggle())
-                                btnValue === 'Drivers' ? navigate(`/users/${btnValue.toLowerCase()}/edit`, btnValue) :   dispatch(openModal())
+                                btnValue === 'Drivers' ? navigate(`/users/${btnValue.toLowerCase()}/edit`, btnValue) : dispatch(openModal())
                             }}
-                                    // color={'#38CB6E'}
+                                // color={'#38CB6E'}
                                     icon={<i className="fa-solid fa-pen-to-square"></i>}
                                     value={'Edit'}/>
                         </div>
                         <div className={'w-max'}>
                             <Button color={'dark:bg-btnBgDark'}
-                                    // color={'red'}
+                                // color={'red'}
                                     icon={<i className="fa-solid fa-trash"></i>} value={'Delete'}/>
                         </div>
                     </div>
@@ -49,12 +55,14 @@ function Details({Contracts, inputModalArray , btnValue  , data}) {
                     btnValue === "Employees" ? <ProfileInfoCard width={'90%'} data={data}
                                                                 shadow={'0 10px 15px -3px rgba(0, 0, 0, 0.1), 0 4px 6px -4px rgba(0, 0, 0, 0.1)'}/>
                         : btnValue === "Customers" ? <ProfileInfoClients width={'90%'} data={data}
-                    shadow={'0 10px 15px -3px rgba(0, 0, 0, 0.1), 0 4px 6px -4px rgba(0, 0, 0, 0.1)'}/> :
+                                                                         shadow={'0 10px 15px -3px rgba(0, 0, 0, 0.1), 0 4px 6px -4px rgba(0, 0, 0, 0.1)'}/> :
                             btnValue === 'Drivers' ? <ProfileInfoCardDrivers width={'90%'} data={data}
-                            shadow={'0 10px 15px -3px rgba(0, 0, 0, 0.1), 0 4px 6px -4px rgba(0, 0, 0, 0.1)'}/> : ''
+                                                                             shadow={'0 10px 15px -3px rgba(0, 0, 0, 0.1), 0 4px 6px -4px rgba(0, 0, 0, 0.1)'}/> : ''
                 }
                 <div className={'bg-white w-[90%] mt-4 py-4 px-6  mx-auto shadow-2xl rounded dark:bg-darkBgTwo'}>
-                    <div className={'my-5'}><p className={'text-2xl text-blue font-semibold dark:text-darkText'}>Contracts</p>
+                    <div className={'my-5 flex items-center justify-between'}>
+                        <p className={'text-2xl text-blue font-semibold dark:text-darkText'}> Contracts</p>
+
                     </div>
                     <div className={'w-[100%]  mx-auto  '}>
 
@@ -67,7 +75,7 @@ function Details({Contracts, inputModalArray , btnValue  , data}) {
 
                 <Timeline/>
 
-                <AddEmployesModal h1={btnValue} employeesId={data}  inputModalArray={inputModalArray}/>
+                <AddEmployesModal h1={btnValue} employeesId={data} inputModalArray={inputModalArray}/>
             </div>
         </div>
     );

@@ -56,7 +56,7 @@ function Customers() {
 
     return (
         <div className={''}>
-            <div className={'bg-bacWhite flex dark:bg-darkBg'}>
+            <div className={'bg-bacWhite flex dark:bg-darkBg min-h-[calc(100dvh-70px)]'}>
                 <div className="w-[90%] mx-auto">
                     <UserNavbar openModal={()=> dispatch(openModal())} value={'Customers'} columnsArry={columnsArry} setColumnsArry={setColumnsArry}/>
                     {loading ?  <Loading/> : <UserPagination employeesId={customersId}  setEmployeesId={setCustomersId} total={total} data={customersData} arry={columnsArry} setColumnsArry={setColumnsArry}

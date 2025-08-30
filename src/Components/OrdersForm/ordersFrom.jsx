@@ -78,6 +78,7 @@ function OrdersFrom({mode}) {
     const {dbOrders} = useSelector((state) => state.employesModal);
     const [driversName, setDriversName] = useState();
     const {user} = useSelector((state) => state.auth);
+    const [errors, setErrors] = useState({});
 
     const getSelectAll = async () => {
         // if(mode !== "show"){
@@ -100,7 +101,6 @@ function OrdersFrom({mode}) {
     }
 
     const [priceData, setPriceData] = useState();
-
 
     const OrdersId = async (id) => {
         try {
@@ -168,6 +168,7 @@ function OrdersFrom({mode}) {
             console.log(error);
         }
     };
+
     const EditOrder = async (id, formData) => {
         // console.log(rows);
         rows.forEach((row, index) => {
@@ -197,6 +198,7 @@ function OrdersFrom({mode}) {
             console.log(res)
         } catch (error) {
             console.log(error);
+            setErrors(error.errors);
         }
     }
     // console.log(formData);
@@ -278,12 +280,12 @@ function OrdersFrom({mode}) {
             fraxt_price_transfer: formData.fraxt_price_transfer,
             margin_transfer: formData.margin_transfer,
             items_price: Number(formData.items_price),
-            location_of_destination: isArray(formData.location_of_destination)
-                ? String(formData.location_of_destination[0]) + "," + String(formData.location_of_destination[1])
-                : null,
-            location_of_departure: isArray(formData.location_of_departure)
-                ? String(formData.location_of_departure[0]) + "," + String(formData.location_of_departure[1])
-                : null,
+            location_of_destination: formData.location_of_destination,
+                // ? String(formData.location_of_destination[0]) + "," + String(formData.location_of_destination[1])
+                // : null,
+            location_of_departure: formData.location_of_departure,
+                // ? String(formData.location_of_departure[0]) + "," + String(formData.location_of_departure[1])
+                // : null,
             customs_clearance1: formData.customs_clearance1,
             customs_clearance2: formData.customs_clearance2,
             weight_of_cargo: formData.weight_of_cargo,
@@ -301,16 +303,18 @@ function OrdersFrom({mode}) {
             if (row.point && row.point.id) obj[`point[${index}]`] = row.point.id;
             if (row.point_price) obj[`point_price[${index}]`] = row.point_price;
         });
-        setFormData({...rows})
+        // setFormData({...rows})
         console.log(formData)
 
         try {
             const res = await dispatch(addOrder(obj)).unwrap()
             navigate("/orders")
         } catch (err) {
-            console.log(err);
+            console.log(err.errors);
+            setErrors({...err.errors});
         }
     }
+    console.log(errors)
 
 
     const getShowOrdersId = async () => {
@@ -408,19 +412,12 @@ function OrdersFrom({mode}) {
     return (
         <div>
             <div className={'bg-bacWhite w-full min-h-[calc(100dvh-70px)] py-5 dark:bg-darkBg'}>
-                {/*<div className={'w-[90%] bg-white px-4  mx-auto py-5 rounded-md shadow'}>*/}
-
-                {/*</div>*/}
-
-
                 <div className={'w-[90%] bg-white px-4  mx-auto py-5 rounded-md shadow dark:bg-darkBgTwo'}>
-
                     <div className={'h-[40px] gap-4 relative text-center center  w-full   mb-10'}>
                         <div className={'w-max  absolute top-0 left-0'} onClick={() => navigate(`/orders`)}>
                             <Button color={'dark:bg-btnBgDark'}  icon={<i className="fa-solid fa-arrow-left"></i>} value={'Orders'}/>
                         </div>
                         <p className={'text-blue font-bold text-xl dark:text-darkText'}>Byurtmani {mode === 'edit' ? "tahrirlash" : mode === 'add' ? "yaratish" : mode === "show" ? "Ko'rish" : ""}</p>
-
                         {
                             mode === 'show' ?
                                 <div className={'absolute top-0 right-0 flex items-center gap-3'}>
@@ -448,14 +445,9 @@ function OrdersFrom({mode}) {
                                 :
                                 ""
                         }
-
-
                     </div>
-
-
                     {
                         mode === 'show' ?
-
                             <>
                                 <div className={'mb-10'}>
                                     <FormControl>
@@ -497,17 +489,16 @@ function OrdersFrom({mode}) {
                                     </FormControl>
                                 </div>
 
-
                                 <div className={'grid gap-4 grid-cols-2 mb-5'}>
                                     <div className={''}>
-                                        <InputMUI value={driversName ?? ''}
+                                        <InputMUI errorMassage={errors?.receiver_contact} value={driversName ?? ''}
                                                   onChange={(e) =>
                                                       setFormData({...formData, receiver_contact: e.target.value})
                                                   } variant={'outlined'} label={'Водитель'}
                                         />
                                     </div>
                                     <div className={''}>
-                                        <InputMUI value={user?.user?.name ?? ''}
+                                        <InputMUI errorMassage={errors?.receiver_contact} value={user?.user?.name ?? ''}
                                                   onChange={(e) =>
                                                       setFormData({...formData, receiver_contact: e.target.value})
                                                   } variant={'outlined'} label={'Перевозчик'}
@@ -521,6 +512,7 @@ function OrdersFrom({mode}) {
                     <div className={'flex items-center gap-4'}>
                         <div className={"w-full "}>
                             <SelectMUI
+                                errorMassage={errors?.client_id}
                                 {...{
                                     value:
                                         mode !== "add"
@@ -540,6 +532,7 @@ function OrdersFrom({mode}) {
                         </div>
                         <div className={"w-full "}>
                             <SelectMUI
+                                errorMassage={errors?.nds}
                                 {...{
                                     value:
                                         mode !== "add"
@@ -560,6 +553,7 @@ function OrdersFrom({mode}) {
                         </div>
                         <div className={"w-full "}>
                             <SelectMUI
+                                errorMassage={errors?.service_type}
                                 {...{
                                     value:
                                         mode !== "add"
@@ -584,14 +578,14 @@ function OrdersFrom({mode}) {
 
                             <div className={'flex items-center gap-4 mt-5'}>
                                 <div className={"w-full "}>
-                                    <InputMUI value={formData?.trailer_floor_volume ?? ''}
+                                    <InputMUI errorMassage={errors?.trailer_floor_volume} value={formData?.trailer_floor_volume ?? ''}
                                               onChange={(e) =>
                                                   setFormData({...formData, trailer_floor_volume: e.target.value})
                                               } variant={'outlined'} label={'Контакты получателя (декларант)'}
                                     />
                                 </div>
                                 <div className={"w-full "}>
-                                    <InputMUI value={formData?.cargo_volume ?? ''}
+                                    <InputMUI errorMassage={errors?.cargo_volume} value={formData?.cargo_volume ?? ''}
                                               onChange={(e) =>
                                                   setFormData({...formData, cargo_volume: e.target.value})
                                               } variant={'outlined'} label={'Контакты получателя (декларант)'}
@@ -604,40 +598,26 @@ function OrdersFrom({mode}) {
 
                 </div>
                 <div className={'w-[90%] bg-white px-4  mx-auto py-5 rounded-md shadow mt-5 dark:bg-darkBgTwo'}>
-                    <div className={'grid grid-cols-3 gap-4'}>
-                        <div className={"w-full "}>
-                            {/*<p className={'font-semibold text-blue mb-2'}>Стоимость перевозчика</p>*/}
-                            <p className={'text-blue  mb-3 dark:text-darkText'}>Перечисление</p>
-                            <CurrencyInput value={formData.carrier_price_transfer ?? ''}
-                                           setCarrierCurrency={setCarrierCurrency} carrierCurrency={carrierCurrency}
-                                           onChange={(e) => setFormData({
-                                               ...formData,
-                                               carrier_price_transfer: e.target.value
-                                           })}
-                                           label={'Стоимость перевозчика'}/>
+                    <div className={'grid grid-cols-2 gap-4'}>
 
 
-                            <div className={'p-2'}>
-                                {
-                                    Object.entries(priceData?.carrier_price_transfer || {})?.map(([key , value] ) => (
-                                        <p className={'my-1 font-semibold text-gray-600 dark:text-darkText'}>{key}: {value} </p>
-                                    ))
-                                }
-                            </div>
-
+                        <div className={" "}>
+                            <CurrencyInput errorMassage={errors.items_price} value={formData?.items_price ?? ''}
+                                           setCarrierCurrency={setItemsPriceCurrency}
+                                           carrierCurrency={itemsPriceCurrency}
+                                           onChange={(e) => setFormData({...formData, items_price: e.target.value})}
+                                           label={'Стоимость груза'}/>
                         </div>
+
                         <div className={"w-full "}>
-                            {/*<p className={'font-semibold text-blue mb-2'}>Цена клиента</p>*/}
-                            <p className={'text-blue  mb-3 dark:text-darkText'}>Перечисление</p>
-                            <CurrencyInput value={formData.fraxt_price_transfer ?? ''}
+
+                            <CurrencyInput errorMassage={errors.fraxt_price_transfer} value={formData.fraxt_price_transfer ?? ''}
                                            setCarrierCurrency={setFraxtCurrency}
                                            carrierCurrency={fraxtCurrency}
                                            onChange={(e) => setFormData({
                                                ...formData,
                                                fraxt_price_transfer: e.target.value
                                            })} label={'Цена клиента'}/>
-
-
                             <div className={'p-2'}>
                                 {
                                     Object.entries(priceData?.fraxt_price_transfer || {})?.map(([key, value]) => (
@@ -647,40 +627,11 @@ function OrdersFrom({mode}) {
                             </div>
 
                         </div>
-                        <div className={"w-full  "}>
-                            {/*<p className={'font-semibold text-blue mb-2'}>Маржа</p>*/}
-                            <p className={'text-blue  mb-3 dark:text-darkText'}>Перечисление</p>
-                            <CurrencyInput disabled={mode === 'edit' && true } value={formData.margin_transfer ?? ''}
-                                           setCarrierCurrency={setMarginCurrency}
-                                           carrierCurrency={marginCurrency}
-                                           onChange={(e) => setFormData({...formData, margin_transfer: e.target.value})}
-                                           label={'Маржа'}/>
 
-                            <div className={'p-2'}>
-                                {
-                                    Object.entries(priceData?.margin_transfer || {})?.map(([key, value]) => (
-                                        <p className={'my-1 font-semibold text-gray-600 dark:text-darkText'}>{key}: {value} </p>
-                                    ))
-                                }
-                            </div>
-
-
-                        </div>
                     </div>
-                    <div className={'grid grid-cols-3 gap-4 mt-5'}>
-                        <div className={" "}>
-                            <CurrencyInput value={formData?.items_price ?? ''}
-                                           setCarrierCurrency={setItemsPriceCurrency}
-                                           carrierCurrency={itemsPriceCurrency}
-                                           onChange={(e) => setFormData({...formData, items_price: e.target.value})}
-                                           label={'Стоимость груза'}/>
-                        </div>
-                    </div>
-                </div>
-                <div className={'w-[90%] bg-white px-4  mx-auto py-5 rounded-md shadow mt-5 dark:bg-darkBgTwo'}>
                     <div className={'grid grid-cols-3 gap-4'}>
                         <div className={"w-full "}>
-                            <SelectMUI options={data?.shipment_types || []} variant={'outlined'} label={'Тип перевозки'}
+                            <SelectMUI  errorMassage={errors?.shipment_type} options={data?.shipment_types || []} variant={'outlined'} label={'Тип перевозки'}
                                        placeholder={'Тип перевозки'}
                                 // value={formData?.shipment_type || null}
                                 // onChange={(val) => setFormData({...formData, shipment_type: val})}
@@ -699,14 +650,14 @@ function OrdersFrom({mode}) {
                             />
                         </div>
                         <div className={"w-full "}>
-                            <SelectMUI options={options} variant={'outlined'} label={'Объем транспортного средства'}
+                            <SelectMUI errorMassage={errors?.transport_value} options={options} variant={'outlined'} label={'Объем транспортного средства'}
                                        placeholder={'Объем транспортного средства'}
                                 // value={formData?.transport_value || null}
                                 // onChange={(val) => setFormData({...formData, transport_value: val})}
                                        {...{
                                            value:
                                                mode !== "add"
-                                                   ? options.find((opt) =>  opt.title === String(formData?.transport_value)) || null
+                                                   ? options.find((opt) => opt.title === String(formData?.transport_value)) || null
                                                    : formData?.transport_value,
                                        }}
                                        onChange={(val) => {
@@ -718,7 +669,7 @@ function OrdersFrom({mode}) {
                             />
                         </div>
                         <div className={"w-full "}>
-                            <SelectMUI options={data?.transport_types || []} variant={'outlined'}
+                            <SelectMUI errorMassage={errors?.transport_type} options={data?.transport_types || []} variant={'outlined'}
                                        label={'Тип транспортного средства'}
                                        placeholder={'Тип транспортного средства'}
                                 // value={formData?.transport_type || null}
@@ -741,35 +692,38 @@ function OrdersFrom({mode}) {
 
 
                         {
-                            String(formData?.transport_type?.id) === '3' || String(formData?.transport_type) === '3' ?  <><InputMUI
-                                value={formData?.mode ?? ''}
-                                onChange={(e) =>
-                                    setFormData({...formData, mode: e.target.value})
-                                }
-                                variant={'outlined'} label={'Режим'}
-                            /></>  :  ''
+                            String(formData?.transport_type?.id) === '3' || String(formData?.transport_type) === '3' ? <>
+                                <InputMUI errorMassage={errors?.mode}
+                                    value={formData?.mode ?? ''}
+                                    onChange={(e) =>
+                                        setFormData({...formData, mode: e.target.value})
+                                    }
+                                    variant={'outlined'} label={'Режим'}
+                                /></> : ''
                         }
 
 
                     </div>
+
                 </div>
+
                 <div className={'w-[90%] bg-white px-4  mx-auto py-5 rounded-md shadow mt-5 dark:bg-darkBgTwo'}>
                     <div className={'grid grid-cols-4 gap-4'}>
                         <div className={" col-span-2"}>
                             <LocationInput
-                                value={ formData?.location_of_departure || null}
+                                value={formData?.location_of_departure || null}
                                 onChange={(pos) => setFormData({...formData, location_of_departure: pos.join(',')})}
                                 label={'Локация отправителя'}/>
                         </div>
                         <div className={"  col-span-2"}>
                             <LocationInput
-                                value={ formData?.location_of_destination || null}
+                                value={formData?.location_of_destination || null}
 
                                 onChange={(pos) => setFormData({...formData, location_of_destination: pos.join(',')})}
                                 label={'Локация получателя'}/>
                         </div>
                         <div className={"w-full "}>
-                            <SelectMUI options={data?.countries || []} variant={'outlined'} label={'Страна отправителя'}
+                            <SelectMUI errorMassage={errors?.country_of_departure} options={data?.countries || []} variant={'outlined'} label={'Страна отправителя'}
                                        placeholder={'Страна отправителя'}
                                 // value={formData?.country_of_departure || null}
                                 // onChange={(val) => {
@@ -779,7 +733,7 @@ function OrdersFrom({mode}) {
                                        {...{
                                            value:
                                                mode !== "add"
-                                                   ? data?.countries?.find((opt) => String(opt.id)  === formData?.country_of_departure) || null
+                                                   ? data?.countries?.find((opt) => String(opt.id) === formData?.country_of_departure) || null
                                                    : formData?.country_of_departure,
                                        }}
                                        onChange={(val) => {
@@ -800,7 +754,7 @@ function OrdersFrom({mode}) {
                             />
                         </div>
                         <div className={"w-full "}>
-                            <SelectMUI options={stateDataOne?.cities_from || []} variant={'outlined'}
+                            <SelectMUI errorMassage={errors?.point_of_departure} options={stateDataOne?.cities_from || []} variant={'outlined'}
                                        label={'Пункт отправления'}
                                        placeholder={'Пункт отправления'}
                                 // value={formData?.point_of_departure || null}
@@ -808,7 +762,7 @@ function OrdersFrom({mode}) {
                                        {...{
                                            value:
                                                mode !== "add"
-                                                   ? stateDataOne?.cities_from?.find((opt) => String(opt.id)  === formData?.point_of_departure) || null
+                                                   ? stateDataOne?.cities_from?.find((opt) => String(opt.id) === formData?.point_of_departure) || null
                                                    : formData?.point_of_departure,
                                        }}
                                        onChange={(val) => {
@@ -827,7 +781,7 @@ function OrdersFrom({mode}) {
                             />
                         </div>
                         <div className={"w-full "}>
-                            <SelectMUI options={data?.countries || []} variant={'outlined'} label={'Страна получателя'}
+                            <SelectMUI errorMassage={errors?.country_of_destination} options={data?.countries || []} variant={'outlined'} label={'Страна получателя'}
                                        placeholder={'Страна получателя'}
                                 // value={formData?.country_of_destination || null}
                                 // onChange={(val) => {
@@ -859,7 +813,7 @@ function OrdersFrom({mode}) {
                             />
                         </div>
                         <div className={"w-full "}>
-                            <SelectMUI options={stateDataTwo?.cities_to || []} variant={'outlined'}
+                            <SelectMUI  errorMassage={errors?.point_of_destination} options={stateDataTwo?.cities_to || []} variant={'outlined'}
                                        label={'Пункт назначения'}
                                        placeholder={'Пункт назначения'}
                                 // value={formData?.point_of_destination || null}
@@ -888,7 +842,7 @@ function OrdersFrom({mode}) {
                             />
                         </div>
                         <div className={"col-span-2 "}>
-                            <InputMUI
+                            <InputMUI errorMassage={errors?.customs_clearance1}
                                 value={formData?.customs_clearance1 ?? ''}
                                 onChange={(e) =>
                                     setFormData({...formData, customs_clearance1: e.target.value})
@@ -897,7 +851,7 @@ function OrdersFrom({mode}) {
                             />
                         </div>
                         <div className={"col-span-2 "}>
-                            <InputMUI
+                            <InputMUI errorMassage={errors?.customs_clearance2}
                                 value={formData?.customs_clearance2 ?? ''}
                                 onChange={(e) =>
                                     setFormData({...formData, customs_clearance2: e.target.value})
@@ -910,7 +864,7 @@ function OrdersFrom({mode}) {
                 <div className={'w-[90%] bg-white px-4  mx-auto py-5 rounded-md shadow mt-5 dark:bg-darkBgTwo'}>
                     <div className={'grid grid-cols-4 gap-4'}>
                         <div className={" col-span-2"}>
-                            <InputMUI
+                            <InputMUI errorMassage={errors?.weight_of_cargo}
                                 value={formData?.weight_of_cargo ?? ''}
 
                                 onChange={(e) =>
@@ -920,7 +874,7 @@ function OrdersFrom({mode}) {
                             />
                         </div>
                         <div className={"  col-span-2"}>
-                            <SelectMUI options={dangerous} variant={'outlined'} label={'Опасный ли груз?'}
+                            <SelectMUI errorMassage={errors?.status_of_cargo} options={dangerous} variant={'outlined'} label={'Опасный ли груз?'}
                                        placeholder={'Опасный ли груз?'}
                                 // value={formData.status_of_cargo}
                                 // onChange={(val) => setFormData({...formData, status_of_cargo: val})}
@@ -939,22 +893,53 @@ function OrdersFrom({mode}) {
                             />
                         </div>
                         <div className={"w-full "}>
-                            <MyCalendar
-                                value={formData?.act_date}
-                                onChange={(val) => setFormData({...formData, act_date: val})}
-                            />
+                            <div className={'relative'}>
+                                <MyCalendar errorMassage={errors.act_date}
+                                    value={formData?.act_date}
+                                    onChange={(val) => setFormData({...formData, act_date: val})}
+                                />
+                                <p className={`absolute text-[12px] pt-1 px-1 font-medium -top-[14px] left-2 text-[#3B82F6] ${errors.act_date ? 'text-red-500' : 'text-[#3B82F6]'} dark:text-darkText bg-white dark:bg-darkBgTwo`}>Дата акта выполненных работ</p>
+
+                                {
+                                    errors.act_date ? <p className={'text-[#d32f2f] text-[12px] mt-1 ml-2'}>{errors.act_date[0]}</p> : ''
+                                }
+
+                            </div>
+
                         </div>
                         <div className={"w-full "}>
-                            <MyCalendar
-                                value={formData?.shipment_date ?? ''} // misol uchun yangi property
-                                onChange={(val) => setFormData({...formData, shipment_date: val})}/>
+                            <div className={'relative'}>
+                                <MyCalendar
+                                    errorMassage={errors.shipment_date}
+                                    value={formData?.shipment_date ?? ''} // misol uchun yangi property
+                                    onChange={(val) => setFormData({...formData, shipment_date: val})}/>
+                                <p className={`absolute text-[12px] pt-1 px-1 font-medium -top-[14px] left-2 text-[#3B82F6] ${errors.shipment_date ? 'text-red-500' : 'text-[#3B82F6]'} dark:text-darkText bg-white dark:bg-darkBgTwo`}>
+                                    Дата погрузки</p>
+                                {
+                                    errors.shipment_date ? <p className={'text-[#d32f2f] text-[12px] mt-1 ml-2'}>{errors.shipment_date[0]}</p> : ''
+                                }
+                            </div>
+
                         </div>
                         <div className={"w-full "}>
-                            <MyCalendar value={formData?.unload_date ?? ''} // misol uchun yangi property
-                                        onChange={(val) => setFormData({...formData, unload_date: val})}/>
+                            <div className={'relative'}>
+                                <MyCalendar
+                                    errorMassage={errors.unload_date}
+                                    value={formData?.unload_date ?? ''} // misol uchun yangi property
+                                            onChange={(val) => setFormData({...formData, unload_date: val})}/>
+                                <p className={`absolute text-[12px] pt-1 px-1 font-medium -top-[14px] left-2   ${errors.unload_date ? 'text-red-500' : 'text-[#3B82F6]'} dark:text-darkText bg-white dark:bg-darkBgTwo`}>
+                                    Дата разгрузки</p>
+
+                                {
+                                    errors.unload_date ? <p className={'text-[#d32f2f] text-[12px] mt-1 ml-2'}>{errors.unload_date[0]}</p> : ''
+                                }
+
+                            </div>
+
                         </div>
                         <div className={"w-full "}>
-                            <InputMUI value={formData?.transportation_time ?? ''}
+                            <InputMUI errorMassage={errors?.transportation_time}
+                                      value={formData?.transportation_time ?? ''}
                                       onChange={(e) =>
                                           setFormData({...formData, transportation_time: e.target.value})
                                       } variant={'outlined'}
@@ -963,7 +948,7 @@ function OrdersFrom({mode}) {
                         </div>
                         <div className={'grid grid-cols-3 col-span-full    gap-4'}>
                             <div className={""}>
-                                <SelectMUI options={typeLoading} variant={'outlined'} label={'Вид погрузки'}
+                                <SelectMUI errorMassage={errors?.type_of_loading} options={typeLoading} variant={'outlined'} label={'Вид погрузки'}
                                            placeholder={'Вид погрузки'}
                                     // value={formData?.type_of_loading || null}
                                     // onChange={(val) => setFormData({...formData, type_of_loading: val})}
@@ -985,7 +970,7 @@ function OrdersFrom({mode}) {
 
                             </div>
                             <div className={"  "}>
-                                <InputMUI value={formData?.nature_of_cargo ?? ''}
+                                <InputMUI errorMassage={errors?.nature_of_cargo} value={formData?.nature_of_cargo ?? ''}
                                           onChange={(e) =>
                                               setFormData({...formData, nature_of_cargo: e.target.value})
                                           }
@@ -993,7 +978,7 @@ function OrdersFrom({mode}) {
                                 />
                             </div>
                             <div className={"  "}>
-                                <InputMUI value={formData?.palets ?? ''}
+                                <InputMUI errorMassage={errors?.palets} value={formData?.palets ?? ''}
                                           onChange={(e) =>
                                               setFormData({...formData, palets: e.target.value})
                                           }
@@ -1002,7 +987,7 @@ function OrdersFrom({mode}) {
                             </div>
                         </div>
                         <div className={"col-span-full  "}>
-                            <InputMUI value={formData?.special_conditions ?? ''}
+                            <InputMUI errorMassage={errors?.special_conditions} value={formData?.special_conditions ?? ''}
                                       onChange={(e) =>
                                           setFormData({...formData, special_conditions: e.target.value})
                                       }
@@ -1014,7 +999,7 @@ function OrdersFrom({mode}) {
                 <div className={'w-[90%] bg-white px-4  mx-auto py-5 rounded-md shadow mt-5 dark:bg-darkBgTwo'}>
                     <div className={'grid grid-cols-3 gap-4'}>
                         <div className={" "}>
-                            <SelectMUI options={typePayment} variant={'outlined'} label={'Тип оплаты'}
+                            <SelectMUI errorMassage={errors?.payment_condition} options={typePayment} variant={'outlined'} label={'Тип оплаты'}
                                        placeholder={'Тип оплаты'}
                                 // value={formData?.payment_condition || null}
                                 // onChange={(val) => setFormData({...formData, payment_condition: val})}
@@ -1035,7 +1020,7 @@ function OrdersFrom({mode}) {
 
                         </div>
                         <div className={""}>
-                            <InputMUI value={formData?.sender_contact ?? ''}
+                            <InputMUI errorMassage={errors?.sender_contact} value={formData?.sender_contact ?? ''}
                                       onChange={(e) =>
                                           setFormData({...formData, sender_contact: e.target.value})
                                       }
@@ -1043,7 +1028,7 @@ function OrdersFrom({mode}) {
                             />
                         </div>
                         <div className={""}>
-                            <InputMUI value={formData?.receiver_contact ?? ''}
+                            <InputMUI errorMassage={errors?.receiver_contact} value={formData?.receiver_contact ?? ''}
                                       onChange={(e) =>
                                           setFormData({...formData, receiver_contact: e.target.value})
                                       } variant={'outlined'} label={'Контакты получателя (декларант)'}

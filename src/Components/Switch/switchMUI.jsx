@@ -8,7 +8,7 @@ const SwitchMUI = () => {
         <div>
             <Switch
                 {...label}
-                defaultChecked
+
                 sx={{
                     "& .MuiSwitch-switchBase.Mui-checked": {
                         color: "#1D2D5B",

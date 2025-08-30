@@ -2,7 +2,7 @@ import * as React from 'react';
 import Box from '@mui/material/Box';
 import TextField from '@mui/material/TextField';
 
-export default function InputMUI({variant, label, value, type, onChange , defaultValue}) {
+export default function InputMUI({variant, label, value, type, onChange , defaultValue , errorMassage}) {
     return (
         <Box
             component="form"
@@ -48,6 +48,8 @@ export default function InputMUI({variant, label, value, type, onChange , defaul
                 variant={variant}
                 value={value}
                 defaultValue={defaultValue}
+                error={errorMassage}
+                helperText={errorMassage ? errorMassage[0] : ""}
             />
         </Box>
 

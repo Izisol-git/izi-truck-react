@@ -29,51 +29,57 @@ import {OffersOrders} from "./Components/index.js";
 import {useDispatch} from "react-redux";
 import {getCurrentUser} from "./features/Auth/authThunks.js";
 import AddClientContracts from "./pages/Contracts/ClientContracts/addClientContracts.jsx";
+// import io from "socket.io-client";
+// import {addNotification} from "./features/Notification/notificationSlice.js";
 
-function safeSetTag(obj, sym, value) {
-    try {
-        var desc = Object.getOwnPropertyDescriptor(obj, sym);
-        if (!desc || desc.writable) {
-            obj[sym] = value;
-        }
-    } catch (e) {
-        // ignore errors on readonly symbols
-    }
-}
 
-// 2️⃣ Patched _getRawTag funksiyasi
-function patchedGetRawTag(value) {
-    var symToStringTag = Symbol.toStringTag;
-    var isOwn = Object.prototype.hasOwnProperty.call(value, symToStringTag);
-    var tag = value[symToStringTag];
-    var unmasked;
 
-    try {
-        safeSetTag(value, symToStringTag, undefined);
-        unmasked = Object.prototype.toString.call(value);
-    } catch (e) {
-        unmasked = Object.prototype.toString.call(value);
-    } finally {
-        if (isOwn) {
-            safeSetTag(value, symToStringTag, tag);
-        }
-    }
-
-    return unmasked;
-}
-
-// 3️⃣ Lodash _getRawTag ni override qilish (agar Lodash allaqachon import qilingan bo‘lsa)
-if (typeof _ !== 'undefined' && _.runInContext) {
-    try {
-        var lodashInternal = _.__proto__ || _;
-        if (lodashInternal._getRawTag) {
-            lodashInternal._getRawTag = patchedGetRawTag;
-            console.info('✅ Lodash _getRawTag patched successfully.');
-        }
-    } catch (e) {
-        console.warn('⚠️ Lodash patch failed:', e);
-    }
-}
+// const socket = io("http://localhost:4000");
+//
+// function safeSetTag(obj, sym, value) {
+//     try {
+//         var desc = Object.getOwnPropertyDescriptor(obj, sym);
+//         if (!desc || desc.writable) {
+//             obj[sym] = value;
+//         }
+//     } catch (e) {
+//         // ignore errors on readonly symbols
+//     }
+// }
+//
+// // 2️⃣ Patched _getRawTag funksiyasi
+// function patchedGetRawTag(value) {
+//     var symToStringTag = Symbol.toStringTag;
+//     var isOwn = Object.prototype.hasOwnProperty.call(value, symToStringTag);
+//     var tag = value[symToStringTag];
+//     var unmasked;
+//
+//     try {
+//         safeSetTag(value, symToStringTag, undefined);
+//         unmasked = Object.prototype.toString.call(value);
+//     } catch (e) {
+//         unmasked = Object.prototype.toString.call(value);
+//     } finally {
+//         if (isOwn) {
+//             safeSetTag(value, symToStringTag, tag);
+//         }
+//     }
+//
+//     return unmasked;
+// }
+//
+// // 3️⃣ Lodash _getRawTag ni override qilish (agar Lodash allaqachon import qilingan bo‘lsa)
+// if (typeof _ !== 'undefined' && _.runInContext) {
+//     try {
+//         var lodashInternal = _.__proto__ || _;
+//         if (lodashInternal._getRawTag) {
+//             lodashInternal._getRawTag = patchedGetRawTag;
+//             console.info('✅ Lodash _getRawTag patched successfully.');
+//         }
+//     } catch (e) {
+//         console.warn('⚠️ Lodash patch failed:', e);
+//     }
+// }
 
 function App() {
 
@@ -83,6 +89,19 @@ function App() {
     }, [dispatch]);
 
 
+
+    //
+    // useEffect(() => {
+    //     socket.on("notification", (msg) => {
+    //         dispatch(addNotification(msg));
+    //     });
+    //
+    //     return () => {
+    //         socket.off("notification");
+    //     };
+    // }, [dispatch]);
+    //
+    //
 
 
     return (

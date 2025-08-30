@@ -108,7 +108,7 @@ function NavbarY() {
                             <div className={'center h-full w-full'}>
                                 <i className={item.icon}></i>
                                 <p>{item.label}</p>
-                                {item.arry && <i className="fa-solid fa-angle-right"></i>}
+                                {item.arry && <i className={`fa-solid fa-angle-right transition-all duration-300  ${item.active ? 'transition-transform rotate-90 ' : ''}`}></i>}
                             </div>
 
                             {/* Dropdown */}
@@ -153,14 +153,14 @@ function NavbarY() {
                 <div className="center gap-4">
                     <i className="fa-solid fa-bell text-blue dark:text-white text-lg"></i>
                     <LanguageDropdown/>
-                    {isSun === false ? (
-                        <i onClick={sunToggle}
-                           className={'fas fa-moon font-bold cursor-pointer text-blue dark:text-white'}></i>
-                    ) : (
-                        <i onClick={sunToggle}
-                           className={'fas fa-sun font-bold cursor-pointer text-blue dark:text-white'}></i>
-                    )}
-                    <ProfileDropdown/>
+                    {/*{isSun === false ? (*/}
+                    {/*    <i onClick={sunToggle}*/}
+                    {/*       className={'fas fa-moon font-bold cursor-pointer text-blue dark:text-white'}></i>*/}
+                    {/*) : (*/}
+                    {/*    <i onClick={sunToggle}*/}
+                    {/*       className={'fas fa-sun font-bold cursor-pointer text-blue dark:text-white'}></i>*/}
+                    {/*)}*/}
+                    <ProfileDropdown sunToggle={sunToggle}/>
                 </div>
             </div>
         </div>

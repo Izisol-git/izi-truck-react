@@ -13,7 +13,7 @@ function EmployesDetail() {
     const EmployeesGetId = async (id)=> {
         const res = await dispatch(EmployeesId(id))
         setData(res.payload.data)
-        console.log(res.payload.data)
+        console.log(res)
     }
     useEffect(()=>{
         EmployeesGetId(id)

@@ -4,11 +4,12 @@ import Autocomplete from '@mui/material/Autocomplete';
 import Stack from '@mui/material/Stack';
 import Paper from "@mui/material/Paper";
 
-export default function SelectMUI({ label, placeholder, variant,  value, onChange, options   }) {
+export default function SelectMUI({ label, placeholder, variant,  value, onChange, options , errorMassage   }) {
 
     return (
         <Stack spacing={1} sx={{ width: "100%" }}>
             <Autocomplete
+
                 size="small"
                 options={options}
                 value={value || null}
@@ -24,6 +25,7 @@ export default function SelectMUI({ label, placeholder, variant,  value, onChang
                 }
                 PaperComponent={(props) => (
                     <Paper
+
                         {...props}
                         sx={{
                             backgroundColor: "white",
@@ -39,6 +41,8 @@ export default function SelectMUI({ label, placeholder, variant,  value, onChang
                 )}
                 renderInput={(params) => (
                     <TextField
+                        error={errorMassage}
+                        helperText={errorMassage ? errorMassage[0] : ""}
                         {...params}
                         label={label}
                         placeholder={placeholder}

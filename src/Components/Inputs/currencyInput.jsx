@@ -7,7 +7,7 @@ import {
     Box
 } from "@mui/material";
 
-export default function CurrencyInput({ label, onChange, value, carrierCurrency, setCarrierCurrency , disabled }) {
+export default function CurrencyInput({ label, onChange, value, carrierCurrency, setCarrierCurrency , disabled ,errorMassage }) {
     const currencies = [
         { code: "1", label: "USD" },
         { code: "2", label: "UZS" },
@@ -18,6 +18,8 @@ export default function CurrencyInput({ label, onChange, value, carrierCurrency,
     return (
         <Box sx={{ maxWidth: "100%" }}>
             <TextField
+                error={errorMassage}
+                helperText={errorMassage ? errorMassage[0] : ''}
                 disabled={disabled}
                 size="small"
                 label={label}

@@ -10,6 +10,7 @@ import ordersReducer from "../features/orders/ordersSlice.js";
 import invoicesReducer from "../features/Invoices/invoicesSlice.js";
 import suggestionsReducer from "../features/suggestions/suggestionsSlice.js";
 import contractReducer from "../features/Contracts/contractSlice.js";
+import notificationReducer from "../features/Notification/notificationSlice.js";
 
 export const store = configureStore({
     reducer: {
@@ -23,5 +24,6 @@ export const store = configureStore({
         invoices : invoicesReducer,
         suggestions : suggestionsReducer,
         contracts : contractReducer,
+        notification : notificationReducer,
     },
 });

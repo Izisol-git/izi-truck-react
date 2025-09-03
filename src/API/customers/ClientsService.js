@@ -1,8 +1,8 @@
 import api from "../api";
 
 class ClientsService {
-    static async getAll(page) {
-        const res = await api.get(`/clients?page=${page}`);
+    static async getAll(page , search) {
+        const res = await api.get(`/clients?page=${page}&search=${search}`);
         return res.data;
     }
 

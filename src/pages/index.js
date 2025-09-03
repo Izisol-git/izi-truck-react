@@ -25,4 +25,6 @@ export {default as EmployeesContracts} from './Contracts/EmployeesContracts/empl
 export {default as ClientContracts} from './Contracts/ClientContracts/clientContracts.jsx'
 export {default as AddClientContracts} from './Contracts/ClientContracts/addClientContracts.jsx'
 export {default as EditClientContracts} from './Contracts/ClientContracts/editClientContracts.jsx'
+export {default as Notifications} from './Notificaions/Notifications.jsx'
+export {default as NotificationsDetails} from './Notificaions/notificationsDetails.jsx'
 

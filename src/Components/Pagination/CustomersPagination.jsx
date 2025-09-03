@@ -3,7 +3,8 @@ import {useDispatch, useSelector} from "react-redux";
 import {useNavigate} from "react-router-dom";
 import {TableCell, TableRow} from "@mui/material";
 import {
-     ClientsUpdetId,
+    AddCustomersId,
+    ClientsUpdetId,
     EditToggle, openModal,
     openModalComments,
     openModalHistory
@@ -113,8 +114,9 @@ function CustomersPagination({row , index , data , setEmployeesId , arry , navig
                         <div onClick={(e) => {
                             e.stopPropagation();
                             // setEmployeesId(row.id)
-                            console.log(row.id);
-                            findId(row.id)
+                            // console.log(row.id);
+                            // findId(row.id)
+                            dispatch(AddCustomersId(row.id))
                             dispatch(openModal())
                             dispatch(EditToggle())
                             dispatch(ClientsUpdetId(row.id))

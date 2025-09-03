@@ -41,3 +41,7 @@ export {default as ActData} from "./Modal/actData.jsx";
 export {default as OffersOrdersCarrier} from "./Modal/offersOrdersCarrier.jsx";
 export {default as excelModal} from "./Modal/excelModal.jsx";
 export {default as ContractsPagination} from "./Pagination/ContractsPagination.jsx";
+export {default as NotificationsPagination} from "./Pagination/notificationsPagination.jsx";
+export {default as Chats} from "./Chats/Chats.jsx";
+export {default as ChatsPagination} from "./Pagination/ChatsPagination.jsx";
+export {default as NotificationsModal} from "./Modal/notificationsModal.jsx";

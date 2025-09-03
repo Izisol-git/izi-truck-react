@@ -85,13 +85,13 @@ const Login = () => {
                             </div>
                         </div>
                         <div className="mb-4">
-                            <FormControlLabel
-                                control={<Checkbox  />}
-                                label="Men shartlarga roziman"
-                            />
+                            {/*<FormControlLabel*/}
+                            {/*    control={<Checkbox  />}*/}
+                            {/*    label="Men shartlarga roziman"*/}
+                            {/*/>*/}
                         </div>
                         <Button onClick={()=> postLogin()} value={!loading ? 'Kirish' : 'Loading....'}/>
-                        <p onClick={()=> navigate('/forgot-password')} className={'cursor-pointer underline text-blue text-center hover:text-black mt-4'}>Forgot your password?</p>
+                        {/*<p onClick={()=> navigate('/forgot-password')} className={'cursor-pointer underline text-blue text-center hover:text-black mt-4'}>Forgot your password?</p>*/}
                     </form>
                 </div>
             </div>

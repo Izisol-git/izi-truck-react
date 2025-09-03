@@ -4,9 +4,9 @@ import DriversService   from "../../Api/Drivers/driversService.js";
 // Xodimlarni olish
 export const getDrivers = createAsyncThunk(
     "employees/fetchEmployees",
-    async (page, { rejectWithValue }) => {
+    async ({page , search}, { rejectWithValue }) => {
         try {
-            return await DriversService.getAll(page);
+            return await DriversService.getAll(page , search);
         } catch (err) {
             return rejectWithValue(err.response?.data || "Failed to fetch employees");
         }

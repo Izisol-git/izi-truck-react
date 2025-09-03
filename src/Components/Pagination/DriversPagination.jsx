@@ -105,6 +105,7 @@ function DriversPagination({row , index , data , setEmployeesId , arry , navigat
                             e.stopPropagation();
                             findId(row.id)
                             dispatch(DriversId(row.id))
+                            localStorage.setItem('driversId' , row?.id)
                             dispatch(EditToggle())
                             navigate("/users/drivers/edit");
                         }}
@@ -115,6 +116,7 @@ function DriversPagination({row , index , data , setEmployeesId , arry , navigat
                         <div onClick={(e) => {
                             e.stopPropagation();
                             dispatch(DriversId(row.id))
+                            localStorage.setItem('driversId' , row?.id)
                             navigate(`/users/${navigateURL}/detail/${row.id}`)
                         }}
                              className="bg-[#5E83D4] w-[30px] h-[30px] rounded center text-[14px] group">

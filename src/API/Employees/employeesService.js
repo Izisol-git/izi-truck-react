@@ -1,8 +1,8 @@
 import axios from "../api";
 
 const EmployeeService = {
-    async getAll(page ) {
-        const res = await axios.get(`/employees?page=${page}`);
+    async getAll(page , search ) {
+        const res = await axios.get(`/employees?page=${page}&search=${search}`);
         return res.data;
     },
     async employeesId(id) {

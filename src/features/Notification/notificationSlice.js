@@ -7,9 +7,9 @@ const notificationSlice = createSlice({
         addNotification: (state, action) => {
             state.unshift(action.payload); // eng yangisini oldiga qo‘shamiz
         },
-        clearNotifications: () => []
+        // clearNotifications: () => []
     }
 });
 
-export const { addNotification, clearNotifications } = notificationSlice.actions;
+export const { addNotification } = notificationSlice.actions;
 export default notificationSlice.reducer;

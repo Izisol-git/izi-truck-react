@@ -186,12 +186,6 @@ function OrdersFrom({mode}) {
 
         })
 
-
-
-
-
-
-
         try {
             const res = await dispatch(editOrder({id: id, editData: formData} )).unwrap();
             navigate("/orders")
@@ -319,7 +313,7 @@ function OrdersFrom({mode}) {
 
     const getShowOrdersId = async () => {
         try {
-            const res = await dispatch(getShowOrders({id: id, db: dbOrders})).unwrap();
+            const res = await dispatch(getShowOrders({id: id, db: localStorage.getItem('dbOrders')})).unwrap();
             console.log(res)
             setFormData(res.order)
             setDriversName(res.driver.fio)

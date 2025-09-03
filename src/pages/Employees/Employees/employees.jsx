@@ -19,9 +19,9 @@ function Employees() {
     const [searchParams] = useSearchParams();
     const pageqq = searchParams.get("page") || 1;
     const  [total, setTotal] = useState();
+    const [searchEmployees, setSearchEmployees] = useState('');
     const [employeesId, setEmployeesId] = useState();
     const [employeesData, setEmployeesData] = useState();
-    const {loading} = useSelector((state) => state.drivers)
     const addEditToggle = useSelector((state) => state.employesModal.addEditToggle);
 
 
@@ -41,7 +41,7 @@ function Employees() {
 
     useEffect(() => {
         const employeesData = async () => {
-            const result = await dispatch(getEmployees(pageqq)); // page yuboriladi
+            const result = await dispatch(getEmployees({page : pageqq , search: searchEmployees}));
             setEmployeesData(result.payload.data.data);
             setTotal(result.payload.data)
             console.log(result.payload.data)
@@ -49,7 +49,7 @@ function Employees() {
         employeesData();
 
         // console.log(employeesPaginationData);
-    }, [pageqq, dispatch]); // ⚡ page o‘zgarsa qayta fetch bo‘ladi
+    }, [pageqq, dispatch ,searchEmployees]); // ⚡ page o‘zgarsa qayta fetch bo‘ladi
 
 
 
@@ -59,9 +59,9 @@ function Employees() {
                 <div className="w-[90%] mx-auto">
                     <UserNavbar openModal={() => dispatch(openModal())} value={'Employees'} columnsArry={columnsArry}
                                 setColumnsArry={setColumnsArry}/>
-                    {loading ?  <Loading/> : <UserPagination  setEmployeesId={setEmployeesId} total={total} data={employeesData} arry={columnsArry} setColumnsArry={setColumnsArry}
+                     <UserPagination  setSearch={setSearchEmployees} setEmployeesId={setEmployeesId} total={total} data={employeesData} arry={columnsArry} setColumnsArry={setColumnsArry}
                                                     navigateURL={'employees'}/>
-                        }
+
                     <AddEmployesModal  employeesId={employeesId} data={employeesData}    h1={"Employees"} inputModalArray={inputModalArray}/>
                     <Timeline/>
                 </div>

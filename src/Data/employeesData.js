@@ -1,4 +1,5 @@
 export const inputModalArray = [
+    { type: 'select', label: 'User type', value: '' , post : 'type'},
     { type: 'text', label: 'Full name', value: '' , post : 'name'},
     { type: 'text', label: 'Phone number', value: '' , post : 'phone_number'},
     { type: 'text', label: 'User ID (Telegram)', value: '', post : 'tg_user_id' },
@@ -7,5 +8,5 @@ export const inputModalArray = [
     { type: 'password', label: 'Password', value: '' , post : 'password'},
     { type: 'text', label: 'Code', value: '', post : 'code'},
     { type: 'text', label: 'INN', value: '' , post : 'tin'},
-    { type: 'select', label: 'user type', value: '' , post : 'type'},
+
 ];

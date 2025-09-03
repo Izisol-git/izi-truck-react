@@ -44,6 +44,7 @@ const OrderCard = ({order, onEdit, onDelete, onActDate, key}) => {
                     onDoubleClick={() => {
                         navigate(`/orders/${order?.id}`)
                         dispatch(changeDbOrders(order?.source))
+                        localStorage.setItem("dbOrders", order?.source);
                     }}
                     className="w-full rounded-lg   border-gray-200 bg-white p-5 shadow-sm dark:bg-darkBgTwo">
                     {/* Top bar */}

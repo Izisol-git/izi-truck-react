@@ -2,8 +2,8 @@ import axios from "../api";
 
 
 const DriversService = {
-    async getAll(page ) {
-        const res = await axios.get(`/drivers?page=${page}`);
+    async getAll(page , search ) {
+        const res = await axios.get(`/drivers?page=${page}&search=${search}`);
         return res.data;
     },
     async driversId(id ) {

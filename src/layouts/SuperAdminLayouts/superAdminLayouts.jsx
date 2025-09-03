@@ -5,6 +5,7 @@ import {useSelector} from "react-redux";
 
 function SuperAdminLayouts() {
     const token = useSelector(state => state.auth.token);
+    const user = useSelector(state => state.auth.user);
     return token ? <div >
         <Navbar/>
         <main >

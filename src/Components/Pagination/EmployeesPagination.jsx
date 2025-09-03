@@ -7,7 +7,8 @@ import {
 import { ProfileInfoCard} from "../index.js";
 import {useDispatch, useSelector} from "react-redux";
 import {
-   EditToggle,
+    AddEmployeesId,
+    EditToggle,
     openModal,
     openModalComments,
     openModalHistory
@@ -22,11 +23,7 @@ const EmployeesPagination = ({row , index , data , setEmployeesId , arry , navig
 
     const [isOpen, setIsOpen] = useState(-1);
     const navigate = useNavigate();
-    const findId = (id) => {
-        const newData = data.find((employee) => employee.id === id);
-        setEmployeesId(newData)
-        console.log(newData)
-    }
+
 
     return (
         <>
@@ -113,7 +110,7 @@ const EmployeesPagination = ({row , index , data , setEmployeesId , arry , navig
                         <div onClick={(e) => {
                             e.stopPropagation();
                             dispatch(openModal())
-                            findId(row.id)
+                            dispatch(AddEmployeesId(row.id))
                             dispatch(EditToggle())
                         }}
                              className=" bg-yellow-500 w-[30px] h-[30px] rounded center text-[14px] group">

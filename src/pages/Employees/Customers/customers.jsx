@@ -20,10 +20,11 @@ function Customers() {
     const dispatch = useDispatch();
 
     const [dropdownCustomers, setDropdownCustomers] = useState(false);
-    const {loading} = useSelector((state) => state.customers)
+
     const [searchParams] = useSearchParams();
     const pageqq = searchParams.get("page") || 1;
     const  [total, setTotal] = useState();
+    const [searchCustomers, setSearchCustomers] = useState('');
     const [customersId, setCustomersId] = useState();
     const [customersData, setCustomersData] = useState();
 
@@ -41,13 +42,13 @@ function Customers() {
 
     useEffect(() => {
         const customersData = async () => {
-            const result = await dispatch(getClients(pageqq)); // page yuboriladi
+            const result = await dispatch(getClients({page: pageqq, search: searchCustomers})); // page yuboriladi
             setCustomersData(result.payload.clients.data);
             setTotal(result.payload.clients)
             console.log(result.payload );
         };
         customersData();
-    }, [pageqq, dispatch]); // ⚡ page o‘zgarsa qayta fetch bo‘ladi
+    }, [pageqq, dispatch , searchCustomers]); // ⚡ page o‘zgarsa qayta fetch bo‘ladi
 
 
 
@@ -59,9 +60,9 @@ function Customers() {
             <div className={'bg-bacWhite flex dark:bg-darkBg min-h-[calc(100dvh-70px)]'}>
                 <div className="w-[90%] mx-auto">
                     <UserNavbar openModal={()=> dispatch(openModal())} value={'Customers'} columnsArry={columnsArry} setColumnsArry={setColumnsArry}/>
-                    {loading ?  <Loading/> : <UserPagination employeesId={customersId}  setEmployeesId={setCustomersId} total={total} data={customersData} arry={columnsArry} setColumnsArry={setColumnsArry}
+                        <UserPagination setSearch={setSearchCustomers} employeesId={customersId}  setEmployeesId={setCustomersId} total={total} data={customersData} arry={columnsArry} setColumnsArry={setColumnsArry}
                                                              navigateURL={'customers'}/>
-                    }
+
                 </div>
                 <AddEmployesModal  setEmployeesId={setCustomersId} employeesId={customersId}  h1={"Customers"}    inputModalArray={inputModalArray} />
                 <Timeline/>

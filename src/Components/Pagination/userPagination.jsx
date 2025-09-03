@@ -14,10 +14,10 @@ import {
     TextField,
 } from "@mui/material";
 import {
-    AddEmployesModal, ContractsPagination,
+    AddEmployesModal, ChatsPagination, ContractsPagination,
     CustomersPagination,
     DriversPagination,
-    EmployeesPagination, InvoicesPagination, Loading,
+    EmployeesPagination, InvoicesPagination, Loading, NotificationsPagination,
     PaginationFooter,
     ProfileInfoCard
 } from "../index.js";
@@ -30,7 +30,18 @@ const UserPagination = ({arry, navigateURL, data, total, setEmployeesId, employe
     // const dispatch = useDispatch();
     // const [searchData, setSearchData] = useState();
     // console.log(searchData);
-    const {loading} = useSelector((state) => state.contracts);
+    const loadingContracts = useSelector((state) => state.contracts.loading)
+    const loadingCustomers = useSelector((state) => state.customers.loading)
+    const loadingDrivers = useSelector((state) => state.drivers.loading)
+    const loadingEmployees =  useSelector((state) => state.drivers.loading)
+
+
+
+    // useEffect(() => {
+    //     if (navigateURL === 'clients') {
+    //         loading = loadingContracts
+    //     }
+    // })
     // const search = async () => {
     //     try {
     //         const res = await dispatch(searchContracts(searchData));
@@ -162,7 +173,7 @@ const UserPagination = ({arry, navigateURL, data, total, setEmployeesId, employe
                         </TableHead>
 
                         {
-                            loading ? <TableRow>
+                            (navigateURL === 'clients' ? loadingContracts : navigateURL === 'customers' ? loadingCustomers : navigateURL === 'drivers' ? loadingDrivers : navigateURL === 'employees' ? loadingEmployees : '') ? <TableRow>
                                 <TableCell colSpan={9}>
                                     <Loading />
                                 </TableCell>
@@ -205,6 +216,28 @@ const UserPagination = ({arry, navigateURL, data, total, setEmployeesId, employe
                                         />
                                     ) : navigateURL === "clients" ? (
                                         <ContractsPagination
+                                            key={index}
+                                            navigateURL={navigateURL}
+                                            arry={arry}
+                                            row={row}
+                                            index={index}
+                                            data={data}
+                                            setEmployeesId={setEmployeesId}
+                                            employeesId={employeesId}
+                                        />
+                                    ) : navigateURL === 'notifications' ? (
+                                        <NotificationsPagination
+                                        key={index}
+                                        navigateURL={navigateURL}
+                                        arry={arry}
+                                        row={row}
+                                        index={index}
+                                        data={data}
+                                        setEmployeesId={setEmployeesId}
+                                        employeesId={employeesId}
+                                        />
+                                    ) : navigateURL === 'chats' ? (
+                                        <ChatsPagination
                                             key={index}
                                             navigateURL={navigateURL}
                                             arry={arry}

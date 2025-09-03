@@ -4,10 +4,10 @@ import {SelectMUI, InputMUI, ButtonMUI, RadioGroup} from "../index.js";
 import {Button} from "@mui/material";
 import {useDispatch, useSelector} from "react-redux";
 import {closeModal} from "../../features/EmployeSModalToggle/employesModalToggle.js";
-import {addEmployee, updateEmployee} from "../../features/Employees/employeeThunks.js";
+import {addEmployee, EmployeesId, updateEmployee} from "../../features/Employees/employeeThunks.js";
 import {addClient, ClientId, editClient, getClientsSelect} from "../../features/customers/clientsThunks.js";
 
-function AddEmployesModal({h1, inputModalArray = [], employeesId, setEmployeesId}) {
+function AddEmployesModal({h1, inputModalArray = [], setEmployeesId}) {
     const [inputVariant, setInputVariant] = useState("outlined");
     const {loadingAddEmployee} = useSelector((state) => state.employees);
     const {loadingClient} = useSelector((state) => state.customers);
@@ -20,6 +20,9 @@ function AddEmployesModal({h1, inputModalArray = [], employeesId, setEmployeesId
     const [options, setOptions] = useState();
     const {clientsUpdetId} = useSelector((state) => state.employesModal);
     const {user} = useSelector((state) => state.auth);
+    const [errors, setErrors] = useState();
+    const {employeesId} = useSelector((state) => state.employesModal);
+    const {customersId} = useSelector((state) => state.employesModal);
 
     const [inputModal, setInputModal] = useState(
         inputModalArray.reduce((acc, item) => {
@@ -28,37 +31,105 @@ function AddEmployesModal({h1, inputModalArray = [], employeesId, setEmployeesId
         }, {})
     );
 
-    // console.log(inputModal)
+    console.log(employeesId)
 
 
     const getSelect = async () => {
         const res = await dispatch(getClientsSelect())
         const newArray = res.payload.contracts.map(({customer, id}) => ({title: customer, id}));
-        if(h1 === 'Customers') {
+        if (h1 === 'Customers') {
             setOptions(newArray);
         }
         console.log(newArray);
     }
 
 
+    // const ClientSId = async () => {
+    //     const res = await dispatch(ClientId(employeesId))
+    //     // setInputModal(res.payload.data)
+    //     // setSelectArry(res.payload.data)
+    //     console.log(res)
+    // }
 
-    const ClientSId = async (id) => {
-        const res = await dispatch(ClientId(id))
+    const getEmployeesId = async () => {
+        try {
+            const res = await dispatch(EmployeesId(employeesId)).unwrap();
+            console.log(res.data)
 
-        setSelectArry(res.payload.data)
+            // // inputModalArray bo'yicha res dan mos keladigan qiymatlarni olish
+            // const updatedInputModal = inputModalArray.map(item => ({
+            //     ...item,
+            //     value: res[item.post] || ''  // res[item.post] bo'lmasa bo'sh string
+            // }));
 
-    }
+            setInputModal({
+                name: res?.data?.user?.name,
+                email: res?.data?.user?.email,
+                password: "",
+                tin: res?.data?.tin,
+                phone_number: res?.data?.phone_number,
+                tg_user_id: res?.data?.tg_user_id,
+                tg_nick_name: res?.data?.tg_nick_name,
+                code: res?.data?.code,
+                avatar: '',
+                type: res?.data?.type,
+            });
+            // console.log(updatedInputModal);
+        } catch (error) {
+            console.log(error);
+        }
+    };
+    const getCustomersId = async () => {
+        try {
+            const res = await dispatch(ClientId(customersId)).unwrap();
+            console.log(res.data)
+
+            // // inputModalArray bo'yicha res dan mos keladigan qiymatlarni olish
+            // const updatedInputModal = inputModalArray.map(item => ({
+            //     ...item,
+            //     value: res[item.post] || ''  // res[item.post] bo'lmasa bo'sh string
+            // }));
+
+            setInputModal({
+                company_name: res?.data?.company_name,
+                customer_id:res?.data?.customer_id,
+                fio:res?.data?.fio,
+                phone_number: res?.data?.phone_number
+            });
+            // console.log(updatedInputModal);
+        } catch (error) {
+            console.log(error);
+        }
+    };
+
+    useEffect(() => {
+        if (employeesId && addEditToggle === false && h1 === 'Employees') {
+            getEmployeesId()
+        }
+    }, [employeesId, isOpen])
+    useEffect(() => {
+        if (customersId && addEditToggle === false && h1 === 'Customers') {
+            getCustomersId()
+        }
+    }, [customersId, isOpen])
+
+    useEffect(() => {
+        clearEmployeesModal()
+    }, [isOpen])
     // company_name phone_number fio id
 
     useEffect(() => {
+        // if(addEditToggle === true){
+        //     setInputModal({})
+        // }
         if (h1 === 'Customers') {
             getSelect()
         }
-        if(h1 === 'Employees') {
+        if (h1 === 'Employees') {
             setOptions([
-                {value:1 , name:'carrier'},
-                {value:2 , name:'client'},
-                {value:3 , name:'admin'}
+                {value: 1, name: 'carrier'},
+                {value: 2, name: 'client'},
+                {value: 3, name: 'admin'}
             ])
         }
     }, [])
@@ -104,8 +175,8 @@ function AddEmployesModal({h1, inputModalArray = [], employeesId, setEmployeesId
             setInputModal(prev => ({
                 ...prev,
                 code: employeesId?.code,
-                email: employeesId?.user.email,
-                name: employeesId?.user.name,
+                email: employeesId?.user?.email,
+                name: employeesId?.user?.name,
                 password: employeesId?.password,
                 phone_number: employeesId?.phone_number,
                 tg_nick_name: employeesId?.tg_nick_name,
@@ -135,6 +206,7 @@ function AddEmployesModal({h1, inputModalArray = [], employeesId, setEmployeesId
 
             } catch (error) {
                 console.error("Xatolik:", error);
+                setErrors(error.errors);
             }
         }
 
@@ -146,16 +218,16 @@ function AddEmployesModal({h1, inputModalArray = [], employeesId, setEmployeesId
                 dispatch(closeModal());
             } catch (error) {
                 console.error("Xatolik:", error);
+                setErrors(error.errors);
             }
         }
     };
 
 
-
     const PutEmployees = async () => {
         if (h1 === 'Employees') {
             try {
-                await dispatch(updateEmployee({id: employeesId.id, employeeData: inputModal})).unwrap();
+                await dispatch(updateEmployee({id: employeesId, employeeData: inputModal})).unwrap();
                 clearEmployeesModal();
                 dispatch(closeModal());
                 // setEmployeesId(Object.fromEntries(Object.keys(employeesId).map(key => [key, ""])));
@@ -163,18 +235,20 @@ function AddEmployesModal({h1, inputModalArray = [], employeesId, setEmployeesId
             } catch (error) {
                 console.error("Xatolik:", error);
                 console.log({name: addEmployees?.name});
+                setErrors(error.errors);
             }
         }
 
         if (h1 === 'Customers') {
             console.log(inputModal)
             try {
-                await dispatch(editClient({id: employeesId.id, clientData: inputModal})).unwrap();
+                await dispatch(editClient({id: customersId, clientData: inputModal})).unwrap();
                 clearEmployeesModal();
                 dispatch(closeModal());
-                setEmployeesId(Object.fromEntries(Object.keys(employeesId).map(key => [key, ""])));
+                // setEmployeesId(Object.fromEntries(Object.keys(employeesId).map(key => [key, ""])));
             } catch (error) {
                 console.error("Xatolik:", error);
+                setErrors(error.errors);
             }
         }
     };
@@ -193,7 +267,7 @@ function AddEmployesModal({h1, inputModalArray = [], employeesId, setEmployeesId
         }, {});
         setInputModal(formData);
     }
-    console.log(inputModal);
+
     console.log(user?.user?.roles[0]?.name);
 
     return (
@@ -202,13 +276,18 @@ function AddEmployesModal({h1, inputModalArray = [], employeesId, setEmployeesId
                 // onMouseLeave={()=> dispatch(closeModal())}
                 className={`${isOpen ? "w-1/3 opacity-1" : "w-0 opacity-0"}  fixed overflow-scroll  scrollbar-hide top-0 right-0 bottom-0 h-[100dvh] bg-white shadow-2xl z-10   transition-all duration-300 ease-in-out   flex flex-col justify-between items-start dark:bg-darkBgTwo dark:shadow-none `}>
                 <div className={'w-full px-6'}>
-                    <div className={"flex items-center justify-between border-b    border-blue p-4 dark:border-darkText"}>
+                    <div
+                        className={"flex items-center justify-between border-b    border-blue p-4 dark:border-darkText"}>
                         <p className={'text-blue font-bold text-lg dark:text-darkText'}>{addEditToggle ? "Add" : "Edit"} {h1}</p>
                         <div onClick={() => {
-                            dispatch(closeModal())
                             clearEmployeesModal()
-                            setEmployeesId(Object.fromEntries(Object.keys(employeesId).map(key => [key, ""])));
+                            dispatch(closeModal())
 
+                            setInputModal(
+                                Object.fromEntries(
+                                    Object.keys(inputModal).map(key => [key, ""])
+                                )
+                            );
                         }}
                              className={'w-[30px] h-[30px] cursor-pointer hover:bg-gray-100 rounded center dark:hover:bg-navBgHover'}>
                             <i className={'fas fa-times text-blue dark:text-darkText'}></i>
@@ -220,6 +299,7 @@ function AddEmployesModal({h1, inputModalArray = [], employeesId, setEmployeesId
                                 item.type === "select" && user?.user?.roles[0]?.name === 'super-admin' ? (
                                     <div key={index} className="w-full">
                                         <SelectMUI
+                                            errorMassage={errors?.[item.post]}
                                             options={options || []}
                                             variant={inputVariant}
                                             addEditToggle={addEditToggle}
@@ -227,21 +307,20 @@ function AddEmployesModal({h1, inputModalArray = [], employeesId, setEmployeesId
                                             placeholder={item.label}
                                             value={
                                                 addEditToggle
-                                                    ? inputModal.customer_id
-                                                        ? options?.find(opt => opt.id === inputModal.customer_id) || null
+                                                    ? inputModal.type
+                                                        ? options?.find(opt => String(opt.value) === String(inputModal.type)) || null
                                                         : null
-                                                    : options?.find(opt => opt.id === employeesId?.customer_id) || null
+                                                    : options?.find(opt => String(opt.value) === String(inputModal?.type)) || null
                                             }
                                             onChange={(newValue) =>
-                                                setInputModal({...inputModal, customer_id: newValue?.id ?? null})
+                                                setInputModal({...inputModal, type: newValue.value ?? null})
                                             }
                                         />
-
-
                                     </div>
                                 ) : (
                                     <div key={index} className="w-[50%] flex px-2">
                                         <InputMUI
+                                            errorMassage={errors?.[item.post]}
                                             onChange={(e) => inputvalue(e, item.post)}
                                             variant={inputVariant}
                                             label={item.label}
@@ -267,8 +346,8 @@ function AddEmployesModal({h1, inputModalArray = [], employeesId, setEmployeesId
 
                     <Button sx={{
                         borderColor: "#1D2D5B", width: "50%", color: "#1D2D5B",
-                        '.dark &':{
-                        color: 'white',
+                        '.dark &': {
+                            color: 'white',
                             backgroundColor: '#2B4764',
                             borderColor: '#2B4764',
                         }
@@ -286,7 +365,7 @@ function AddEmployesModal({h1, inputModalArray = [], employeesId, setEmployeesId
                     </Button>
                     <Button sx={{
                         width: "50%",
-                        '.dark &':{
+                        '.dark &': {
                             color: 'white',
                             backgroundColor: '#d84c4c',
                             borderColor: '#2B4764',
@@ -295,7 +374,7 @@ function AddEmployesModal({h1, inputModalArray = [], employeesId, setEmployeesId
                             onClick={() => {
                                 dispatch(closeModal())
                                 clearEmployeesModal()
-                                setEmployeesId(Object.fromEntries(Object.keys(employeesId).map(key => [key, ""])));
+                                // setEmployeesId(Object.fromEntries(Object.keys(employeesId).map(key => [key, ""])));
                             }}
                             variant="outlined" color="error">
                         Close

@@ -1,34 +1,104 @@
-import React, { useState, useEffect } from 'react';
-import { LanguageDropdown, ProfileDropdown } from "../index.js";
-import { useLocation, useNavigate } from "react-router-dom";
-import { useDispatch } from "react-redux";
-import { openInvoicesModal } from "../../features/EmployeSModalToggle/employesModalToggle.js";
+import React, {useState, useEffect} from 'react';
+import {LanguageDropdown, NotificationsModal, ProfileDropdown} from "../index.js";
+import {useLocation, useNavigate} from "react-router-dom";
+import {useDispatch, useSelector} from "react-redux";
+import {openInvoicesModal} from "../../features/EmployeSModalToggle/employesModalToggle.js";
+import Badge from '@mui/material/Badge';
+import MailIcon from '@mui/icons-material/Mail';
+import NotificationsIcon from '@mui/icons-material/Notifications';
+import Pusher from "pusher-js";
+import axios from "axios";
+import {getNotifications} from "../../features/Notification/notificationsThunks.js";
+import {addNotification} from "../../features/Notification/notificationSlice.js";
 
 function NavbarY() {
     const dispatch = useDispatch();
     const navigate = useNavigate();
     const location = useLocation();
+    const {user} = useSelector((state) => state.auth);
     const [isSun, setIsSun] = useState(
         localStorage.getItem("dark") === "true" // stringni boolean ga aylantiryapti
     );
+    const [notifications, setNotifications] = useState([]);
+    const [counter, setCounter] = useState(0);
+    Pusher.logToConsole = true;
 
-    const [navabrArry , setNavabrArry] = useState(
+    const count = async () => {
+        try {
+            const  res = await dispatch(getNotifications()).unwrap();
+            // console.log(res)
+            setCounter(res.count);
+            setNotifications(res.messages);
+        }catch(err){
+            console.log(err);
+        }
+    }
+    //
+    // useEffect(()=>{
+    //
+    // } , [])
+
+
+    useEffect(() => {
+        count()
+
+        const token = localStorage.getItem("token");
+        // console.log(token);
+
+        // Pusher client
+        const pusher = new Pusher(import.meta.env.VITE_PUSHER_KEY, {
+            cluster: import.meta.env.VITE_PUSHER_CLUSTER,
+            authEndpoint: `${import.meta.env.VITE_API_URL}/broadcasting/auth`,
+            auth: {
+                headers: {
+                    Authorization: `Bearer ${token}`,
+                },
+            },
+        });
+
+        // Kanalga ulanish
+        const channel = pusher.subscribe("private-xabar");
+
+        // Laravel default event nomi
+        channel.bind("App\\Events\\MessageEvent", (data) => {
+            console.log("✅ Xabar keldi:", data);
+            setNotifications((prev) => [data, ...prev]);
+            console.log(notifications);
+        });
+
+        // Cleanup
+        return () => {
+            channel.unbind_all();
+            channel.unsubscribe();
+            pusher.disconnect();
+        };
+    }, []);
+
+
+
+    const [navabrArry, setNavabrArry] = useState(
         [
-            { label: 'Bosh sahifa', icon: 'fas fa-home mr-2', navigate: '/dashboard' },
-            { label: 'Buyurtmalar', icon: 'fas fa-shopping-cart mr-2', navigate: '/orders' },
+            {label: 'Bosh sahifa', icon: 'fas fa-home mr-2', navigate: '/dashboard'},
+            {label: 'Buyurtmalar', icon: 'fas fa-shopping-cart mr-2', navigate: '/orders'},
             {
-                label: 'Foydalanuvchilar', icon: 'fas fa-users mr-2', navigate : '/users', active:false,   arry: [
-                    { name: 'Customers', icon: '"fas fa-user-friends mr-2' , navigate: 'customers' },
-                    { name: 'Drivers', icon: 'fas fa-id-card mr-2' , navigate: 'drivers' },
-                    { name: 'Employees', icon: 'fas fa-user-tie mr-2' , navigate: 'employees' },
-                    { name: 'Invoices', icon: 'fas fa-user-tie mr-2' , navigate: 'invoices' },
+                label: 'Foydalanuvchilar', icon: 'fas fa-users mr-2', navigate: '/users', active: false, arry: [
+                    {name: 'Customers', icon: '"fas fa-user-friends mr-2', navigate: 'customers'},
+                    {name: 'Drivers', icon: 'fas fa-id-card mr-2', navigate: 'drivers'},
+                    {name: 'Employees', icon: 'fas fa-user-tie mr-2', navigate: 'employees'},
+                    {name: 'Invoices', icon: 'fas fa-user-tie mr-2', navigate: 'invoices'},
                 ]
             },
-            { label: 'Contracts', icon: 'fa-solid fa-file-signature mr-2', navigate : '/contracts',active:false, arry: [
-                    { name: 'Client Contracts', icon: 'fas fa-user-friends mr-2' , navigate: 'clients' },
-                    { name: 'Employees Contracts', icon: 'fas fa-user-tie mr-2' , navigate: 'employees' },
-                ] },
-            { label: 'Sozlamalar', icon: 'fas fa-cog mr-2', navigate: '/settings' },
+            {
+                label: 'Contracts',
+                icon: 'fa-solid fa-file-signature mr-2',
+                navigate: '/contracts',
+                active: false,
+                arry: [
+                    {name: 'Client Contracts', icon: 'fas fa-user-friends mr-2', navigate: 'clients'},
+                    // {name: 'Employees Contracts', icon: 'fas fa-user-tie mr-2', navigate: 'employees'},
+                ]
+            },
+            // {label: 'Sozlamalar', icon: 'fas fa-cog mr-2', navigate: '/settings'},
         ]
     )
 
@@ -80,8 +150,8 @@ function NavbarY() {
                                     setNavabrArry(prev =>
                                         prev.map(el =>
                                             el.label === item.label
-                                                ? { ...el, active: true }
-                                                : { ...el, active: false }
+                                                ? {...el, active: true}
+                                                : {...el, active: false}
                                         )
                                     );
                                 }
@@ -91,7 +161,7 @@ function NavbarY() {
                                     setNavabrArry(prev =>
                                         prev.map(el =>
                                             el.label === item.label
-                                                ? { ...el, active: false }
+                                                ? {...el, active: false}
                                                 : el
                                         )
                                     );
@@ -108,7 +178,8 @@ function NavbarY() {
                             <div className={'center h-full w-full'}>
                                 <i className={item.icon}></i>
                                 <p>{item.label}</p>
-                                {item.arry && <i className={`fa-solid fa-angle-right transition-all duration-300  ${item.active ? 'transition-transform rotate-90 ' : ''}`}></i>}
+                                {item.arry &&
+                                    <i className={`fa-solid fa-angle-right transition-all duration-300  ${item.active ? 'transition-transform rotate-90 ' : ''}`}></i>}
                             </div>
 
                             {/* Dropdown */}
@@ -117,31 +188,17 @@ function NavbarY() {
                                     className={`shadow -mx-4 text-blue dark:text-white ${item.active ? "max-h-96" : "max-h-0"} w-[calc(100%+32px)] transition-all duration-500 overflow-hidden bg-white dark:bg-[#212121] ease-in-out`}
                                 >
                                     {
-                                        item.arry.map((items, index) => (
-                                            <>
+                                        item.arry.map((items) => (
+                                            <React.Fragment key={items.navigate}>
                                                 <div
                                                     onClick={() => navigate(`${item.navigate}/${items.navigate}`)}
                                                     className="py-2 border-b hover:bg-blue hover:text-white px-2 w-full dark:hover:bg-navBgHover dark:border-navBgHover"
                                                 >
                                                     {items.name}
                                                 </div>
-                                                {/*<div*/}
-                                                {/*    onClick={() => navigate('/users/drivers')}*/}
-                                                {/*    className="py-2 border-b hover:bg-blue hover:text-white px-2 w-full dark:hover:bg-navBgHover dark:border-navBgHover"*/}
-                                                {/*>Drivers*/}
-                                                {/*</div>*/}
-                                                {/*<div*/}
-                                                {/*    onClick={() => navigate('/users/employees')}*/}
-                                                {/*    className="py-2 border-b hover:bg-blue hover:text-white px-2 w-full dark:hover:bg-navBgHover dark:border-navBgHover"*/}
-                                                {/*>Employees*/}
-                                                {/*</div>*/}
-                                                {/*<div*/}
-                                                {/*    onClick={() => navigate('/invoices')}*/}
-                                                {/*    className="py-2 border-b hover:bg-blue hover:text-white px-2 w-full dark:hover:bg-navBgHover dark:border-navBgHover"*/}
-                                                {/*>Invoices*/}
-                                                {/*</div>*/}
-                                            </>
+                                            </React.Fragment>
                                         ))
+
                                     }
                                 </div>
                             )}
@@ -150,8 +207,11 @@ function NavbarY() {
                 </div>
 
                 {/* Right actions */}
-                <div className="center gap-4">
-                    <i className="fa-solid fa-bell text-blue dark:text-white text-lg"></i>
+                <div className="center gap-6">
+                    {
+                        user?.user?.roles[0]?.name === 'super-admin' ? <NotificationsModal count={count} notifications={notifications} /> :''
+                    }
+
                     <LanguageDropdown/>
                     {/*{isSun === false ? (*/}
                     {/*    <i onClick={sunToggle}*/}
@@ -160,7 +220,7 @@ function NavbarY() {
                     {/*    <i onClick={sunToggle}*/}
                     {/*       className={'fas fa-sun font-bold cursor-pointer text-blue dark:text-white'}></i>*/}
                     {/*)}*/}
-                    <ProfileDropdown sunToggle={sunToggle}/>
+                    <ProfileDropdown   sunToggle={sunToggle}/>
                 </div>
             </div>
         </div>

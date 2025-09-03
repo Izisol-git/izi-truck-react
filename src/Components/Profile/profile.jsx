@@ -36,32 +36,51 @@ const ProfileDropdown = ({sunToggle}) => {
     }, []);
 
     const menuItems = [
-        {icon: 'fa-solid fa-user-tie', label: "View Profile", hasAction: false},
-        // { icon: BarChart3, label: "Analytics & Data", hasAction: false },
-        {icon: 'fa-regular fa-circle-question', label: "Help Center", hasAction: false},
-        {icon: 'fa-solid fa-gear', label: "Account Settings", hasAction: false},
-        // { icon: Star, label: "Upgrade Plan", hasAction: false },
+        { icon: "fa-solid fa-user-tie", label: "View Profile", hasAction: false },
+        { icon: "fa-regular fa-circle-question", label: "Help Center", hasAction: false },
+        { icon: "fa-solid fa-gear", label: "Account Settings", hasAction: false },
+
+        // 🔑 Faqat super-admin uchun
+        ...(user?.user?.roles[0]?.name === "super-admin"
+            ? [
+                {
+                    icon: "fa-regular fa-comment",
+                    label: "Chats",
+                    hasAction: false,
+                    func: () => {
+                        navigate("notifications");
+                    },
+                },
+            ]
+            : []),
+
         {
-            icon: 'fa-regular fa-moon', label: "Dark Mode", hasAction: true, func: () => {
+            icon: "fa-regular fa-moon",
+            label: "Dark Mode",
+            hasAction: true,
+            func: () => {
                 sunToggle();
                 setDarkMode((prev) => !prev);
-            }
+            },
         },
         {
-            icon: 'fa-solid fa-arrow-right-from-bracket', label: "Log Out", hasAction: false, func: () => {
-                dispatch(logout())
-                navigate("/login")
-
-            }
+            icon: "fa-solid fa-arrow-right-from-bracket",
+            label: "Log Out",
+            hasAction: false,
+            func: () => {
+                dispatch(logout());
+                navigate("/login");
+            },
         },
-    ]
+    ];
+
 
 
     return (
 
         <>
 
-            <div className=" relative inline-block text-left z-50 " ref={dropdownRef}>
+            <div className=" relative inline-block text-left z-10 " ref={dropdownRef}>
                 {/*<button*/}
                 {/*    */}
                 {/*    className=" w-full h-full   rounded-full overflow-hidden border-2 border-gray-300 focus:outline-none"*/}
@@ -79,7 +98,7 @@ const ProfileDropdown = ({sunToggle}) => {
 
 
                 <div
-                    className={` absolute  right-0 top-[65px] w-80 bg-white rounded shadow-lg   font-sans ${open ? 'max-h-96  border-2' : 'max-h-0 border-0 '} overflow-hidden transition-all duration-500    ease-in-out dark:bg-darkBgTwo dark:border-0 `}>
+                    className={` absolute  right-0 top-[65px] w-80 bg-white rounded shadow-lg   font-sans ${open ? 'max-h-96  border-2' : 'max-h-0 border-0 '} overflow-hidden transition-all duration-300    ease-in-out dark:bg-darkBgTwo dark:border-0 `}>
                     {/* Profile Header */}
                     <div onClick={toggleDropdown} className="flex items-center gap-4    px-4 py-2  ">
                         <div className="w-12 h-12 rounded-full overflow-hidden">
@@ -106,7 +125,7 @@ const ProfileDropdown = ({sunToggle}) => {
                     <div className="space-y-1  p-2 ">
                         {menuItems.map((item, index) => (
                             <div
-                                onClick={item?.func || ''}
+                                onClick={item?.func }
                                 key={index}
                                 className="group flex items-center justify-between px-3 py-2 rounded-lg hover:bg-blue    cursor-pointer transition-colors dark:hover:bg-navBgHover"
                             >

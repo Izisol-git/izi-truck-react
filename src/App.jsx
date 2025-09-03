@@ -20,7 +20,7 @@ import {
     ShowOffers,
     AddDrivers,
     EditDrivers,
-    ShowOrdersId, Didox, ClientContracts, EmployeesContracts, EditClientContracts
+    ShowOrdersId, Didox, ClientContracts, EmployeesContracts, EditClientContracts, Notifications, NotificationsDetails
 }
     from './pages/index.js'
 import {BrowserRouter, Routes, Route, Navigate} from "react-router-dom";
@@ -128,6 +128,8 @@ function App() {
                         <Route path="clients/edit/:id" element={<EditClientContracts />} />
                         <Route path="employees" element={<EmployeesContracts />} />
                     </Route>
+                    <Route path={'notifications'} element={<Notifications />} />
+                    <Route path={'notifications/view/:id'} element={<NotificationsDetails />} />
 
 
                     <Route path="users" element={<UserLayouts />}>

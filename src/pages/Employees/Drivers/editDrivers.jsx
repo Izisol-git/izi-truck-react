@@ -21,7 +21,7 @@ function EditDrivers() {
         console.log(res.payload.driver)
     }
     useEffect(() => {
-        DriversId(driversId)
+        DriversId(localStorage.getItem('driversId'))
     }, [])
 
     // State
@@ -70,9 +70,9 @@ function EditDrivers() {
                 top100Films.find((opt) => opt.title === String(EditDriversArry?.type)) || null
             );
             // Telefon raqamlarni o‘rnatish
-            if (Array.isArray(EditDriversArry?.phone_number)) {
+            if (Array.isArray(JSON.parse(EditDriversArry?.phone_number))) {
                 setDriversPhone(
-                    EditDriversArry.phone_number.map((p, index) => ({
+                    JSON.parse(EditDriversArry?.phone_number).map((p, index) => ({
                         id: Date.now() + index,
                         phone: p,
                     }))
@@ -141,7 +141,7 @@ function EditDrivers() {
             condition: carCondition?.title,
             type: carType?.title,
         };
-        dispatch(editDriver({id: 1706, driverData: driverData}))
+        dispatch(editDriver({id: localStorage.getItem('driversId'), driverData: driverData}))
             .unwrap()
             .then(() => {
                 resetForm();

@@ -52,7 +52,7 @@ const LanguageDropdown = () => {
 
 
             <div
-                className={`absolute right-0 mt-2    bg-white  border-gray-200 rounded shadow z-10 dark:bg-darkBgTwo dark:border-darkBgTwo text-blue dark:text-white  w-full  ${isOpen ? 'max-h-96 border' : 'max-h-0 border-0'} overflow-hidden transition-all duration-500    ease-in-out`}>
+                className={`absolute right-0 mt-2    bg-white  border-gray-200 rounded shadow z-10 dark:bg-darkBgTwo dark:border-darkBgTwo text-blue dark:text-white  w-full  ${isOpen ? 'max-h-96 border' : 'max-h-0 border-0'} overflow-hidden transition-all duration-300    ease-in-out`}>
                 {languages.map((lang, index) => (
                     <button
                         key={lang.code}

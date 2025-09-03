@@ -146,7 +146,7 @@ export const exportOrdersExcel = createAsyncThunk(
             const blob = await OrdersService.exportOrdersExcel(selectedKeys);
 
             // Faylni yuklab olish
-            const url = window.URL.createObjectURL(new Blob([blob]));
+            const url = window.URL.createObjectURL(blob);
             const link = document.createElement("a");
             link.href = url;
             link.setAttribute("download", "orders.xlsx");

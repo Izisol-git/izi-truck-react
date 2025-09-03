@@ -4,9 +4,9 @@ import ClientsService from "../../Api/customers/ClientsService.js";
 // GET – barcha clientlarni olish
 export const getClients = createAsyncThunk(
     "clients/getClients",
-    async (page, { rejectWithValue }) => {
+    async ({page , search}, { rejectWithValue }) => {
         try {
-            return await ClientsService.getAll(page);
+            return await ClientsService.getAll(page , search);
         } catch (err) {
             return rejectWithValue(err.response?.data || "Failed to fetch clients");
         }

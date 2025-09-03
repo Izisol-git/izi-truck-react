@@ -5,9 +5,9 @@ import EmployeeService from "../../Api/Employees/employeesService.js";
 // Xodimlarni olish
 export const getEmployees = createAsyncThunk(
     "employees/fetchEmployees",
-    async (page, { rejectWithValue }) => {
+    async ({page , search}, { rejectWithValue }) => {
         try {
-            return await EmployeeService.getAll(page);
+            return await EmployeeService.getAll(page , search);
         } catch (err) {
             return rejectWithValue(err.response?.data || "Failed to fetch employees");
         }

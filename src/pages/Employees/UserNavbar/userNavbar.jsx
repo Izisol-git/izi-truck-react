@@ -20,15 +20,18 @@ const UserNavbar = ({value, columnsArry, setColumnsArry, openModal}) => {
         <div className="flex items-center  py-5 justify-between">
             <p className={'text-2xl text-blue font-semibold dark:text-darkText'}>{value}</p>
             <div className="center gap-4">
-                <button onClick={() => {
-                    value === 'Drivers' ?  navigate('/users/drivers/create') : ''
-                    openModal ? openModal() :  dispatch(AddToggleDrivers())
-                    dispatch(AddToggle())
-                    value === 'Contracts' ? navigate('/contracts/clients/create'): ''
-                }}
-                        className={'py-2 px-3 bg-[#38CB6E] text-white rounded hover:ring-2 ring-[#38CB6E] outline-none'}>
-                    <i className={'fas fa-plus mr-2'}></i>Добавить
-                </button>
+                {
+                    value === 'Notifications' ? '' :
+                        <button onClick={() => {
+                            value === 'Drivers' ? navigate('/users/drivers/create') : ''
+                            openModal ? openModal() : dispatch(AddToggleDrivers())
+                            dispatch(AddToggle())
+                            value === 'Contracts' ? navigate('/contracts/clients/create') : ''
+                        }}
+                                className={'py-2 px-3 bg-[#38CB6E] text-white rounded hover:ring-2 ring-[#38CB6E] outline-none'}>
+                            <i className={'fas fa-plus mr-2'}></i>Добавить
+                        </button>
+                }
                 <div className="relative">
                     <button onMouseLeave={() => {
                         setDropdown(false)

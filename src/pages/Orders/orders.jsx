@@ -54,6 +54,7 @@ function Orders() {
     const findOrders = async (filters, pageqq) => {
         const res = await dispatch(getFilteredOrders({filters: filters, pageqq: pageqq})).unwrap()
         setOrdersData(res.orders.data)
+        console.log(res)
         setTotal(res)
     }
     useEffect(() => {
@@ -143,15 +144,15 @@ function Orders() {
 
                         {
                             user?.user?.roles[0]?.name === 'super-admin' ? <button
-                                onClick={(e) => {
-                                    handleClick(e, rippleRefs.view)
-                                    navigate('/orders/replies')
-                                }}
-                                className="relative overflow-hidden rounded bg-[#5E83D4] dark:bg-btnBgDark text-white py-2 px-3"
-                            >
-                                <i className="fas fa-eye mr-2"></i> Takliflarni ko‘rish
-                                <TouchRipple ref={rippleRefs.view} center={false}/>
-                            </button>
+                                    onClick={(e) => {
+                                        handleClick(e, rippleRefs.view)
+                                        navigate('/orders/replies')
+                                    }}
+                                    className="relative overflow-hidden rounded bg-[#5E83D4] dark:bg-btnBgDark text-white py-2 px-3"
+                                >
+                                    <i className="fas fa-eye mr-2"></i> Takliflarni ko‘rish
+                                    <TouchRipple ref={rippleRefs.view} center={false}/>
+                                </button>
                                 : ''
                         }
 
@@ -204,13 +205,13 @@ function Orders() {
                             vaqti</p>
                     </div>
                     <button
-                            onClick={()=>setFilters({
-                                search: "",
-                                search_status: null,
-                                db: "",
-                                from_date: "",
-                                to_date: "",
-                            })}
+                        onClick={() => setFilters({
+                            search: "",
+                            search_status: null,
+                            db: "",
+                            from_date: "",
+                            to_date: "",
+                        })}
                         className="w-full relative overflow-hidden rounded font-semibold bg-transparent border-2 text-blue border-blue   transition-all duration-300 ease-in-out  hover:text-white hover:bg-blue py-1 px-2 dark:hover:bg-navBgHover dark:border-darkText dark:text-darkText"
                     >
                         Clear input
@@ -241,22 +242,24 @@ function Orders() {
                 </div>
 
             </div>
-            <div className={'w-[90%] mx-auto pb-5'}>
+            <div className={'w-[90%] mx-auto pb-5 grid grid-cols-2 3xl:grid-cols-3 gap-4'}>
 
-                {
-                    loading ? <Loading/> :
-                        ordersData?.map((order) => (
-                            <>
-                                <OrdersCard  key={order.id} order={order}/>
-                            </>
-                        ))
-                }
 
-                <div className={'flex items-center justify-end'}>
-                    <PaginationFooter total={total}/>
-                </div>
+                    {
+                        loading ? <Loading/> :
+                            ordersData?.map((order) => (
+                                <div>
+                                    <OrdersCard  key={order.id} order={order}/>
+                                </div>
+                            ))
+                    }
+
+
+
             </div>
-
+            <div className={'flex items-center justify-end w-[90%] mx-auto pb-5'}>
+                <PaginationFooter total={total}/>
+            </div>
 
             {
                 user?.user?.roles[0]?.name === 'super-admin' ? <OffersOrders/> :

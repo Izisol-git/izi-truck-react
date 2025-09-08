@@ -1,11 +1,20 @@
 import {createSlice} from "@reduxjs/toolkit";
-import {addOrder, editOrder, deleteOrder, getFilteredOrders, exportOrdersExcel, actDataAdd} from "./ordersThunks.js";
+import {
+    addOrder,
+    editOrder,
+    deleteOrder,
+    getFilteredOrders,
+    exportOrdersExcel,
+    actDataAdd,
+    addDidoxId
+} from "./ordersThunks.js";
 
 const initialState = {
     orders: [],
     loading: false,
     exporting: false,
     actLoading: false,
+    addDidox: false,
     error: null,
 };
 
@@ -38,6 +47,20 @@ const ordersSlice = createSlice({
         });
         builder.addCase(actDataAdd.rejected, (state, action) => {
             state.actLoading = false;
+            state.error = action.payload;
+        });
+
+        // didox
+        builder.addCase(addDidoxId.pending, (state) => {
+            state.addDidox = true;
+            state.error = null;
+        });
+        builder.addCase(addDidoxId.fulfilled, (state, action) => {
+            state.addDidox = false;
+            // state.orders = action.payload;
+        });
+        builder.addCase(addDidoxId.rejected, (state, action) => {
+            state.addDidox = false;
             state.error = action.payload;
         });
 

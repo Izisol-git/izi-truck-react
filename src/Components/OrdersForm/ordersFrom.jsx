@@ -175,7 +175,7 @@ function OrdersFrom({mode}) {
             if (row.point && row.point.id) formData[`point[${index}]`] = row.point.id;
             if (row.point_price) formData[`point_price[${index}]`] = row.point_price;
         });
-        console.log(formData);
+        // console.log(formData);
         setFormData({...rows})
         // setFormData({
         //     location_of_destination: '',
@@ -220,7 +220,7 @@ function OrdersFrom({mode}) {
 
     useEffect(() => {
         getSelectAll()
-        if (mode === 'edit') {
+        if (mode === 'edit' && formData.nds ) {
             OrdersId(id)
         }
         if (mode === 'show') {
@@ -240,7 +240,7 @@ function OrdersFrom({mode}) {
         [`point_price[${i + 1}]`]: row.point_price
     }));
 
-    console.log(formData)
+    // console.log(formData)
 
 
     const addOrders = async () => {
@@ -259,7 +259,7 @@ function OrdersFrom({mode}) {
             country_of_destination: formData.country_of_destination.id,
             nds: formData.nds.value,
             mode: formData.mode,
-            payment_condition: formData.payment_condition.id,
+            payment_condition: formData.payment_condition.value,
             point_of_departure: formData.point_of_departure.id,
             point_of_destination: formData.point_of_destination.id,
             service_type: formData.service_type.id,
@@ -298,7 +298,7 @@ function OrdersFrom({mode}) {
             if (row.point_price) obj[`point_price[${index}]`] = row.point_price;
         });
         // setFormData({...rows})
-        console.log(formData)
+        // console.log(formData)
 
         try {
             const res = await dispatch(addOrder(obj)).unwrap()
@@ -308,7 +308,7 @@ function OrdersFrom({mode}) {
             setErrors({...err.errors});
         }
     }
-    console.log(errors)
+    // console.log(errors)
 
 
     const getShowOrdersId = async () => {
@@ -322,7 +322,7 @@ function OrdersFrom({mode}) {
         }
     }
 
-    console.log(formData)
+    // console.log(formData)
 
     const nds = [
         {title: "без ндс", value: 'without_nds'},
@@ -354,9 +354,9 @@ function OrdersFrom({mode}) {
         {title: '1'},
     ];
     const typePayment = [
-        {title: "Предоплата"},
-        {title: "Пост оплата"},
-        {title: "Частичная предоплата"},
+        { value:1 , title: "Перечисления"   },
+        { value:2,  title: "Нақд"  },
+        { value:3, title: "Ярим перечисления"  },
     ];
 
     const handleAdd = () => {
@@ -387,15 +387,7 @@ function OrdersFrom({mode}) {
     );
 
     const statusList = [
-        {label: "Отменен", value: -6},
-        {label: "Водител не согласился с офертой", value: -2},
-        {label: "Водител отменил заказ", value: -1},
-        {label: "Новый заказ", value: 0},
-        {label: "У оператора", value: 1},
-        {label: "Отправлен водителям", value: 2},
-        {label: "Ожидание водителя", value: 3},
         {label: "Водитель назначен", value: 4},
-        {label: "Водитель прибыл", value: 5},
         {label: "Завершен", value: 6},
     ];
 
@@ -409,7 +401,8 @@ function OrdersFrom({mode}) {
                 <div className={'w-[90%] bg-white px-4  mx-auto py-5 rounded-md shadow dark:bg-darkBgTwo'}>
                     <div className={'h-[40px] gap-4 relative text-center center  w-full   mb-10'}>
                         <div className={'w-max  absolute top-0 left-0'} onClick={() => navigate(`/orders`)}>
-                            <Button color={'dark:bg-btnBgDark'}  icon={<i className="fa-solid fa-arrow-left"></i>} value={'Orders'}/>
+                            <Button color={'dark:bg-btnBgDark'} icon={<i className="fa-solid fa-arrow-left"></i>}
+                                    value={'Orders'}/>
                         </div>
                         <p className={'text-blue font-bold text-xl dark:text-darkText'}>Byurtmani {mode === 'edit' ? "tahrirlash" : mode === 'add' ? "yaratish" : mode === "show" ? "Ko'rish" : ""}</p>
                         {
@@ -462,12 +455,12 @@ function OrdersFrom({mode}) {
                                                                 <Radio
                                                                     sx={{
                                                                         color: "#1D2D5B", // light mode
-                                                                        "&.Mui-checked": { color: "#1D2D5B" },
+                                                                        "&.Mui-checked": {color: "#1D2D5B"},
 
                                                                         // dark mode
                                                                         "@media (prefers-color-scheme: dark)": {
                                                                             color: "#fff",
-                                                                            "&.Mui-checked": { color: "#fff" },
+                                                                            "&.Mui-checked": {color: "#fff"},
                                                                         },
                                                                     }}
                                                                     checked={activeRadio === item.value}
@@ -483,29 +476,15 @@ function OrdersFrom({mode}) {
                                     </FormControl>
                                 </div>
 
-                                <div className={'grid gap-4 grid-cols-2 mb-5'}>
-                                    <div className={''}>
-                                        <InputMUI errorMassage={errors?.receiver_contact} value={driversName ?? ''}
-                                                  onChange={(e) =>
-                                                      setFormData({...formData, receiver_contact: e.target.value})
-                                                  } variant={'outlined'} label={'Водитель'}
-                                        />
-                                    </div>
-                                    <div className={''}>
-                                        <InputMUI errorMassage={errors?.receiver_contact} value={user?.user?.name ?? ''}
-                                                  onChange={(e) =>
-                                                      setFormData({...formData, receiver_contact: e.target.value})
-                                                  } variant={'outlined'} label={'Перевозчик'}
-                                        />
-                                    </div>
-                                </div>
+
                             </>
                             : ""
                     }
 
-                    <div className={'flex items-center gap-4'}>
+                    <div className={'  grid grid-cols-2 gap-4'}>
                         <div className={"w-full "}>
                             <SelectMUI
+
                                 errorMassage={errors?.client_id}
                                 {...{
                                     value:
@@ -522,7 +501,8 @@ function OrdersFrom({mode}) {
                                 options={data?.clients || []}
                                 variant={'outlined'}
                                 label={'Клиент'}
-                                placeholder={'Клиент'}/>
+                                placeholder={'Клиент'}
+                            />
                         </div>
                         <div className={"w-full "}>
                             <SelectMUI
@@ -540,130 +520,35 @@ function OrdersFrom({mode}) {
                                     }) : setFormData({...formData, nds: val})
                                 }}
 
-                                options={nds} variant={'outlined'} label={'НДС'}
+                                options={nds}
+                                variant={'outlined'}
+                                label={'НДС'}
                                 // value={formData.nds || null}
                                 // onChange={(val) => setFormData({...formData, nds: val})}
                                 placeholder={'НДС'}/>
                         </div>
-                        <div className={"w-full "}>
-                            <SelectMUI
-                                errorMassage={errors?.service_type}
-                                {...{
-                                    value:
-                                        mode !== "add"
-                                            ? typeService.find((opt) => opt.id === Number(formData?.service_type) ) || null
-                                            : formData?.service_type,
-                                }}
-                                onChange={(val) => {
-                                    mode !== "add"  ? setFormData({
-                                        ...formData,
-                                        service_type: val.id
-                                    }) : setFormData({...formData, service_type: val})
-                                }}
-                                options={typeService} variant={'outlined'} label={'Тип услуги'}
-                                placeholder={'Тип услуги'}
-                                // value={formData.service_type}
-                                // onChange={(val) => setFormData({...formData, service_type: val})}
-                            />
-                        </div>
-                    </div>
-                    {
-                        Number(formData?.service_type?.id) === 1 || Number(formData?.service_type?.id) === 6 || Number(formData?.service_type) === 1 || Number(formData?.service_type) === 6 ?
+                        <div className={" w-full "}>
 
-                            <div className={'flex items-center gap-4 mt-5'}>
-                                <div className={"w-full "}>
-                                    <InputMUI errorMassage={errors?.trailer_floor_volume} value={formData?.trailer_floor_volume ?? ''}
-                                              onChange={(e) =>
-                                                  setFormData({...formData, trailer_floor_volume: e.target.value})
-                                              } variant={'outlined'} label={'Контакты получателя (декларант)'}
-                                    />
-                                </div>
-                                <div className={"w-full "}>
-                                    <InputMUI errorMassage={errors?.cargo_volume} value={formData?.cargo_volume ?? ''}
-                                              onChange={(e) =>
-                                                  setFormData({...formData, cargo_volume: e.target.value})
-                                              } variant={'outlined'} label={'Контакты получателя (декларант)'}
-                                    />
-                                </div>
-                            </div>
-                            :
-                            ""
-                    }
-
-                </div>
-                <div className={'w-[90%] bg-white px-4  mx-auto py-5 rounded-md shadow mt-5 dark:bg-darkBgTwo'}>
-                    <div className={'grid grid-cols-2 gap-4'}>
-
-
-                        <div className={" "}>
-                            <CurrencyInput errorMassage={errors.items_price} value={formData?.items_price ?? ''}
-                                           setCarrierCurrency={setItemsPriceCurrency}
-                                           carrierCurrency={itemsPriceCurrency}
-                                           onChange={(e) => setFormData({...formData, items_price: e.target.value})}
-                                           label={'Стоимость груза'}/>
-                        </div>
-
-                        <div className={"w-full "}>
-
-                            <CurrencyInput errorMassage={errors.fraxt_price_transfer} value={formData.fraxt_price_transfer ?? ''}
+                            <CurrencyInput errorMassage={errors.fraxt_price_transfer}
+                                           value={formData.fraxt_price_transfer ?? ''}
                                            setCarrierCurrency={setFraxtCurrency}
                                            carrierCurrency={fraxtCurrency}
                                            onChange={(e) => setFormData({
                                                ...formData,
                                                fraxt_price_transfer: e.target.value
                                            })} label={'Цена клиента'}/>
-                            <div className={'p-2'}>
-                                {
-                                    Object.entries(priceData?.fraxt_price_transfer || {})?.map(([key, value]) => (
-                                        <p className={'my-1 font-semibold text-gray-600 dark:text-darkText'}>{key}: {value} </p>
-                                    ))
-                                }
-                            </div>
+                            {/*<div className={'p-2'}>*/}
+                            {/*    {*/}
+                            {/*        Object.entries(priceData?.fraxt_price_transfer || {})?.map(([key, value]) => (*/}
+                            {/*            <p className={'my-1 font-semibold text-gray-600 dark:text-darkText'}>{key}: {value} </p>*/}
+                            {/*        ))*/}
+                            {/*    }*/}
+                            {/*</div>*/}
 
                         </div>
-
-                    </div>
-                    <div className={'grid grid-cols-3 gap-4'}>
-                        <div className={"w-full "}>
-                            <SelectMUI  errorMassage={errors?.shipment_type} options={data?.shipment_types || []} variant={'outlined'} label={'Тип перевозки'}
-                                       placeholder={'Тип перевозки'}
-                                // value={formData?.shipment_type || null}
-                                // onChange={(val) => setFormData({...formData, shipment_type: val})}
-                                       {...{
-                                           value:
-                                               mode !== "add"
-                                                   ? data?.shipment_types?.find((opt) => opt.id === formData?.shipment_type) || null
-                                                   : formData?.shipment_type,
-                                       }}
-                                       onChange={(val) => {
-                                           mode !== "add" ? setFormData({
-                                               ...formData,
-                                               shipment_type: val.id
-                                           }) : setFormData({...formData, shipment_type: val})
-                                       }}
-                            />
-                        </div>
-                        <div className={"w-full "}>
-                            <SelectMUI errorMassage={errors?.transport_value} options={options} variant={'outlined'} label={'Объем транспортного средства'}
-                                       placeholder={'Объем транспортного средства'}
-                                // value={formData?.transport_value || null}
-                                // onChange={(val) => setFormData({...formData, transport_value: val})}
-                                       {...{
-                                           value:
-                                               mode !== "add"
-                                                   ? options.find((opt) => opt.title === String(formData?.transport_value)) || null
-                                                   : formData?.transport_value,
-                                       }}
-                                       onChange={(val) => {
-                                           mode !== "add" ? setFormData({
-                                               ...formData,
-                                               transport_value: val.title
-                                           }) : setFormData({...formData, transport_value: val})
-                                       }}
-                            />
-                        </div>
-                        <div className={"w-full "}>
-                            <SelectMUI errorMassage={errors?.transport_type} options={data?.transport_types || []} variant={'outlined'}
+                        <div className={"w-full  "}>
+                            <SelectMUI errorMassage={errors?.transport_type} options={data?.transport_types || []}
+                                       variant={'outlined'}
                                        label={'Тип транспортного средства'}
                                        placeholder={'Тип транспортного средства'}
                                 // value={formData?.transport_type || null}
@@ -682,24 +567,133 @@ function OrdersFrom({mode}) {
                                            }) : setFormData({...formData, transport_type: val})
                                        }}
                             />
+
+
+                        </div>
+                        <div className={''}>
+                            {
+                                String(formData?.transport_type?.id) === '3' || String(formData?.transport_type) === '3' ? <>
+                                    <InputMUI errorMassage={errors?.mode}
+                                              value={formData?.mode ?? ''}
+                                              onChange={(e) =>
+                                                  setFormData({...formData, mode: e.target.value})
+                                              }
+                                              variant={'outlined'} label={'Режим'}
+                                    /></> : ''
+                            }
                         </div>
 
 
-                        {
-                            String(formData?.transport_type?.id) === '3' || String(formData?.transport_type) === '3' ? <>
-                                <InputMUI errorMassage={errors?.mode}
-                                    value={formData?.mode ?? ''}
-                                    onChange={(e) =>
-                                        setFormData({...formData, mode: e.target.value})
-                                    }
-                                    variant={'outlined'} label={'Режим'}
-                                /></> : ''
-                        }
-
-
+                        {/*<div className={"w-full "}>*/}
+                        {/*    <SelectMUI*/}
+                        {/*        errorMassage={errors?.service_type}*/}
+                        {/*        {...{*/}
+                        {/*            value:*/}
+                        {/*                mode !== "add"*/}
+                        {/*                    ? typeService.find((opt) => opt.id === Number(formData?.service_type) ) || null*/}
+                        {/*                    : formData?.service_type,*/}
+                        {/*        }}*/}
+                        {/*        onChange={(val) => {*/}
+                        {/*            mode !== "add"  ? setFormData({*/}
+                        {/*                ...formData,*/}
+                        {/*                service_type: val.id*/}
+                        {/*            }) : setFormData({...formData, service_type: val})*/}
+                        {/*        }}*/}
+                        {/*        options={typeService} variant={'outlined'} label={'Тип услуги'}*/}
+                        {/*        placeholder={'Тип услуги'}*/}
+                        {/*        // value={formData.service_type}*/}
+                        {/*        // onChange={(val) => setFormData({...formData, service_type: val})}*/}
+                        {/*    />*/}
+                        {/*</div>*/}
                     </div>
 
+
+                    {/*{*/}
+                    {/*    Number(formData?.service_type?.id) === 1 || Number(formData?.service_type?.id) === 6 || Number(formData?.service_type) === 1 || Number(formData?.service_type) === 6 ?*/}
+
+                    {/*        <div className={'flex items-center gap-4 mt-5'}>*/}
+                    {/*            <div className={"w-full "}>*/}
+                    {/*                <InputMUI errorMassage={errors?.trailer_floor_volume} value={formData?.trailer_floor_volume ?? ''}*/}
+                    {/*                          onChange={(e) =>*/}
+                    {/*                              setFormData({...formData, trailer_floor_volume: e.target.value})*/}
+                    {/*                          } variant={'outlined'} label={'Контакты получателя (декларант)'}*/}
+                    {/*                />*/}
+                    {/*            </div>*/}
+                    {/*            <div className={"w-full "}>*/}
+                    {/*                <InputMUI errorMassage={errors?.cargo_volume} value={formData?.cargo_volume ?? ''}*/}
+                    {/*                          onChange={(e) =>*/}
+                    {/*                              setFormData({...formData, cargo_volume: e.target.value})*/}
+                    {/*                          } variant={'outlined'} label={'Контакты получателя (декларант)'}*/}
+                    {/*                />*/}
+                    {/*            </div>*/}
+                    {/*        </div>*/}
+                    {/*        :*/}
+                    {/*        ""*/}
+                    {/*}*/}
+
                 </div>
+                {/*<div className={'w-[90%] bg-white px-4  mx-auto py-5 rounded-md shadow mt-5 dark:bg-darkBgTwo'}>*/}
+                {/*    <div className={'grid grid-cols-2 gap-4'}>*/}
+
+
+                {/*        /!*<div className={" "}>*!/*/}
+                {/*        /!*    <CurrencyInput errorMassage={errors.items_price} value={formData?.items_price ?? ''}*!/*/}
+                {/*        /!*                   setCarrierCurrency={setItemsPriceCurrency}*!/*/}
+                {/*        /!*                   carrierCurrency={itemsPriceCurrency}*!/*/}
+                {/*        /!*                   onChange={(e) => setFormData({...formData, items_price: e.target.value})}*!/*/}
+                {/*        /!*                   label={'Стоимость груза'}/>*!/*/}
+                {/*        /!*</div>*!/*/}
+
+
+                {/*    </div>*/}
+                {/*    <div className={'grid grid-cols-3 gap-4'}>*/}
+                {/*        /!*<div className={"w-full "}>*!/*/}
+                {/*        /!*    <SelectMUI  errorMassage={errors?.shipment_type} options={data?.shipment_types || []} variant={'outlined'} label={'Тип перевозки'}*!/*/}
+                {/*        /!*               placeholder={'Тип перевозки'}*!/*/}
+                {/*        /!*        // value={formData?.shipment_type || null}*!/*/}
+                {/*        /!*        // onChange={(val) => setFormData({...formData, shipment_type: val})}*!/*/}
+                {/*        /!*               {...{*!/*/}
+                {/*        /!*                   value:*!/*/}
+                {/*        /!*                       mode !== "add"*!/*/}
+                {/*        /!*                           ? data?.shipment_types?.find((opt) => opt.id === formData?.shipment_type) || null*!/*/}
+                {/*        /!*                           : formData?.shipment_type,*!/*/}
+                {/*        /!*               }}*!/*/}
+                {/*        /!*               onChange={(val) => {*!/*/}
+                {/*        /!*                   mode !== "add" ? setFormData({*!/*/}
+                {/*        /!*                       ...formData,*!/*/}
+                {/*        /!*                       shipment_type: val.id*!/*/}
+                {/*        /!*                   }) : setFormData({...formData, shipment_type: val})*!/*/}
+                {/*        /!*               }}*!/*/}
+                {/*        /!*    />*!/*/}
+                {/*        /!*</div>*!/*/}
+                {/*        /!*<div className={"w-full "}>*!/*/}
+                {/*        /!*    <SelectMUI errorMassage={errors?.transport_value} options={options} variant={'outlined'} label={'Объем транспортного средства'}*!/*/}
+                {/*        /!*               placeholder={'Объем транспортного средства'}*!/*/}
+                {/*        /!*        // value={formData?.transport_value || null}*!/*/}
+                {/*        /!*        // onChange={(val) => setFormData({...formData, transport_value: val})}*!/*/}
+                {/*        /!*               {...{*!/*/}
+                {/*        /!*                   value:*!/*/}
+                {/*        /!*                       mode !== "add"*!/*/}
+                {/*        /!*                           ? options.find((opt) => opt.title === String(formData?.transport_value)) || null*!/*/}
+                {/*        /!*                           : formData?.transport_value,*!/*/}
+                {/*        /!*               }}*!/*/}
+                {/*        /!*               onChange={(val) => {*!/*/}
+                {/*        /!*                   mode !== "add" ? setFormData({*!/*/}
+                {/*        /!*                       ...formData,*!/*/}
+                {/*        /!*                       transport_value: val.title*!/*/}
+                {/*        /!*                   }) : setFormData({...formData, transport_value: val})*!/*/}
+                {/*        /!*               }}*!/*/}
+                {/*        /!*    />*!/*/}
+                {/*        /!*</div>*!/*/}
+
+
+
+
+
+
+                {/*    </div>*/}
+
+                {/*</div>*/}
 
                 <div className={'w-[90%] bg-white px-4  mx-auto py-5 rounded-md shadow mt-5 dark:bg-darkBgTwo'}>
                     <div className={'grid grid-cols-4 gap-4'}>
@@ -835,40 +829,41 @@ function OrdersFrom({mode}) {
                                        }}
                             />
                         </div>
-                        <div className={"col-span-2 "}>
-                            <InputMUI errorMassage={errors?.customs_clearance1}
-                                value={formData?.customs_clearance1 ?? ''}
-                                onChange={(e) =>
-                                    setFormData({...formData, customs_clearance1: e.target.value})
-                                }
-                                variant={'outlined'} label={'Адрес таможенного оформления(код поста)'}
-                            />
-                        </div>
-                        <div className={"col-span-2 "}>
-                            <InputMUI errorMassage={errors?.customs_clearance2}
-                                value={formData?.customs_clearance2 ?? ''}
-                                onChange={(e) =>
-                                    setFormData({...formData, customs_clearance2: e.target.value})
-                                }
-                                variant={'outlined'} label={'Адрес таможенного оформления(код поста)'}
-                            />
-                        </div>
+                        {/*<div className={"col-span-2 "}>*/}
+                        {/*    <InputMUI errorMassage={errors?.customs_clearance1}*/}
+                        {/*        value={formData?.customs_clearance1 ?? ''}*/}
+                        {/*        onChange={(e) =>*/}
+                        {/*            setFormData({...formData, customs_clearance1: e.target.value})*/}
+                        {/*        }*/}
+                        {/*        variant={'outlined'} label={'Адрес таможенного оформления(код поста)'}*/}
+                        {/*    />*/}
+                        {/*</div>*/}
+                        {/*<div className={"col-span-2 "}>*/}
+                        {/*    <InputMUI errorMassage={errors?.customs_clearance2}*/}
+                        {/*        value={formData?.customs_clearance2 ?? ''}*/}
+                        {/*        onChange={(e) =>*/}
+                        {/*            setFormData({...formData, customs_clearance2: e.target.value})*/}
+                        {/*        }*/}
+                        {/*        variant={'outlined'} label={'Адрес таможенного оформления(код поста)'}*/}
+                        {/*    />*/}
+                        {/*</div>*/}
                     </div>
                 </div>
                 <div className={'w-[90%] bg-white px-4  mx-auto py-5 rounded-md shadow mt-5 dark:bg-darkBgTwo'}>
                     <div className={'grid grid-cols-4 gap-4'}>
                         <div className={" col-span-2"}>
                             <InputMUI errorMassage={errors?.weight_of_cargo}
-                                value={formData?.weight_of_cargo ?? ''}
+                                      value={formData?.weight_of_cargo ?? ''}
 
-                                onChange={(e) =>
-                                    setFormData({...formData, weight_of_cargo: e.target.value})
-                                }
-                                variant={'outlined'} label={'Вес перевозимого груза [кг]'}
+                                      onChange={(e) =>
+                                          setFormData({...formData, weight_of_cargo: e.target.value})
+                                      }
+                                      variant={'outlined'} label={'Вес перевозимого груза [кг]'}
                             />
                         </div>
                         <div className={"  col-span-2"}>
-                            <SelectMUI errorMassage={errors?.status_of_cargo} options={dangerous} variant={'outlined'} label={'Опасный ли груз?'}
+                            <SelectMUI errorMassage={errors?.status_of_cargo} options={dangerous} variant={'outlined'}
+                                       label={'Опасный ли груз?'}
                                        placeholder={'Опасный ли груз?'}
                                 // value={formData.status_of_cargo}
                                 // onChange={(val) => setFormData({...formData, status_of_cargo: val})}
@@ -886,21 +881,21 @@ function OrdersFrom({mode}) {
                                        }}
                             />
                         </div>
-                        <div className={"w-full "}>
-                            <div className={'relative'}>
-                                <MyCalendar errorMassage={errors.act_date}
-                                    value={formData?.act_date}
-                                    onChange={(val) => setFormData({...formData, act_date: val})}
-                                />
-                                <p className={`absolute text-[12px] pt-1 px-1 font-medium -top-[14px] left-2 text-[#3B82F6] ${errors.act_date ? 'text-red-500' : 'text-[#3B82F6]'} dark:text-darkText bg-white dark:bg-darkBgTwo`}>Дата акта выполненных работ</p>
+                        {/*<div className={"w-full "}>*/}
+                        {/*<div className={'relative'}>*/}
+                        {/*    <MyCalendar errorMassage={errors.act_date}*/}
+                        {/*        value={formData?.act_date}*/}
+                        {/*        onChange={(val) => setFormData({...formData, act_date: val})}*/}
+                        {/*    />*/}
+                        {/*    <p className={`absolute text-[12px] pt-1 px-1 font-medium -top-[14px] left-2 text-[#3B82F6] ${errors.act_date ? 'text-red-500' : 'text-[#3B82F6]'} dark:text-darkText bg-white dark:bg-darkBgTwo`}>Дата акта выполненных работ</p>*/}
 
-                                {
-                                    errors.act_date ? <p className={'text-[#d32f2f] text-[12px] mt-1 ml-2'}>{errors.act_date[0]}</p> : ''
-                                }
+                        {/*    {*/}
+                        {/*        errors.act_date ? <p className={'text-[#d32f2f] text-[12px] mt-1 ml-2'}>{errors.act_date[0]}</p> : ''*/}
+                        {/*    }*/}
 
-                            </div>
+                        {/*</div>*/}
 
-                        </div>
+                        {/*</div>*/}
                         <div className={"w-full "}>
                             <div className={'relative'}>
                                 <MyCalendar
@@ -910,7 +905,8 @@ function OrdersFrom({mode}) {
                                 <p className={`absolute text-[12px] pt-1 px-1 font-medium -top-[14px] left-2 text-[#3B82F6] ${errors.shipment_date ? 'text-red-500' : 'text-[#3B82F6]'} dark:text-darkText bg-white dark:bg-darkBgTwo`}>
                                     Дата погрузки</p>
                                 {
-                                    errors.shipment_date ? <p className={'text-[#d32f2f] text-[12px] mt-1 ml-2'}>{errors.shipment_date[0]}</p> : ''
+                                    errors.shipment_date ?
+                                        <p className={'text-[#d32f2f] text-[12px] mt-1 ml-2'}>{errors.shipment_date[0]}</p> : ''
                                 }
                             </div>
 
@@ -920,93 +916,96 @@ function OrdersFrom({mode}) {
                                 <MyCalendar
                                     errorMassage={errors.unload_date}
                                     value={formData?.unload_date ?? ''} // misol uchun yangi property
-                                            onChange={(val) => setFormData({...formData, unload_date: val})}/>
+                                    onChange={(val) => setFormData({...formData, unload_date: val})}/>
                                 <p className={`absolute text-[12px] pt-1 px-1 font-medium -top-[14px] left-2   ${errors.unload_date ? 'text-red-500' : 'text-[#3B82F6]'} dark:text-darkText bg-white dark:bg-darkBgTwo`}>
                                     Дата разгрузки</p>
 
                                 {
-                                    errors.unload_date ? <p className={'text-[#d32f2f] text-[12px] mt-1 ml-2'}>{errors.unload_date[0]}</p> : ''
+                                    errors.unload_date ?
+                                        <p className={'text-[#d32f2f] text-[12px] mt-1 ml-2'}>{errors.unload_date[0]}</p> : ''
                                 }
 
                             </div>
 
                         </div>
-                        <div className={"w-full "}>
-                            <InputMUI errorMassage={errors?.transportation_time}
-                                      value={formData?.transportation_time ?? ''}
+                        <div className={"col-span-2"}>
+                            <InputMUI errorMassage={errors?.nature_of_cargo} value={formData?.nature_of_cargo ?? ''}
                                       onChange={(e) =>
-                                          setFormData({...formData, transportation_time: e.target.value})
-                                      } variant={'outlined'}
-                                      label={'Время транспортировки'}
-                            />
-                        </div>
-                        <div className={'grid grid-cols-3 col-span-full    gap-4'}>
-                            <div className={""}>
-                                <SelectMUI errorMassage={errors?.type_of_loading} options={typeLoading} variant={'outlined'} label={'Вид погрузки'}
-                                           placeholder={'Вид погрузки'}
-                                    // value={formData?.type_of_loading || null}
-                                    // onChange={(val) => setFormData({...formData, type_of_loading: val})}
-                                           {...{
-                                               value:
-                                                   mode !== "add"
-                                                       ? typeLoading.find((opt) => opt.title === formData?.type_of_loading) || null
-                                                       : formData?.type_of_loading,
-                                           }}
-                                           onChange={(val) => {
-                                               mode !== "add" ? setFormData({
-                                                   ...formData,
-                                                   type_of_loading: val.title
-                                               }) : setFormData({...formData, type_of_loading: val})
-                                           }}
-
-                                />
-
-
-                            </div>
-                            <div className={"  "}>
-                                <InputMUI errorMassage={errors?.nature_of_cargo} value={formData?.nature_of_cargo ?? ''}
-                                          onChange={(e) =>
-                                              setFormData({...formData, nature_of_cargo: e.target.value})
-                                          }
-                                          variant={'outlined'} label={'Наименование перевозимого груза'}
-                                />
-                            </div>
-                            <div className={"  "}>
-                                <InputMUI errorMassage={errors?.palets} value={formData?.palets ?? ''}
-                                          onChange={(e) =>
-                                              setFormData({...formData, palets: e.target.value})
-                                          }
-                                          variant={'outlined'} label={'Количество мест'}
-                                />
-                            </div>
-                        </div>
-                        <div className={"col-span-full  "}>
-                            <InputMUI errorMassage={errors?.special_conditions} value={formData?.special_conditions ?? ''}
-                                      onChange={(e) =>
-                                          setFormData({...formData, special_conditions: e.target.value})
+                                          setFormData({...formData, nature_of_cargo: e.target.value})
                                       }
-                                      variant={'outlined'} label={'Особые условия'}
+                                      variant={'outlined'} label={'Наименование перевозимого груза'}
                             />
                         </div>
+                        {/*<div className={"w-full "}>*/}
+                        {/*    <InputMUI errorMassage={errors?.transportation_time}*/}
+                        {/*              value={formData?.transportation_time ?? ''}*/}
+                        {/*              onChange={(e) =>*/}
+                        {/*                  setFormData({...formData, transportation_time: e.target.value})*/}
+                        {/*              } variant={'outlined'}*/}
+                        {/*              label={'Время транспортировки'}*/}
+                        {/*    />*/}
+                        {/*</div>*/}
+                        {/*<div className={'grid grid-cols-3 col-span-full    gap-4'}>*/}
+                        {/*<div className={""}>*/}
+                        {/*    <SelectMUI errorMassage={errors?.type_of_loading} options={typeLoading} variant={'outlined'} label={'Вид погрузки'}*/}
+                        {/*               placeholder={'Вид погрузки'}*/}
+                        {/*        // value={formData?.type_of_loading || null}*/}
+                        {/*        // onChange={(val) => setFormData({...formData, type_of_loading: val})}*/}
+                        {/*               {...{*/}
+                        {/*                   value:*/}
+                        {/*                       mode !== "add"*/}
+                        {/*                           ? typeLoading.find((opt) => opt.title === formData?.type_of_loading) || null*/}
+                        {/*                           : formData?.type_of_loading,*/}
+                        {/*               }}*/}
+                        {/*               onChange={(val) => {*/}
+                        {/*                   mode !== "add" ? setFormData({*/}
+                        {/*                       ...formData,*/}
+                        {/*                       type_of_loading: val.title*/}
+                        {/*                   }) : setFormData({...formData, type_of_loading: val})*/}
+                        {/*               }}*/}
+
+                        {/*    />*/}
+
+
+                        {/*</div>*/}
+
+                        {/*<div className={"  "}>*/}
+                        {/*    <InputMUI errorMassage={errors?.palets} value={formData?.palets ?? ''}*/}
+                        {/*              onChange={(e) =>*/}
+                        {/*                  setFormData({...formData, palets: e.target.value})*/}
+                        {/*              }*/}
+                        {/*              variant={'outlined'} label={'Количество мест'}*/}
+                        {/*    />*/}
+                        {/*</div>*/}
+                        {/*</div>*/}
+                        {/*<div className={"col-span-full  "}>*/}
+                        {/*    <InputMUI errorMassage={errors?.special_conditions} value={formData?.special_conditions ?? ''}*/}
+                        {/*              onChange={(e) =>*/}
+                        {/*                  setFormData({...formData, special_conditions: e.target.value})*/}
+                        {/*              }*/}
+                        {/*              variant={'outlined'} label={'Особые условия'}*/}
+                        {/*    />*/}
+                        {/*</div>*/}
                     </div>
                 </div>
                 <div className={'w-[90%] bg-white px-4  mx-auto py-5 rounded-md shadow mt-5 dark:bg-darkBgTwo'}>
                     <div className={'grid grid-cols-3 gap-4'}>
                         <div className={" "}>
-                            <SelectMUI errorMassage={errors?.payment_condition} options={typePayment} variant={'outlined'} label={'Тип оплаты'}
+                            <SelectMUI errorMassage={errors?.payment_condition} options={typePayment}
+                                       variant={'outlined'} label={'Тип оплаты'}
                                        placeholder={'Тип оплаты'}
                                 // value={formData?.payment_condition || null}
                                 // onChange={(val) => setFormData({...formData, payment_condition: val})}
                                        {...{
                                            value:
                                                mode !== "add"
-                                                   ? typePayment.find((opt) => opt.id === formData?.payment_condition) || null
+                                                   ? typePayment.find((opt) => opt.value === Number(formData?.payment_condition)) || null
                                                    : formData?.payment_condition,
                                        }}
                                        onChange={(val) => {
                                            mode !== "add" ? setFormData({
                                                ...formData,
-                                               payment_condition: val.id
+                                               payment_condition: val.value
                                            }) : setFormData({...formData, payment_condition: val})
                                        }}
                             />
@@ -1029,115 +1028,118 @@ function OrdersFrom({mode}) {
                             />
                         </div>
                     </div>
-                </div>
-                <div className={'w-[90%] bg-white px-4  mx-auto py-5 rounded-md shadow mt-5 dark:bg-darkBgTwo'}>
-                    <div className={'grid grid-cols-2 gap-4'}>
-                        <div className={"flex items-center  "}>
-                            <SwitchMUI/>
-                            <p className={'font-semibold text-blue  dark:text-darkText '}>Есть таможенный пункт</p>
-                        </div>
-                        <div className={'flex items-center justify-end'}>
-                            <button onClick={handleAdd} className={'px-3 py-2 bg-blue w-max text-white rounded dark:bg-btnBgDark'}>
-                                <i className="fa-solid fa-plus mr-2"></i>Add
-                            </button>
-                        </div>
-                        <div className={'grid grid-cols-3 col-span-full   gap-4'}>
-                            <div className={"col-span-2"}>
-                                <SelectMUI options={data?.customs} variant={'outlined'} label={'Тип оплаты'}
-                                           placeholder={'Тип оплаты'}
-                                    // value={formData?.points || null}
-                                    // onChange={(val) => setFormData({...formData, points: val})}
-
-                                           {...{
-                                               value:
-                                                   mode !== "add"
-                                                       ? data?.customs?.find((opt) => opt.id === formData?.point) || null
-                                                       : formData?.point,
-                                           }}
-                                           onChange={(val) => {
-                                               mode !== "add" ? setFormData({
-                                                   ...formData,
-                                                   point: val.id
-                                               }) : setFormData({...formData, point: val})
-                                           }}
-                                />
-                            </div>
-                            <div className={" "}>
-
-                                <CurrencyInput value={formData?.point_price ?? ''}
-                                               setCarrierCurrency={setItemsPointPrice}
-                                               carrierCurrency={ItemsPointPrice}
-                                               onChange={(e) => setFormData({...formData, point_price: e.target.value})}
-                                               label={'Стоимость груза'}/>
-                            </div>
-                        </div>
-                        {rows?.map((row, index) => (
-                            <div key={row.id} className="grid grid-cols-3 col-span-full gap-4">
-                                <div className="col-span-2">
-                                    <SelectMUI
-                                        options={data?.customs || []}
-                                        variant="outlined"
-                                        label="Тип оплаты"
-                                        placeholder="Тип оплаты"
-                                        value={row.point || ''}
-                                        onChange={(val) => {
-                                            const newRows = [...rows];
-                                            newRows[index].point = val;
-                                            setRows(newRows);
-                                        }}
-                                    />
-                                </div>
-
-                                <div className="flex items-center gap-4 w-full pr-2">
-                                    <div className="w-full">
-                                        <CurrencyInput
-                                            label="Стоимость груза"
-                                            value={row.point_price ?? ''} // qiymatni state bilan bog'lash
-                                            onChange={(val) => {
-                                                const newRows = [...rows];
-                                                newRows[index].point_price = val.target.value; // point_price ga yozish
-                                                setRows(newRows);
-                                                console.log(rows)
-                                            }}
-                                        />
-                                    </div>
-
-                                    <div
-                                        onClick={() => handleRemove(row.id)}
-                                        className="bg-red-500 cursor-pointer w-[40px] h-[40px] rounded center text-[14px] group"
-                                    >
-                                        <i className="fa-solid fa-trash text-white group-hover:scale-125 transition-all duration-300 ease-in-out"></i>
-                                    </div>
-                                </div>
-                            </div>
-                        ))}
-
-
-                    </div>
-
-                    <div className={'py-5 w-full flex items-center justify-end gap-4'}>
-                        <button
-                            onClick={() => {
-                                navigate('/orders');
-                            }}
-                            className="w-36 relative overflow-hidden rounded font-semibold bg-transparent border-2 text-blue border-blue transition-all duration-300 ease-in-out  hover:text-white hover:bg-blue py-2 px-3 dark:hover:bg-navBgHover dark:border-darkText dark:text-darkText"
-                        >
-                            Close
-                        </button>
-                        <button onClick={() => {
-                            if(mode === "add") {
-                                addOrders()
-                            }
-                            if(mode === "edit") {
-                                EditOrder(id, formData)
-                            }
-                        }}
+                    {
+                        mode !== 'show' ? <div className={'py-5 w-full flex items-center justify-end gap-4'}>
+                            <button
+                                onClick={() => {
+                                    navigate('/orders');
+                                }}
                                 className="w-36 relative overflow-hidden rounded font-semibold bg-transparent border-2 text-blue border-blue transition-all duration-300 ease-in-out  hover:text-white hover:bg-blue py-2 px-3 dark:hover:bg-navBgHover dark:border-darkText dark:text-darkText"
-                        >
-                            {loading ? ('Adding...') : ('Add')}
-                        </button>
-                    </div>
+                            >
+                                Close
+                            </button>
+                            <button onClick={() => {
+                                if (mode === "add") {
+                                    addOrders()
+                                }
+                                if (mode === "edit") {
+                                    EditOrder(id, formData)
+                                }
+                            }}
+                                    className="w-36 relative overflow-hidden rounded font-semibold bg-transparent border-2 text-blue border-blue transition-all duration-300 ease-in-out  hover:text-white hover:bg-blue py-2 px-3 dark:hover:bg-navBgHover dark:border-darkText dark:text-darkText"
+                            >
+                                {loading ? ('Adding...') : ('Add')}
+                            </button>
+                        </div> : ""
+                    }
                 </div>
+                {/*<div className={'w-[90%] bg-white px-4  mx-auto py-5 rounded-md shadow mt-5 dark:bg-darkBgTwo'}>*/}
+                {/*<div className={'grid grid-cols-2 gap-4'}>*/}
+                {/*    <div className={"flex items-center  "}>*/}
+                {/*        <SwitchMUI/>*/}
+                {/*        <p className={'font-semibold text-blue  dark:text-darkText '}>Есть таможенный пункт</p>*/}
+                {/*    </div>*/}
+                {/*    <div className={'flex items-center justify-end'}>*/}
+                {/*        <button onClick={handleAdd} className={'px-3 py-2 bg-blue w-max text-white rounded dark:bg-btnBgDark'}>*/}
+                {/*            <i className="fa-solid fa-plus mr-2"></i>Add*/}
+                {/*        </button>*/}
+                {/*    </div>*/}
+                {/*    <div className={'grid grid-cols-3 col-span-full   gap-4'}>*/}
+                {/*        <div className={"col-span-2"}>*/}
+                {/*            <SelectMUI options={data?.customs} variant={'outlined'} label={'Тип оплаты'}*/}
+                {/*                       placeholder={'Тип оплаты'}*/}
+                {/*                // value={formData?.points || null}*/}
+                {/*                // onChange={(val) => setFormData({...formData, points: val})}*/}
+
+                    {/*                       {...{*/}
+                    {/*                           value:*/}
+                    {/*                               mode !== "add"*/}
+                    {/*                                   ? data?.customs?.find((opt) => opt.id === formData?.point) || null*/}
+                    {/*                                   : formData?.point,*/}
+                    {/*                       }}*/}
+                    {/*                       onChange={(val) => {*/}
+                    {/*                           mode !== "add" ? setFormData({*/}
+                    {/*                               ...formData,*/}
+                    {/*                               point: val.id*/}
+                    {/*                           }) : setFormData({...formData, point: val})*/}
+                    {/*                       }}*/}
+                    {/*            />*/}
+                    {/*        </div>*/}
+                    {/*        <div className={" "}>*/}
+
+                    {/*            <CurrencyInput value={formData?.point_price ?? ''}*/}
+                    {/*                           setCarrierCurrency={setItemsPointPrice}*/}
+                    {/*                           carrierCurrency={ItemsPointPrice}*/}
+                    {/*                           onChange={(e) => setFormData({...formData, point_price: e.target.value})}*/}
+                    {/*                           label={'Стоимость груза'}/>*/}
+                    {/*        </div>*/}
+                    {/*    </div>*/}
+                    {/*    {rows?.map((row, index) => (*/}
+                    {/*        <div key={row.id} className="grid grid-cols-3 col-span-full gap-4">*/}
+                    {/*            <div className="col-span-2">*/}
+                    {/*                <SelectMUI*/}
+                    {/*                    options={data?.customs || []}*/}
+                    {/*                    variant="outlined"*/}
+                    {/*                    label="Тип оплаты"*/}
+                    {/*                    placeholder="Тип оплаты"*/}
+                    {/*                    value={row.point || ''}*/}
+                    {/*                    onChange={(val) => {*/}
+                    {/*                        const newRows = [...rows];*/}
+                    {/*                        newRows[index].point = val;*/}
+                    {/*                        setRows(newRows);*/}
+                    {/*                    }}*/}
+                    {/*                />*/}
+                    {/*            </div>*/}
+
+                    {/*            <div className="flex items-center gap-4 w-full pr-2">*/}
+                    {/*                <div className="w-full">*/}
+                    {/*                    <CurrencyInput*/}
+                    {/*                        label="Стоимость груза"*/}
+                    {/*                        value={row.point_price ?? ''} // qiymatni state bilan bog'lash*/}
+                    {/*                        onChange={(val) => {*/}
+                    {/*                            const newRows = [...rows];*/}
+                    {/*                            newRows[index].point_price = val.target.value; // point_price ga yozish*/}
+                    {/*                            setRows(newRows);*/}
+                    {/*                            console.log(rows)*/}
+                    {/*                        }}*/}
+                    {/*                    />*/}
+                    {/*                </div>*/}
+
+                    {/*                <div*/}
+                    {/*                    onClick={() => handleRemove(row.id)}*/}
+                    {/*                    className="bg-red-500 cursor-pointer w-[40px] h-[40px] rounded center text-[14px] group"*/}
+                    {/*                >*/}
+                    {/*                    <i className="fa-solid fa-trash text-white group-hover:scale-125 transition-all duration-300 ease-in-out"></i>*/}
+                    {/*                </div>*/}
+                    {/*            </div>*/}
+                    {/*        </div>*/}
+                    {/*    ))}*/}
+
+
+                    {/*</div>*/}
+
+
+                {/*</div>*/}
 
 
             </div>

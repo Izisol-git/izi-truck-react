@@ -1,9 +1,11 @@
-import React from 'react';
-import {Button, InputMUI, SelectMUI} from "../../Components/index.js";
+import React, {useEffect} from 'react';
+import {AlertMessage, Button, InputMUI, SelectMUI} from "../../Components/index.js";
 import {useNavigate, useParams} from "react-router-dom";
 import {Checkbox, FormControlLabel} from "@mui/material";
 import {useDispatch, useSelector} from "react-redux";
 import {addDidoxId} from "../../features/orders/ordersThunks.js";
+import Stack from "@mui/material/Stack";
+import Alert from "@mui/material/Alert";
 
 // import { Label } from "@/components/ui/label"
 
@@ -12,13 +14,21 @@ function Didox() {
     const navigate = useNavigate();
     const dispatch = useDispatch();
     const {id} = useParams();
-    const {dbOrders} = useSelector((state) => state.employesModal);
+    const dbOrders = localStorage.getItem("dbOrders");
+    const {addDidox} = useSelector((state) => state.orders);
+    const [message, setMessage] = React.useState("");
+
+
+    const [error, setError] = React.useState(null);
 
     const [didoxData, setDidoxData] = React.useState({
         factura_types: null,
-        ikpus : null,
-        single_sided_type : null,
-        lgota_id:'',
+        ikpus: null,
+        single_sided_type: null,
+        lgota_id: '',
+        has_lgota: false,
+        has_vat: false,
+        nds12: false,
     });
 
     const factura_type = [
@@ -56,31 +66,50 @@ function Didox() {
         },
     ];
 
+    useEffect(() => {
+        setTimeout(() => setMessage(''), 3000);
+    }, [message]);
 
-    const didox = async () =>{
+
+    const didox = async () => {
+        console.log(didoxData);
         const newObj = {
-            type : 'reimbursement_carrier',
-            ikpu : didoxData.ikpus.id,
-            factura_type : didoxData.factura_types.id,
-            source : dbOrders,
+            type: 'reimbursement_carrier',
+            ikpu: didoxData?.ikpus?.id,
+            factura_type: didoxData?.factura_types?.id,
+            source: dbOrders,
+            has_lgota: didoxData?.has_lgota,
+            has_vat: didoxData?.has_vat,
+            nds12: didoxData?.nds12,
+            lgota_id: didoxData?.lgota_id,
         }
         console.log(newObj);
         try {
-            const res = await dispatch(addDidoxId({id , obj:newObj  }))
-        }catch(err){
+            const res = await dispatch(addDidoxId({id, obj: newObj})).unwrap()
+            setMessage("Ma'lumot muvaffaqiyatli saqlandi ✅");
+            setDidoxData({
+                factura_types: null,
+                ikpus: null,
+                single_sided_type: null,
+                lgota_id: '',
+                has_lgota: false,
+                has_vat: false,
+                nds12: false,
+            })
+        } catch (err) {
             console.log(err);
+            setError(err.errors);
+
         }
     }
-
-
+    console.log(error);
 
 
     console.log(didoxData);
 
 
     return (
-        <div>
-
+        <div className={'relative'}>
             <div className={'bg-bacWhite w-full min-h-[calc(100dvh-70px)] py-5 dark:bg-darkBg'}>
 
 
@@ -107,34 +136,41 @@ function Didox() {
                             <FormControlLabel
                                 control={
                                     <Checkbox
-                                        defaultChecked
+
+                                        checked={didoxData.has_lgota}
+                                        onChange={(e) => setDidoxData({...didoxData, has_lgota: e.target.checked})}
                                         sx={{
-                                            color: "#1D2D5B",
                                             "&.Mui-checked": {
-                                                color: "#1D2D5B",
+                                                color: "#1D2D5B", // Tailwind class ni oladi
                                             },
-                                            "@media (prefers-color-scheme: dark)": {
+                                            color: '#1D2D5B',
+                                            '.dark &': {
+                                                color: '#fff',
+                                            },
+                                            ".dark &.Mui-checked": {
                                                 color: "#fff",
-                                                "&.Mui-checked": { color: "#fff" },
-                                            },
+                                            }
                                         }}
                                     />
                                 }
-                                label="Комиссионер"
+                                label="Есть льгота по НДС"
                             />
                             <FormControlLabel
                                 control={
                                     <Checkbox
-                                        defaultChecked
+                                        checked={didoxData.has_vat}
+                                        onChange={(e) => setDidoxData({...didoxData, has_vat: e.target.checked})}
                                         sx={{
-                                            color: "#1D2D5B",
                                             "&.Mui-checked": {
-                                                color: "#1D2D5B",
+                                                color: "#1D2D5B", // Tailwind class ni oladi
                                             },
-                                            "@media (prefers-color-scheme: dark)": {
+                                            color: '#1D2D5B',
+                                            '.dark &': {
+                                                color: '#fff',
+                                            },
+                                            ".dark &.Mui-checked": {
                                                 color: "#fff",
-                                                "&.Mui-checked": { color: "#fff" },
-                                            },
+                                            }
                                         }}
                                     />
                                 }
@@ -143,20 +179,25 @@ function Didox() {
                             <FormControlLabel
                                 control={
                                     <Checkbox
-                                        defaultChecked
+                                        // color={'#1D2D5B'}
+                                        checked={didoxData.nds12}
+                                        onChange={(e) => setDidoxData({...didoxData, nds12: e.target.checked})}
+                                        // className="text-[#1D2D5B] dark:text-white "
                                         sx={{
-                                            color: "#1D2D5B",
                                             "&.Mui-checked": {
-                                                color: "#1D2D5B",
+                                                color: "#1D2D5B", // Tailwind class ni oladi
                                             },
-                                            "@media (prefers-color-scheme: dark)": {
+                                            color: '#1D2D5B',
+                                            '.dark &': {
+                                                color: '#fff',
+                                            },
+                                            ".dark &.Mui-checked": {
                                                 color: "#fff",
-                                                "&.Mui-checked": { color: "#fff" },
-                                            },
+                                            }
                                         }}
                                     />
                                 }
-                                label="Поручитель"
+                                label="Есть НДС 12%"
                             />
                         </div>
                     </div>
@@ -164,16 +205,18 @@ function Didox() {
                         <div className={' grid grid-cols-2 gap-4 w-full  '}>
                             <div className="flex items-center ">
                                 <SelectMUI
+                                    errorMassage={error?.factura_type}
                                     value={didoxData.factura_types || null}
                                     onChange={(val) => setDidoxData({...didoxData, factura_types: val})}
                                     options={factura_type || []}
                                     variant={'outlined'}
-                                    label={'Factura type'}
-                                    placeholder={'Factura type'}/>
+                                    label={'Тип счёт-фактуры'}
+                                    placeholder={'Тип счёт-фактуры'}/>
 
                             </div>
                             <div className="flex items-center ">
                                 <SelectMUI
+                                    errorMassage={error?.ikpu}
                                     value={didoxData.ikpus || null}
                                     onChange={(val) => setDidoxData({...didoxData, ikpus: val})}
                                     options={IKPUS || []}
@@ -186,58 +229,33 @@ function Didox() {
                         <div className={' grid grid-cols-2 gap-4 w-full  '}>
                             <div className="flex items-center ">
                                 <SelectMUI
+                                    errorMassage={error?.single_sided_type}
                                     value={didoxData.single_sided_type || null}
                                     onChange={(val) => setDidoxData({...didoxData, single_sided_type: val})}
                                     options={single_sided_type || []}
                                     variant={'outlined'}
-                                    label={'Single Sided Type'}
-                                    placeholder={'Single Sided Type'}/>
+                                    label={'Односторонний тип'}
+                                    placeholder={'Односторонний тип'}/>
 
                             </div>
                             <div className="flex items-center ">
-                                <InputMUI value={didoxData.lgota_id ?? ''}
+                                <InputMUI errorMassage={error?.lgota_id} disabled={!didoxData.has_lgota}
+                                          value={didoxData.lgota_id ?? ''}
                                           onChange={(e) =>
                                               setDidoxData({...didoxData, lgota_id: e.target.value})
                                           }
-                                          variant={'outlined'} label={'Водитель'}
-                                />
-
-                            </div>
-                        </div>
-                        <div className={' grid grid-cols-3 gap-4 w-full  '}>
-                            <div className="flex items-center ">
-                                <InputMUI value={didoxData.lgota_id ?? ''}
-                                          onChange={(e) =>
-                                              setDidoxData({...didoxData, lgota_id: e.target.value})
-                                          }
-                                          variant={'outlined'} label={'Commitent Name'}
-                                />
-
-                            </div>
-                            <div className="flex items-center ">
-                                <InputMUI value={didoxData.lgota_id ?? ''}
-                                          onChange={(e) =>
-                                              setDidoxData({...didoxData, lgota_id: e.target.value})
-                                          }
-                                          variant={'outlined'} label={'Commitent Tin'}
-                                />
-
-                            </div>
-                            <div className="flex items-center ">
-                                <InputMUI value={didoxData.lgota_id ?? ''}
-                                          onChange={(e) =>
-                                              setDidoxData({...didoxData, lgota_id: e.target.value})
-                                          }
-                                          variant={'outlined'} label={'Commitent Vat Reg Code'}
+                                          variant={'outlined'} label={'ID льготы'}
                                 />
 
                             </div>
                         </div>
                         <div className={'w-full flex items-center justify-end '}>
-                            <div className={'w-[15%]'}>
-                                <Button onClick={didox}
-                                    icon={<i className="fa-solid fa-share mr-2"></i>}
-                                    value={"Send"}
+                            <div className={'min-w-[15%]'}>
+                                <Button onClick={() => {
+                                    didox()
+                                }}
+                                        icon={<i className="fa-solid fa-share mr-2"></i>}
+                                        value={addDidox ? "Sending..." : "Send"}
                                         color={'dark:bg-btnBgDark'}
                                 />
                             </div>
@@ -249,6 +267,10 @@ function Didox() {
                 <div className={'w-[90%] bg-white px-4  mt-5  mx-auto py-5 rounded-md shadow  dark:bg-darkBgTwo'}>
                     <p>Отправленные документы</p>
                 </div>
+            </div>
+
+            <div className={'w-1/3 absolute top-0 right-6'}>
+                {message && <AlertMessage/>}
             </div>
 
         </div>

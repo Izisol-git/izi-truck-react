@@ -1,168 +1,241 @@
-import React, {useState} from "react";
-import {changeDbOrders, openModal} from "../../features/EmployeSModalToggle/employesModalToggle.js";
-import {useDispatch, useSelector} from "react-redux";
+import React from "react";
+import dayjs from "../../utils/dayjs.js";
+import relativeTime from "dayjs/plugin/relativeTime";
+import {
+    Card,
+    CardContent,
+    Chip,
+    Button,
+    Grid,
+    Divider,
+} from "@mui/material";
+import {
+    LocalShipping as TruckIcon,
+    LocationOn as MapPinIcon,
+    AccessTime as ClockIcon,
+    Inventory2 as PackageIcon,
+    ArrowForward as ArrowRightIcon,
+} from "@mui/icons-material";
 import {useNavigate} from "react-router-dom";
-import {SkeletonMUI} from "../index.js";
-import ActData from "../Modal/actData.jsx";
+import {useDispatch} from "react-redux";
+import {changeDbOrders} from "../../features/EmployeSModalToggle/employesModalToggle.js";
 
-const statusStyles = {
-    new: "bg-cyan-100 text-cyan-700",
-    in_progress: "bg-amber-100 text-amber-700",
-    done: "bg-emerald-100 text-emerald-700",
-    canceled: "bg-rose-100 text-rose-700",
+dayjs.extend(relativeTime);
+dayjs.locale("uz");
+
+const statusMap = {
+    new: {label: "Новый заказ", color: "info"},
+    in_progress: {label: "В работе", color: "warning"},
+    done: {label: "Завершён", color: "success"},
+    canceled: {label: "Отменён", color: "error"},
 };
 
-function LabeledRow({label, value}) {
-    return (
-        <div className="min-w-0">
-            <p className="text-[11px] uppercase tracking-wide text-gray-500 dark:text-[#00A77E] dark:font-bold   font-medium select-none">
-                {label}
-            </p>
-            <p className="mt-1 text-sm text-gray-900 dark:text-darkText truncate">{value || "-"}</p>
-        </div>
-    );
-}
+export default function OrderLogisticsCard({order}) {
 
-const OrderCard = ({order, onEdit, onDelete, onActDate, key}) => {
-    const badgeClass = statusStyles[order.status] || "bg-gray-100 text-gray-700";
-    const dispatch = useDispatch();
     const navigate = useNavigate();
-    const {loading} = useSelector((state) => state.orders);
-    const [open, setOpen] = useState(false);
-    const [formAct, setFormAct] = useState({
-        act_date: "",
-    });
-    console.log(order);
+    const dispatch = useDispatch();
 
+    const status = statusMap[order?.status] || {
+        label: order?.status === 4 ? "Haydovchi tayinlangan" : "Noma'lum",
+        color: order?.status === 4 ? "success" : "warning",
+    };
 
     return (
+        <Card  onDoubleClick={() => {
+            navigate(`/orders/${order?.id}`)
+            dispatch(changeDbOrders(order?.source))
+            localStorage.setItem("dbOrders", order?.source);
+        }} className="  mx-auto   rounded-xl">
+            {/* Header */}
+            <div
+                className="bg-gradient-to-r bg-[#DBE3F5] text-white p-2 flex justify-between items-center rounded-br-lg rounded-bl-lg">
+                <div className="flex items-center gap-3">
+                    <PackageIcon className={'text-blue'}/>
+                    <div className={'text-blue'}>
+                        <h6 className="font-bold text-lg">#{order?.order_id || "EXP00001"}</h6>
+                        {/*<p className="text-sm">{order?.client_fio || "No client"}</p>*/}
+                    </div>
+                </div>
+                <Chip label={`${dayjs(order?.created_at).fromNow()}`} color="error"/>
+            </div>
 
-        <div className={' mx-auto py-2 flex flex-col gap-y-5  '}>
-            {
-                loading ? <SkeletonMUI/> : <div
+            <CardContent>
 
-                    onDoubleClick={() => {
-                        navigate(`/orders/${order?.id}`)
-                        dispatch(changeDbOrders(order?.source))
-                        localStorage.setItem("dbOrders", order?.source);
-                    }}
-                    className="w-full rounded-lg   border-gray-200 bg-white p-5 shadow-sm dark:bg-darkBgTwo">
-                    {/* Top bar */}
-                    <div className="flex items-center   justify-between  gap-3 ">
+                <div className={'grid grid-cols-1 md:grid-cols-2 xl:grid-cols-3 gap-4'}>
+                    {/* Order Details */}
+                    <div className="flex flex-col h-full">
+                        <div className="flex items-center gap-2 font-semibold text-blue pb-2  whitespace-nowrap">
+                            <ClockIcon color="primary" fontSize="small"/> Buyurtma ma’lumotlari
+                        </div>
+                        <Divider className="my-2"/>
 
-                        {
-                            order?.source === "mysql" ?
+                        {/* Bu div qolgan joyni egallaydi */}
+                        <div className="pt-2 flex flex-col justify-between flex-1">
+                            <div className={''}>
+                                <p className="text-sm font-semibold text-blue">Дата акта: <span
+                                    className={'ml-2'}>{order?.act_date || "-"}</span></p>
+                                <div className={''}></div>
+                                <p className="text-sm font-semibold text-blue mt-2">Источник
+                                    заказа: <span className={'ml-2'}>{order?.source || "-"}</span>
+                                </p>
+                                <div className="flex items-center gap-2 mt-2 text-sm font-semibold text-blue">
+                                    Статус: <Chip size="small" label={status.label} color={status.color}/>
+                                </div>
+                                <p className="text-sm font-semibold mt-2 text-blue">Номер
+                                    машины: <span className={'ml-2'}>{order?.driver_number || "-"}</span>
+                                </p>
+                            </div>
 
-                                <>
+                            <Button
 
-                                <div className={"flex gap-10   items-center  text-xs text-gray-600"}>
-                                    <div>
-                                        <div className="text-[11px] text-gray-500">SALES</div>
-                                        <div className="font-semibold text-gray-900 text-sm leading-5 ">
-                                            {order?.sales}
-                                        </div>
+                                fullWidth
+                                variant="contained"
+                                color="primary"
+                                className="mt-3"
+
+                                onClick={() => {
+                                    navigate(`/orders/${order?.id}`)
+                                    dispatch(changeDbOrders(order?.source))
+                                    localStorage.setItem("dbOrders", order?.source);
+                                }}
+                            >
+                                <i className="fa-solid fa-eye mr-2"></i>
+                                Batafsil
+                            </Button>
+                        </div>
+                    </div>
+
+
+                    {/* Route Information */}
+                    <div className={''}>
+                        <Grid item xs={12} xl={4}>
+                            <div className="flex items-center gap-2 font-semibold text-blue pb-2 whitespace-nowrap">
+                                <MapPinIcon color="primary" fontSize="small"/> Yoʻnalish maʼlumotlari
+                            </div>
+                            <Divider className="my-2"/>
+                            <div className={'pt-2'}>
+                                <div className="bg-gray-100 p-3 rounded-lg mb-2">
+                                    <p className="font-medium">YUKLASH</p>
+                                    <p className="text-sm text-gray-500">
+
+                                        {order?.point_of_departure + " - " + order?.country_of_departure || " - "}
+                                    </p>
+                                </div>
+                                <div className="text-center my-2">
+                                    <ArrowRightIcon color="primary"/>
+                                </div>
+                                <div className="bg-gray-100 p-3 rounded-lg">
+                                    <p className="font-medium">TUSHIRISH</p>
+                                    <p className="text-sm text-gray-500">
+                                        {order?.point_of_destination + " - " + order?.country_of_destination || " - "}
+                                        {}
+                                    </p>
+                                </div>
+                            </div>
+                        </Grid>
+                    </div>
+
+
+                    {/* Timeline & Status */}
+                    <div className={'   '}>
+                        <div className={'  h-full'}>
+                            <div className="flex items-center gap-2 font-semibold text-blue pb-2 whitespace-nowrap">
+                                <TruckIcon color="primary" fontSize="small"/> Vaqt jadvali
+                            </div>
+                            <Divider className="my-2"/>
+
+                            <div className="flex gap-4  pt-2   h-max">
+                                {/* Line + Dots */}
+                                <div className="relative flex flex-col items-end justify-between  ">
+                                    <div className="absolute left-4 top-6 bottom-6 w-0.5 bg-gray-300"></div>
+                                    <div
+                                        className="w-8 h-8 bg-green-500 rounded-full flex items-center justify-center relative z-[1]">
+                                        <div className="w-3 h-3 bg-white rounded-full"></div>
+
                                     </div>
-                                    <div>
-                                        <div className="text-[11px] text-gray-500">OPERATION</div>
-                                        <div className="font-semibold text-gray-900 text-sm leading-5">
-                                            {order?.operation}
-                                        </div>
+                                    <div
+                                        className="w-8 h-8 bg-red-500 rounded-full flex items-center justify-center relative z-[1]">
+                                        <div className="w-3 h-3 bg-white rounded-full"></div>
                                     </div>
                                 </div>
 
+                                {/* Start + End */}
+                                <div>
+                                    <div className="flex items-start gap-4 mb-6">
 
+                                        <div className="flex-1 pt-1">
 
-                                <div className="  flex gap-2 text-sm">
-                                    <div onClick={() => {
-                                        navigate(`/orders/edit/${order?.id}`);
-                                    }}
-                                         className=" bg-yellow-500 w-[30px] h-[30px] rounded center text-[14px] group">
-                                        <i
-                                            className="fa-solid fa-pen-to-square   text-white group-hover:scale-125 transition-all duration-300 ease-in-out "></i>
+                                            <div className="flex items-center gap-2 mb-1">
+                                              <span className="font-semibold text-gray-900">
+                                                {order?.created_at
+                                                    ? new Date(order.created_at).toLocaleDateString("ru-RU")
+                                                    : "----"}
+                                              </span>
+                                                <Chip size="small" label="Start" variant="outlined"/>
+
+                                            </div>
+                                            <p className="text-sm text-gray-500">Дата погрузки</p>
+                                        </div>
                                     </div>
-                                    <button
-                                        onClick={() => {
-                                            // onActDate
-                                            setOpen(true)
-                                        }}
-                                        className="  rounded   bg-blue px-3 py-1.5 text-xs font-semibold text-white dark:bg-btnBgDark"
-                                    >
-                                        Дата акта
-                                    </button>
-                                </div> </> : ""
-                        }
 
-                    </div>
+                                    <div className="flex items-start gap-4">
+                                        <div className="flex-1 pt-1">
+                                            <div className="flex items-center gap-2 mb-1">
+                                                  <span className="font-semibold text-gray-900">
+                                                    {order?.updated_at
+                                                        ? new Date(order.updated_at).toLocaleDateString("ru-RU")
+                                                        : "----"}
+                                                  </span>
+                                                <Chip size="small" label="End" variant="outlined"/>
+                                            </div>
+                                            <p className="text-sm text-gray-500">Дата разгрузки</p>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
 
-                    {/* Grid content */}
-                    <div className="mt-4 grid grid-cols-4 md:grid-cols-6 lg:grid-cols-8 gap-x-8 gap-y-4">
-                        {order?.source === "mysql" && <LabeledRow label="Клиент" value={order?.client_fio}/>}
-                        <LabeledRow label="POL - city" value={order?.country_of_destination}/>
-                        <LabeledRow label="ETD" value={new Date(order?.updated_at).toLocaleDateString("ru-RU")}/>
-                        <LabeledRow label="ID" value={order?.order_id}/>
-                        <LabeledRow label="POD - city" value={order?.country_of_departure}/>
-                        <LabeledRow label="Дата создание заказа"
-                                    value={new Date(order?.created_at).toLocaleDateString("ru-RU")}/>
 
-                        <div className="min-w-0">
-                            <p className="text-[11px] uppercase tracking-wide text-gray-500 font-medium select-none">
-                                Статус
-                            </p>
-                            <span
-                                className={`mt-1 inline-flex items-center px-2 py-1 text-[11px] font-semibold rounded-full ${badgeClass}`}
-                            >
-            {order?.status === "new"
-                ? "Новый заказ"
-                : order?.status === "in_progress"
-                    ? "В работе"
-                    : order?.status === "done"
-                        ? "Завершён"
-                        : order?.status === "canceled"
-                            ? "Отменён"
-                            : order?.status}
-          </span>
                         </div>
-
-                        <LabeledRow label="Дата акта" value={new Date(order?.act_date).toLocaleDateString("ru-RU")}/>
-                        {order?.source === "mysql" && <LabeledRow label="Возмещение" value={order?.fraxt_price_transfer}/>}
-                        <LabeledRow label="Вознаграждение" value={order?.carrier_price_transfer}/>
-                        {order?.source === "mysql" && <LabeledRow label="ФРАХТ" value={order?.freight}/>}
-                        {order?.source === "mysql" && <LabeledRow label="Страховая премия" value={order?.insurance}/>}
-                        {order?.source === "mysql" && <LabeledRow label="Перевозчик" value={order?.carrier}/>}
-                        <LabeledRow label="Номер автомобиля" value={order?.driver_number}/>
-                        <LabeledRow label="Номер полуприцепа" value={order?.driver_trailer}/>
-                        <LabeledRow label="Наименование груза" value={order?.weight_of_cargo}/>
-                        {order?.source === "mysql" && <LabeledRow label="НДС" value={order?.vat}/>}
-                        {order?.source === "mysql" && <LabeledRow label="Простой перевозчика" value={order?.carrierIdle}/>}
-                        {order?.source === "mysql" && <LabeledRow label="ИНН клиента" value={order?.clientInn}/>}
-                        {order?.source === "mysql" && <LabeledRow label="Простой клиента" value={order?.clientIdle}/>}
-                        {order?.source === "mysql" && <LabeledRow label="ИНН перевозчика" value={order?.carrierInn}/>}
-                        {order?.source === "mysql" && <LabeledRow label="Режим" value={order?.mode}/>}
-                        {order?.source === "mysql" && <LabeledRow label="Тип услуги" value={order?.type_of_loading}/>}
-                        {order?.source === "mysql" && <LabeledRow label="Тип перевозки" value={order?.transportType}/>}
-
-
-
-
-
-
-
-
                     </div>
-
-                    {/* Footer actions */}
 
                 </div>
-            }
 
-            <ActData id={order?.id} open={open} setOpen={setOpen} form={formAct} setForm={setFormAct}/>
 
-        </div>
+            </CardContent>
+            <div
+                className="bg-[#DBE3F5]  mt-4  rounded-tr-lg rounded-tl-lg overflow-hidden text-center flex items-center justify-between  ">
+                <div className={'flex items-center gap-5 px-4 py-2'}>
+                    <p className="text-sm    font-semibold text-blue ">Оплата</p>
+                    <p className="text-lg font-bold text-gray-900">{
+                        Number(order?.source === 'mysql' ? order?.fraxt_price_transfer : order?.carrier_price_transfer).toLocaleString("ru-RU", {
+                            minimumFractionDigits: 2,
+                            maximumFractionDigits: 2,
+                        })} UZS</p>
+                </div>
+                {
+                    order?.source === "mysql" ?
+                        <div className={'h-full'}>
 
+                            <Button
+                                sx={{
+                                    height: 43,
+                                    borderRadius: 0,
+                                }}
+                                // size="small"
+                                variant="contained"
+                                color="warning"
+                                onClick={() => {
+                                    navigate(`/orders/edit/${order.id}`);
+                                }}
+                            >
+                                <i className="fa-solid fa-pen-to-square mr-2"></i>
+                                Edit
+                            </Button>
+                        </div>
+                        :
+                        ''
+                }
+            </div>
+        </Card>
     );
 }
-
-export default OrderCard
-
-
-

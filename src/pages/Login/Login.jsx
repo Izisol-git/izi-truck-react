@@ -22,7 +22,6 @@ const Login = () => {
     const postLogin = async () => {
         try {
             const result = await dispatch(loginUser({ email, password })).unwrap();
-
             navigate("/dashboard");
         } catch (err) {
             console.error(err);

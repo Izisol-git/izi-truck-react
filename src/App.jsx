@@ -20,7 +20,14 @@ import {
     ShowOffers,
     AddDrivers,
     EditDrivers,
-    ShowOrdersId, Didox, ClientContracts, EmployeesContracts, EditClientContracts, Notifications, NotificationsDetails
+    ShowOrdersId,
+    Didox,
+    ClientContracts,
+    EmployeesContracts,
+    EditClientContracts,
+    Notifications,
+    NotificationsDetails,
+    AddQueries
 }
     from './pages/index.js'
 import {BrowserRouter, Routes, Route, Navigate} from "react-router-dom";
@@ -114,6 +121,7 @@ function App() {
                     <Route path="/" element={<Navigate to="/dashboard" replace />} />
                     <Route path="dashboard" element={<Dashboard />} />
                     <Route path="queries" element={<Queries />} />
+                    <Route path="queries/create" element={<AddQueries />} />
                     <Route path="orders" element={<Orders />} />
                     <Route path="orders/create" element={<AddOrders />} />
                     <Route path="orders/replies" element={<ShowOffers />} />

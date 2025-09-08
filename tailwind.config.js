@@ -10,6 +10,9 @@ export default {
     ],
     theme: {
         extend: {
+            screens: {
+                '3xl': '2000px',
+            },
             colors: {
               blue : '#1D2D5B',
               blue$400 : 'rgb(79, 70, 229)',

@@ -79,6 +79,7 @@ function NavbarY() {
     const [navabrArry, setNavabrArry] = useState(
         [
             {label: 'Bosh sahifa', icon: 'fas fa-home mr-2', navigate: '/dashboard'},
+            {label: "So'rovlar", icon: 'fa-solid fa-question mr-2', navigate: '/queries'},
             {label: 'Buyurtmalar', icon: 'fas fa-shopping-cart mr-2', navigate: '/orders'},
             {
                 label: 'Foydalanuvchilar', icon: 'fas fa-users mr-2', navigate: '/users', active: false, arry: [

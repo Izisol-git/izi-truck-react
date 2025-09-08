@@ -11,6 +11,7 @@ import invoicesReducer from "../features/Invoices/invoicesSlice.js";
 import suggestionsReducer from "../features/suggestions/suggestionsSlice.js";
 import contractReducer from "../features/Contracts/contractSlice.js";
 import notificationReducer from "../features/Notification/notificationSlice.js";
+import statisticsReducer from "../features/Statistics/statisticsSlice.js";
 
 export const store = configureStore({
     reducer: {
@@ -25,5 +26,6 @@ export const store = configureStore({
         suggestions : suggestionsReducer,
         contracts : contractReducer,
         notification : notificationReducer,
+        statistics : statisticsReducer,
     },
 });

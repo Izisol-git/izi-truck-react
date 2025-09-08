@@ -9,6 +9,7 @@ export default function SelectMUI({ label, placeholder, variant,  value, onChang
     return (
         <Stack spacing={1} sx={{ width: "100%" }}>
             <Autocomplete
+                // key={options}
 
                 size="small"
                 options={options}
@@ -23,6 +24,21 @@ export default function SelectMUI({ label, placeholder, variant,  value, onChang
                     option?.value ||
                     ""
                 }
+                // 🔑 MUI ga "qaysi biri teng" ekanini aniq aytamiz
+                isOptionEqualToValue={(option, value) => option.id === value.id}
+
+                // 🔑 Har doim ID unikal bo‘lishi kerak
+                renderOption={(props, option ) => (
+                    <li {...props} key={option.id ?? `${option.title}`}>
+                        {
+                            option?.title ||
+                            option?.company_name ||
+                            option?.name ||
+                            option?.label ||
+                            option?.value || " "
+                        }
+                    </li>
+                )}
                 PaperComponent={(props) => (
                     <Paper
 

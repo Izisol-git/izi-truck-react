@@ -2,7 +2,7 @@ import * as React from 'react';
 import Box from '@mui/material/Box';
 import TextField from '@mui/material/TextField';
 
-export default function InputMUI({variant, label, value, type, onChange , defaultValue , errorMassage}) {
+export default function InputMUI({variant, label, value, type, onChange , defaultValue , errorMassage , disabled}) {
     return (
         <Box
             component="form"
@@ -11,6 +11,7 @@ export default function InputMUI({variant, label, value, type, onChange , defaul
             autoComplete="off"
         >
             <TextField
+                disabled={disabled}
                 onChange={onChange}
                 sx={{
                     width: "100%",

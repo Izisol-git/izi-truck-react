@@ -17,7 +17,7 @@ import {
 import {useNavigate} from "react-router-dom";
 import {useDispatch} from "react-redux";
 
-function Details({Contracts, inputModalArray, btnValue, data}) {
+function Details({Contracts, inputModalArray, btnValue, data , id}) {
     const navigate = useNavigate();
     const dispatch = useDispatch();
     return (
@@ -73,9 +73,9 @@ function Details({Contracts, inputModalArray, btnValue, data}) {
                 </div>
 
 
-                <Timeline/>
+                <Timeline data={data}/>
 
-                <AddEmployesModal h1={btnValue} employeesId={data} inputModalArray={inputModalArray}/>
+                <AddEmployesModal id={id}  h1={btnValue} employeesId={data} inputModalArray={inputModalArray}/>
             </div>
         </div>
     );

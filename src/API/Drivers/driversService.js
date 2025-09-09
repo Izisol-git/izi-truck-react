@@ -1,9 +1,10 @@
 import axios from "../api";
+import api from "../api";
 
 
 const DriversService = {
-    async getAll(page , search ) {
-        const res = await axios.get(`/drivers?page=${page}&search=${search}`);
+    async getAll(page , search) {
+        const res = await axios.get(`/drivers?page=${page}&search=${search}`  );
         return res.data;
     },
     async driversId(id ) {
@@ -17,6 +18,13 @@ const DriversService = {
     async update(id, data) {
         const res = await axios.put(`/drivers/${id}`, data);
         return res.data
+    },
+    async exportDriverExcel(  search ,selectedKeys) {
+        const query = selectedKeys.map((k) => `export_keys[]=${k}`).join("&");
+        const res = await api.get(`/drivers/export_excel?search=${search}&${query}`, {
+            responseType: "blob", // excel fayl blob bo'ladi
+        });
+        return res.data;
     }
 }
 

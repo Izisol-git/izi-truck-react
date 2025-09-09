@@ -13,6 +13,7 @@ import {closeModal, openModal} from "../../../features/EmployeSModalToggle/emplo
 import {useDispatch, useSelector} from "react-redux";
 import {addEmployee, getEmployees} from "../../../features/Employees/employeeThunks.js";
 import { useSearchParams } from "react-router-dom";
+import ExcelModal from "../../../Components/Modal/excelModal.jsx";
 
 function Employees() {
     const dispatch = useDispatch();
@@ -23,6 +24,7 @@ function Employees() {
     const [employeesId, setEmployeesId] = useState();
     const [employeesData, setEmployeesData] = useState();
     const addEditToggle = useSelector((state) => state.employesModal.addEditToggle);
+    const [selectedKeys, setSelectedKeys] = useState([]);
 
 
 
@@ -52,6 +54,22 @@ function Employees() {
     }, [pageqq, dispatch ,searchEmployees]); // ⚡ page o‘zgarsa qayta fetch bo‘ladi
 
 
+    const exportValues = [
+        { id: "id", value: "ID" },
+        { id: "name", value: "Имя пользователя" },
+        { id: "email", value: "Эл. почта" },
+        { id: "tin", value: "ИНН" },
+        { id: "phone_number", value: "Номер телефона" },
+        { id: "tg_user_id", value: "Telegram ID" },
+        { id: "tg_nick_name", value: "Telegram ник" },
+        { id: "code", value: "Код сотрудника" },
+        { id: "avatar", value: "Аватар" },
+        { id: "status", value: "Статус (1 - Активный, -1 - Неактивный)" },
+        { id: "created_by", value: "Кто добавил сотрудника" },
+        { id: "created_at", value: "Дата создания" }
+    ];
+
+
 
     return (
         <div>
@@ -62,10 +80,12 @@ function Employees() {
                      <UserPagination  setSearch={setSearchEmployees} setEmployeesId={setEmployeesId} total={total} data={employeesData} arry={columnsArry} setColumnsArry={setColumnsArry}
                                                     navigateURL={'employees'}/>
 
-                    <AddEmployesModal  employeesId={employeesId} data={employeesData}    h1={"Employees"} inputModalArray={inputModalArray}/>
+                    <AddEmployesModal setEmployeesId={setEmployeesId}   employeesId={employeesId} data={employeesData}    h1={"Employees"} inputModalArray={inputModalArray}/>
                     <Timeline/>
+
                 </div>
             </div>
+            <ExcelModal page={pageqq} search={searchEmployees}  setSelectedKeys={setSelectedKeys} selectedKeys={selectedKeys}  data={exportValues} mode={'employee'} />
         </div>
     );
 }

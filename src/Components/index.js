@@ -47,3 +47,4 @@ export {default as ChatsPagination} from "./Pagination/ChatsPagination.jsx";
 export {default as NotificationsModal} from "./Modal/notificationsModal.jsx";
 export {default as AlertMessage} from "./Alert/alertMessage.jsx";
 export {default as QueriesCard} from "./QueriesCard/queriesCard.jsx";
+export {default as DriversFrom} from "./DriversForm/driversFrom.jsx";

@@ -6,11 +6,11 @@ import {
     openModalComments,
     openModalHistory
 } from "../../features/EmployeSModalToggle/employesModalToggle.js";
-import { ProfileInfoCardDrivers} from "../index.js";
+import {ProfileInfoCardDrivers} from "../index.js";
 import {useDispatch, useSelector} from "react-redux";
 import {useNavigate} from "react-router-dom";
 
-function DriversPagination({row , index , data , setEmployeesId , arry , navigateURL}) {
+function DriversPagination({row , index , data , setEmployeesId , arry , navigateURL }) {
 
 
     const dispatch = useDispatch();
@@ -23,7 +23,6 @@ function DriversPagination({row , index , data , setEmployeesId , arry , navigat
         setEmployeesId(newData)
         console.log(newData)
     }
-
 
     return (
         <>
@@ -53,32 +52,40 @@ function DriversPagination({row , index , data , setEmployeesId , arry , navigat
                         color: "white",
                     },
                 }}>{row.id}</TableCell>
+                {/*{arry[0].active && <TableCell sx={{*/}
+                {/*    color: "black",*/}
+                {/*    ".dark &": {*/}
+                {/*        color: "white",*/}
+                {/*    },*/}
+                {/*}}>{row.brand}</TableCell>}*/}
                 {arry[0].active && <TableCell sx={{
-                    color: "black",
-                    ".dark &": {
-                        color: "white",
-                    },
-                }}>{row.brand}</TableCell>}
-                {arry[1].active && <TableCell sx={{
                     color: "black",
                     ".dark &": {
                         color: "white",
                     },
                 }}>{row.fio}</TableCell>}
                 {/*{arry[].active && <TableCell>{row.phone_number}</TableCell>}*/}
+                {arry[1].active && <TableCell sx={{
+                    color: "black",
+                    ".dark &": {
+                        color: "white",
+                    },
+                }}>
+                    <div className={'grid grid-cols-2 gap-x-2  w-max'}>
+                        {
+                            row.phone_number.map((item , index)=>(
+                                <span  >{item}</span>
+                            ))
+                        }
+                    </div>
+                </TableCell>}
                 {arry[2].active && <TableCell sx={{
                     color: "black",
                     ".dark &": {
                         color: "white",
                     },
-                }}>{row.phone_number}</TableCell>}
-                {arry[3].active && <TableCell sx={{
-                    color: "black",
-                    ".dark &": {
-                        color: "white",
-                    },
                 }}>{row.number}</TableCell>}
-                {arry[4].active && <TableCell sx={{
+                {arry[3].active && <TableCell sx={{
                     color: "black",
                     ".dark &": {
                         color: "white",
@@ -88,13 +95,13 @@ function DriversPagination({row , index , data , setEmployeesId , arry , navigat
                 {/*    <TableCell>{new Date(row.created_at).toISOString().split("T")[0]}</TableCell>*/}
                 {/*)}*/}
 
-                {arry[5].active && <TableCell sx={{
-                    color: "black",
-                    ".dark &": {
-                        color: "white",
-                    },
-                }}>{'<--->'}</TableCell>}
-                {arry[6].active && <TableCell sx={{
+                {/*{arry[4].active && <TableCell sx={{*/}
+                {/*    color: "black",*/}
+                {/*    ".dark &": {*/}
+                {/*        color: "white",*/}
+                {/*    },*/}
+                {/*}}>{'<--->'}</TableCell>}*/}
+                {arry[4].active && <TableCell sx={{
                     color: "black",
                     ".dark &": {
                         color: "white",
@@ -124,8 +131,8 @@ function DriversPagination({row , index , data , setEmployeesId , arry , navigat
                         </div>
                         <div onClick={(e) => {
                             e.stopPropagation();
+                            dispatch(DriversId(row.id))
                             dispatch(openModalHistory())
-
                         }}
                              className="bg-[#38CB6E] w-[30px] h-[30px] rounded center text-[14px] group">
                             <i className="fa-regular fa-clock   text-white group-hover:scale-125 transition-all duration-300 ease-in-out"></i>
@@ -160,6 +167,7 @@ function DriversPagination({row , index , data , setEmployeesId , arry , navigat
                     </div>
                 </TableCell>
             </TableRow>
+
         </>
     );
 }

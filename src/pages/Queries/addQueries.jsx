@@ -36,14 +36,14 @@ function AddQueries({mode = 'add'}) {
                         <div className={"w-full"}>
                             <SelectMUI
 
-                                value={data?.clients?.find((opt) => opt.id === formData?.client_id)}
+                                value={data?.client?.find((opt) => opt.id === formData?.client)}
                                 onChange={(val) => {
                                     setFormData({
                                         ...formData,
-                                        client_id: val.id
+                                        client: val.id
                                     })
                                 }}
-                                options={data?.clients || []}
+                                options={data?.client || []}
                                 variant={'outlined'}
                                 label={'Клиент'}
                                 placeholder={'Клиент'}
@@ -52,24 +52,24 @@ function AddQueries({mode = 'add'}) {
                         <div className={"w-full"}>
                             <InputMUI
                                 // errorMassage={errors?.weight_of_cargo}
-                                value={formData?.weight_of_cargo ?? ''}
+                                value={formData?.title ?? ''}
 
                                 onChange={(e) =>
-                                    setFormData({...formData, weight_of_cargo: e.target.value})
+                                    setFormData({...formData, title: e.target.value})
                                 }
                                 variant={'outlined'} label={'Наименование груза'}
                             />
                         </div>
                         <div className={"w-full "}>
                             <SelectMUI
-                                value={data?.clients?.find((opt) => opt.id === formData?.client_id)}
+                                value={data?.status_of_cargo?.find((opt) => opt.id === formData?.status_of_cargo)}
                                 onChange={(val) => {
                                     setFormData({
                                         ...formData,
-                                        client_id: val.id
+                                        status_of_cargo: val.id
                                     })
                                 }}
-                                options={data?.clients || []}
+                                options={data?.status_of_cargo || []}
                                 variant={'outlined'}
                                 label={'Опасный ли груз?'}
                                 placeholder={'Опасный ли груз?'}
@@ -78,10 +78,10 @@ function AddQueries({mode = 'add'}) {
                         <div className={" w-full "}>
                             <InputMUI
                                 // errorMassage={errors?.weight_of_cargo}
-                                value={formData?.weight_of_cargo ?? ''}
+                                value={formData?.weight ?? ''}
 
                                 onChange={(e) =>
-                                    setFormData({...formData, weight_of_cargo: e.target.value})
+                                    setFormData({...formData, weight: e.target.value})
                                 }
                                 variant={'outlined'} label={'Вес груза (кг)'}
                             />
@@ -90,14 +90,14 @@ function AddQueries({mode = 'add'}) {
                             <SelectMUI
                                 // errorMassage={errors?.transport_type}
 
-                                value={data?.clients?.find((opt) => opt.id === formData?.client_id)}
+                                value={data?.transport_volume_id?.find((opt) => opt.id === formData?.transport_volume_id)}
                                 onChange={(val) => {
                                     setFormData({
                                         ...formData,
-                                        client_id: val.id
+                                        transport_volume_id: val.id
                                     })
                                 }}
-                                options={data?.clients || []}
+                                options={data?.transport_volume_id || []}
                                 variant={'outlined'}
                                 label={'Объем транспорта'}
                                 placeholder={'Объем транспорта'}
@@ -107,14 +107,14 @@ function AddQueries({mode = 'add'}) {
                         <div className={"w-full  "}>
                             <SelectMUI
                                 // errorMassage={errors?.transport_type}
-                                value={data?.clients?.find((opt) => opt.id === formData?.client_id)}
+                                value={data?.transport_type_id?.find((opt) => opt.id === formData?.transport_type_id)}
                                 onChange={(val) => {
                                     setFormData({
                                         ...formData,
-                                        client_id: val.id
+                                        transport_type_id: val.id
                                     })
                                 }}
-                                options={data?.clients || []}
+                                options={data?.transport_type_id || []}
                                 variant={'outlined'}
                                 label={'Тип транспорта'}
                                 placeholder={'Тип транспорта'}
@@ -159,9 +159,9 @@ function AddQueries({mode = 'add'}) {
                             <div className={'relative'}>
                                 <MyCalendar
                                     // errorMassage={errors.unload_date}
-                                    value={formData?.unload_date ?? ''} // misol uchun yangi property
-                                    onChange={(val) => setFormData({...formData, unload_date: val})}/>
-                                <p className={`absolute text-[12px] pt-1 px-1 font-medium -top-[14px] left-2   ${formData.unload_date ? 'text-red-500' : 'text-[#3B82F6]'} dark:text-darkText bg-white dark:bg-darkBgTwo`}>
+                                    value={formData?.load_time_from ?? ''} // misol uchun yangi property
+                                    onChange={(val) => setFormData({...formData, load_time_from: val})}/>
+                                <p className={`absolute text-[12px] pt-1 px-1 font-medium -top-[14px] left-2   ${formData.load_time_from ? 'text-red-500' : 'text-[#3B82F6]'} dark:text-darkText bg-white dark:bg-darkBgTwo`}>
                                     Дата разгрузки</p>
 
                                 {/*{*/}
@@ -189,14 +189,14 @@ function AddQueries({mode = 'add'}) {
                         <div className={"w-full  "}>
                             <SelectMUI
                                 // errorMassage={errors?.transport_type}
-                                value={data?.clients?.find((opt) => opt.id === formData?.client_id)}
+                                value={data?.payment_method?.find((opt) => opt.id === formData?.payment_method)}
                                 onChange={(val) => {
                                     setFormData({
                                         ...formData,
-                                        client_id: val.id
+                                        payment_method: val.id
                                     })
                                 }}
-                                options={data?.clients || []}
+                                options={data?.payment_method || []}
                                 variant={'outlined'}
                                 label={'Тип оплаты'}
                                 placeholder={'Тип оплаты'}
@@ -207,9 +207,9 @@ function AddQueries({mode = 'add'}) {
                             <TextareaAutosize
                                 aria-label="empty textarea"
                                 placeholder="Заметки для оперейшн"
-                                // value={suggestionsData?.textura || ""}
+                                // value={suggestionsData?.notes || ""}
                                 // onChange={(e) =>
-                                //     setSuggestionsData((prev) => ({...prev, textura: e.target.value}))
+                                //     setSuggestionsData((prev) => ({...prev, notes: e.target.value}))
                                 // }
                                 minRows={3}
                                 style={{

@@ -14,35 +14,77 @@ import {openModal} from "../../../features/EmployeSModalToggle/employesModalTogg
 import {useDispatch, useSelector} from "react-redux";
 import {getEmployees} from "../../../features/Employees/employeeThunks.js";
 import {useSearchParams} from "react-router-dom";
-import {getDrivers} from "../../../features/Drivers/driversThunks.js";
+import {driversGetId, getDrivers} from "../../../features/Drivers/driversThunks.js";
+import ExcelModal from "../../../Components/Modal/excelModal.jsx";
+import select from "daisyui/components/select/index.js";
 
 function Drivers() {
     const dispatch = useDispatch();
     const [searchParams] = useSearchParams();
     const pageqq = searchParams.get("page") || 1;
     const [total, setTotal] = useState();
-    const [driversId, setDrversId] = useState();
+    // const [driversId, setDrversId] = useState();
     const [searchDriver, setSearchDriver] = useState('');
     const [driversData, setDriversData] = useState();
+    const [data, setData] = useState();
+    const id = useSelector((state) => state.employesModal.driversId);
+    const [selectedKeys, setSelectedKeys] = useState([]);
     const [columnsArry, setColumnsArry] = useState([
-        {title: "Логин", active: true},
         {title: "Имя", active: true},
         {title: "Телефон", active: true},
         {title: "Номер автомобиля", active: true},
         {title: "Номер полу прицепа", active: true},
-        {title: "OPERATION", active: true},
         {title: "Action", active: true},
     ])
 
+    const exportValues = [
+        { id: "fio", value: "ФИО водителя" },
+        { id: "phone_number", value: "Телефон" },
+        { id: "number", value: "Гос. номер" },
+        { id: "trailer_number", value: "Номер прицепа" },
+        { id: "brand", value: "Марка" },
+        { id: "length", value: "Длина (м)" },
+        { id: "width", value: "Ширина (м)" },
+        { id: "height", value: "Высота (м)" },
+        { id: "capacity", value: "Вместимость" },
+        { id: "carrying", value: "Грузоподъемность (т)" },
+        { id: "condition", value: "Состояние" },
+        { id: "type", value: "Тип ТС" },
+        { id: "created_by", value: "Кто добавил водителя" },
+        { id: "created_at", value: "Дата добавления" }
+    ];
+
+
+    const DriversId = async ()=> {
+        try {
+            const res = await dispatch(driversGetId(id)).unwrap()
+            setData(res.driver)
+            console.log(res)
+        }
+        catch (err) {
+            console.log(err)
+        }
+    }
+    useEffect(()=>{
+        if(id !== null){
+            DriversId()
+        }
+    } , [id])
+
+
+    const driverData = async () => {
+       try {
+           const res = await dispatch(getDrivers({page: pageqq, search: searchDriver , selectedKeys :  selectedKeys  })).unwrap()
+           setDriversData(res.data.data);
+           setTotal(res.data)
+           console.log(res.data.data );
+       }catch (error){
+           console.log(error)
+       }
+    };
 
     useEffect(() => {
-        const driversData = async () => {
-            const result = await dispatch(getDrivers({page: pageqq, search: searchDriver})); // page yuboriladi
-            setDriversData(result.payload.data.data);
-            setTotal(result.payload.data)
-            console.log(result.payload.data.data);
-        };
-        driversData();
+        driverData();
     }, [pageqq, dispatch, searchDriver]);
 
     return (
@@ -51,12 +93,15 @@ function Drivers() {
                 <div className="w-[90%] mx-auto">
                     <UserNavbar value={'Drivers'} columnsArry={columnsArry}
                                 setColumnsArry={setColumnsArry}/>
-                        <UserPagination setSearch={setSearchDriver} setEmployeesId={setDrversId} total={total}
+                        <UserPagination setSearch={setSearchDriver}   total={total}
                                     data={driversData} arry={columnsArry} setColumnsArry={setColumnsArry}
-                                    navigateURL={'drivers'}/>
-                    <Timeline/>
+                                    navigateURL={'drivers'}  />
+                    <Timeline data={data} />
                 </div>
             </div>
+
+            <ExcelModal page={pageqq} search={searchDriver}  setSelectedKeys={setSelectedKeys} selectedKeys={selectedKeys}  data={exportValues} mode={'driver'} />
+
         </div>);
 }
 

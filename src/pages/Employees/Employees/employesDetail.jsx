@@ -27,7 +27,7 @@ function EmployesDetail() {
 
 
     return (
-        <Details data={data} Contracts={Contracts} inputModalArray={inputModalArray} btnValue={'Employees'} />
+        <Details id={id} data={data} Contracts={Contracts} inputModalArray={inputModalArray} btnValue={'Employees'} />
     );
 }
 

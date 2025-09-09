@@ -23,11 +23,12 @@ import {
 } from "../index.js";
 import {useDispatch, useSelector} from "react-redux";
 import {searchContracts} from "../../features/Contracts/contractThunks.js";
+import {openExcelModal} from "../../features/EmployeSModalToggle/employesModalToggle.js";
 
-const UserPagination = ({arry, navigateURL, data, total, setEmployeesId, employeesId , setSearch}) => {
+const UserPagination = ({arry, navigateURL, data, total, setEmployeesId, employeesId , setSearch }) => {
 
 
-    // const dispatch = useDispatch();
+    const dispatch = useDispatch();
     // const [searchData, setSearchData] = useState();
     // console.log(searchData);
     const loadingContracts = useSelector((state) => state.contracts.loading)
@@ -111,7 +112,9 @@ const UserPagination = ({arry, navigateURL, data, total, setEmployeesId, employe
 
 
                     <div className="flex items-center ">
-                        <img className={'w-8 h-8 cursor-pointer'} src="../../../public/xls.png" alt="excel"/>
+                        <img onClick={()=>{
+                            dispatch(openExcelModal())
+                        }} className={'w-8 h-8 cursor-pointer'} src="../../../public/xls.png" alt="excel"/>
                     </div>
 
                 </div>

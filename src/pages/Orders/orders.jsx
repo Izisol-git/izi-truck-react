@@ -30,6 +30,7 @@ function Orders() {
     const [total, setTotal] = useState();
     const [ordersData, setOrdersData] = useState();
     const {loading} = useSelector((state) => state.orders);
+    const [selectedKeys, setSelectedKeys] = useState([]);
     const company = [
         {label: 'EGS', value: 'egs'},
         {label: 'INCOTRUCK', value: 'incotruck'},
@@ -94,6 +95,30 @@ function Orders() {
             });
         }
     };
+
+    const exportValues = [
+        {  id: "order_id", value: "ЗАКАЗ НОМЕР" },
+        {  id: "order_date", value: "Дата Заказа" },
+        {  id: "point_of_departure", value: "Пункт отправления" },
+        {  id: "point_of_destination", value: "Пункт назначения" },
+        {  id: "country_of_departure", value: "Страна отправления" },
+        {  id: "country_of_destination", value: "Страна получателя" },
+        {  id: "shipment_type", value: "Тип перевозка" },
+        {  id: "transport_value", value: "Объем тс" },
+        {  id: "customs_clearance1", value: "Место затоможка" },
+        {  id: "weight_of_cargo", value: "Вес груза" },
+        {  id: "shipment_date", value: "Дата погрузка" },
+        {  id: "nature_of_cargo", value: "Наименование перевозимого груза" },
+        {  id: "car_number", value: "Номер автомобиля" },
+        {  id: "carp_number", value: "Номер полу прицепа" },
+        {  id: "carrier_contract_no", value: "Номер контракта перевозчика" },
+        {  id: "carrier_company", value: "Перевозчик" },
+        {  id: "carrier_tin", value: "ИНН перевозчика" },
+        {  id: "carrier_contract_date", value: "Дата контракта перевозчика" },
+        {  id: "act_date", value: "Дата акта" },
+        {  id: "carrier_price_transfer", value: "Возмещения в Сумах" },
+        {  id: "mode", value: "Режим" },
+    ]
 
 
     return (
@@ -172,7 +197,7 @@ function Orders() {
                 </div>
             </div>
             <div
-                className={` ${showSearch === 'true' ? 'max-h-96' : 'max-h-0'} transition-all w-[90%] mx-auto   duration-500 ease-in-out  bg-white dark:bg-darkBgTwo rounded-lg center overflow-hidden `}>
+                className={` ${showSearch === 'true' ? 'max-h-96' : 'max-h-0'} transition-all w-[90%] mx-auto mb-4  duration-500 ease-in-out  bg-white dark:bg-darkBgTwo rounded-lg center overflow-hidden `}>
                 <div className={"w-full overflow-hidden p-4   grid grid-cols-5 gap-5  dark:bg-darkBgTwo "}>
                     <div className={''}>
                         <InputMUI value={filters.search}
@@ -267,7 +292,7 @@ function Orders() {
             }
 
 
-            <ExcelModal/>
+            <ExcelModal selectedKeys={selectedKeys} setSelectedKeys={setSelectedKeys}  data={exportValues} mode={'order'} />
 
 
         </div>

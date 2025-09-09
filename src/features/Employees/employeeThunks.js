@@ -76,3 +76,27 @@ export const deleteEmployee = createAsyncThunk(
         }
     }
 );
+
+
+// Excel export thunk
+export const exportEmployeeExcel = createAsyncThunk(
+    "orders/exportEmployeeExcel",
+    async ({ search ,selectedKeys}, { rejectWithValue }) => {
+        try {
+            const blob = await EmployeeService.exportEmployeeExcel( search ,selectedKeys);
+
+            // Faylni yuklab olish
+            const url = window.URL.createObjectURL(blob);
+            const link = document.createElement("a");
+            link.href = url;
+            link.setAttribute("download", "employee.xlsx");
+            document.body.appendChild(link);
+            link.click();
+            link.remove();
+
+            return true;
+        } catch (error) {
+            return rejectWithValue(error.response?.data || error.message);
+        }
+    }
+);

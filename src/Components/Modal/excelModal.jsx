@@ -7,39 +7,15 @@ import {
 import {Button, Checkbox, CircularProgress, FormControlLabel} from "@mui/material";
 import {exportOrdersExcel} from "../../features/orders/ordersThunks.js";
 import Box from "@mui/material/Box";
+import {exportDriverExcel} from "../../features/Drivers/driversThunks.js";
+import {exportEmployeeExcel} from "../../features/Employees/employeeThunks.js";
 
-const  ExcelModal =()=> {
+const  ExcelModal =({data , mode , selectedKeys , setSelectedKeys , page , search })=> {
 
     const dispatch = useDispatch();
     const {isOpenExcelModal} = useSelector((state) => state.employesModal);
     const {exporting} = useSelector((state)=>state.orders)
 
-    const exportValues = [
-        {  id: "order_id", value: "ЗАКАЗ НОМЕР" },
-        {  id: "order_date", value: "Дата Заказа" },
-        {  id: "point_of_departure", value: "Пункт отправления" },
-        {  id: "point_of_destination", value: "Пункт назначения" },
-        {  id: "country_of_departure", value: "Страна отправления" },
-        {  id: "country_of_destination", value: "Страна получателя" },
-        {  id: "shipment_type", value: "Тип перевозка" },
-        {  id: "transport_value", value: "Объем тс" },
-        {  id: "customs_clearance1", value: "Место затоможка" },
-        {  id: "weight_of_cargo", value: "Вес груза" },
-        {  id: "shipment_date", value: "Дата погрузка" },
-        {  id: "nature_of_cargo", value: "Наименование перевозимого груза" },
-        {  id: "car_number", value: "Номер автомобиля" },
-        {  id: "carp_number", value: "Номер полу прицепа" },
-        {  id: "carrier_contract_no", value: "Номер контракта перевозчика" },
-        {  id: "carrier_company", value: "Перевозчик" },
-        {  id: "carrier_tin", value: "ИНН перевозчика" },
-        {  id: "carrier_contract_date", value: "Дата контракта перевозчика" },
-        {  id: "act_date", value: "Дата акта" },
-        {  id: "carrier_price_transfer", value: "Возмещения в Сумах" },
-        {  id: "mode", value: "Режим" },
-    ]
-
-
-    const [selectedKeys, setSelectedKeys] = useState([]);
 
     const handleCheckboxChange = (id, checked) => {
         if (checked) {
@@ -50,9 +26,25 @@ const  ExcelModal =()=> {
     };
 
     const handleExport = async () => {
-        if (selectedKeys.length > 0) {
+        if (selectedKeys.length > 0 && mode === 'order') {
             try {
                 const res = await  dispatch(exportOrdersExcel(selectedKeys)).unwrap();
+                dispatch(closeExcelModal())
+            }catch(err) {
+                console.log(err);
+            }
+        }
+        if (selectedKeys.length > 0 && mode === 'driver') {
+            try {
+                const res = await  dispatch(exportDriverExcel({search, selectedKeys})).unwrap();
+                dispatch(closeExcelModal())
+            }catch(err) {
+                console.log(err);
+            }
+        }
+        if (selectedKeys.length > 0 && mode === 'employee') {
+            try {
+                const res = await  dispatch(exportEmployeeExcel({search, selectedKeys})).unwrap();
                 dispatch(closeExcelModal())
             }catch(err) {
                 console.log(err);
@@ -65,6 +57,7 @@ const  ExcelModal =()=> {
 
     useEffect(() => {
         document.body.style.overflow = isOpenExcelModal ? "hidden" : "auto";
+        setSelectedKeys([])
     }, [isOpenExcelModal]);
 
     return (
@@ -108,7 +101,7 @@ const  ExcelModal =()=> {
 
                 {/* Content */}
                 <div className={"p-6 grid grid-cols-3 gap-4"}>
-                    {exportValues.map((value, index) => (
+                    {data.map((value, index) => (
                         <FormControlLabel
                             key={index}
                             control={

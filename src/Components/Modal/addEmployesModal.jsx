@@ -6,8 +6,9 @@ import {useDispatch, useSelector} from "react-redux";
 import {closeModal} from "../../features/EmployeSModalToggle/employesModalToggle.js";
 import {addEmployee, EmployeesId, updateEmployee} from "../../features/Employees/employeeThunks.js";
 import {addClient, ClientId, editClient, getClientsSelect} from "../../features/customers/clientsThunks.js";
+import {useParams} from "react-router-dom";
 
-function AddEmployesModal({h1, inputModalArray = [], setEmployeesId}) {
+function AddEmployesModal({h1, inputModalArray = [], setEmployeesId   , id}) {
     const [inputVariant, setInputVariant] = useState("outlined");
     const {loadingAddEmployee} = useSelector((state) => state.employees);
     const {loadingClient} = useSelector((state) => state.customers);
@@ -53,7 +54,7 @@ function AddEmployesModal({h1, inputModalArray = [], setEmployeesId}) {
 
     const getEmployeesId = async () => {
         try {
-            const res = await dispatch(EmployeesId(employeesId)).unwrap();
+            const res = await dispatch(EmployeesId(id ? id : employeesId)).unwrap();
             console.log(res.data)
 
             // // inputModalArray bo'yicha res dan mos keladigan qiymatlarni olish
@@ -103,10 +104,10 @@ function AddEmployesModal({h1, inputModalArray = [], setEmployeesId}) {
     };
 
     useEffect(() => {
-        if (employeesId && addEditToggle === false && h1 === 'Employees') {
+        if ((employeesId || id) && addEditToggle === false && h1 === 'Employees') {
             getEmployeesId()
         }
-    }, [employeesId, isOpen])
+    }, [employeesId,id, isOpen])
     useEffect(() => {
         if (customersId && addEditToggle === false && h1 === 'Customers') {
             getCustomersId()
@@ -169,7 +170,7 @@ function AddEmployesModal({h1, inputModalArray = [], setEmployeesId}) {
             console.log(options?.find((customer_id) => customer_id.id === 256)?.title);
             console.log(employeesId?.id);
         }
-        if (employeesId && addEditToggle === false && h1 === "Employees") {
+        if ((employeesId || id) && addEditToggle === false && h1 === "Employees") {
             // const newData = options?.find((customer_id) => customer_id.id === employeesId?.id);
             // console.log(newData);
             setInputModal(prev => ({
@@ -227,7 +228,7 @@ function AddEmployesModal({h1, inputModalArray = [], setEmployeesId}) {
     const PutEmployees = async () => {
         if (h1 === 'Employees') {
             try {
-                await dispatch(updateEmployee({id: employeesId, employeeData: inputModal})).unwrap();
+                await dispatch(updateEmployee({id: id ? id : employeesId, employeeData: inputModal})).unwrap();
                 clearEmployeesModal();
                 dispatch(closeModal());
                 // setEmployeesId(Object.fromEntries(Object.keys(employeesId).map(key => [key, ""])));

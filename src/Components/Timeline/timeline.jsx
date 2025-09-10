@@ -1,12 +1,17 @@
 import React, {useEffect, useState} from "react";
 import {useDispatch, useSelector} from "react-redux";
 import {closeModalHistory} from "../../features/EmployeSModalToggle/employesModalToggle.js";
+import {ClientId} from "../../features/customers/clientsThunks.js";
+import {EmployeesId} from "../../features/Employees/employeeThunks.js";
 
-const Timeline = ({data}) => {
+const Timeline = ({ data}) => {
     const dispatch = useDispatch();
     const isOpenHistory = useSelector(
         (state) => state.employesModal.isOpenHistory
     );
+
+
+
 
     useEffect(() => {
         document.body.style.overflow = isOpenHistory ? "hidden" : "auto";
@@ -52,7 +57,7 @@ const Timeline = ({data}) => {
                            className="absolute left-6 top-0 bottom-0 w-[2px] bg-gradient-to-b from-indigo-300/70 to-transparent"></div>
 
                        <div className="space-y-10">
-                           {data?.all_histories.length > 0 ? data?.all_histories?.map((log, index) => {
+                           {data?.all_histories?.length > 0 ? data?.all_histories?.map((log, index) => {
                                const datetime = new Date(log.created_at);
                                const formattedDate = datetime.toLocaleDateString("en-GB");
                                const formattedTime = datetime.toLocaleTimeString([], {

@@ -53,7 +53,7 @@ export const updateEmployee = createAsyncThunk(
 
 
 export const EmployeesId = createAsyncThunk(
-    "clients/deleteClient",
+    "clients/EmployeesId",
     async (id, { rejectWithValue }) => {
         try {
             return await EmployeeService.employeesId(id);
@@ -63,6 +63,19 @@ export const EmployeesId = createAsyncThunk(
     }
 );
 
+
+// Xodim o‘chirish
+export const getContractId = createAsyncThunk(
+    "employees/getContractId",
+    async (id, { rejectWithValue }) => {
+        try {
+            await EmployeeService.getContractId(id);
+            return id;
+        } catch (err) {
+            return rejectWithValue(err.response?.data || "Failed to delete employee");
+        }
+    }
+);
 
 // Xodim o‘chirish
 export const deleteEmployee = createAsyncThunk(

@@ -17,7 +17,7 @@ import {
 import {useNavigate} from "react-router-dom";
 import {useDispatch} from "react-redux";
 
-function Details({Contracts, inputModalArray, btnValue, data , id}) {
+function Details({ inputModalArray, btnValue, data, id}) {
     const navigate = useNavigate();
     const dispatch = useDispatch();
     return (
@@ -59,26 +59,34 @@ function Details({Contracts, inputModalArray, btnValue, data , id}) {
                             btnValue === 'Drivers' ? <ProfileInfoCardDrivers width={'90%'} data={data}
                                                                              shadow={'0 10px 15px -3px rgba(0, 0, 0, 0.1), 0 4px 6px -4px rgba(0, 0, 0, 0.1)'}/> : ''
                 }
-                <div className={'bg-white w-[90%] mt-4 py-4 px-6  mx-auto shadow-2xl rounded dark:bg-darkBgTwo'}>
-                    <div className={'my-5 flex items-center justify-between'}>
-                        <p className={'text-2xl text-blue font-semibold dark:text-darkText'}> Contracts</p>
-
-                    </div>
-                    <div className={'w-[100%]  mx-auto  '}>
 
 
-                        <TableEmployeesMUI contracts={Contracts}/>
-                    </div>
+                {/*{*/}
+                {/*    btnValue === "Employees" ?*/}
+                        <div
+                            className={'bg-white w-[90%] mt-4 py-4 px-6  mx-auto shadow-2xl rounded dark:bg-darkBgTwo'}>
+                            <div className={'my-5 flex items-center justify-between'}>
+                                <p className={'text-2xl text-blue font-semibold dark:text-darkText'}> Contracts</p>
 
-                </div>
+                            </div>
+                            <div className={'w-[100%]  mx-auto  '}>
+                                <TableEmployeesMUI contracts={data?.contract}/>
+                            </div>
+
+                        </div>
+                {/*        :*/}
+                {/*        ''*/}
+                {/*}*/}
 
 
-                <Timeline data={data}/>
+                <Timeline id={id}   data={data}/>
 
-                <AddEmployesModal id={id}  h1={btnValue} employeesId={data} inputModalArray={inputModalArray}/>
+                <AddEmployesModal id={id} h1={btnValue} employeesId={data}
+                                  inputModalArray={inputModalArray}/>
             </div>
         </div>
-    );
+    )
+        ;
 }
 
 export default Details;

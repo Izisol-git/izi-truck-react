@@ -20,7 +20,7 @@ import ExcelModal from "../../Components/Modal/excelModal.jsx";
 
 function Orders() {
     const {user} = useSelector((state) => state.auth);
-    const [activeStatus, setActiveStatus] = useState(null);
+    const [activeStatus, setActiveStatus] = useState();
     const [showSearch, setShowSearch] = useState('false');
     const navigate = useNavigate();
     const dispatch = useDispatch();
@@ -53,13 +53,18 @@ function Orders() {
         }
     }
     const findOrders = async (filters, pageqq) => {
-        const res = await dispatch(getFilteredOrders({filters: filters, pageqq: pageqq})).unwrap()
-        setOrdersData(res.orders.data)
-        console.log(res)
-        setTotal(res)
+       try {
+           const res = await dispatch(getFilteredOrders({filters: filters, pageqq: pageqq})).unwrap()
+           setOrdersData(res.orders.data)
+           console.log(res)
+           setTotal(res)
+       }
+       catch (error) {
+           console.log(error);
+       }
     }
     useEffect(() => {
-        findOrders()
+        findOrders(filters, pageqq)
     }, [pageqq, dispatch]);
 
     useEffect(() => {
@@ -230,13 +235,23 @@ function Orders() {
                             vaqti</p>
                     </div>
                     <button
-                        onClick={() => setFilters({
-                            search: "",
-                            search_status: null,
-                            db: "",
-                            from_date: "",
-                            to_date: "",
-                        })}
+                        onClick={() => {
+                            findOrders({filters: {
+                                    search: "",
+                                    search_status: null,
+                                    db: "",
+                                    from_date: "",
+                                    to_date: "",
+                                }} , pageqq)
+                            setActiveStatus('')
+                            setFilters({
+                                search: "",
+                                search_status: null,
+                                db: "",
+                                from_date: "",
+                                to_date: "",
+                            })
+                        }}
                         className="w-full relative overflow-hidden rounded font-semibold bg-transparent border-2 text-blue border-blue   transition-all duration-300 ease-in-out  hover:text-white hover:bg-blue py-1 px-2 dark:hover:bg-navBgHover dark:border-darkText dark:text-darkText"
                     >
                         Clear input
@@ -278,8 +293,6 @@ function Orders() {
                                 </div>
                             ))
                     }
-
-
 
             </div>
             <div className={'flex items-center justify-end w-[90%] mx-auto pb-5'}>

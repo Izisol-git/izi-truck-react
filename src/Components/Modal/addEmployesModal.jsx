@@ -32,16 +32,20 @@ function AddEmployesModal({h1, inputModalArray = [], setEmployeesId   , id}) {
         }, {})
     );
 
-    console.log(employeesId)
+    // console.log(inputModal)
 
 
     const getSelect = async () => {
-        const res = await dispatch(getClientsSelect())
-        const newArray = res.payload.contracts.map(({customer, id}) => ({title: customer, id}));
-        if (h1 === 'Customers') {
-            setOptions(newArray);
-        }
-        console.log(newArray);
+       try {
+           const res = await dispatch(getClientsSelect()).unwrap()
+           const newArray = res.contracts.map(({customer, id}) => ({title: customer, id}));
+           if (h1 === 'Customers') {
+               setOptions(newArray);
+           }
+           console.log(newArray);
+       }catch(err) {
+           console.error(err);
+       }
     }
 
 
@@ -81,8 +85,9 @@ function AddEmployesModal({h1, inputModalArray = [], setEmployeesId   , id}) {
         }
     };
     const getCustomersId = async () => {
+        // console.log('ishladi')
         try {
-            const res = await dispatch(ClientId(customersId)).unwrap();
+            const res = await dispatch(ClientId(id ? id : customersId)).unwrap();
             console.log(res.data)
 
             // // inputModalArray bo'yicha res dan mos keladigan qiymatlarni olish
@@ -108,11 +113,12 @@ function AddEmployesModal({h1, inputModalArray = [], setEmployeesId   , id}) {
             getEmployeesId()
         }
     }, [employeesId,id, isOpen])
+
     useEffect(() => {
-        if (customersId && addEditToggle === false && h1 === 'Customers') {
+        if ((customersId || id) && addEditToggle === false && h1 === 'Customers') {
             getCustomersId()
         }
-    }, [customersId, isOpen])
+    }, [customersId,id, isOpen])
 
     useEffect(() => {
         clearEmployeesModal()
@@ -157,7 +163,7 @@ function AddEmployesModal({h1, inputModalArray = [], setEmployeesId   , id}) {
         avatar: ""
     });
     useEffect(() => {
-        if (employeesId && addEditToggle === false && h1 === "Customers") {
+        if ((customersId || id) && addEditToggle === false && h1 === "Customers") {
             // const newData = options?.find((customer_id) => customer_id.id === employeesId?.id);
             // console.log(newData);
             setInputModal(prev => ({
@@ -167,8 +173,8 @@ function AddEmployesModal({h1, inputModalArray = [], setEmployeesId   , id}) {
                 customer_id: employeesId?.id,
                 fio: employeesId?.fio,
             }));
-            console.log(options?.find((customer_id) => customer_id.id === 256)?.title);
-            console.log(employeesId?.id);
+            // console.log(options?.find((customer_id) => customer_id.id === 256)?.title);
+            // console.log(employeesId?.id);
         }
         if ((employeesId || id) && addEditToggle === false && h1 === "Employees") {
             // const newData = options?.find((customer_id) => customer_id.id === employeesId?.id);
@@ -184,13 +190,14 @@ function AddEmployesModal({h1, inputModalArray = [], setEmployeesId   , id}) {
                 tg_user_id: employeesId?.tg_user_id,
                 tin: employeesId?.tin,
             }));
-            console.log(options?.find((customer_id) => customer_id.id === 256)?.title);
-            console.log(employeesId?.id);
+            // console.log(options?.find((customer_id) => customer_id.id === 256)?.title);
+            // console.log(employeesId?.id);
         }
     }, [addEditToggle, employeesId]);
 
 
     useEffect(() => {
+        // clearEmployeesModal();
         if (isOpen) {
             document.body.style.overflow = 'hidden';
         } else {
@@ -200,8 +207,12 @@ function AddEmployesModal({h1, inputModalArray = [], setEmployeesId   , id}) {
 
     const AddEmployees = async () => {
         if (h1 === 'Customers') {
+            const obj = {
+                ...inputModal,
+                customer_id: inputModal?.customer_id.id,
+            }
             try {
-                await dispatch(addClient(inputModal)).unwrap();
+                await dispatch(addClient(obj)).unwrap();
                 clearEmployeesModal();
                 dispatch(closeModal());
 
@@ -243,7 +254,7 @@ function AddEmployesModal({h1, inputModalArray = [], setEmployeesId   , id}) {
         if (h1 === 'Customers') {
             console.log(inputModal)
             try {
-                await dispatch(editClient({id: customersId, clientData: inputModal})).unwrap();
+                await dispatch(editClient({id: id ? id : customersId, clientData: inputModal})).unwrap();
                 clearEmployeesModal();
                 dispatch(closeModal());
                 // setEmployeesId(Object.fromEntries(Object.keys(employeesId).map(key => [key, ""])));
@@ -269,7 +280,7 @@ function AddEmployesModal({h1, inputModalArray = [], setEmployeesId   , id}) {
         setInputModal(formData);
     }
 
-    console.log(user?.user?.roles[0]?.name);
+    // console.log(user?.user?.roles[0]?.name);
 
     return (
         <div>
@@ -297,28 +308,63 @@ function AddEmployesModal({h1, inputModalArray = [], setEmployeesId   , id}) {
                     <div className={"pt-6  items-center justify-between flex flex-wrap gap-y-4"}>
                         {
                             inputModalArray.map((item, index) => (
-                                item.type === "select" && user?.user?.roles[0]?.name === 'super-admin' ? (
-                                    <div key={index} className="w-full">
-                                        <SelectMUI
-                                            errorMassage={errors?.[item.post]}
-                                            options={options || []}
-                                            variant={inputVariant}
-                                            addEditToggle={addEditToggle}
-                                            label={item?.label}
-                                            placeholder={item.label}
-                                            value={
-                                                addEditToggle
-                                                    ? inputModal.type
-                                                        ? options?.find(opt => String(opt.value) === String(inputModal.type)) || null
-                                                        : null
-                                                    : options?.find(opt => String(opt.value) === String(inputModal?.type)) || null
-                                            }
-                                            onChange={(newValue) =>
-                                                setInputModal({...inputModal, type: newValue.value ?? null})
-                                            }
-                                        />
-                                    </div>
-                                ) : (
+                                item.type === "select"  ?
+                                    item.superAdmin ?
+                                        user?.user?.roles[0]?.name !== 'super-admin'
+                                            ?
+                                            ''
+                                            :
+                                            (
+                                                <div key={index} className="w-full">
+                                                    <SelectMUI
+                                                        errorMassage={errors?.[item.post]}
+                                                        options={options || []}
+                                                        variant={inputVariant}
+                                                        addEditToggle={addEditToggle}
+                                                        label={item?.label}
+                                                        placeholder={item.label}
+                                                        value={
+                                                            addEditToggle
+                                                                ? inputModal.type
+                                                                    ? options?.find(opt => String(opt.value) === String(inputModal.type)) || null
+                                                                    : null
+                                                                : options?.find(opt => String(opt.value) === String(inputModal?.type)) || null
+                                                        }
+                                                        onChange={(newValue) =>
+                                                            setInputModal({...inputModal, type: newValue.value ?? null})
+                                                        }
+                                                    />
+                                                </div>
+                                            )
+                                    :
+                                    (
+                                        <div key={index} className="w-full">
+                                                <SelectMUI
+                                                    errorMassage={errors?.[item.post]}
+                                                    options={options || []}
+                                                    variant={inputVariant}
+                                                    addEditToggle={addEditToggle}
+                                                    label={item?.label}
+                                                    placeholder={item.label}
+                                                    value={
+                                                        !addEditToggle
+                                                            // ? inputModal.type
+                                                                ? options?.find(opt => String(opt.id) === String(inputModal?.customer_id)) || null
+                                                                // : null
+                                                            : inputModal?.customer_id || null
+                                                    }
+
+                                                    onChange={(newValue) =>
+                                                       addEditToggle ? setInputModal({...inputModal,  customer_id: newValue ?? null})
+                                                        :
+                                                        setInputModal({...inputModal,  customer_id: newValue.id ?? null})
+
+
+                                                    }
+                                                />
+                                            </div>
+                                    )
+                                    : (
                                     <div key={index} className="w-[50%] flex px-2">
                                         <InputMUI
                                             errorMassage={errors?.[item.post]}
@@ -373,8 +419,8 @@ function AddEmployesModal({h1, inputModalArray = [], setEmployeesId   , id}) {
                         }
                     }}
                             onClick={() => {
-                                dispatch(closeModal())
                                 clearEmployeesModal()
+                                dispatch(closeModal())
                                 // setEmployeesId(Object.fromEntries(Object.keys(employeesId).map(key => [key, ""])));
                             }}
                             variant="outlined" color="error">

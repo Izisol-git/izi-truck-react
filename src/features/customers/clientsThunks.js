@@ -62,3 +62,27 @@ export const ClientId = createAsyncThunk(
         }
     }
 );
+
+
+
+// Excel export thunk
+export const exportClientsExcel = createAsyncThunk(
+    "orders/exportClientsExcel",
+    async ({ search ,selectedKeys}, { rejectWithValue }) => {
+        try {
+            const blob = await ClientsService.exportClientExcel( search ,selectedKeys);
+            // Faylni yuklab olish
+            const url = window.URL.createObjectURL(blob);
+            const link = document.createElement("a");
+            link.href = url;
+            link.setAttribute("download", "clients.xlsx");
+            document.body.appendChild(link);
+            link.click();
+            link.remove();
+            return true;
+        } catch (error) {
+            return rejectWithValue(error.response?.data || error.message);
+        }
+    }
+);
+

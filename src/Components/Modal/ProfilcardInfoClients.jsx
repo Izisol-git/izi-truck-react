@@ -1,11 +1,13 @@
-import React, {useEffect, useRef} from "react";
+import React, { useRef} from "react";
+import {useSelector} from "react-redux";
 
 const ProfileInfoClients = ({width, shadow, data}) => {
 
+    const {user} = useSelector((state) => state.auth);
 
     const modalRef = useRef(null);
 
-    console.log(data)
+    // console.log(data)
 
 
     return (
@@ -54,32 +56,32 @@ const ProfileInfoClients = ({width, shadow, data}) => {
 
                     </div>
                 </div>
+                {/*<div>*/}
+                {/*    <p className="text-sm text-gray-500 dark:text-darkTextTwo">End data:</p>*/}
+                {/*    <div className="flex flex-wrap gap-2 mt-1">*/}
+
+                {/*                <span className="  text-base font-semibold text-gray-700 dark:text-darkText"     >*/}
+                {/*                    {*/}
+                {/*                        data?.created_at ?*/}
+                {/*                            new Date(data.updated_at).toISOString().split("T")[0]*/}
+                {/*                            :*/}
+                {/*                            "—"*/}
+                {/*                    }*/}
+                {/*                </span>*/}
+
+
+
+                {/*    </div>*/}
+                {/*</div>*/}
+
+
                 <div>
-                    <p className="text-sm text-gray-500 dark:text-darkTextTwo">End data:</p>
-                    <div className="flex flex-wrap gap-2 mt-1">
-
-                                <span className="  text-base font-semibold text-gray-700 dark:text-darkText"     >
-                                    {
-                                        data?.created_at ?
-                                            new Date(data.updated_at).toISOString().split("T")[0]
-                                            :
-                                            "—"
-                                    }
-                                </span>
-
-
-
-                    </div>
+                    <p className="text-sm text-gray-500 dark:text-darkTextTwo">Contract :</p>
+                    <p className="text-base font-semibold text-gray-700 dark:text-darkText">{data?.contract?.customer}</p>
                 </div>
-
-
                 <div>
-                    <p className="text-sm text-gray-500 dark:text-darkTextTwo">customer_id:</p>
-                    <p className="text-base font-semibold text-gray-700 dark:text-darkText">{data?.customer_id}</p>
-                </div>
-                <div>
-                    <p className="text-sm text-gray-500 dark:text-darkTextTwo">employee_id:</p>
-                    <p className="text-base font-semibold text-gray-700 dark:text-darkText">{data?.employee_id}</p>
+                    <p className="text-sm text-gray-500 dark:text-darkTextTwo">Added by:</p>
+                    <p className="text-base font-semibold text-gray-700 dark:text-darkText">{user?.user?.name}</p>
                 </div>
             </div>
             <div className="flex flex-col space-y-4  ">
@@ -89,12 +91,12 @@ const ProfileInfoClients = ({width, shadow, data}) => {
                         {data?.phone_number}
                     </p>
                 </div>
-                <div>
-                    <p className="text-sm text-gray-500 dark:text-darkTextTwo">shipment_notification:</p>
-                    <p className="text-base font-semibold text-gray-700 dark:text-darkText">
-                        {data?.shipment_notification}
-                    </p>
-                </div>
+                {/*<div>*/}
+                {/*    <p className="text-sm text-gray-500 dark:text-darkTextTwo">shipment_notification:</p>*/}
+                {/*    <p className="text-base font-semibold text-gray-700 dark:text-darkText">*/}
+                {/*        {data?.shipment_notification}*/}
+                {/*    </p>*/}
+                {/*</div>*/}
 
 
             </div>

@@ -82,23 +82,23 @@ function NavbarY() {
             {label: "So'rovlar", icon: 'fa-solid fa-question mr-2', navigate: '/queries'},
             {label: 'Buyurtmalar', icon: 'fas fa-shopping-cart mr-2', navigate: '/orders'},
             {
-                label: 'Foydalanuvchilar', icon: 'fas fa-users mr-2', navigate: '/users', active: false, arry: [
+                label: 'Settings', icon: 'fas fa-users mr-2', navigate: '/users', active: false, arry: [
                     {name: 'Customers', icon: '"fas fa-user-friends mr-2', navigate: 'customers'},
                     {name: 'Drivers', icon: 'fas fa-id-card mr-2', navigate: 'drivers'},
                     {name: 'Employees', icon: 'fas fa-user-tie mr-2', navigate: 'employees'},
                     {name: 'Invoices', icon: 'fas fa-user-tie mr-2', navigate: 'invoices'},
                 ]
             },
-            {
-                label: 'Contracts',
-                icon: 'fa-solid fa-file-signature mr-2',
-                navigate: '/contracts',
-                active: false,
-                arry: [
-                    {name: 'Client Contracts', icon: 'fas fa-user-friends mr-2', navigate: 'clients'},
-                    // {name: 'Employees Contracts', icon: 'fas fa-user-tie mr-2', navigate: 'employees'},
-                ]
-            },
+            // {
+            //     label: 'Contracts',
+            //     icon: 'fa-solid fa-file-signature mr-2',
+            //     navigate: '/contracts',
+            //     active: false,
+            //     arry: [
+            //         {name: 'Client Contracts', icon: 'fas fa-user-friends mr-2', navigate: 'clients'},
+            //         // {name: 'Employees Contracts', icon: 'fas fa-user-tie mr-2', navigate: 'employees'},
+            //     ]
+            // },
             // {label: 'Sozlamalar', icon: 'fas fa-cog mr-2', navigate: '/settings'},
         ]
     )

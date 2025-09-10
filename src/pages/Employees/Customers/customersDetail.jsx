@@ -11,22 +11,27 @@ function CustomersDetail() {
     const dispatch = useDispatch();
     const [data ,setData ] = useState();
 
-    const ClientSId = async (id)=> {
-        const res = await dispatch(ClientId(id))
-        setData(res.payload.data)
-        console.log(res.payload.data)
+    const ClientSId = async ()=> {
+       try {
+           const res = await dispatch(ClientId(id)).unwrap()
+           setData(res.data)
+           console.log(res)
+       }
+       catch(e) {
+           console.log(e)
+       }
     }
     useEffect(()=>{
-        ClientSId(id)
+        ClientSId()
     } , [])
 
 
-    const Contracts = [
-        {contractNumber: '7/1' , contractDate : '2022-01-07' , company:'EGS' , status: false}
-    ]
+    // const Contracts = [
+    //     {contractNumber: '7/1' , contractDate : '2022-01-07' , company:'EGS' , status: false}
+    // ]
 
     return (
-         <Details data={data}  Contracts={Contracts} inputModalArray={inputModalArray} btnValue={'Customers'}  />
+         <Details id={id} data={data}   inputModalArray={inputModalArray} btnValue={'Customers'}  />
     );
 }
 

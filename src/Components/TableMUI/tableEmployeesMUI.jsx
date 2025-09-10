@@ -55,13 +55,13 @@ export default function TableEmployeesMUI({contracts}) {
                             '.dark &':{
                                 color: 'white'
                             }
-                        }} >status</TableCell>
+                        }} >INN</TableCell>
                     </TableRow>
                 </TableHead>
                 <TableBody>
-                    {contracts.map((row, index) => (
+                    {/*{contracts?.map((row, index) => (*/}
                         <TableRow
-                            key={row.name}
+                            key={contracts?.id}
                             sx={{ '&:last-child td, &:last-child th': { border: 0 } ,
                                 '.dark &':{
                                 bgcolor: '#303030',
@@ -73,40 +73,45 @@ export default function TableEmployeesMUI({contracts}) {
                                     color: 'white'
                                 }
                             }}  component="th" scope="row">
-                                {index + 1}
+                                {contracts?.id }
                             </TableCell>
                             <TableCell sx={{
                                 '.dark &':{
                                     color: 'white'
                                 }
                             }}  component="th" scope="row">
-                                {row.contractNumber}
+                                {contracts?.contract_no}
                             </TableCell>
                             <TableCell sx={{
                                 '.dark &':{
                                     color: 'white'
                                 }
-                            }}  >{row.contractDate}</TableCell>
+                            }}  >{new Date(contracts?.created_at).ddmmyyyy()}</TableCell>
                             <TableCell sx={{
                                 '.dark &':{
                                     color: 'white'
                                 }
-                            }}  >{row.company}</TableCell>
+                            }}  >{contracts?.customer}</TableCell>
                             <TableCell sx={{
                                 '.dark &':{
                                     color: 'white'
                                 }
-                            }} >
-                                {row.status === true ? <div
-                                    className="w-max py-1 px-3     border border-[#22c55e] text-[#22c55e] rounded-lg">
-                                    Active
-                                </div> : <div
-                                    className="w-max py-1 px-3 border border-[#eab308] text-[#eab308]   rounded-lg">
-                                    Inactive
-                                </div>}
-                            </TableCell>
+                            }}  >{contracts?.customer_tin}</TableCell>
+                            {/*<TableCell sx={{*/}
+                            {/*    '.dark &':{*/}
+                            {/*        color: 'white'*/}
+                            {/*    }*/}
+                            {/*}} >*/}
+                            {/*    {contracts?.status === true ? <div*/}
+                            {/*        className="w-max py-1 px-3     border border-[#22c55e] text-[#22c55e] rounded-lg">*/}
+                            {/*        Active*/}
+                            {/*    </div> : <div*/}
+                            {/*        className="w-max py-1 px-3 border border-[#eab308] text-[#eab308]   rounded-lg">*/}
+                            {/*        Inactive*/}
+                            {/*    </div>}*/}
+                            {/*</TableCell>*/}
                         </TableRow>
-                    ))}
+                    {/*))}*/}
                 </TableBody>
             </Table>
         </TableContainer>

@@ -20,9 +20,16 @@ class ClientsService {
         return res.data;
     }
 
-
     static async clientsId(id) {
         const res = await api.get(`/clients/${id}`);
+        return res.data;
+    }
+
+    static async exportClientExcel(  search ,selectedKeys) {
+        const query = selectedKeys.map((k) => `export_keys[]=${k}`).join("&");
+        const res = await api.get(`/clients/export_excel?search=${search}&${query}`, {
+            responseType: "blob", // excel fayl blob bo'ladi
+        });
         return res.data;
     }
 }

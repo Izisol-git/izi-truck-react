@@ -10,9 +10,8 @@ import {
     openModalHistory
 } from "../../features/EmployeSModalToggle/employesModalToggle.js";
 import {ProfileInfoCardDrivers, ProfileInfoClients} from "../index.js";
-import {ClientId} from "../../features/customers/clientsThunks.js";
 
-function CustomersPagination({row , index , data , setEmployeesId , arry , navigateURL , employeesId}) {
+function CustomersPagination({row, index, data, setEmployeesId, arry, navigateURL, employeesId}) {
 
     const dispatch = useDispatch();
     const isOpenMOdal = useSelector((state) => state.employesModal.isOpen);
@@ -26,10 +25,7 @@ function CustomersPagination({row , index , data , setEmployeesId , arry , navig
         console.log(newData)
     }
 
-
-
-
-
+    // console.log(data)
 
     return (
         <>
@@ -40,7 +36,7 @@ function CustomersPagination({row , index , data , setEmployeesId , arry , navig
 
                 sx={{
                     // border: "1px solid #E5E7EB", // butun rowga border
-                     // barcha cell border rangini o'zgartiradi
+                    // barcha cell border rangini o'zgartiradi
                     transition: "all 300ms ease-in-out",
                     "&:hover": {
                         backgroundColor: "#F2F6F9",
@@ -48,8 +44,8 @@ function CustomersPagination({row , index , data , setEmployeesId , arry , navig
                     cursor: "pointer",
                     boxShadow: "0 2px 8px rgba(0, 0, 0, 0.04)",
 
-                    '.dark &':{
-                        "& td, & th": {  borderColor: "#374151" },
+                    '.dark &': {
+                        "& td, & th": {borderColor: "#374151"},
                         "&:hover": {
                             backgroundColor: "#374151",
                         },
@@ -69,42 +65,42 @@ function CustomersPagination({row , index , data , setEmployeesId , arry , navig
                         color: "white",
                     },
                 }}>{row.company_name}</TableCell>}
+                {/*{arry[1].active && <TableCell sx={{*/}
+                {/*    color: "black",*/}
+                {/*    ".dark &": {*/}
+                {/*        color: "white",*/}
+                {/*    },*/}
+                {/*}}>{row.fio}</TableCell>}*/}
+                {/*{arry[].active && <TableCell>{row.phone_number}</TableCell>}*/}
+                {/*{arry[2].active && <TableCell sx={{*/}
+                {/*    color: "black",*/}
+                {/*    ".dark &": {*/}
+                {/*        color: "white",*/}
+                {/*    },*/}
+                {/*}}>{'<--->'}</TableCell>}*/}
                 {arry[1].active && <TableCell sx={{
                     color: "black",
                     ".dark &": {
                         color: "white",
                     },
-                }}>{row.fio}</TableCell>}
-                {/*{arry[].active && <TableCell>{row.phone_number}</TableCell>}*/}
-                {arry[2].active && <TableCell sx={{
-                    color: "black",
-                    ".dark &": {
-                        color: "white",
-                    },
-                }}>{'<--->'}</TableCell>}
-                {arry[3].active && <TableCell sx={{
-                    color: "black",
-                    ".dark &": {
-                        color: "white",
-                    },
                 }}>{row.phone_number}</TableCell>}
-                {arry[4].active && <TableCell sx={{
-                    color: "black",
-                    ".dark &": {
-                        color: "white",
-                    },
-                }}>{'<--->' }</TableCell>}
+                {/*{arry[4].active && <TableCell sx={{*/}
+                {/*    color: "black",*/}
+                {/*    ".dark &": {*/}
+                {/*        color: "white",*/}
+                {/*    },*/}
+                {/*}}>{'<--->' }</TableCell>}*/}
                 {/*{arry[3].active && (*/}
                 {/*    <TableCell>{new Date(row.created_at).toISOString().split("T")[0]}</TableCell>*/}
                 {/*)}*/}
 
-                {arry[5].active && <TableCell sx={{
-                    color: "black",
-                    ".dark &": {
-                        color: "white",
-                    },
-                }}>{'<--->'}</TableCell>}
-                {arry[6].active && <TableCell sx={{
+                {/*{arry[5].active && <TableCell sx={{*/}
+                {/*    color: "black",*/}
+                {/*    ".dark &": {*/}
+                {/*        color: "white",*/}
+                {/*    },*/}
+                {/*}}>{'<--->'}</TableCell>}*/}
+                {arry[2].active && <TableCell sx={{
                     color: "black",
                     ".dark &": {
                         color: "white",
@@ -128,6 +124,7 @@ function CustomersPagination({row , index , data , setEmployeesId , arry , navig
                         <div onClick={(e) => {
                             e.stopPropagation();
                             navigate(`/users/${navigateURL}/detail/${row.id}`)
+                            dispatch(AddCustomersId(row.id))
                         }}
                              className="bg-[#5E83D4] w-[30px] h-[30px] rounded center text-[14px] group">
                             <i className="fa-solid fa-eye   text-white group-hover:scale-125 transition-all duration-300 ease-in-out"></i>
@@ -135,22 +132,21 @@ function CustomersPagination({row , index , data , setEmployeesId , arry , navig
                         <div onClick={(e) => {
                             e.stopPropagation();
                             dispatch(openModalHistory())
-
+                            dispatch(AddCustomersId(row.id))
                         }}
                              className="bg-[#38CB6E] w-[30px] h-[30px] rounded center text-[14px] group">
                             <i className="fa-regular fa-clock   text-white group-hover:scale-125 transition-all duration-300 ease-in-out"></i>
                         </div>
-                        {
-                            navigateURL === 'customers' ? <div onClick={(e) => {
-                                    e.stopPropagation();
-                                    dispatch(openModalComments())
-                                }}
-                                                               className="bg-purple-500 w-[30px] h-[30px] rounded center text-[14px] group  ">
-                                    <i className="fa-solid fa-comment-dots text-white group-hover:scale-125 transition-all duration-300 ease-in-out"></i>
-                                </div>
-                                : ""
 
-                        }
+                        {/*<div onClick={(e) => {*/}
+                        {/*    e.stopPropagation();*/}
+                        {/*    dispatch(openModalComments())*/}
+                        {/*}}*/}
+                        {/*     className="bg-purple-500 w-[30px] h-[30px] rounded center text-[14px] group  ">*/}
+                        {/*    <i className="fa-solid fa-comment-dots text-white group-hover:scale-125 transition-all duration-300 ease-in-out"></i>*/}
+                        {/*</div>*/}
+
+
                         <div onClick={(e) => {
                             e.stopPropagation();
                         }}
@@ -162,7 +158,8 @@ function CustomersPagination({row , index , data , setEmployeesId , arry , navig
 
             </TableRow>
             <TableRow>
-                <TableCell sx={{padding: 0, overflow: "hidden", background: "#F9FBFD" , border:'0px solid red'}} colSpan={8}>
+                <TableCell sx={{padding: 0, overflow: "hidden", background: "#F9FBFD", border: '0px solid red'}}
+                           colSpan={8}>
                     <div
                         // onMouseLeave={()=> setIsOpen(-1)}
                         className={isOpen === row.id - 1 ? "    max-h-96 center transition-all duration-300 ease-in-out" : " max-h-0  center  transition-all duration-300 ease-in-out"}>

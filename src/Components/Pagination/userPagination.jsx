@@ -25,7 +25,7 @@ import {useDispatch, useSelector} from "react-redux";
 import {searchContracts} from "../../features/Contracts/contractThunks.js";
 import {openExcelModal} from "../../features/EmployeSModalToggle/employesModalToggle.js";
 
-const UserPagination = ({arry, navigateURL, data, total, setEmployeesId, employeesId , setSearch }) => {
+const UserPagination = ({arry, navigateURL, data, total, setEmployeesId, employeesId , setSearch  }) => {
 
 
     const dispatch = useDispatch();
@@ -267,7 +267,7 @@ const UserPagination = ({arry, navigateURL, data, total, setEmployeesId, employe
 
                                 {data && data.length === 0 && (
                                     <TableRow>
-                                        <TableCell colSpan={3} align="center">
+                                        <TableCell colSpan={arry.length+1} align="center">
                                             Maʼlumot topilmadi
                                         </TableCell>
                                     </TableRow>

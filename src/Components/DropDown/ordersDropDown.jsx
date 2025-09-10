@@ -27,7 +27,7 @@ const OrdersDropDown = ({activeStatus ,setActiveStatus , setFilters , filters , 
             {/* Hammasi */}
             <Button
                 onClick={() => {
-                    setActiveStatus(null);
+                    setActiveStatus('');
                     setFilters({ ...filters, search_status: 2 });
                     onClick({ ...filters, search_status: 2 }, pageqq);
                 }}
@@ -36,7 +36,7 @@ const OrdersDropDown = ({activeStatus ,setActiveStatus , setFilters , filters , 
                     borderColor: "#1D2D5B",
                     color: "#1D2D5B",
                     backgroundColor:
-                        activeStatus === null ? "rgba(29,45,91,0.3)" : "transparent",
+                        activeStatus === '' ? "rgba(29,45,91,0.3)" : "transparent",
                     "&:hover": {
                         borderColor: "#162447",
                         backgroundColor: "rgba(29,45,91,0.15)",
@@ -47,7 +47,7 @@ const OrdersDropDown = ({activeStatus ,setActiveStatus , setFilters , filters , 
                         color: "#fff",
                         borderColor: "#374151",
                         backgroundColor:
-                            activeStatus === null ? "#374151" : "transparent",
+                            activeStatus === '' ? "#374151" : "transparent",
                         "&:hover": {
                             backgroundColor: "rgba(55, 65, 81, 0.4)",
                         },

@@ -17,11 +17,11 @@ function DriversDetail() {
     useEffect(()=>{
         DriversId(id)
     } , [])
-    const Contracts = [
-        {contractNumber: '7/1' , contractDate : '2022-01-07' , company:'EGS' , status: false}
-    ]
+    // const Contracts = [
+    //     {contractNumber: '7/1' , contractDate : '2022-01-07' , company:'EGS' , status: false}
+    // ]
     return (
-        <Details data={data} Contracts={Contracts} inputModalArray={inputModalArray} btnValue={'Drivers'} />
+        <Details data={data}   inputModalArray={inputModalArray} btnValue={'Drivers'} />
     );
 }
 export default DriversDetail;

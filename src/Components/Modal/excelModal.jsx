@@ -9,6 +9,7 @@ import {exportOrdersExcel} from "../../features/orders/ordersThunks.js";
 import Box from "@mui/material/Box";
 import {exportDriverExcel} from "../../features/Drivers/driversThunks.js";
 import {exportEmployeeExcel} from "../../features/Employees/employeeThunks.js";
+import {exportClientsExcel} from "../../features/customers/clientsThunks.js";
 
 const  ExcelModal =({data , mode , selectedKeys , setSelectedKeys , page , search })=> {
 
@@ -45,6 +46,14 @@ const  ExcelModal =({data , mode , selectedKeys , setSelectedKeys , page , searc
         if (selectedKeys.length > 0 && mode === 'employee') {
             try {
                 const res = await  dispatch(exportEmployeeExcel({search, selectedKeys})).unwrap();
+                dispatch(closeExcelModal())
+            }catch(err) {
+                console.log(err);
+            }
+        }
+        if (selectedKeys.length > 0 && mode === 'client') {
+            try {
+                const res = await  dispatch(exportClientsExcel({search, selectedKeys})).unwrap();
                 dispatch(closeExcelModal())
             }catch(err) {
                 console.log(err);

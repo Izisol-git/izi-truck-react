@@ -11,9 +11,13 @@ function EmployesDetail() {
     const [data ,setData ] = useState();
 
     const EmployeesGetId = async (id)=> {
-        const res = await dispatch(EmployeesId(id))
-        setData(res.payload.data)
-        console.log(res)
+        try {
+            const res = await dispatch(EmployeesId(id)).unwrap()
+            setData(res.data)
+            console.log(res)
+        }catch(err){
+            console.log(err)
+        }
     }
     useEffect(()=>{
         EmployeesGetId(id)

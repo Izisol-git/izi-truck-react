@@ -127,6 +127,7 @@ const EmployeesPagination = ({row , index , data , setEmployeesId , arry , navig
                         <div onClick={(e)=> {
                             e.stopPropagation();
                             dispatch(openModalHistory())
+                            dispatch(AddEmployeesId(row.id))
 
                         }}
                              className="bg-[#38CB6E] w-[30px] h-[30px] rounded center text-[14px] group">

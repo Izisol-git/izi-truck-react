@@ -11,7 +11,7 @@ import {inputModalArray} from '../../../Data/employeesData.js'
 import {UserNavbar} from "../../index.js";
 import {closeModal, openModal} from "../../../features/EmployeSModalToggle/employesModalToggle.js";
 import {useDispatch, useSelector} from "react-redux";
-import {addEmployee, getEmployees} from "../../../features/Employees/employeeThunks.js";
+import {addEmployee, EmployeesId, getEmployees} from "../../../features/Employees/employeeThunks.js";
 import { useSearchParams } from "react-router-dom";
 import ExcelModal from "../../../Components/Modal/excelModal.jsx";
 
@@ -25,7 +25,8 @@ function Employees() {
     const [employeesData, setEmployeesData] = useState();
     const addEditToggle = useSelector((state) => state.employesModal.addEditToggle);
     const [selectedKeys, setSelectedKeys] = useState([]);
-
+    const id = useSelector((state) => state.employesModal.employeesId);
+    const [data , setData] = useState();
 
 
 
@@ -40,6 +41,23 @@ function Employees() {
         {title: "Action", active: true},
     ])
 
+
+
+
+    const EmployeesGetId = async (id)=> {
+        try {
+            const res = await dispatch(EmployeesId(id)).unwrap()
+            setData(res.data)
+            console.log(res)
+        }catch(err){
+            console.log(err)
+        }
+    }
+    useEffect(()=>{
+        if(id !== null){
+            EmployeesGetId(id)
+        }
+    } , [id])
 
     useEffect(() => {
         const employeesData = async () => {
@@ -81,7 +99,7 @@ function Employees() {
                                                     navigateURL={'employees'}/>
 
                     <AddEmployesModal setEmployeesId={setEmployeesId}   employeesId={employeesId} data={employeesData}    h1={"Employees"} inputModalArray={inputModalArray}/>
-                    <Timeline/>
+                    <Timeline data={data}/>
 
                 </div>
             </div>

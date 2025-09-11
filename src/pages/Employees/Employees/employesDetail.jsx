@@ -3,18 +3,22 @@ import {useNavigate, useParams} from "react-router-dom";
 import { Details } from "../../../Components/index.js";
 import {useDispatch} from "react-redux";
 import {inputModalArray} from "../../../Data/employeesData.js";
-import {EmployeesId} from "../../../features/Employees/employeeThunks.js";
+import {EmployeesId, getContractId} from "../../../features/Employees/employeeThunks.js";
 
 function EmployesDetail() {
     const {id} = useParams();
     const dispatch = useDispatch();
     const [data ,setData ] = useState();
+    const [contract ,setContract ] = useState();
 
     const EmployeesGetId = async (id)=> {
         try {
             const res = await dispatch(EmployeesId(id)).unwrap()
+            const resCont = await dispatch(getContractId(id)).unwrap()
             setData(res.data)
+            setContract(resCont.data)
             console.log(res)
+            console.log(resCont)
         }catch(err){
             console.log(err)
         }
@@ -24,14 +28,8 @@ function EmployesDetail() {
     } , [])
 
 
-    const Contracts = [
-        {contractNumber: '7/1' , contractDate : '2022-01-07' , company:'EGS' , status: false}
-    ]
-
-
-
     return (
-        <Details id={id} data={data} Contracts={Contracts} inputModalArray={inputModalArray} btnValue={'Employees'} />
+        <Details id={id} data={data} contract={contract}  inputModalArray={inputModalArray} btnValue={'Employees'} />
     );
 }
 

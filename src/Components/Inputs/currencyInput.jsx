@@ -7,7 +7,7 @@ import {
     Box
 } from "@mui/material";
 
-export default function CurrencyInput({ label, onChange, value, carrierCurrency, setCarrierCurrency , disabled ,errorMassage }) {
+export default function CurrencyInput({ label, onChange, value, currency, setCurrency , disabled ,errorMassage }) {
     const currencies = [
         { code: "1", label: "USD" },
         { code: "2", label: "UZS" },
@@ -32,8 +32,8 @@ export default function CurrencyInput({ label, onChange, value, carrierCurrency,
                         <InputAdornment position="end">
                             <Select
                                 disabled={disabled}
-                                value={carrierCurrency || ""}
-                                onChange={(e) => setCarrierCurrency(e.target.value)}
+                                value={currency || ""}
+                                onChange={(e) => setCurrency(e.target.value)}
                                 variant="standard"
                                 disableUnderline
                                 sx={{

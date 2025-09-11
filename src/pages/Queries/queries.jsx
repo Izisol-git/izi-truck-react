@@ -1,35 +1,29 @@
-import React, {useEffect} from "react";
-import {
-    Card,
-    CardContent,
-    CardActions,
-    Typography,
-    Button,
-    Box,
-    Chip,
-    Divider,
-} from "@mui/material";
-import {
-    AccessTime,
-    Warning,
-    CheckCircle,
-    Cancel,
-    LocalShipping,
-} from "@mui/icons-material";
-import {InputMUI, MyCalendar, PaginationFooter, QueriesCard, SelectMUI} from "../../Components/index.js";
-import {useNavigate} from "react-router-dom";
-import {useDispatch} from "react-redux";
+import React, {useEffect, useState} from "react";
+ 
+import {InputMUI, Loading, MyCalendar, PaginationFooter, QueriesCard, SelectMUI} from "../../Components/index.js";
+import {useNavigate, useSearchParams} from "react-router-dom";
+import {useDispatch, useSelector} from "react-redux";
 import {getQueriesAll} from "../../features/Queries/queriesThunks.js";
 
 
 function Queries() {
     const navigate = useNavigate();
     const dispatch = useDispatch();
+    const [searchParams] = useSearchParams();
+    const pageqq = searchParams.get("page") || 1;
+    const {queries} = useSelector((state) => state.queries);
+    const {loading} = useSelector((state) => state.queries);
+    const [filters , setFilters] = useState({
+        search: "",
+        from_date : ''
+    });
 
+
+    console.log(filters);
 
     const getQueries = async () => {
         try {
-            const res = await dispatch(getQueriesAll()).unwrap()
+            const res = await dispatch(getQueriesAll({pageqq : pageqq , search : filters})).unwrap()
             console.log(res)
         }catch (error) {
             console.log(error);
@@ -37,9 +31,11 @@ function Queries() {
     }
 
 
+    console.log(queries?.data)
+
     useEffect(() => {
         getQueries()
-    } , [])
+    } , [pageqq , dispatch ,filters])
 
     const defaultTransaction = {
         id: 1,
@@ -68,15 +64,15 @@ function Queries() {
                     <div className={' flex items-center   flex-1 gap-2 '}>
                         <div className={'w-[20%]'}>
                             <InputMUI
-                                // value={filters.search}
-                                //       onChange={(e) => setFilters({...filters, search: e.target.value})}
-                                variant={'outlined'} label={'Order ID yoki Yuk nomi'}/>
+                                value={filters?.search}
+                                      onChange={(e) => setFilters({...filters, search: e.target.value})}
+                                variant={'outlined'} label={'Search'}/>
                         </div>
 
                         <div className={'relative w-[20%]'}>
                             <MyCalendar
-                                // value={filters.from_date}
-                                //         onChange={(val) => setFilters({...filters, from_date: val})}
+                                value={filters?.from_date}
+                                        onChange={(val) => setFilters({...filters, from_date: val})}
 
                                 // value={formData?.act_date}
                                 // onChange={(val) => setFormData({...formData, act_date: val})}
@@ -88,20 +84,23 @@ function Queries() {
                         </div>
                         <div className={'flex items-center gap-2 '}>
                             <button
-                                // onClick={() => setFilters({
-                                //     search: "",
-                                //     search_status: null,
-                                //     db: "",
-                                //     from_date: "",
-                                //     to_date: "",
-                                // })}
+                                onClick={() => {
+                                    setFilters({
+                                        search: "",
+                                        from_date: "",
+                                    })
+                                    getQueries({pageqq : pageqq, filters:{
+                                            search: "",
+                                            from_date: "",
+                                        } })
+                                }}
                                 className="w-36 relative overflow-hidden rounded font-semibold bg-transparent border-2 text-blue border-blue   transition-all duration-300 ease-in-out  hover:text-white hover:bg-blue py-[6px] px-3 dark:hover:bg-navBgHover dark:border-darkText dark:text-darkText"
                             >
                                 Clear input
 
                             </button>
                             <button
-                                // onClick={() => findOrders(filters, pageqq)}
+                                onClick={() => getQueries(filters, pageqq)}
 
                                 className="w-36 relative overflow-hidden rounded font-semibold bg-transparent border-2 text-blue border-blue transition-all duration-300 ease-in-out  hover:text-white hover:bg-blue py-[6px] px-3 dark:hover:bg-navBgHover dark:border-darkText dark:text-darkText"
                             >
@@ -114,6 +113,7 @@ function Queries() {
 
 
                     <button
+                        onClick={()=>navigate("/queries/create")}
                         className={'flex items-center py-2 px-3 bg-[#38CB6E] text-white rounded hover:ring-2 ring-[#38CB6E] outline-none'}>
                         <i className={'fas fa-plus mr-2'}></i>Добавить
                     </button>
@@ -122,13 +122,18 @@ function Queries() {
                 </div>
 
                 <div className={'grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3  gap-4'}>
-                    <QueriesCard transaction={defaultTransaction}/>
+                    { loading ? <Loading /> :
+                        queries?.data?.map((item, index) => (
+                            <QueriesCard transaction={item} index={index} />
+                        ))
+                    }
+
 
                 </div>
             </div>
 
             <div className="flex items-center justify-end w-[90%] mx-auto pb-5">
-                <PaginationFooter/>
+                <PaginationFooter total={queries}/>
             </div>
         </div>
     );

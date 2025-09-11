@@ -11,7 +11,7 @@ const Login = () => {
     const navigate = useNavigate();
     const [showPassword, setShowPassword] = useState(false);
     const [email, setEmail] = useState();
-    const [password    , setPassword  ] = useState();
+    const [password, setPassword] = useState();
     const dispatch = useDispatch();
     const {loading} = useSelector((state) => state.auth);
 
@@ -21,18 +21,19 @@ const Login = () => {
 
     const postLogin = async () => {
         try {
-            const result = await dispatch(loginUser({ email, password })).unwrap();
+            const result = await dispatch(loginUser({email, password})).unwrap();
+            dispatch(getCurrentUser());
             navigate("/dashboard");
         } catch (err) {
             console.error(err);
         }
     };
 
-    useEffect(()=>{
-        if(localStorage.getItem("token")){
+    useEffect(() => {
+        if (localStorage.getItem("token")) {
             navigate("/dashboard");
         }
-    } , [])
+    }, [])
 
 
     return (
@@ -67,12 +68,14 @@ const Login = () => {
                         <div className="mb-4  ">
                             <label htmlFor={"login-input"}
                                    className="block mb-1 font-semibold   text-blue">Login</label>
-                            <Input onChange={setEmail} type={'text'} autocomplete={'username'} placeholder={'Login...'} id={'login-input'}/>
+                            <Input onChange={setEmail} type={'text'} autocomplete={'username'} placeholder={'Login...'}
+                                   id={'login-input'}/>
                         </div>
                         <div className="mb-4">
                             <label className="block mb-1 font-semibold text-blue">Parol</label>
                             <div className="relative ">
-                                <Input onChange={setPassword} type={showPassword ? 'text' : 'password'} placeholder={'********'}
+                                <Input onChange={setPassword} type={showPassword ? 'text' : 'password'}
+                                       placeholder={'********'}
                                        id={'password-input'} autocomplete={'current-password'}/>
                                 {
                                     showPassword ? <VisibilityOffOutlinedIcon onClick={() => togglePassword()}
@@ -89,7 +92,7 @@ const Login = () => {
                             {/*    label="Men shartlarga roziman"*/}
                             {/*/>*/}
                         </div>
-                        <Button onClick={()=> postLogin()} value={!loading ? 'Kirish' : 'Loading....'}/>
+                        <Button onClick={() => postLogin()} value={!loading ? 'Kirish' : 'Loading....'}/>
                         {/*<p onClick={()=> navigate('/forgot-password')} className={'cursor-pointer underline text-blue text-center hover:text-black mt-4'}>Forgot your password?</p>*/}
                     </form>
                 </div>

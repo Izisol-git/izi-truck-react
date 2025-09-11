@@ -17,9 +17,10 @@ import {
 import {useNavigate} from "react-router-dom";
 import {useDispatch} from "react-redux";
 
-function Details({ inputModalArray, btnValue, data, id}) {
+function Details({inputModalArray, btnValue, data, id, contract}) {
     const navigate = useNavigate();
     const dispatch = useDispatch();
+    console.log(contract)
     return (
         <div>
             <div className={'bg-bacWhite min-h-[calc(100dvh-70px)] dark:bg-darkBg  '}>
@@ -61,8 +62,8 @@ function Details({ inputModalArray, btnValue, data, id}) {
                 }
 
 
-                {/*{*/}
-                {/*    btnValue === "Employees" ?*/}
+                {
+                    btnValue !== "Drivers" ?
                         <div
                             className={'bg-white w-[90%] mt-4 py-4 px-6  mx-auto shadow-2xl rounded dark:bg-darkBgTwo'}>
                             <div className={'my-5 flex items-center justify-between'}>
@@ -70,16 +71,22 @@ function Details({ inputModalArray, btnValue, data, id}) {
 
                             </div>
                             <div className={'w-[100%]  mx-auto  '}>
-                                <TableEmployeesMUI contracts={data?.contract}/>
+                                {btnValue !== "Customers" ?
+                                    <TableEmployeesMUI
+                                        contracts={contract}
+                                    />
+                                    :
+                                    <TableEmployeesMUI
+                                        contracts={data?.contract}
+                                    />
+                                }
                             </div>
 
                         </div>
-                {/*        :*/}
-                {/*        ''*/}
-                {/*}*/}
-
-
-                <Timeline id={id}   data={data}/>
+                        :
+                        ''
+                }
+                <Timeline id={id} data={data}/>
 
                 <AddEmployesModal id={id} h1={btnValue} employeesId={data}
                                   inputModalArray={inputModalArray}/>

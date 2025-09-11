@@ -1,0 +1,434 @@
+import React, {useEffect, useState} from 'react';
+import {useNavigate} from "react-router-dom";
+import {useDispatch} from "react-redux";
+import {CreateQueries, getAllSelect} from "../../features/Queries/queriesThunks.js";
+import {Button, CurrencyInput, InputMUI, MyCalendar, SelectMUI} from "../index.js";
+import {TextareaAutosize} from "@mui/material";
+
+function QueriesFrom({mode}) {
+
+    const navigate = useNavigate();
+    const dispatch = useDispatch();
+    const [formData, setFormData] = useState({});
+    const [allSelect, setAllSelect] = useState({});
+    const [currency, setCurrency] = useState('2');
+    const [errors, setErrors] = useState({});
+
+
+
+    const getQueriesId =async (id) => {
+        try {
+            const res = await dispatch(getAllSelect(id));
+        }catch (error) {
+            console.log(error);
+        }
+    }
+
+    const getQueriesSelect = async () => {
+        try {
+            const res = await dispatch(getAllSelect(
+                {params: `?country_of_departure=${formData?.country_of_departure}&region_of_departure=${formData?.region_of_departure}&city_of_departure${formData?.city_of_departure}&country_of_destination=${formData?.country_of_destination}&region_of_destination=${formData?.region_of_destination}&city_of_destination${formData?.city_of_destination}`}
+            )).unwrap()
+            console.log(res)
+            setAllSelect(res)
+        } catch (error) {
+            console.error(error);
+        }
+    }
+
+    useEffect(() => {
+        getQueriesSelect()
+    }, [formData?.country_of_departure, formData?.region_of_departure, formData?.city_of_departure, formData?.country_of_destination, formData?.region_of_destination, formData?.city_of_destination])
+
+
+    const createQuerie = async () => {
+        const obj = {
+            ...formData,
+            client_enumeration_currency: currency === '1' ? 'usd' : currency === '2' ? 'uzs' : currency === '3' ? 'rub' : currency === '4' ? 'eur' : '',
+        }
+        try {
+            const res = await dispatch(CreateQueries({data: obj})).unwrap()
+            console.log(res)
+            navigate('/queries')
+        } catch (error) {
+            console.error(error);
+            setErrors(error.errors)
+        }
+    }
+
+
+    const data = [
+        {}
+    ]
+
+    const dangerous = [
+        {id: 0, title: "Yo'q"},
+        {id: 1, title: "Ha"},
+    ];
+
+    const hazardLevel = [
+        {id: 1, title: 1},
+        {id: 2, title: 2},
+        {id: 3, title: 3},
+        {id: 4, title: 4},
+        {id: 5, title: 5},
+        {id: 6, title: 5},
+        {id: 7, title: 7},
+        {id: 8, title: 8},
+        {id: 9, title: 9}
+    ]
+
+    const typePayment = [
+        {value: 'cash', title: "Перечисления"},
+        {value: 'enumeration', title: "Нақд"},
+        {value: 'combined', title: "Ярим перечисления"},
+    ];
+
+
+    return (
+        <div>
+            <div className={'bg-bacWhite w-full min-h-[calc(100dvh-70px)] py-5 dark:bg-darkBg'}>
+                <div className={'w-[90%] bg-white px-4  mx-auto py-5 rounded-md shadow dark:bg-darkBgTwo'}>
+                    <div className={'h-[40px] gap-4 relative text-center center  w-full   mb-10'}>
+                        <div className={'w-max  absolute top-0 left-0'} onClick={() => navigate(`/queries`)}>
+                            <Button color={'dark:bg-btnBgDark'} icon={<i className="fa-solid fa-arrow-left"></i>}
+                                    value={'Queries'}/>
+                        </div>
+                        {/*<p className={'text-blue font-bold text-xl dark:text-darkText'}>Byurtmani Ko'rish</p>*/}
+                    </div>
+                    <div className={'grid grid-cols-3 gap-4'}>
+                        <div className={"w-full"}>
+                            <SelectMUI
+                                errorMassage={errors?.client_id}
+                                value={allSelect?.clients?.find((opt) => opt.id === formData?.client_id)}
+                                onChange={(val) => {
+                                    setFormData({
+                                        ...formData,
+                                        client_id: val.id
+                                    })
+                                }}
+                                options={allSelect?.clients || []}
+                                variant={'outlined'}
+                                label={'Клиент'}
+                                placeholder={'Клиент'}
+                            />
+                        </div>
+                        <div className={"w-full"}>
+                            <InputMUI
+                                errorMassage={errors?.title}
+                                value={formData?.title ?? ''}
+
+                                onChange={(e) =>
+                                    setFormData({...formData, title: e.target.value})
+                                }
+                                variant={'outlined'} label={'Наименование груза'}
+                            />
+                        </div>
+                        <div className={"w-full "}>
+                            <SelectMUI
+                                errorMassage={errors?.status_of_cargo}
+                                value={dangerous?.find((opt) => opt.id === formData?.status_of_cargo)}
+                                onChange={(val) => {
+                                    setFormData({
+                                        ...formData,
+                                        status_of_cargo: val.id
+                                    })
+                                }}
+                                options={dangerous || []}
+                                variant={'outlined'}
+                                label={'Опасный ли груз?'}
+                                placeholder={'Опасный ли груз?'}
+                            />
+                        </div>
+                        {
+                            formData?.status_of_cargo === 1 ?
+                                <div className={"w-full "}>
+                                    <SelectMUI
+                                        errorMassage={errors?.degree_of_danger}
+                                        value={hazardLevel?.find((opt) => opt.id === formData?.degree_of_danger)}
+                                        onChange={(val) => {
+                                            setFormData({
+                                                ...formData,
+                                                degree_of_danger: val.id
+                                            })
+                                        }}
+                                        options={hazardLevel || []}
+                                        variant={'outlined'}
+                                        label={'Степень опасности'}
+                                        placeholder={'Степень опасности'}
+                                    />
+                                </div>
+                                :
+                                null
+                        }
+                        <div className={" w-full "}>
+                            <InputMUI
+                                errorMassage={errors?.weight}
+                                value={formData?.weight ?? ''}
+                                type={'number'}
+                                onChange={(e) =>
+                                    setFormData({...formData, weight: e.target.value})
+                                }
+                                variant={'outlined'} label={'Вес груза (кг)'}
+                            />
+                        </div>
+                        <div className={"w-full  "}>
+                            <SelectMUI
+                                errorMassage={errors?.transport_volume_id}
+
+                                value={allSelect?.transport_volumes?.find((opt) => opt.id === formData?.transport_volume_id)}
+                                onChange={(val) => {
+                                    setFormData({
+                                        ...formData,
+                                        transport_volume_id: val.id
+                                    })
+                                }}
+                                options={allSelect?.transport_volumes || []}
+                                variant={'outlined'}
+                                label={'Объем транспорта'}
+                                placeholder={'Объем транспорта'}
+
+                            />
+                        </div>
+                        <div className={"w-full  "}>
+                            <SelectMUI
+                                errorMassage={errors?.transport_type_id}
+                                value={allSelect?.transport_types?.find((opt) => opt.id === formData?.transport_type_id)}
+                                onChange={(val) => {
+                                    setFormData({
+                                        ...formData,
+                                        transport_type_id: val.id
+                                    })
+                                }}
+                                options={allSelect?.transport_types || []}
+                                variant={'outlined'}
+                                label={'Тип транспорта'}
+                                placeholder={'Тип транспорта'}
+
+                            />
+                        </div>
+
+                        {
+                            formData?.transport_type_id === 3 ?
+                                <div className={"w-full "}>
+                                    <InputMUI
+                                        errorMassage={errors?.mode}
+                                        value={formData?.mode ?? ''}
+                                        onChange={(e) =>
+                                            setFormData({...formData, mode: e.target.value})
+                                        }
+                                        variant={'outlined'} label={'Режим'}
+                                    />
+                                </div>
+                                :
+                                null
+                        }
+                    </div>
+                </div>
+                <div className={'w-[90%] bg-white px-4  mx-auto py-5 rounded-md shadow dark:bg-darkBgTwo mt-5'}>
+
+                    <div className={'grid grid-cols-3 gap-4'}>
+                        <div className={"w-full  "}>
+                            <SelectMUI
+                                errorMassage={errors?.country_of_departure}
+                                value={allSelect?.countries?.find((opt) => opt.id === formData?.country_of_departure)}
+                                onChange={(val) => {
+                                    setFormData({
+                                        ...formData,
+                                        country_of_departure: val.id
+                                    })
+                                }}
+                                options={allSelect?.countries || []}
+                                variant={'outlined'}
+                                label={'Country of departure'}
+                                placeholder={'Country of departure'}
+
+                            />
+                        </div>
+                        <div className={"w-full  "}>
+                            <SelectMUI
+                                errorMassage={errors?.region_of_departure}
+                                value={allSelect?.regions_from?.find((opt) => opt.id === formData?.region_of_departure)}
+                                onChange={(val) => {
+                                    setFormData({
+                                        ...formData,
+                                        region_of_departure: val.id
+                                    })
+                                }}
+                                options={allSelect?.regions_from || []}
+                                variant={'outlined'}
+                                label={'Region of departure'}
+                                placeholder={'Region of departure'}
+
+                            />
+                        </div>
+                        <div className={"w-full  "}>
+                            <SelectMUI
+                                errorMassage={errors?.city_of_departure}
+                                value={allSelect?.cities_from?.find((opt) => opt.id === formData?.city_of_departure)}
+                                onChange={(val) => {
+                                    setFormData({
+                                        ...formData,
+                                        city_of_departure: val.id
+                                    })
+                                }}
+                                options={allSelect?.cities_from || []}
+                                variant={'outlined'}
+                                label={'City of departure'}
+                                placeholder={'City of departure'}
+
+                            />
+                        </div>
+                        <div className={"w-full  "}>
+                            <SelectMUI
+                                errorMassage={errors?.country_of_destination}
+                                value={allSelect?.countries?.find((opt) => opt.id === formData?.country_of_destination)}
+                                onChange={(val) => {
+                                    setFormData({
+                                        ...formData,
+                                        country_of_destination: val.id
+                                    })
+                                }}
+                                options={allSelect?.countries || []}
+                                variant={'outlined'}
+                                label={'Country of destination'}
+                                placeholder={'Country of destination'}
+
+                            />
+                        </div>
+                        <div className={"w-full  "}>
+                            <SelectMUI
+                                errorMassage={errors?.region_of_destination}
+                                value={allSelect?.regions_to?.find((opt) => opt.id === formData?.region_of_destination)}
+                                onChange={(val) => {
+                                    setFormData({
+                                        ...formData,
+                                        region_of_destination: val.id
+                                    })
+                                }}
+                                options={allSelect?.regions_to || []}
+                                variant={'outlined'}
+                                label={'Region of destination'}
+                                placeholder={'Region of destination'}
+
+                            />
+                        </div>
+                        <div className={"w-full  "}>
+                            <SelectMUI
+                                errorMassage={errors?.city_of_destination}
+                                value={allSelect?.cities_to?.find((opt) => opt.id === formData?.city_of_destination)}
+                                onChange={(val) => {
+                                    setFormData({
+                                        ...formData,
+                                        city_of_destination: val.id
+                                    })
+                                }}
+                                options={allSelect?.cities_to || []}
+                                variant={'outlined'}
+                                label={'City of destination'}
+                                placeholder={'City of destination'}
+
+                            />
+                        </div>
+                    </div>
+                </div>
+
+                <div className={'w-[90%] bg-white px-4  mx-auto py-5 rounded-md shadow dark:bg-darkBgTwo mt-5'}>
+
+                    <div className={'grid grid-cols-3 gap-4'}>
+                        <div className={"w-full "}>
+                            <div className={'relative'}>
+                                <MyCalendar
+                                    errorMassage={errors?.load_time_from}
+                                    value={formData?.load_time_from ?? ''} // misol uchun yangi property
+                                    onChange={(val) => setFormData({...formData, load_time_from: val})}/>
+                                <p className={`absolute text-[12px] pt-1 px-1 font-medium -top-[14px] left-2   ${formData.load_time_from ? 'text-red-500' : 'text-[#3B82F6]'} dark:text-darkText bg-white dark:bg-darkBgTwo`}>
+                                    Дата разгрузки</p>
+
+                                {/*{*/}
+                                {/*    formData.unload_date ?*/}
+                                {/*        <p className={'text-[#d32f2f] text-[12px] mt-1 ml-2'}>{formData?.unload_date[0]}</p> : ''*/}
+                                {/*}*/}
+
+                            </div>
+
+                        </div>
+                        <div className={" w-full "}>
+
+                            <CurrencyInput
+                                errorMassage={errors?.client_enumeration_price}
+                                value={formData.client_enumeration_price ?? ''}
+                                setCurrency={setCurrency}
+                                currency={currency}
+                                onChange={(e) => setFormData({
+                                    ...formData,
+                                    client_enumeration_price: e.target.value
+                                })} label={'Цена клиента (Переч-е)'}/>
+
+
+                        </div>
+                        <div className={"w-full  "}>
+                            <SelectMUI
+                                errorMassage={errors?.payment_method}
+                                value={typePayment.find((opt) => opt.value === formData?.payment_method)}
+                                onChange={(val) => {
+                                    setFormData({
+                                        ...formData,
+                                        payment_method: val.value
+                                    })
+                                }}
+                                options={typePayment || []}
+                                variant={'outlined'}
+                                label={'Тип оплаты'}
+                                placeholder={'Тип оплаты'}
+
+                            />
+                        </div>
+                        <div className="w-full col-span-2">
+                            <TextareaAutosize
+                                aria-label="empty textarea"
+                                placeholder="Заметки для оперейшн"
+                                // value={suggestionsData?.notes || ""}
+                                // onChange={(e) =>
+                                //     setSuggestionsData((prev) => ({...prev, notes: e.target.value}))
+                                // }
+                                minRows={3}
+                                style={{
+                                    width: "100%",
+                                    border: "2px solid #e5e7eb",
+                                    borderRadius: 4,
+                                    padding: 10,
+                                    backgroundColor: "inherit",
+                                    color: "inherit",
+                                }}
+                            />
+                        </div>
+                        <div className="w-full flex items-end justify-end gap-4 mb-4    ">
+                            <button
+                                onClick={() => {
+                                    navigate('/queries');
+                                }}
+                                className="w-36 relative overflow-hidden rounded font-semibold bg-transparent border-2 text-blue border-blue transition-all duration-300 ease-in-out  hover:text-white hover:bg-blue py-2 px-3 dark:hover:bg-navBgHover dark:border-darkText dark:text-darkText"
+                            >
+                                Close
+                            </button>
+                            <button onClick={() => {
+                                createQuerie()
+                            }}
+                                    className="w-36 relative overflow-hidden rounded font-semibold bg-transparent border-2 text-blue border-blue transition-all duration-300 ease-in-out  hover:text-white hover:bg-blue py-2 px-3 dark:hover:bg-navBgHover dark:border-darkText dark:text-darkText"
+                            >
+                                Add
+                            </button>
+                        </div>
+                    </div>
+
+
+                </div>
+
+
+            </div>
+        </div>
+    );
+}
+
+export default QueriesFrom;

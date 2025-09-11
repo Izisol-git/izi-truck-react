@@ -28,4 +28,5 @@ export {default as AddClientContracts} from './Contracts/ClientContracts/addClie
 export {default as EditClientContracts} from './Contracts/ClientContracts/editClientContracts.jsx'
 export {default as Notifications} from './Notificaions/Notifications.jsx'
 export {default as NotificationsDetails} from './Notificaions/notificationsDetails.jsx'
+export {default as EditQueries} from './Queries/editQueries.jsx'
 

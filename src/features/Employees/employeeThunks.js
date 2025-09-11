@@ -69,8 +69,8 @@ export const getContractId = createAsyncThunk(
     "employees/getContractId",
     async (id, { rejectWithValue }) => {
         try {
-            await EmployeeService.getContractId(id);
-            return id;
+           return await EmployeeService.getContractId(id);
+
         } catch (err) {
             return rejectWithValue(err.response?.data || "Failed to delete employee");
         }

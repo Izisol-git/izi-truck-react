@@ -88,8 +88,8 @@ function AddClientContracts({mode = 'add'}) {
 
     const senDContracts = async () => {
         try {
-            const res = await dispatch(addContractsData(contractsData1)).unwrap()
-            // navigate(-1)
+            const res = await dispatch(addContractsData(contractsData)).unwrap()
+            navigate(-1)
         } catch (err) {
             console.log(err);
         }

@@ -141,9 +141,8 @@ const UserPagination = ({arry, navigateURL, data, total, setEmployeesId, employe
                                         // direction={orderBy === "id" ? orderDirection : "asc"}
                                         // onClick={() => handleSortRequest("id")}
                                     >
-                                        {
-                                            navigateURL === "clients" ? 'client_id' : 'ID'
-                                        }
+                                        ID
+
                                     </TableSortLabel>
                                 </TableCell>
 

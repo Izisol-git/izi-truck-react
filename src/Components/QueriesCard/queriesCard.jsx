@@ -1,134 +1,272 @@
-import React from "react"
 import {
     Card,
     CardHeader,
     CardContent,
     Typography,
-    Button,
-    Badge,
     Chip,
     Box,
     Stack,
     Divider,
-} from "@mui/material"
-import {Bell, Clock, X} from "lucide-react"
-import {NotificationsModal} from "../index.js";
-import NotificationsIcon from "@mui/icons-material/Notifications";
+    Avatar,
+    alpha, Button,
+} from "@mui/material";
+import {
+    TrendingFlat,
+    Person,
+    LocalShipping,
+    Payment,
+    Scale,
+    AccessTime, PriceChangeOutlined, RouteOutlined,
+} from "@mui/icons-material";
 import dayjs from "../../utils/dayjs.js";
+import {useNavigate} from "react-router-dom";
 
-export default function QueriesCard({transaction}) {
-    const getStatusButton = () => {
-        switch (transaction.status) {
-            case "proposed":
-                return (
-                    <Button color={"primary"} variant={"contained"}
-                        className="w-full !text-[12px]    text-white">{"Ставка перевозчика предложена"}</Button>
-                )
-            case "cancelled":
-                return (
-                    <Button color={"primary"} variant="destructive" className="w-full !text-[12px]">
-                        <X className="mr-2 h-4 w-4"/>
-                        {"Отмена"}
-                    </Button>
-                )
-            case "pending":
-                return (
-                    <Button color={"primary"}
-                        className="w-full !text-[12px]  bg-teal-600 hover:bg-teal-700 text-white">{"Ставка перевозчика предложена"}</Button>
-                )
-            default:
-                return null
+export default function QueriesCard({ transaction }) {
+
+    const navigate = useNavigate();
+
+    const getPaymentMethodLabel = (method) => {
+        const methods = {
+            cash: "Перечисления",
+            enumeration: "Нақд",
+            combined: "Ярим перечисления",
+        };
+        return methods[method] || "-";
+    };
+
+    const getStatusStyle = (statusId) => {
+        if (statusId === 2) {
+            return { label: "Ожидается", color: "error" };
         }
-    }
+        return { label: "Доставлен", color: "success" };
+    };
+
+    const status = getStatusStyle(transaction?.status_id);
 
     return (
         <Card
-            className="w-full bg-white shadow-sm border border-gray-200 hover:shadow-md transition-shadow !rounded-xl">
-            <div className="flex items-center justify-between pt-4 px-4 ">
-                <h3 className=" font-semibold text-gray-900 text-sm">{transaction.route1}
-                    <i className="fa-solid fa-route text-green-500 mx-2"></i>
-                    {transaction.route2}
-                </h3>
+            elevation={0}
+            sx={{
+                borderRadius: 2,
+                border: "1px solid",
+                borderColor: "divider",
+                "&:hover": {
+                    boxShadow: 2,
+                },
+            }}
+        >
+            {/* Header with Route */}
+            <CardHeader
+                avatar={
+                    <Avatar
+                        sx={{
+                            width: 40,
+                            height: 40,
+                            bgcolor: "primary.main", // asosiy primary rang
+                        }}
+                    >
+                        <LocalShipping fontSize="small" />
+                    </Avatar>
+                }
+                title={
+                    <Box display="flex" alignItems="center" gap={1}>
+                        <Typography color="text.secondary" variant="subtitle1" fontWeight={600}>
+                            {transaction?.from_address[0]?.city?.title}
+                        </Typography>
+                        <RouteOutlined color="secondary" fontSize="small" />
+                        <Typography color="text.secondary" variant="subtitle1" fontWeight={600}>
+                            {transaction?.to_address[0]?.city?.title}
+                        </Typography>
+                    </Box>
+                }
+                action={
+                    <Chip
+                        icon={<AccessTime sx={{ fontSize: 16 }} />}
+                        label={dayjs(transaction?.created_at).fromNow()}
+                        size="small"
+                        color="warning"
+                        variant="soft"
+                        sx={{
+                            fontWeight: 500,
+                            display: "flex",
+                            alignItems: "center",
+                            "& .MuiChip-label": { display: "flex", alignItems: "center" },
+                        }}
+                    />
+                }
+                sx={{
+                    "& .MuiCardHeader-action": {
+                        alignSelf: "center", // markazga olib keladi
+                        marginTop: 0,        // default yuqoriga chiqishini olib tashlaydi
+                    },
+                }}
+            />
 
-                {/*{transaction.notifications && (*/}
-                {/*    <Badge badgeContent={transaction.notifications} color="info"*/}
-                {/*           className={'bg-orange-100 text-orange-800 border-orange-200 p-1 rounded'}>*/}
-                {/*        <NotificationsIcon className="text-gray-700 dark:text-gray-200 transition-colors duration-300"*/}
-                {/*                           color="action"/>*/}
-                {/*    </Badge>*/}
-                {/*)}*/}
+            <CardContent sx={{ pt: 1.5 }}>
+                <Stack spacing={2}   paddingX={2}>
+                    {/* Main Info */}
+                    <Box display="grid" gridTemplateColumns="1fr" gap={1}>
+                        <Box display="flex" justifyContent="space-between" alignItems={["center"]}>
+                            <Typography
+                                variant="caption"
+                                color="text.secondary"
+                                display="flex"
+                                alignItems="center"
+                                gap={0.5}
+                                fontSize={14}
+                                fontWeight={600}
+                            >
+                                <LocalShipping color="success" fontSize="small" />
+                                Груз
+                            </Typography>
+                            <Typography variant="body1" fontWeight={600}     color="text.secondary"  >
+                                {transaction?.title}
+                            </Typography>
+                        </Box>
 
-                <div className="flex items-center justify-between ">
-                    {/*<Badge variant="outline" className="bg-orange-500 text-orange-900 border-orange-800 flex items-center p-1 rounded">*/}
-                    {/*<Clock className="mr-1 h-3 w-3"/>*/}
-                    <Chip className={'!rounded !text-[12px]'} label={`${dayjs(transaction?.created_at).fromNow()}`}
-                          color="error"/>
-                    {/*{transaction.timeAgo}*/}
-                    {/*</Badge>*/}
+                        <Box display="flex" justifyContent="space-between" alignItems={["center"]}>
+                            <Typography
+                                variant="caption"
+                                color="text.secondary"
+                                display="flex"
+                                alignItems="center"
+                                gap={0.5}
+                                fontSize={14}
+                                fontWeight={600}
+                            >
+                                <Payment color="success" fontSize="small" />
+                                Тип оплаты
+                            </Typography>
+                            <Typography variant="body1" fontWeight={600}     color="text.secondary"  >
+                                {getPaymentMethodLabel(transaction?.payment_method)}
+                            </Typography>
+                        </Box>
 
-                    {transaction.status === "cancelled" && transaction.cancelReason && (
-                        <Button variant="destructive" size="sm" className={'!text-[12px]'}>
-                            {"Отмена"}
-                        </Button>
+                        <Box display="flex" justifyContent="space-between" alignItems={["center"]}>
+                            <Typography
+                                variant="caption"
+                                color="text.secondary"
+                                display="flex"
+                                alignItems="center"
+                                fontSize={14}
+                                gap={0.5}
+                                fontWeight={600}
+                            >
+                                <Person  color="success" fontSize="small" />
+                                Клиент
+                            </Typography>
+                            <Typography variant="body1" fontWeight={600}     color="text.secondary"  >
+                                {transaction?.client?.fio}
+                            </Typography>
+                        </Box>
+
+                        <Box display="flex" justifyContent="space-between" alignItems={["center"]}>
+
+                            <Typography  variant="caption"
+                                         color="text.secondary"
+                                         display="flex"
+                                         alignItems="center"
+                                         fontSize={14}
+                                        fontWeight={600}
+                                         gap={0.5}>
+
+
+                                <PriceChangeOutlined  color="success" fontSize="small"/>
+                                Цена клиента
+                            </Typography>
+                            <Typography
+                                variant="body1" fontWeight={600}    color="text.secondary"
+                            >
+                                {transaction?.client_enumeration_price}{" "}
+                                {transaction?.client_enumeration_currency?.toUpperCase()}
+                            </Typography>
+                        </Box>
+
+                        <Box display="flex" justifyContent="space-between" alignItems={["center"]}>
+                            <Typography
+                                variant="caption"
+                                color="text.secondary"
+                                display="flex"
+                                alignItems="center"
+                                gap={0.5}
+                                fontSize={14}
+                                fontWeight={600}
+                            >
+                                <Scale color="success" fontSize="small" />
+                                Вес
+                            </Typography>
+                            <Typography variant="body1" fontWeight={600}  color="text.secondary"   >
+                                {transaction?.weight}
+                            </Typography>
+                        </Box>
+                    </Box>
+
+                    <Divider />
+
+                    {/* Status */}
+                    <Box display="flex" justifyContent="space-between" alignItems="center"  >
+                        <Chip
+                            label={status.label}
+                            color={status.color}
+                            variant="soft"
+                            sx={{
+                                fontWeight: 600,
+                                textTransform: "uppercase",
+                                letterSpacing: 0.5,
+                            }}
+                        />
+
+
+                        <Box display="flex" gap={1}>
+                            <Button variant={'contained'} color={'info'}>
+                                <i className="fa-solid fa-eye mr-2"></i>
+                                Show
+                            </Button>
+                            <Button onClick={()=> {
+                                navigate(`/queries/edit/${transaction?.id}`);
+                            }} variant={'contained'} color={'warning'}>
+                                <i className={'fa-solid fa-pen-to-square mr-2'}></i>
+                                Edit
+                            </Button>
+                        </Box>
+
+                        {/*<Chip*/}
+
+                        {/*    label={status.label}*/}
+                        {/*    color={status.color}*/}
+                        {/*    variant="soft"*/}
+                        {/*    sx={{*/}
+                        {/*        fontWeight: 600,*/}
+                        {/*        textTransform: "uppercase",*/}
+                        {/*        letterSpacing: 0.5,*/}
+                        {/*        borderRadius:0*/}
+                        {/*    }}*/}
+                        {/*/>*/}
+                        {transaction.status === 0 && transaction.cancelReason && (
+                            <Chip label="Отмена" color="error" size="small" variant="soft" />
+                        )}
+                    </Box>
+
+                    {/* Cancel Reason */}
+                    {transaction.cancelReason && (
+                        <Box
+                            sx={(theme) => ({
+                                bgcolor: alpha(theme.palette.error.light, 0.08),
+                                border: `1px solid ${alpha(theme.palette.error.main, 0.3)}`,
+                                borderRadius: 2,
+                                p: 1.5,
+                            })}
+                        >
+                            <Typography variant="caption" color="error.main" fontWeight={600}>
+                                Причина отмены:
+                            </Typography>
+                            <Typography variant="body2" color="error.dark">
+                                {transaction.cancelReason}
+                            </Typography>
+                        </Box>
                     )}
-                </div>
-
-
-            </div>
-
-            <CardContent className="space-y-3">
-                <div className="grid grid-cols-2 gap-x-4 gap-y-2 text-sm">
-                    <div>
-                        <span className="text-green-600 font-semibold">{"Груз:"}</span>
-                        <div className="font-medium text-blue-600">{transaction.cargo}</div>
-                    </div>
-                    <div>
-                        <span className="text-green-600 font-semibold">{"Тип оплаты:"}</span>
-                        <div className="font-medium text-blue-600">{transaction.paymentType}</div>
-                    </div>
-
-                    <div>
-                        <span className="text-green-600 font-semibold">Цена клиента:</span>
-                        <div className="font-medium">{transaction.clientPrice}</div>
-                    </div>
-                    {/*{transaction.carrierPrice && (*/}
-                    {/*    <div>*/}
-                    {/*        <span className="text-gray-600">{"Цена перевозчика:"}</span>*/}
-                    {/*        <div className="font-medium">{transaction.carrierPrice}</div>*/}
-                    {/*    </div>*/}
-                    {/*)}*/}
-                </div>
-
-                <div className="text-sm text-green-600 font-semibold    ">
-                    Цена перевозчика действительна до
-                    <p className={'font-medium text-black'}>{transaction.validUntil}</p>
-                </div>
-
-                {/*<div className="space-y-1 text-xs">*/}
-                {/*    <div>*/}
-                {/*        <span className="text-gray-600">Sales:</span>*/}
-                {/*        <span className="ml-2 text-purple-600 font-medium">{transaction.sales}</span>*/}
-                {/*    </div>*/}
-                {/*    <div>*/}
-                {/*        <span className="text-gray-600">Operation:</span>*/}
-                {/*        <span className="ml-2 text-purple-600 font-medium">{transaction.operation}</span>*/}
-                {/*    </div>*/}
-                {/*    <div>*/}
-                {/*        <span className="text-gray-600">{"Группы/Запросы:"}</span>*/}
-                {/*        <span className="ml-2">0/0</span>*/}
-                {/*    </div>*/}
-                {/*</div>*/}
-
-
-                    <div className="flex items-center justify-between  ">{getStatusButton()}</div>
-
-
-                {transaction.cancelReason && (
-                    <div className="text-xs text-gray-600 bg-gray-50 p-2 rounded">
-                        <span className="font-medium">{"Причина отмены:"}</span> {transaction.cancelReason}
-                    </div>
-                )}
+                </Stack>
             </CardContent>
         </Card>
-    )
+    );
 }

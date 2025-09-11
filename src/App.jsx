@@ -27,7 +27,7 @@ import {
     EditClientContracts,
     Notifications,
     NotificationsDetails,
-    AddQueries
+    AddQueries, EditQueries
 }
     from './pages/index.js'
 import {BrowserRouter, Routes, Route, Navigate} from "react-router-dom";
@@ -91,11 +91,14 @@ import AddClientContracts from "./pages/Contracts/ClientContracts/addClientContr
 function App() {
 
     const dispatch = useDispatch();
+
+
     useEffect(() => {
-        dispatch(getCurrentUser());
+        const token = localStorage.getItem("token");
+        if (token) {
+            dispatch(getCurrentUser());
+        }
     }, [dispatch]);
-
-
 
     //
     // useEffect(() => {
@@ -122,6 +125,7 @@ function App() {
                     <Route path="dashboard" element={<Dashboard />} />
                     <Route path="queries" element={<Queries />} />
                     <Route path="queries/create" element={<AddQueries />} />
+                    <Route path="queries/edit/:id" element={<EditQueries />} />
                     <Route path="orders" element={<Orders />} />
                     <Route path="orders/create" element={<AddOrders />} />
                     <Route path="orders/replies" element={<ShowOffers />} />

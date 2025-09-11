@@ -89,16 +89,16 @@ function NavbarY() {
                     {name: 'Invoices', icon: 'fas fa-user-tie mr-2', navigate: 'invoices'},
                 ]
             },
-            // {
-            //     label: 'Contracts',
-            //     icon: 'fa-solid fa-file-signature mr-2',
-            //     navigate: '/contracts',
-            //     active: false,
-            //     arry: [
-            //         {name: 'Client Contracts', icon: 'fas fa-user-friends mr-2', navigate: 'clients'},
-            //         // {name: 'Employees Contracts', icon: 'fas fa-user-tie mr-2', navigate: 'employees'},
-            //     ]
-            // },
+            {
+                label: 'Contracts',
+                icon: 'fa-solid fa-file-signature mr-2',
+                navigate: '/contracts',
+                active: false,
+                arry: [
+                    {name: 'Client Contracts', icon: 'fas fa-user-friends mr-2', navigate: 'clients'},
+                    // {name: 'Employees Contracts', icon: 'fas fa-user-tie mr-2', navigate: 'employees'},
+                ]
+            },
             // {label: 'Sozlamalar', icon: 'fas fa-cog mr-2', navigate: '/settings'},
         ]
     )

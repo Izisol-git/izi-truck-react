@@ -10,6 +10,7 @@ import Box from "@mui/material/Box";
 import {exportDriverExcel} from "../../features/Drivers/driversThunks.js";
 import {exportEmployeeExcel} from "../../features/Employees/employeeThunks.js";
 import {exportClientsExcel} from "../../features/customers/clientsThunks.js";
+import {exportQueriesExcel} from "../../features/Queries/queriesThunks.js";
 
 const  ExcelModal =({data , mode , selectedKeys , setSelectedKeys , page , search })=> {
 
@@ -29,7 +30,7 @@ const  ExcelModal =({data , mode , selectedKeys , setSelectedKeys , page , searc
     const handleExport = async () => {
         if (selectedKeys.length > 0 && mode === 'order') {
             try {
-                const res = await  dispatch(exportOrdersExcel(selectedKeys)).unwrap();
+                const res = await  dispatch(exportOrdersExcel({search, selectedKeys})).unwrap();
                 dispatch(closeExcelModal())
             }catch(err) {
                 console.log(err);
@@ -54,6 +55,14 @@ const  ExcelModal =({data , mode , selectedKeys , setSelectedKeys , page , searc
         if (selectedKeys.length > 0 && mode === 'client') {
             try {
                 const res = await  dispatch(exportClientsExcel({search, selectedKeys})).unwrap();
+                dispatch(closeExcelModal())
+            }catch(err) {
+                console.log(err);
+            }
+        }
+        if (selectedKeys.length > 0 && mode === 'queries') {
+            try {
+                const res = await  dispatch(exportQueriesExcel({search, selectedKeys})).unwrap();
                 dispatch(closeExcelModal())
             }catch(err) {
                 console.log(err);

@@ -5,6 +5,8 @@ import App from "./App.jsx";
 import {Provider} from "react-redux";
 import {store} from "./App/store.js";
 import '@fortawesome/fontawesome-free/css/all.min.css';
+import "./i18n";
+
 createRoot(document.getElementById('root')).render(
   <StrictMode>
       <Provider store={store}>

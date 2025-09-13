@@ -32,7 +32,7 @@ function AddEmployesModal({h1, inputModalArray = [], setEmployeesId   , id}) {
         }, {})
     );
 
-    // console.log(inputModal)
+    console.log(inputModal)
 
 
     const getSelect = async () => {
@@ -209,7 +209,6 @@ function AddEmployesModal({h1, inputModalArray = [], setEmployeesId   , id}) {
         if (h1 === 'Customers') {
             const obj = {
                 ...inputModal,
-                customer_id: inputModal?.customer_id.id,
             }
             try {
                 await dispatch(addClient(obj)).unwrap();

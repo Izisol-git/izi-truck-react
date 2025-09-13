@@ -305,7 +305,7 @@ function Orders() {
             }
 
 
-            <ExcelModal selectedKeys={selectedKeys} setSelectedKeys={setSelectedKeys}  data={exportValues} mode={'order'} />
+            <ExcelModal search={filters} selectedKeys={selectedKeys} setSelectedKeys={setSelectedKeys}  data={exportValues} mode={'order'} />
 
 
         </div>

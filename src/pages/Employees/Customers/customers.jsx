@@ -30,6 +30,7 @@ function Customers() {
     const [searchCustomers, setSearchCustomers] = useState('');
     const [customersId, setCustomersId] = useState();
     const [customersData, setCustomersData] = useState();
+    const [dataIndex , setDataIndex] = useState(0);
 
     const [selectedKeys, setSelectedKeys] = useState([]);
     const [columnsArry, setColumnsArry] = useState([
@@ -67,6 +68,10 @@ function Customers() {
             const result = await dispatch(getClients({page: pageqq, search: searchCustomers})).unwrap() // page yuboriladi
             setCustomersData(result.clients.data);
             setTotal(result.clients)
+            setDataIndex({
+                current_page: result.clients.current_page ,
+                per_page:result.clients.per_page,
+            })
             console.log(result );
         }
         catch (error) {
@@ -116,7 +121,7 @@ function Customers() {
             <div className={'bg-bacWhite flex dark:bg-darkBg min-h-[calc(100dvh-70px)]'}>
                 <div className="w-[90%] mx-auto">
                     <UserNavbar openModal={()=> dispatch(openModal())} value={'Customers'} columnsArry={columnsArry} setColumnsArry={setColumnsArry}/>
-                        <UserPagination setSearch={setSearchCustomers} employeesId={customersId}  setEmployeesId={setCustomersId} total={total} data={customersData} arry={columnsArry} setColumnsArry={setColumnsArry}
+                        <UserPagination dataIndex={dataIndex} setSearch={setSearchCustomers} employeesId={customersId}  setEmployeesId={setCustomersId} total={total} data={customersData} arry={columnsArry} setColumnsArry={setColumnsArry}
                                                              navigateURL={'customers'}/>
                 </div>
                 <AddEmployesModal  setEmployeesId={setCustomersId} employeesId={customersId}  h1={"Customers"}    inputModalArray={inputModalArray} />

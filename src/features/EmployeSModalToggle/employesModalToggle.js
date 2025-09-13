@@ -5,6 +5,7 @@ const employesModalSlice = createSlice({
     initialState: {
         isOpen: false,
         isClose: false,
+        isOpenQueriesShow : false,
         isOpenHistory: false,
         isCloseHistory: false,
         isOpenComments: false,
@@ -21,6 +22,7 @@ const employesModalSlice = createSlice({
         clientsUpdetId:null,
         employeesId:null,
         customersId:null,
+        queriesId:null,
         editDriversArry: {},
         driversId : null,
         dbOrders:'',
@@ -35,6 +37,10 @@ const employesModalSlice = createSlice({
             state.isClose = true;
             state.isOpen = false;
         },
+        openQueriesShow : (state) => {
+            state.isOpenQueriesShow = !state.isOpenQueriesShow;
+        }
+        ,
         openModalHistory: (state) => {
             state.isOpenHistory = true;
             state.isCloseHistory = false;
@@ -111,11 +117,14 @@ const employesModalSlice = createSlice({
         AddCustomersId: (state , action) => {
             state.customersId= action.payload;
         },
+        AddQueriesId: (state , action) => {
+            state.queriesId= action.payload;
+        },
         changeDbOrders: (state , action) => {
             state.dbOrders= action.payload;
         }
     },
 });
 
-export const { openModal ,AddEmployeesId,changeDbOrders ,  AddCustomersId,closeContractsModal , openContractsModal , openExcelModal , closeExcelModal ,  closeModal,DriversId, ClientsUpdetId,EditToggleDrivers , AddToggleDrivers, changeEmployeesPge, AddToggle , EditToggle, closeOffersModal , openOffersModal, closeInvoicesModal , openInvoicesModal, closeModalHistory , openModalHistory , closeModalComments , openModalComments } = employesModalSlice.actions;
+export const {openQueriesShow , AddQueriesId,  openModal ,AddEmployeesId,changeDbOrders ,  AddCustomersId,closeContractsModal , openContractsModal , openExcelModal , closeExcelModal ,  closeModal,DriversId, ClientsUpdetId,EditToggleDrivers , AddToggleDrivers, changeEmployeesPge, AddToggle , EditToggle, closeOffersModal , openOffersModal, closeInvoicesModal , openInvoicesModal, closeModalHistory , openModalHistory , closeModalComments , openModalComments } = employesModalSlice.actions;
 export default employesModalSlice.reducer;

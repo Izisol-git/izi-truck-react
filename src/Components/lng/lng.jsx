@@ -1,14 +1,15 @@
 import React, {useEffect, useRef, useState} from 'react';
+import {useTranslation} from "react-i18next";
 
 const languages = [
-
     {code: 'uz', label: 'O‘zbekcha', flag: '../../../public/uzbekistan.png'},
-    {code: 'Ўз', label: 'Ўзбекча', flag: '../../../public/uzbekistan.png'},
+    {code: 'uzCyrl', label: 'Ўзбекча', flag: '../../../public/uzbekistan.png'},
     {code: 'ru', label: 'Русский', flag: '../../../public/russia.png'},
 ];
 
 
 const LanguageDropdown = () => {
+    const {i18n} = useTranslation();
     const [selectedLang, setSelectedLang] = useState(
         languages[Number(localStorage.getItem('language'))] || languages[0]
     );
@@ -17,10 +18,10 @@ const LanguageDropdown = () => {
 
     const toggleDropdown = () => {
         setIsOpen(!isOpen)
-
     };
     const selectLanguage = (lang) => {
         setSelectedLang(lang);
+        i18n.changeLanguage(lang.code);
         setIsOpen(false);
     };
     useEffect(() => {

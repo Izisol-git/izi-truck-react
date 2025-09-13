@@ -15,7 +15,7 @@ import {
 } from "../../features/EmployeSModalToggle/employesModalToggle.js";
 import {useNavigate} from "react-router-dom";
 
-const EmployeesPagination = ({row , index , data , setEmployeesId , arry , navigateURL}) => {
+const EmployeesPagination = ({row , index , data , setEmployeesId , arry , navigateURL , dataIndex}) => {
 
 
     const dispatch = useDispatch();
@@ -52,7 +52,7 @@ const EmployeesPagination = ({row , index , data , setEmployeesId , arry , navig
                     ".dark &": {
                         color: "white",
                     },
-                }}>{row.id}</TableCell>
+                }}>{dataIndex.per_page * (dataIndex.current_page-1) + index+1}</TableCell>
                 {arry[0].active && <TableCell  sx={{
                     color: "black",
                     ".dark &": {

@@ -27,6 +27,7 @@ function Employees() {
     const [selectedKeys, setSelectedKeys] = useState([]);
     const id = useSelector((state) => state.employesModal.employeesId);
     const [data , setData] = useState();
+    const [dataIndex , setDataIndex] = useState(0);
 
 
 
@@ -58,15 +59,25 @@ function Employees() {
             EmployeesGetId(id)
         }
     } , [id])
+    const employeeData = async () => {
+       try {
+           const result = await dispatch(getEmployees({page : pageqq , search: searchEmployees})).unwrap()
+           setEmployeesData(result.data.data);
+           setTotal(result.data)
+           setDataIndex({
+               current_page: result.data.current_page ,
+               per_page:result.data.per_page,
+           })
+           console.log(result.data)
+       }
+       catch(err){
+           console.log(err)
+       }
+    };
 
     useEffect(() => {
-        const employeesData = async () => {
-            const result = await dispatch(getEmployees({page : pageqq , search: searchEmployees}));
-            setEmployeesData(result.payload.data.data);
-            setTotal(result.payload.data)
-            console.log(result.payload.data)
-        };
-        employeesData();
+
+        employeeData();
 
         // console.log(employeesPaginationData);
     }, [pageqq, dispatch ,searchEmployees]); // ⚡ page o‘zgarsa qayta fetch bo‘ladi
@@ -95,7 +106,7 @@ function Employees() {
                 <div className="w-[90%] mx-auto">
                     <UserNavbar openModal={() => dispatch(openModal())} value={'Employees'} columnsArry={columnsArry}
                                 setColumnsArry={setColumnsArry}/>
-                     <UserPagination  setSearch={setSearchEmployees} setEmployeesId={setEmployeesId} total={total} data={employeesData} arry={columnsArry} setColumnsArry={setColumnsArry}
+                     <UserPagination dataIndex={dataIndex}  setSearch={setSearchEmployees} setEmployeesId={setEmployeesId} total={total} data={employeesData} arry={columnsArry} setColumnsArry={setColumnsArry}
                                                     navigateURL={'employees'}/>
 
                     <AddEmployesModal setEmployeesId={setEmployeesId}   employeesId={employeesId} data={employeesData}    h1={"Employees"} inputModalArray={inputModalArray}/>

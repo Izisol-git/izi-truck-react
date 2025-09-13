@@ -1,28 +1,27 @@
 import React, {useRef} from "react";
+import { LocalizationProvider } from '@mui/x-date-pickers/LocalizationProvider';
+import { AdapterDateFns } from '@mui/x-date-pickers/AdapterDateFns';
+import { DatePicker } from '@mui/x-date-pickers/DatePicker';
 
-function MyCalendar({value, onChange , errorMassage}) {
-    const handleChange = (e) => {
-        if (onChange) onChange(e.target.value);
-    };
-    const dateRef = useRef(null);
-    const openCalendar = () => {
-        if (dateRef.current && dateRef.current.showPicker) {
-            dateRef.current.showPicker();
-        }
-    };
+
+
+function MyCalendar({label , value , onChange}) {
+
 
     return (
-        <div className="flex flex-col items-start gap-2">
-            <input
-                id="myDate"
-                type="date"
-                ref={dateRef}
-                value={value || ""}
-                onChange={handleChange}
-                onClick={openCalendar}
-                className={`w-full h-[40px] rounded px-3 py-2  border  border-gray-300 ${errorMassage ? 'border-red-500' : 'border-gray-300'} bg-white text-gray-900  focus:outline-none focus:border-2 focus:border-[#3B82F6]   dark:bg-[#444444] dark:text-white dark:border-gray-600   dark:focus:border-blue-400    ` }
+        <LocalizationProvider dateAdapter={AdapterDateFns}>
+            <DatePicker
+                label={label}
+                value={value}
+                onChange={(val) => onChange(val)}
+                slotProps={{
+                    textField: {
+                        size: "small",
+                        fullWidth: true,
+                    },
+                }}
             />
-        </div>
+        </LocalizationProvider>
 
     );
 }

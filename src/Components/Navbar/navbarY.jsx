@@ -10,6 +10,7 @@ import Pusher from "pusher-js";
 import axios from "axios";
 import {getNotifications} from "../../features/Notification/notificationsThunks.js";
 import {addNotification} from "../../features/Notification/notificationSlice.js";
+import {useTranslation} from "react-i18next";
 
 function NavbarY() {
     const dispatch = useDispatch();
@@ -22,6 +23,7 @@ function NavbarY() {
     const [notifications, setNotifications] = useState([]);
     const [counter, setCounter] = useState(0);
     Pusher.logToConsole = true;
+    const {t} = useTranslation();
 
     const count = async () => {
         try {
@@ -76,32 +78,33 @@ function NavbarY() {
 
 
 
-    const [navabrArry, setNavabrArry] = useState(
-        [
-            {label: 'Bosh sahifa', icon: 'fas fa-home mr-2', navigate: '/dashboard'},
-            {label: "So'rovlar", icon: 'fa-solid fa-question mr-2', navigate: '/queries'},
-            {label: 'Buyurtmalar', icon: 'fas fa-shopping-cart mr-2', navigate: '/orders'},
-            {
-                label: 'Settings', icon: 'fas fa-users mr-2', navigate: '/users', active: false, arry: [
-                    {name: 'Customers', icon: '"fas fa-user-friends mr-2', navigate: 'customers'},
-                    {name: 'Drivers', icon: 'fas fa-id-card mr-2', navigate: 'drivers'},
-                    {name: 'Employees', icon: 'fas fa-user-tie mr-2', navigate: 'employees'},
-                    {name: 'Invoices', icon: 'fas fa-user-tie mr-2', navigate: 'invoices'},
-                ]
-            },
-            {
-                label: 'Contracts',
-                icon: 'fa-solid fa-file-signature mr-2',
-                navigate: '/contracts',
-                active: false,
-                arry: [
-                    {name: 'Client Contracts', icon: 'fas fa-user-friends mr-2', navigate: 'clients'},
-                    // {name: 'Employees Contracts', icon: 'fas fa-user-tie mr-2', navigate: 'employees'},
-                ]
-            },
-            // {label: 'Sozlamalar', icon: 'fas fa-cog mr-2', navigate: '/settings'},
-        ]
-    )
+    const [navabrArry, setNavabrArry] = useState([
+        { label: "navbar.home", icon: "fas fa-home mr-2", navigate: "/dashboard" },
+        { label: "navbar.queries", icon: "fa-solid fa-question mr-2", navigate: "/queries" },
+        { label: "navbar.orders", icon: "fas fa-shopping-cart mr-2", navigate: "/orders" },
+        {
+            label: "navbar.settings",
+            icon: "fas fa-users mr-2",
+            navigate: "/users",
+            active: false,
+            arry: [
+                { name: "navbar.customers", icon: "fas fa-user-friends mr-2", navigate: "customers" },
+                { name: "navbar.drivers", icon: "fas fa-id-card mr-2", navigate: "drivers" },
+                { name: "navbar.employees", icon: "fas fa-user-tie mr-2", navigate: "employees" },
+                { name: "navbar.invoices", icon: "fas fa-user-tie mr-2", navigate: "invoices" }
+            ]
+        },
+        {
+            label: "navbar.contracts",
+            icon: "fa-solid fa-file-signature mr-2",
+            navigate: "/contracts",
+            active: false,
+            arry: [
+                { name: "navbar.clientContracts", icon: "fas fa-user-friends mr-2", navigate: "clients" }
+            ]
+        }
+    ]);
+
 
     useEffect(() => {
         const darkMode = localStorage.getItem("dark") === "true"; // string bilan solishtirish
@@ -178,7 +181,7 @@ function NavbarY() {
                         >
                             <div className={'center h-full w-full'}>
                                 <i className={item.icon}></i>
-                                <p>{item.label}</p>
+                                <p>{t(item.label)}</p>
                                 {item.arry &&
                                     <i className={`fa-solid fa-angle-right transition-all duration-300  ${item.active ? 'transition-transform rotate-90 ' : ''}`}></i>}
                             </div>
@@ -195,7 +198,7 @@ function NavbarY() {
                                                     onClick={() => navigate(`${item.navigate}/${items.navigate}`)}
                                                     className="py-2 border-b hover:bg-blue hover:text-white px-2 w-full dark:hover:bg-navBgHover dark:border-navBgHover"
                                                 >
-                                                    {items.name}
+                                                    {t(items.name)}
                                                 </div>
                                             </React.Fragment>
                                         ))

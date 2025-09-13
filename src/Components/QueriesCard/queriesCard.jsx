@@ -20,9 +20,16 @@ import {
 } from "@mui/icons-material";
 import dayjs from "../../utils/dayjs.js";
 import {useNavigate} from "react-router-dom";
+import {
+    AddQueriesId,
+    openQueriesShow
+} from "../../features/EmployeSModalToggle/employesModalToggle.js";
+import {useDispatch} from "react-redux";
+import {LogisticsInterface} from "../index.js";
+import React from "react";
 
-export default function QueriesCard({ transaction }) {
-
+export default function QueriesCard({transaction}) {
+    const dispatch = useDispatch();
     const navigate = useNavigate();
 
     const getPaymentMethodLabel = (method) => {
@@ -36,9 +43,9 @@ export default function QueriesCard({ transaction }) {
 
     const getStatusStyle = (statusId) => {
         if (statusId === 2) {
-            return { label: "Ожидается", color: "error" };
+            return {label: "Ожидается", color: "error"};
         }
-        return { label: "Доставлен", color: "success" };
+        return {label: "Доставлен", color: "success"};
     };
 
     const status = getStatusStyle(transaction?.status_id);
@@ -65,7 +72,7 @@ export default function QueriesCard({ transaction }) {
                             bgcolor: "primary.main", // asosiy primary rang
                         }}
                     >
-                        <LocalShipping fontSize="small" />
+                        <LocalShipping fontSize="small"/>
                     </Avatar>
                 }
                 title={
@@ -73,7 +80,7 @@ export default function QueriesCard({ transaction }) {
                         <Typography color="text.secondary" variant="subtitle1" fontWeight={600}>
                             {transaction?.from_address[0]?.city?.title}
                         </Typography>
-                        <RouteOutlined color="secondary" fontSize="small" />
+                        <RouteOutlined color="secondary" fontSize="small"/>
                         <Typography color="text.secondary" variant="subtitle1" fontWeight={600}>
                             {transaction?.to_address[0]?.city?.title}
                         </Typography>
@@ -81,7 +88,7 @@ export default function QueriesCard({ transaction }) {
                 }
                 action={
                     <Chip
-                        icon={<AccessTime sx={{ fontSize: 16 }} />}
+                        icon={<AccessTime sx={{fontSize: 16}}/>}
                         label={dayjs(transaction?.created_at).fromNow()}
                         size="small"
                         color="warning"
@@ -90,7 +97,7 @@ export default function QueriesCard({ transaction }) {
                             fontWeight: 500,
                             display: "flex",
                             alignItems: "center",
-                            "& .MuiChip-label": { display: "flex", alignItems: "center" },
+                            "& .MuiChip-label": {display: "flex", alignItems: "center"},
                         }}
                     />
                 }
@@ -102,8 +109,8 @@ export default function QueriesCard({ transaction }) {
                 }}
             />
 
-            <CardContent sx={{ pt: 1.5 }}>
-                <Stack spacing={2}   paddingX={2}>
+            <CardContent sx={{pt: 1.5}}>
+                <Stack spacing={2} paddingX={2}>
                     {/* Main Info */}
                     <Box display="grid" gridTemplateColumns="1fr" gap={1}>
                         <Box display="flex" justifyContent="space-between" alignItems={["center"]}>
@@ -116,10 +123,10 @@ export default function QueriesCard({ transaction }) {
                                 fontSize={14}
                                 fontWeight={600}
                             >
-                                <LocalShipping color="success" fontSize="small" />
+                                <LocalShipping color="success" fontSize="small"/>
                                 Груз
                             </Typography>
-                            <Typography variant="body1" fontWeight={600}     color="text.secondary"  >
+                            <Typography variant="body1" fontWeight={600} color="text.secondary">
                                 {transaction?.title}
                             </Typography>
                         </Box>
@@ -134,10 +141,10 @@ export default function QueriesCard({ transaction }) {
                                 fontSize={14}
                                 fontWeight={600}
                             >
-                                <Payment color="success" fontSize="small" />
+                                <Payment color="success" fontSize="small"/>
                                 Тип оплаты
                             </Typography>
-                            <Typography variant="body1" fontWeight={600}     color="text.secondary"  >
+                            <Typography variant="body1" fontWeight={600} color="text.secondary">
                                 {getPaymentMethodLabel(transaction?.payment_method)}
                             </Typography>
                         </Box>
@@ -152,30 +159,30 @@ export default function QueriesCard({ transaction }) {
                                 gap={0.5}
                                 fontWeight={600}
                             >
-                                <Person  color="success" fontSize="small" />
+                                <Person color="success" fontSize="small"/>
                                 Клиент
                             </Typography>
-                            <Typography variant="body1" fontWeight={600}     color="text.secondary"  >
+                            <Typography variant="body1" fontWeight={600} color="text.secondary">
                                 {transaction?.client?.fio}
                             </Typography>
                         </Box>
 
                         <Box display="flex" justifyContent="space-between" alignItems={["center"]}>
 
-                            <Typography  variant="caption"
-                                         color="text.secondary"
-                                         display="flex"
-                                         alignItems="center"
-                                         fontSize={14}
+                            <Typography variant="caption"
+                                        color="text.secondary"
+                                        display="flex"
+                                        alignItems="center"
+                                        fontSize={14}
                                         fontWeight={600}
-                                         gap={0.5}>
+                                        gap={0.5}>
 
 
-                                <PriceChangeOutlined  color="success" fontSize="small"/>
+                                <PriceChangeOutlined color="success" fontSize="small"/>
                                 Цена клиента
                             </Typography>
                             <Typography
-                                variant="body1" fontWeight={600}    color="text.secondary"
+                                variant="body1" fontWeight={600} color="text.secondary"
                             >
                                 {transaction?.client_enumeration_price}{" "}
                                 {transaction?.client_enumeration_currency?.toUpperCase()}
@@ -192,19 +199,19 @@ export default function QueriesCard({ transaction }) {
                                 fontSize={14}
                                 fontWeight={600}
                             >
-                                <Scale color="success" fontSize="small" />
+                                <Scale color="success" fontSize="small"/>
                                 Вес
                             </Typography>
-                            <Typography variant="body1" fontWeight={600}  color="text.secondary"   >
+                            <Typography variant="body1" fontWeight={600} color="text.secondary">
                                 {transaction?.weight}
                             </Typography>
                         </Box>
                     </Box>
 
-                    <Divider />
+                    <Divider/>
 
                     {/* Status */}
-                    <Box display="flex" justifyContent="space-between" alignItems="center"  >
+                    <Box display="flex" justifyContent="space-between" alignItems="center">
                         <Chip
                             label={status.label}
                             color={status.color}
@@ -218,11 +225,17 @@ export default function QueriesCard({ transaction }) {
 
 
                         <Box display="flex" gap={1}>
-                            <Button variant={'contained'} color={'info'}>
+                            <Button
+                                onClick={() => {
+                                    dispatch(AddQueriesId(transaction?.id))
+                                    dispatch(openQueriesShow())
+                                }}
+                                variant={'contained'} color={'info'}>
+
                                 <i className="fa-solid fa-eye mr-2"></i>
                                 Show
                             </Button>
-                            <Button onClick={()=> {
+                            <Button onClick={() => {
                                 navigate(`/queries/edit/${transaction?.id}`);
                             }} variant={'contained'} color={'warning'}>
                                 <i className={'fa-solid fa-pen-to-square mr-2'}></i>
@@ -243,7 +256,7 @@ export default function QueriesCard({ transaction }) {
                         {/*    }}*/}
                         {/*/>*/}
                         {transaction.status === 0 && transaction.cancelReason && (
-                            <Chip label="Отмена" color="error" size="small" variant="soft" />
+                            <Chip label="Отмена" color="error" size="small" variant="soft"/>
                         )}
                     </Box>
 
@@ -267,6 +280,8 @@ export default function QueriesCard({ transaction }) {
                     )}
                 </Stack>
             </CardContent>
+
+
         </Card>
     );
 }

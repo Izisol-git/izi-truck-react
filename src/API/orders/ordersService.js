@@ -44,9 +44,16 @@ class OrdersService  {
         const res = await api.get(`/orders/create?country_of_destination=${id}`);
         return res.data;
     }
-    static async exportOrdersExcel(selectedKeys) {
+    static async exportOrdersExcel(search, selectedKeys) {
+        let query2 = ``;
+        if (search.search) query2 += `&search=${search.search}`;
+        if (search.db) query2 += `&db=${search.db}`;
+        if (search.from_date ) query2 += `&from_date=${search.from_date}`;
+        if (search.to_date) query2 += `&to_date=${search.to_date}`;
+        if (search.search_status === 0 || search.search_status === 1) query2 += `&search_status=${search.search_status}`;
+        const newQuery = query2.slice(1);
         const query = selectedKeys.map((k) => `export_keys[]=${k}`).join("&");
-        const res = await api.get(`/orders/export_excel?${query}`, {
+        const res = await api.get(`/orders/export_excel?${newQuery}&${query}`, {
             responseType: "blob", // excel fayl blob bo'ladi
         });
         return res.data;

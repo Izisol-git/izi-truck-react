@@ -29,6 +29,7 @@ function Drivers() {
     const [data, setData] = useState();
     const id = useSelector((state) => state.employesModal.driversId);
     const [selectedKeys, setSelectedKeys] = useState([]);
+    const [dataIndex , setDataIndex] = useState(0);
     const [columnsArry, setColumnsArry] = useState([
         {title: "Имя", active: true},
         {title: "Телефон", active: true},
@@ -77,7 +78,11 @@ function Drivers() {
            const res = await dispatch(getDrivers({page: pageqq, search: searchDriver , selectedKeys :  selectedKeys  })).unwrap()
            setDriversData(res.data.data);
            setTotal(res.data)
-           console.log(res.data.data );
+           setDataIndex({
+               current_page: res.data.current_page ,
+               per_page:res.data.per_page,
+           })
+           console.log(res);
        }catch (error){
            console.log(error)
        }
@@ -93,7 +98,7 @@ function Drivers() {
                 <div className="w-[90%] mx-auto">
                     <UserNavbar value={'Drivers'} columnsArry={columnsArry}
                                 setColumnsArry={setColumnsArry}/>
-                        <UserPagination setSearch={setSearchDriver}   total={total}
+                        <UserPagination dataIndex={dataIndex} setSearch={setSearchDriver}   total={total}
                                     data={driversData} arry={columnsArry} setColumnsArry={setColumnsArry}
                                     navigateURL={'drivers'}  />
                     <Timeline data={data} />

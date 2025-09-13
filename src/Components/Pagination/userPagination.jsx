@@ -25,7 +25,7 @@ import {useDispatch, useSelector} from "react-redux";
 import {searchContracts} from "../../features/Contracts/contractThunks.js";
 import {openExcelModal} from "../../features/EmployeSModalToggle/employesModalToggle.js";
 
-const UserPagination = ({arry, navigateURL, data, total, setEmployeesId, employeesId , setSearch  }) => {
+const UserPagination = ({arry, navigateURL, data, total, setEmployeesId, employeesId , setSearch ,dataIndex }) => {
 
 
     const dispatch = useDispatch();
@@ -56,6 +56,7 @@ const UserPagination = ({arry, navigateURL, data, total, setEmployeesId, employe
     // useEffect(()=> {
     //     search()
     // } , [searchData])
+    console.log(data)
 
     return (
         <>
@@ -118,6 +119,7 @@ const UserPagination = ({arry, navigateURL, data, total, setEmployeesId, employe
                     </div>
 
                 </div>
+
 
                 <TableContainer>
                     <Table>
@@ -183,6 +185,7 @@ const UserPagination = ({arry, navigateURL, data, total, setEmployeesId, employe
                                 {data && data.map((row, index) => (
                                     navigateURL === "employees" ? (
                                         <EmployeesPagination
+                                            dataIndex={dataIndex}
                                             key={index}
                                             navigateURL={navigateURL}
                                             arry={arry}
@@ -195,6 +198,7 @@ const UserPagination = ({arry, navigateURL, data, total, setEmployeesId, employe
                                         />
                                     ) : navigateURL === "drivers" ? (
                                         <DriversPagination
+                                            dataIndex={dataIndex}
                                             key={index}
                                             navigateURL={navigateURL}
                                             arry={arry}
@@ -207,6 +211,7 @@ const UserPagination = ({arry, navigateURL, data, total, setEmployeesId, employe
                                         />
                                     ) : navigateURL === "customers" ? (
                                         <CustomersPagination
+                                            dataIndex={dataIndex}
                                             key={index}
                                             navigateURL={navigateURL}
                                             arry={arry}

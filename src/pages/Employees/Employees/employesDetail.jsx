@@ -10,6 +10,8 @@ function EmployesDetail() {
     const dispatch = useDispatch();
     const [data ,setData ] = useState();
     const [contract ,setContract ] = useState();
+    const [dataIndex , setDataIndex] = useState(0);
+
 
     const EmployeesGetId = async (id)=> {
         try {
@@ -19,6 +21,7 @@ function EmployesDetail() {
             setContract(resCont.data)
             console.log(res)
             console.log(resCont)
+            setDataIndex(resCont)
         }catch(err){
             console.log(err)
         }

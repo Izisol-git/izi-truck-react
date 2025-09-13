@@ -3,9 +3,9 @@ import StatisticsService from "../../API/Statistics/statisticsService.js";
 
 export const getStatistics = createAsyncThunk(
     "Statistics/getStatistics",
-    async (_, { rejectWithValue }) => {
+    async (search, { rejectWithValue }) => {
         try {
-            return await StatisticsService.getAll();
+            return await StatisticsService.getAll(search);
         } catch (err) {
             return rejectWithValue(err.response?.data || "Failed to fetch Statistics");
         }

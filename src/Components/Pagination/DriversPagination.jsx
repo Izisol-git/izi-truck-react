@@ -10,7 +10,7 @@ import {ProfileInfoCardDrivers} from "../index.js";
 import {useDispatch, useSelector} from "react-redux";
 import {useNavigate} from "react-router-dom";
 
-function DriversPagination({row , index , data , setEmployeesId , arry , navigateURL }) {
+function DriversPagination({row , index , data , setEmployeesId , arry , navigateURL , dataIndex }) {
 
 
     const dispatch = useDispatch();
@@ -51,7 +51,7 @@ function DriversPagination({row , index , data , setEmployeesId , arry , navigat
                     ".dark &": {
                         color: "white",
                     },
-                }}>{row.id}</TableCell>
+                }}>{dataIndex.per_page * (dataIndex.current_page-1) + index+1}</TableCell>
                 {/*{arry[0].active && <TableCell sx={{*/}
                 {/*    color: "black",*/}
                 {/*    ".dark &": {*/}

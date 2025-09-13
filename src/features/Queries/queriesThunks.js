@@ -18,7 +18,7 @@ export const getQueriesAll = createAsyncThunk(
 
 // GET – barcha Selectlarni olish
 export const getAllSelect = createAsyncThunk(
-    "orders/getQueries",
+    "orders/getAllSelect",
     async ({params}, { rejectWithValue }) => {
         try {
             return await QueriesService.getAllSelect(params);
@@ -50,3 +50,38 @@ export const GetQueriesId = createAsyncThunk(
         }
     }
 );
+// update queries
+export const updateQueries = createAsyncThunk(
+    "orders/updateQueries",
+    async ({id , formData}, { rejectWithValue }) => {
+        try {
+            return await QueriesService.update(id , formData);
+        } catch (err) {
+            return rejectWithValue(err.response?.data || "Failed to fetch queries");
+        }
+    }
+);
+
+
+
+// Excel export thunk
+export const exportQueriesExcel = createAsyncThunk(
+    "orders/exportQueriesExcel",
+    async ({ search ,selectedKeys}, { rejectWithValue }) => {
+        try {
+            const blob = await QueriesService.exportQuerieExcel( search ,selectedKeys);
+            // Faylni yuklab olish
+            const url = window.URL.createObjectURL(blob);
+            const link = document.createElement("a");
+            link.href = url;
+            link.setAttribute("download", "queries.xlsx");
+            document.body.appendChild(link);
+            link.click();
+            link.remove();
+            return true;
+        } catch (error) {
+            return rejectWithValue(error.response?.data || error.message);
+        }
+    }
+);
+

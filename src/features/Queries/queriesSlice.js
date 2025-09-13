@@ -1,5 +1,5 @@
 import {createSlice} from "@reduxjs/toolkit";
-import {CreateQueries, getQueriesAll} from "./queriesThunks.js";
+import {CreateQueries, getAllSelect, getQueriesAll, updateQueries} from "./queriesThunks.js";
 
 const initialState = {
     queries: [],
@@ -25,10 +25,36 @@ const queriesSlice = createSlice({
             state.loading = false;
             state.error = action.payload;
         });
+        // // GET selectedQueries
+        // builder.addCase(getAllSelect.pending, (state) => {
+        //     state.loading = true;
+        //     state.error = null;
+        // });
+        // builder.addCase(getAllSelect.fulfilled, (state ,action) => {
+        //     state.loading = false;
+        //     state.selectedQueries = action.payload;
+        // });
+        // builder.addCase(getAllSelect.rejected, (state, action) => {
+        //     state.loading = false;
+        // });
+
+        // update queries
+        builder.addCase(updateQueries.pending, (state) => {
+            state.loading = true;
+            state.error = null;
+        });
+        builder.addCase(updateQueries.fulfilled, (state, action) => {
+            state.loading = false;
+            state.selectedQueries = action.payload;
+        });
+        builder.addCase(updateQueries.rejected, (state, action) => {
+            state.loading = false;
+            state.error = action.payload;
+        });
 
         // builder.addCase(CreateQueries.fulfilled, (state, action) => {
-        //     state.queries.push(action.payload.data);
-        //     console.log(action.payload.data);
+        //     state.queries.queries.data.unshift(action.payload.data);
+        //     console.log(action);
         // });
         //
         // builder.addCase(editQuery.fulfilled, (state, action) => {

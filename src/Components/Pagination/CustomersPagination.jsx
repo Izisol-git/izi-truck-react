@@ -11,7 +11,7 @@ import {
 } from "../../features/EmployeSModalToggle/employesModalToggle.js";
 import {ProfileInfoCardDrivers, ProfileInfoClients} from "../index.js";
 
-function CustomersPagination({row, index, data, setEmployeesId, arry, navigateURL, employeesId}) {
+function CustomersPagination({row, index, data, setEmployeesId, arry, navigateURL, employeesId , dataIndex}) {
 
     const dispatch = useDispatch();
     const isOpenMOdal = useSelector((state) => state.employesModal.isOpen);
@@ -58,7 +58,7 @@ function CustomersPagination({row, index, data, setEmployeesId, arry, navigateUR
                     ".dark &": {
                         color: "white",
                     },
-                }}>{row.id}</TableCell>
+                }}>{dataIndex.per_page * (dataIndex.current_page-1) + index+1}</TableCell>
                 {arry[0].active && <TableCell sx={{
                     color: "black",
                     ".dark &": {

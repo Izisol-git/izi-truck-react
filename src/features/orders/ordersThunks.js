@@ -141,9 +141,9 @@ export const deleteOrder = createAsyncThunk(
 // Excel export thunk
 export const exportOrdersExcel = createAsyncThunk(
     "orders/exportOrdersExcel",
-    async (selectedKeys, { rejectWithValue }) => {
+    async ({search, selectedKeys}, { rejectWithValue }) => {
         try {
-            const blob = await OrdersService.exportOrdersExcel(selectedKeys);
+            const blob = await OrdersService.exportOrdersExcel(search, selectedKeys);
 
             // Faylni yuklab olish
             const url = window.URL.createObjectURL(blob);

@@ -1,0 +1,47 @@
+{
+  "navbar": {
+    "home": "Bosh sahifa",
+    "queries": "So'rovlar",
+    "orders": "Buyurtmalar",
+    "settings": "Sozlamalar",
+    "customers": "Mijozlar",
+    "drivers": "Haydovchilar",
+    "employees": "Xodimlar",
+    "invoices": "Hisob-fakturalar",
+    "contracts": "Shartnomalar",
+    "clientContracts": "Mijoz shartnomalari"
+  },
+  "dashboard": {
+    "totalOrders": "Jami buyurtmalar",
+    "totalDrivers": "Jami haydovchilar",
+    "totalClients": "Jami mijozlar",
+    "totalEmployees": "Jami xodimlar",
+    "inLastWeek": "oxirgi haftada",
+
+    "title": "Boshqaruv paneli",
+    "orders": "📦 Buyurtmalar",
+    "truckLoad": "🚛 Yuk mashinalari yuklanishi (%)",
+    "recentOrders": "📋 So‘nggi buyurtmalar",
+    "driversStatus": "👷‍♂️ Haydovchilar holati",
+
+    "table": {
+      "id": "ID",
+      "client": "Mijoz",
+      "address": "Manzil",
+      "status": "Holati",
+      "inProgress": "Yetkazilmoqda",
+      "closed": "Yopilgan"
+    },
+
+    "drivers": {
+      "busy": "Band",
+      "waiting": "Kutmoqda",
+      "vacation": "Ta’til"
+    },
+
+    "dateFrom": "Boshlanish sanasi",
+    "dateTo": "Tugash sanasi",
+    "actionsClear": "Tozalash",
+    "actionsSearch": "Qidirish"
+  }
+}

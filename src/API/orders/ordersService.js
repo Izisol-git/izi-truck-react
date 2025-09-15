@@ -66,7 +66,7 @@ class OrdersService  {
         if (filters.db) query += `&db=${filters.db}`;
         if (filters.from_date ) query += `&from_date=${filters.from_date}`;
         if (filters.to_date) query += `&to_date=${filters.to_date}`;
-        if (filters.search_status === 0 || filters.search_status === 1) query += `&search_status=${filters.search_status}`;
+        if (filters.search_status === 0 || filters.search_status === 1  ) query += `&search_status=${filters.search_status}`;
         const res = await api.get(query)
         return res.data;
     }

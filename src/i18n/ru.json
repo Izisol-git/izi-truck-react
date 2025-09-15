@@ -42,6 +42,442 @@
     "dateFrom": "Дата начала",
     "dateTo": "Дата окончания",
     "actionsClear": "Очистить",
-    "actionsSearch": "Поиск"
+    "actionsSearch": "Поиск",
+    "full": "Полный",
+    "half": "Половина",
+    "empty": "Пусто",
+    "truckLoadChart": "Загрузка грузовика (%)"
+  },
+  "export": "Экспорт",
+  "export_to_excel": "Скачать в Excel",
+  "ordersTranslation" : {
+    "order_id": "ЗАКАЗ НОМЕР",
+    "order_date": "Дата Заказа",
+    "point_of_departure": "Пункт отправления",
+    "point_of_destination": "Пункт назначения",
+    "country_of_departure": "Страна отправления",
+    "country_of_destination": "Страна получателя",
+    "shipment_type": "Тип перевозка",
+    "transport_value": "Объем тс",
+    "customs_clearance1": "Место затоможка",
+    "weight_of_cargo": "Вес груза",
+    "shipment_date": "Дата погрузка",
+    "nature_of_cargo": "Наименование перевозимого груза",
+    "car_number": "Номер автомобиля",
+    "carp_number": "Номер полу прицепа",
+    "carrier_contract_no": "Номер контракта перевозчика",
+    "carrier_company": "Перевозчик",
+    "carrier_tin": "ИНН перевозчика",
+    "carrier_contract_date": "Дата контракта перевозчика",
+    "act_date": "Дата акта",
+    "carrier_price_transfer": "Возмещения в Сумах",
+    "mode": "Режим",
+    "ordersCreate" : "создать запрос",
+    "edit_order": "Редактировать заказ",
+    "cancel": "Отменить",
+    "driver_assigned": "Водитель назначен",
+    "completed": "Завершен",
+    "order_details": "Детали заказа",
+    "back_to_orders" : "Вернуться к заказам",
+    "close": "Закрыть",
+    "map" : "Карта",
+    "excel": "Excel",
+    "add": "Добавить",
+    "suggest_add": "Внести предложение",
+    "suggest_view": "Посмотреть предложение",
+    "suggests_view": "Посмотреть предложения",
+    "search_show": "Показать поиск",
+    "all": "Все",
+    "has_act": "Есть акт",
+    "no_act": "Нет акта",
+    "ordersCard": {
+      "order_info": "Информация о заказе",
+      "act_date": "Дата акта:",
+      "order_source": "Источник заказа:",
+      "status": "Статус:",
+      "car_number": "Номер машины:",
+      "details": "Подробнее",
+      "route_info": "Информация о маршруте",
+      "loading": "ПОГРУЗКА",
+      "unloading": "ВЫГРУЗКА",
+      "timeline": "График",
+      "start": "Старт",
+      "end": "Финиш",
+      "loading_date": "Дата погрузки",
+      "unloading_date": "Дата разгрузки",
+      "payment": "Оплата",
+      "edit": "Редактировать",
+      "driver_assigned": "Водитель назначен",
+      "unknown": "Неизвестно"
+    },
+    "filters": {
+      "order_id_or_cargo": "ID заказа или название груза",
+      "select_company": "Выберите компанию",
+      "arrival_time": "Время прибытия",
+      "departure_time": "Время отправления",
+      "clear_input": "Очистить поля",
+      "close": "Закрыть",
+      "search": "Поиск"
+    }
+
+  },
+  "didoxTranslation": {
+    "back": "Заказы",
+    "title": "DIDOX",
+    "has_lgota": "Есть льгота по НДС",
+    "has_vat": "Есть НДС",
+    "nds12": "Есть НДС 12%",
+    "factura_type": "Тип счёт-фактуры",
+    "ikpu": "ИКПУ",
+    "single_sided_type": "Односторонний тип",
+    "lgota_id": "ID льготы",
+    "sending": "Отправка...",
+    "send": "Отправить",
+    "sent_documents": "Отправленные документы"
+  },
+
+  "queriesTranslation" : {
+
+    "_comment": "*************************** Bu qism excel uchun  *******************************",
+
+    "id": "ID",
+    "title": "Название заявки",
+    "client": "Клиент",
+    "client_inn": "ИНН клиента",
+    "transport_type": "Вид транспорта",
+    "transport_volume": "Объем транспорта",
+    "count_of_cars": "Количество машин",
+    "weight": "Вес (кг)",
+    "payment_method": "Метод оплаты",
+    "client_enumeration_price": "Цена клиента (перечисление)",
+    "client_enumeration_currency": "Валюта цены клиента",
+    "degree_of_danger": "Степень опасности",
+    "load_time_from": "Дата загрузки",
+    "notes": "Примечания",
+    "created_at": "Дата создания",
+    "updated_at": "Дата обновления",
+    "from_country": "Страна отправления",
+    "from_region": "Регион отправления",
+    "from_city": "Город отправления",
+    "to_country": "Страна назначения",
+    "to_region": "Регион назначения",
+    "to_city": "Город назначения",
+
+
+    "_comment_2": "*************************** Bu qism create page uchun  *******************************",
+
+    "nds": "НДС",
+    "client_price": "Цена клиента",
+    "mode": "Режим",
+    "location_of_departure": "Локация отправителя",
+    "location_of_destination": "Локация получателя",
+    "country_of_departure": "Страна отправителя",
+    "point_of_departure": "Пункт отправления",
+    "country_of_destination": "Страна получателя",
+    "point_of_destination": "Пункт назначения",
+    "weight_of_cargo": "Вес груза [кг]",
+    "status_of_cargo": "Опасный ли груз?",
+    "shipment_date": "Дата погрузки",
+    "unload_date": "Дата разгрузки",
+    "nature_of_cargo": "Наименование груза",
+    "payment_condition": "Тип оплаты",
+    "sender_contact": "Контакты отправителя",
+    "receiver_contact": "Контакты получателя (декларант)",
+    "tr_number": "№ Трака",
+    "carrier_additional": "Дополнительная информация",
+    "close": "Закрыть",
+    "add": "Добавить",
+    "edit": "Редактировать",
+    "back": "Вернуться к запросам",
+    "cargo_name": "Наименование груза",
+    "is_dangerous": "Опасный ли груз?",
+    "hazard_level": "Степень опасности",
+    "cargo_weight": "Вес груза (кг)",
+    "country_departure": "Страна отправления",
+    "region_departure": "Регион отправления",
+    "city_departure": "Город отправления",
+    "country_destination": "Страна назначения",
+    "region_destination": "Регион назначения",
+    "city_destination": "Город назначения",
+    "loading_date": "Дата погрузки",
+    "payment_type": "Тип оплаты",
+    "filters" : {
+      "search": "Поиск",
+      "arrival_time": "Время прибытия",
+      "departure_time": "Время отправления",
+      "clear_input": "Очистить поля"
+    },
+    "queriesCard": {
+      "payment_cash": "Перечисления",
+      "payment_enumeration": "Наличные",
+      "payment_combined": "Частично перечисления",
+      "status_pending": "Ожидается",
+      "status_delivered": "Доставлен",
+      "cargo": "Груз",
+      "payment_type": "Тип оплаты",
+      "client": "Клиент",
+      "client_price": "Цена клиента",
+      "weight": "Вес",
+      "show": "Показать",
+      "edit": "Редактировать",
+      "cancel": "Отмена",
+      "cancel_reason": "Причина отмены:"
+    },
+    "logisticsInterface": {
+      "status": {
+        "label": "СТАТУС",
+        "pending": "Ожидается",
+        "delivered": "Доставлен",
+        "undefined": "Не определен"
+      },
+      "origin": {
+        "country": "Страна отправления",
+        "region": "Область отправления",
+        "city": "Город отправления"
+      },
+      "destination": {
+        "country": "Страна прибытия",
+        "region": "Область прибытия",
+        "city": "Город прибытия"
+      },
+      "client": {
+        "name": "Название клиента",
+        "inn": "ИНН клиента",
+        "carrier": "Название перевозчика",
+        "carrierInn": "ИНН перевозчика"
+      },
+      "transport": {
+        "type": "ТИП ТРАНСПОРТА",
+        "volume": "ОБЪЕМ ТРАНСПОРТА",
+        "quantity": "КОЛИЧЕСТВО МАШИН",
+        "weight": "ВЕС ГРУЗА (КГ)"
+      },
+      "additional": {
+        "id": "ID",
+        "dangerLevel": "Степень опасности",
+        "mode": "Режим",
+        "loadingDate": "Дата погрузки",
+        "created": "Создано",
+        "updated": "Изменено",
+        "paymentType": "Тип оплаты",
+        "cargo": "Груз",
+        "clientPrice": "Цена клиента"
+      },
+      "buttons": {
+        "delete": "Удалить",
+        "edit": "Редактировать"
+      }
+    }
+  },
+
+  "clients" : {
+    "contracts": "Контракты",
+    "back_to_clients": "Вернуться к клиентам",
+    "history": "История",
+    "delete": "Удалить",
+    "columns" : "Столбцы",
+    "clients" : "Клиенты",
+    "createClients" : "Добавить клиента",
+    "editClients" : "Редактировать клиента",
+    "send": "Отправить",
+    "close": "Закрыть",
+    "add" : "Добавить",
+    "search": "Поиск",
+    "columnsArry" : {
+      "title" : "Название компании",
+      "phone" : "Телефон"
+    },
+    "profile": {
+      "client_name": "Имя клиента:",
+      "create_date": "Дата создания:",
+      "contract": "Договор:",
+      "added_by": "Добавил:",
+      "phone_number": "Номер телефона:"
+    },
+
+    "table": {
+      "id": "ID",
+      "contractNumber": "Номер договора",
+      "contractDate": "Дата договора",
+      "company": "Компания",
+      "inn": "ИНН",
+      "active": "Активный",
+      "inactive": "Неактивный"
+    },
+
+    "inputModalArray": {
+      "company_name": "Название фирмы",
+      "fio": "Ф.И.О",
+      "phone_number": "Телефон",
+      "contract_no": "Номер договора",
+      "director_position": "Должность руководителя",
+      "director": "ФИО директора",
+      "director_add": "Склонение ФИО",
+      "customer": "Юридическое название",
+      "cust_bank_code": "МФО/БИК/SWIFT",
+      "customer_bank": "Банк",
+      "customer_bank_acc": "Расчетный счет",
+      "customer_tin": "ИНН клиента",
+      "customer_address": "Юридический адрес",
+      "customer_vat": "Код НДС",
+      "acc_tel": "Телефон бухгалтера",
+      "treaty_code": "Код договора в 1С",
+      "customer_oked": "ОКЭД",
+      "created_at": "Дата договора"
+    },
+
+    "exportValues": {
+
+
+      "id": "ID",
+      "company_name": "Название компании",
+      "fio": "Ф.И.О",
+      "phone_number": "Телефон",
+      "contract_no": "Номер контракта",
+      "director_position": "Должность директора",
+      "director": "Директор",
+      "director_add": "Адрес директора",
+      "customer": "Клиент",
+      "cust_bank_code": "Банковский код клиента",
+      "customer_bank": "Банк клиента",
+      "customer_bank_acc": "Банковский счёт клиента",
+      "customer_tin": "ИНН клиента",
+      "customer_address": "Адрес клиента",
+      "customer_vat": "НДС клиента",
+      "acc_tel": "Телефон бухгалтера",
+      "customer_oked": "ОКЭД клиента",
+      "treaty_code": "Код договора",
+      "created_at": "Дата создания",
+      "updated_at": "Дата обновления"
+    }
+
+  },
+
+  "drivers": {
+    "driversForm": {
+      "back": "Назад",
+      "addTitle": "Добавить водителя",
+      "editTitle": "Редактировать водителя",
+      "fullName": "ФИО",
+      "phoneNumber": "Номер телефона",
+      "addPhone": "Добавить телефон",
+      "brand": "Марка автомобиля",
+      "width": "Ширина автомобиля (м)",
+      "height": "Высота автомобиля (м)",
+      "length": "Длина автомобиля (м)",
+      "capacity": "Вместимость автомобиля (м³)",
+      "carrying": "Грузоподъемность",
+      "condition": {
+        "label": "Состояние автомобиля",
+        "new": "Новый",
+        "good": "Хороший",
+        "satisfactory": "Удовлетворительный"
+      },
+      "type": "Тип автомобиля",
+      "trailerNumber": "Номер прицепа",
+      "number": "Гос. номер",
+      "addFile": "Добавить файл",
+      "close": "Закрыть",
+      "addBtn": "Добавить",
+      "adding": "Добавление..."
+    },
+
+    "profile": {
+      "name": "Имя водителя",
+      "createDate": "Дата создания",
+      "endDate": "Дата изменения",
+      "brand": "Марка автомобиля",
+      "carrying": "Грузоподъемность",
+      "phoneNumbers": "Телефонные номера",
+      "texPassport": "Техпаспорт",
+      "number": "Гос. номер",
+      "trailerNumber": "Номер прицепа",
+      "height": "Высота",
+      "capacity": "Вместимость",
+      "length": "Длина",
+      "width": "Ширина"
+    },
+    "drivers": "Водители",
+    "columns": {
+      "name": "Имя",
+      "phone": "Телефон",
+      "car_number": "Номер автомобиля",
+      "trailer_number": "Номер полуприцепа"
+    },
+    "exportValues": {
+      "fio": "ФИО водителя",
+      "phone_number": "Телефон",
+      "number": "Гос. номер",
+      "trailer_number": "Номер прицепа",
+      "brand": "Марка",
+      "length": "Длина (м)",
+      "width": "Ширина (м)",
+      "height": "Высота (м)",
+      "capacity": "Вместимость",
+      "carrying": "Грузоподъемность (т)",
+      "condition": "Состояние",
+      "type": "Тип ТС",
+      "created_by": "Кто добавил водителя",
+      "created_at": "Дата добавления"
+    }
+  },
+
+  "employees" : {
+    "createEmployees": "Добавить сотрудника",
+    "editEmployees": "Редактировать сотрудника",
+    "employees" : "Сотрудники",
+
+    "inputModalArray": {
+      "user_type": "Тип пользователя",
+      "full_name": "Полное имя",
+      "phone_number": "Номер телефона",
+      "tg_user_id": "ID пользователя (Telegram)",
+      "tg_nick_name": "Ник в Telegram",
+      "email": "Эл. почта",
+      "password": "Пароль",
+      "code": "Код",
+      "tin": "ИНН"
+    },
+    "exportValues": {
+      "id": "ID",
+      "name": "Имя пользователя",
+      "email": "Эл. почта",
+      "tin": "ИНН",
+      "phone_number": "Номер телефона",
+      "tg_user_id": "Telegram ID",
+      "tg_nick_name": "Telegram ник",
+      "code": "Код сотрудника",
+      "avatar": "Аватар",
+      "status": "Статус (1 - Активный, -1 - Неактивный)",
+      "created_by": "Кто добавил сотрудника",
+      "created_at": "Дата создания"
+    },
+    "table": {
+      "avatar": "Аватар",
+      "full_name": "ФИО",
+      "phone_number": "Номер телефона",
+      "tin": "ИНН",
+      "created_at": "Дата создания",
+      "status": "Статус",
+      "action": "Действие"
+    }
+  },
+
+  "history": {
+    "title": "История изменений",
+    "record": "Запись",
+    "by": "пользователем",
+    "actions": {
+      "created": "создана",
+      "updated": "обновлена",
+      "deleted": "удалена"
+    },
+    "showDetails": "Показать детали",
+    "hideDetails": "Скрыть детали",
+    "initialValues": "Начальные значения сохранены.",
+    "recordDeleted": "Запись была удалена.",
+    "notFound": "Не найдено!"
   }
+
+
 }

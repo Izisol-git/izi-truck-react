@@ -6,231 +6,233 @@ import TableContainer from '@mui/material/TableContainer';
 import TableHead from '@mui/material/TableHead';
 import TableRow from '@mui/material/TableRow';
 import Paper from '@mui/material/Paper';
-import {useEffect} from "react";
-import {isArray} from "chart.js/helpers";
+import { useTranslation } from "react-i18next";
 
+export default function TableEmployeesMUI({ contracts }) {
+    const { t } = useTranslation();
 
-
-
-export default function TableEmployeesMUI({contracts}) {
-    const [data, setData] = React.useState([]);
-    console.log(contracts)
-
-        if(!Array.isArray(contracts) ){
-            return (
-                <TableContainer component={Paper} sx={{width:'100%' , marginLeft:'auto', marginRight:'auto' , marginTop:'20px' ,
-
-                    '.dark &':{
+    if (!Array.isArray(contracts)) {
+        return (
+            <TableContainer
+                component={Paper}
+                sx={{
+                    width: '100%',
+                    marginLeft: 'auto',
+                    marginRight: 'auto',
+                    marginTop: '20px',
+                    '.dark &': {
                         bgcolor: '#303030'
                     }
-
-                }}>
-
-                    <Table  aria-label="simple table">
-                        <TableHead sx={{
+                }}
+            >
+                <Table aria-label="simple table">
+                    <TableHead
+                        sx={{
                             bgcolor: '#F2F6F9',
-                            '.dark &':{
+                            '.dark &': {
                                 bgcolor: '#374151',
                                 color: 'white'
                             }
+                        }}
+                    >
+                        <TableRow>
+                            <TableCell  sx={{
+                                bgcolor: '#F2F6F9',
+                                '.dark &': {
+                                    bgcolor: '#374151',
+                                    color: 'white'
+                                }
+                            }}>{t("clients.table.id")}</TableCell>
+                            <TableCell  sx={{
+                                bgcolor: '#F2F6F9',
+                                '.dark &': {
+                                    bgcolor: '#374151',
+                                    color: 'white'
+                                }
+                            }}>{t("clients.table.contractNumber")}</TableCell>
+                            <TableCell  sx={{
+                                bgcolor: '#F2F6F9',
+                                '.dark &': {
+                                    bgcolor: '#374151',
+                                    color: 'white'
+                                }
+                            }}>{t("clients.table.contractDate")}</TableCell>
+                            <TableCell  sx={{
+                                bgcolor: '#F2F6F9',
+                                '.dark &': {
+                                    bgcolor: '#374151',
+                                    color: 'white'
+                                }
+                            }}>{t("clients.table.company")}</TableCell>
+                            <TableCell  sx={{
+                                bgcolor: '#F2F6F9',
+                                '.dark &': {
+                                    bgcolor: '#374151',
+                                    color: 'white'
+                                }
+                            }}>{t("clients.table.inn")}</TableCell>
+                        </TableRow>
+                    </TableHead>
+                    <TableBody>
+                        <TableRow
+                            key={contracts?.id}
+                            sx={{
+                                '&:last-child td, &:last-child th': { border: 0 },
+                                '.dark &': { bgcolor: '#303030' }
+                            }}
+                        >
+                            <TableCell  sx={{
+                                '.dark &': {
+                                    color: 'white'
+                                }
+                            }}>{contracts?.id}</TableCell>
+                            <TableCell  sx={{
+                                '.dark &': {
+                                    color: 'white'
+                                }
+                            }}>{contracts?.contract_no}</TableCell>
+                            <TableCell  sx={{
+                                '.dark &': {
+                                    color: 'white'
+                                }
+                            }}>
+                                {contracts?.created_at
+                                    ? new Date(contracts?.created_at).toISOString().split("T")[0]
+                                    : "—"}
+                            </TableCell>
+                            <TableCell  sx={{
+                                '.dark &': {
+                                    color: 'white'
+                                }
+                            }}>{contracts?.customer}</TableCell>
+                            <TableCell  sx={{
+                                '.dark &': {
+                                    color: 'white'
+                                }
+                            }}>{contracts?.customer_tin}</TableCell>
+                        </TableRow>
+                    </TableBody>
+                </Table>
+            </TableContainer>
+        );
+    }
 
-                        }}>
-                            <TableRow>
-                                <TableCell sx={{
-                                    '.dark &':{
-                                        color: 'white'
-                                    }
-                                }}>ID</TableCell>
-                                <TableCell sx={{
-                                    '.dark &':{
-                                        color: 'white'
-                                    }
-                                }} >Contract number</TableCell>
-                                <TableCell  sx={{
-                                    '.dark &':{
-                                        color: 'white'
-                                    }
-                                }}>contractDate</TableCell>
-                                <TableCell  sx={{
-                                    '.dark &':{
-                                        color: 'white'
-                                    }
-                                }}>company</TableCell>
-                                <TableCell sx={{
-                                    '.dark &':{
-                                        color: 'white'
-                                    }
-                                }} >INN</TableCell>
-                            </TableRow>
-                        </TableHead>
-                        <TableBody>
-                            {/*{contracts?.map((row, index) => (*/}
-                                <TableRow
-                                    key={contracts?.id}
-                                    sx={{ '&:last-child td, &:last-child th': { border: 0 } ,
-                                        '.dark &':{
-                                            bgcolor: '#303030',
-                                        }
-                                    }}
-                                >
-                                    <TableCell sx={{
-                                        '.dark &':{
-                                            color: 'white'
-                                        }
-                                    }}  component="th" scope="row">
-                                        {contracts?.id }
-                                    </TableCell>
-                                    <TableCell sx={{
-                                        '.dark &':{
-                                            color: 'white'
-                                        }
-                                    }}  component="th" scope="row">
-                                        {contracts?.contract_no}
-                                    </TableCell>
-                                    <TableCell sx={{
-                                        '.dark &':{
-                                            color: 'white'
-                                        }
-                                    }}  >{new Date(contracts?.created_at).ddmmyyyy()}</TableCell>
-                                    <TableCell sx={{
-                                        '.dark &':{
-                                            color: 'white'
-                                        }
-                                    }}  >{contracts?.customer}</TableCell>
-                                    <TableCell sx={{
-                                        '.dark &':{
-                                            color: 'white'
-                                        }
-                                    }}  >{contracts?.customer_tin}</TableCell>
-                                    {/*<TableCell sx={{*/}
-                                    {/*    '.dark &':{*/}
-                                    {/*        color: 'white'*/}
-                                    {/*    }*/}
-                                    {/*}} >*/}
-                                    {/*    {contracts?.status === true ? <div*/}
-                                    {/*        className="w-max py-1 px-3     border border-[#22c55e] text-[#22c55e] rounded-lg">*/}
-                                    {/*        Active*/}
-                                    {/*    </div> : <div*/}
-                                    {/*        className="w-max py-1 px-3 border border-[#eab308] text-[#eab308]   rounded-lg">*/}
-                                    {/*        Inactive*/}
-                                    {/*    </div>}*/}
-                                    {/*</TableCell>*/}
-                                </TableRow>
-                            {/*))}*/}
-                        </TableBody>
-                    </Table>
-                </TableContainer>
-            );
-        }
-        if(Array.isArray(contracts)){
-            return (
-                <TableContainer component={Paper} sx={{width:'100%' , marginLeft:'auto', marginRight:'auto' , marginTop:'20px' ,
-
-                    '.dark &':{
+    if (Array.isArray(contracts)) {
+        return (
+            <TableContainer
+                component={Paper}
+                sx={{
+                    width: '100%',
+                    marginLeft: 'auto',
+                    marginRight: 'auto',
+                    marginTop: '20px',
+                    '.dark &': {
                         bgcolor: '#303030'
                     }
-
-                }}>
-
-                    <Table  aria-label="simple table">
-                        <TableHead sx={{
+                }}
+            >
+                <Table aria-label="simple table">
+                    <TableHead
+                        // color={'white'}
+                        sx={{
                             bgcolor: '#F2F6F9',
-                            '.dark &':{
+                            '.dark &': {
                                 bgcolor: '#374151',
                                 color: 'white'
                             }
-
-                        }}>
-                            <TableRow>
-                                <TableCell sx={{
-                                    '.dark &':{
-                                        color: 'white'
-                                    }
-                                }}>ID</TableCell>
-                                <TableCell sx={{
-                                    '.dark &':{
-                                        color: 'white'
-                                    }
-                                }} >Contract number</TableCell>
+                        }}
+                    >
+                        <TableRow>
+                            <TableCell  sx={{
+                                bgcolor: '#F2F6F9',
+                                '.dark &': {
+                                    bgcolor: '#374151',
+                                    color: 'white'
+                                }
+                            }}>{t("clients.table.id")}</TableCell>
+                            <TableCell  sx={{
+                                bgcolor: '#F2F6F9',
+                                '.dark &': {
+                                    bgcolor: '#374151',
+                                    color: 'white'
+                                }
+                            }}>{t("clients.table.contractNumber")}</TableCell>
+                            <TableCell  sx={{
+                                bgcolor: '#F2F6F9',
+                                '.dark &': {
+                                    bgcolor: '#374151',
+                                    color: 'white'
+                                }
+                            }}>{t("clients.table.contractDate")}</TableCell>
+                            <TableCell  sx={{
+                                bgcolor: '#F2F6F9',
+                                '.dark &': {
+                                    bgcolor: '#374151',
+                                    color: 'white'
+                                }
+                            }}>{t("clients.table.company")}</TableCell>
+                            <TableCell  sx={{
+                                bgcolor: '#F2F6F9',
+                                '.dark &': {
+                                    bgcolor: '#374151',
+                                    color: 'white'
+                                }
+                            }}>{t("clients.table.inn")}</TableCell>
+                        </TableRow>
+                    </TableHead>
+                    <TableBody>
+                        {contracts?.map((row, index) => (
+                            <TableRow
+                                key={index}
+                                sx={{
+                                    '&:last-child td, &:last-child th': { border: 0 },
+                                    '.dark &': { bgcolor: '#303030' }
+                                }}
+                            >
                                 <TableCell  sx={{
-                                    '.dark &':{
+                                    bgcolor: '#F2F6F9',
+                                    '.dark &': {
+                                        bgcolor: '#374151',
                                         color: 'white'
                                     }
-                                }}>contractDate</TableCell>
+                                }}>{index + 1}</TableCell>
                                 <TableCell  sx={{
-                                    '.dark &':{
+                                    bgcolor: '#F2F6F9',
+                                    '.dark &': {
+                                        bgcolor: '#374151',
                                         color: 'white'
                                     }
-                                }}>company</TableCell>
-                                <TableCell sx={{
-                                    '.dark &':{
+                                }}>{row?.contract_no}</TableCell>
+                                <TableCell  sx={{
+                                    bgcolor: '#F2F6F9',
+                                    '.dark &': {
+                                        bgcolor: '#374151',
                                         color: 'white'
                                     }
-                                }} >INN</TableCell>
+                                }}>
+                                    {row?.created_at
+                                        ? new Date(row?.created_at).toISOString().split("T")[0]
+                                        : "—"}
+                                </TableCell>
+                                <TableCell  sx={{
+                                    bgcolor: '#F2F6F9',
+                                    '.dark &': {
+                                        bgcolor: '#374151',
+                                        color: 'white'
+                                    }
+                                }}>{row?.carrier}</TableCell>
+                                <TableCell  sx={{
+                                    bgcolor: '#F2F6F9',
+                                    '.dark &': {
+                                        bgcolor: '#374151',
+                                        color: 'white'
+                                    }
+                                }}>{row?.carrier_tin}</TableCell>
                             </TableRow>
-                        </TableHead>
-                        <TableBody>
-                            {contracts?.map((row, index) => (
-                                <TableRow
-                                    key={index}
-                                    sx={{ '&:last-child td, &:last-child th': { border: 0 } ,
-                                        '.dark &':{
-                                            bgcolor: '#303030',
-                                        }
-                                    }}
-                                >
-                                    <TableCell sx={{
-                                        '.dark &':{
-                                            color: 'white'
-                                        }
-                                    }}  component="th" scope="row">
-                                        {index+1 }
-                                    </TableCell>
-                                    <TableCell sx={{
-                                        '.dark &':{
-                                            color: 'white'
-                                        }
-                                    }}  component="th" scope="row">
-                                        {row?.contract_no}
-                                    </TableCell>
-                                    <TableCell sx={{
-                                        '.dark &':{
-                                            color: 'white'
-                                        }
-                                    }}  >{new Date(row?.created_at).ddmmyyyy()}</TableCell>
-                                    <TableCell sx={{
-                                        '.dark &':{
-                                            color: 'white'
-                                        }
-                                    }}  >{row?.carrier}</TableCell>
-                                    <TableCell sx={{
-                                        '.dark &':{
-                                            color: 'white'
-                                        }
-                                    }}  >{row?.carrier_tin}</TableCell>
-                                    {/*<TableCell sx={{*/}
-                                    {/*    '.dark &':{*/}
-                                    {/*        color: 'white'*/}
-                                    {/*    }*/}
-                                    {/*}} >*/}
-                                    {/*    {contracts?.status === true ? <div*/}
-                                    {/*        className="w-max py-1 px-3     border border-[#22c55e] text-[#22c55e] rounded-lg">*/}
-                                    {/*        Active*/}
-                                    {/*    </div> : <div*/}
-                                    {/*        className="w-max py-1 px-3 border border-[#eab308] text-[#eab308]   rounded-lg">*/}
-                                    {/*        Inactive*/}
-                                    {/*    </div>}*/}
-                                    {/*</TableCell>*/}
-                                </TableRow>
-                            ))}
-                        </TableBody>
-                    </Table>
-                </TableContainer>
-            )
-        }
-
-        console.log(contracts)
-
-
-
+                        ))}
+                    </TableBody>
+                </Table>
+            </TableContainer>
+        );
+    }
 }

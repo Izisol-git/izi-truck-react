@@ -38,6 +38,447 @@
     "dateFrom": "Бошланиш санаси",
     "dateTo": "Тугаш санаси",
     "actionsClear": "Тозалаш",
-    "actionsSearch": "Қидириш"
+    "actionsSearch": "Қидириш",
+    "full": "Тўлиқ",
+    "half": "Ярим",
+    "empty": "Бўш",
+    "truckLoadChart": "Юк ҳажми (%)"
+  },
+  "export": "Юклаб олиш",
+  "export_to_excel": "Excelга юклаб олиш",
+  "ordersTranslation": {
+    "order_id": "Буюртма рақами",
+    "order_date": "Буюртма санаси",
+    "point_of_departure": "Жўнатилиш пункти",
+    "point_of_destination": "Манзил пункти",
+    "country_of_departure": "Жўнатилган мамлакат",
+    "country_of_destination": "Қабул қилувчи мамлакат",
+    "shipment_type": "Ташиш тури",
+    "transport_value": "ТС ҳажми",
+    "customs_clearance1": "Божхонадан ўтказиш жойи",
+    "weight_of_cargo": "Юк оғирлиги",
+    "shipment_date": "Юклаш санаси",
+    "nature_of_cargo": "Юк номи",
+    "car_number": "Автомобиль рақами",
+    "carp_number": "Ярим тиркама рақами",
+    "carrier_contract_no": "Ташувчи шартнома рақами",
+    "carrier_company": "Ташувчи компания",
+    "carrier_tin": "Ташувчининг ИНН",
+    "carrier_contract_date": "Ташувчи шартнома санаси",
+    "act_date": "Акт санаси",
+    "carrier_price_transfer": "Тўлов суммаси (сўмда)",
+    "mode": "Режим",
+    "ordersCreate" : "сўров яратиш",
+    "edit_order": "Буюртмани таҳрирлаш",
+    "cancel": "Бекор қилиш",
+    "driver_assigned": "Ҳайдовчи тайинланган",
+    "completed": "Якунланган",
+    "order_details": "Буюртма тафсилотлари",
+    "back_to_orders" : "Буюртмаларга қайтиш",
+    "close": "Ёпиш",
+    "map" : "Харита",
+    "excel": "excel",
+    "add": "Қўшиш",
+    "suggest_add": "Таклиф киритиш",
+    "suggest_view": "Таклифни кўриш",
+    "suggests_view": "Таклифларни кўриш",
+    "search_show": "Қидирувни кўрсатиш",
+    "all": "Ҳаммаси",
+    "has_act": "Акт бор",
+    "no_act": "Акт йўқ",
+    "ordersCard": {
+      "order_info": "Буюртма маълумотлари",
+      "act_date": "Акт санаси:",
+      "order_source": "Буюртма манбаи:",
+      "status": "Ҳолати:",
+      "car_number": "Машина рақами:",
+      "details": "Батафсил",
+      "route_info": "Йўналиш маълумотлари",
+      "loading": "ЮКЛАШ",
+      "unloading": "ТУШИРИШ",
+      "timeline": "Вақт жадвали",
+      "start": "Бошланиш",
+      "end": "Тугаш",
+      "loading_date": "Юклаш санаси",
+      "unloading_date": "Тушириш санаси",
+      "payment": "Тўлов",
+      "edit": "Таҳрирлаш",
+      "driver_assigned": "Ҳайдовчи тайинланган",
+      "unknown": "Номаълум"
+    },
+    "filters": {
+      "order_id_or_cargo": "Order ID ёки Юк номи",
+      "select_company": "Компанияни танланг",
+      "arrival_time": "Келиш вақти",
+      "departure_time": "Кетиш вақти",
+      "clear_input": "Майдонларни тозалаш",
+      "close": "Ёпиш",
+      "search": "Қидириш"
+    }
+
+
+
+  },
+  "didoxTranslation": {
+    "back": "Буюртмалар",
+    "title": "DIDOX",
+    "has_lgota": "ҚҚС бўйича имтиёз мавжуд",
+    "has_vat": "ҚҚС мавжуд",
+    "nds12": "ҚҚС 12% мавжуд",
+    "factura_type": "Ҳисоб-фактура тури",
+    "ikpu": "ИКПУ",
+    "single_sided_type": "Бир томонлама тур",
+    "lgota_id": "Имтиёз ID",
+    "sending": "Юборилмоқда...",
+    "send": "Юбориш",
+    "sent_documents": "Юборилган ҳужжатлар"
+  },
+
+  "queriesTranslation" : {
+
+    "_comment": "*************************** Bu qism excel uchun  *******************************",
+
+    "id": "ID",
+    "title": "Ариза номи",
+    "client": "Мижоз",
+    "client_inn": "Мижоз ИНН",
+    "transport_type": "Транспорт тури",
+    "transport_volume": "Транспорт ҳажми",
+    "count_of_cars": "Машиналар сони",
+    "weight": "Оғирлик (кг)",
+    "payment_method": "Тўлов усули",
+    "client_enumeration_price": "Мижоз нархи (ўтказма)",
+    "client_enumeration_currency": "Мижоз нархи валютаси",
+    "degree_of_danger": "Хавфлилик даражаси",
+    "load_time_from": "Юклаш санаси",
+    "notes": "Изоҳлар",
+    "created_at": "Яратилган сана",
+    "updated_at": "Янгиланган сана",
+    "from_country": "Жўнатилган мамлакат",
+    "from_region": "Жўнатилган ҳудуд",
+    "from_city": "Жўнатилган шаҳар",
+    "to_country": "Манзил мамлакати",
+    "to_region": "Манзил ҳудуди",
+    "to_city": "Манзил шаҳри",
+
+    "_comment_2": "************************************ Bu qism create page uchun ************************************",
+
+    "nds": "ҚҚС",
+    "client_price": "Мижоз нархи",
+    "mode": "Режим",
+    "location_of_departure": "Жўнатувчи манзили",
+    "location_of_destination": "Қабул қилувчи манзили",
+    "country_of_departure": "Жўнатувчи мамлакат",
+    "point_of_departure": "Жўнатувчи шаҳри",
+    "country_of_destination": "Қабул қилувчи мамлакат",
+    "point_of_destination": "Қабул қилувчи шаҳри",
+    "weight_of_cargo": "Юк оғирлиги [кг]",
+    "status_of_cargo": "Юк хавфлими?",
+    "shipment_date": "Юклаш санаси",
+    "unload_date": "Тушириш санаси",
+    "nature_of_cargo": "Юк номи",
+    "payment_condition": "Тўлов тури",
+    "sender_contact": "Жўнатувчи контактлари",
+    "receiver_contact": "Қабул қилувчи (декларант) контактлари",
+    "tr_number": "Юк машина рақами",
+    "carrier_additional": "Қўшимча маълумот",
+    "close": "Ёпиш",
+    "add": "Қўшиш",
+    "edit": "Таҳрирлаш",
+
+    "back": "Сўровларга қайтиш",
+    "cargo_name": "Юк номи",
+    "is_dangerous": "Юк хавфлими?",
+    "hazard_level": "Хавф даражаси",
+    "cargo_weight": "Юк оғирлиги (кг)",
+    "country_departure": "Жўнаш давлати",
+    "region_departure": "Жўнаш вилояти",
+    "city_departure": "Жўнаш шаҳри",
+    "country_destination": "Бориш давлати",
+    "region_destination": "Бориш вилояти",
+    "city_destination": "Бориш шаҳри",
+    "loading_date": "Юклаш санаси",
+    "payment_type": "Тўлов тури",
+
+    "filters" : {
+      "search": "Қидириш",
+      "arrival_time": "Келиш вақти",
+      "departure_time": "Кетиш вақти",
+      "clear_input": "Майдонни тозалаш"
+    },
+    "queriesCard": {
+      "payment_cash": "Пул ўтказмалари",
+      "payment_enumeration": "Нақд",
+      "payment_combined": "Қисман ўтказма",
+      "status_pending": "Кутилмоқда",
+      "status_delivered": "Етказилди",
+      "cargo": "Юк",
+      "payment_type": "Тўлов тури",
+      "client": "Мижоз",
+      "client_price": "Мижоз нархи",
+      "weight": "Оғирлик",
+      "show": "Кўриш",
+      "edit": "Таҳрирлаш",
+      "cancel": "Бекор қилинган",
+      "cancel_reason": "Бекор қилиш сабаби:"
+    },
+
+    "logisticsInterface": {
+      "status": {
+        "label": "СТАТУС",
+        "pending": "Кутилмоқда",
+        "delivered": "Етказилган",
+        "undefined": "Аниқланмаган"
+      },
+      "origin": {
+        "country": "Жўнатиш мамлакати",
+        "region": "Жўнатиш вилояти",
+        "city": "Жўнатиш шаҳри"
+      },
+      "destination": {
+        "country": "Бориш мамлакати",
+        "region": "Бориш вилояти",
+        "city": "Бориш шаҳри"
+      },
+      "client": {
+        "name": "Мижоз номи",
+        "inn": "Мижоз ИНН",
+        "carrier": "Ташувчи номи",
+        "carrierInn": "Ташувчи ИНН"
+      },
+      "transport": {
+        "type": "ТРАНСПОРТ ТИПИ",
+        "volume": "ТРАНСПОРТ ҲАЖМИ",
+        "quantity": "МАШИНАЛАР СОНИ",
+        "weight": "ЮК ВАЗНИ (КГ)"
+      },
+      "additional": {
+        "id": "ID",
+        "dangerLevel": "Хавф даражаси",
+        "mode": "Режим",
+        "loadingDate": "Юклаш санаси",
+        "created": "Яратилган",
+        "updated": "Янгиланган",
+        "paymentType": "Тўлов тури",
+        "cargo": "Юк",
+        "clientPrice": "Мижоз нархи"
+      },
+      "buttons": {
+        "delete": "Ўчириш",
+        "edit": "Таҳрирлаш"
+      }
+    }
+
+  },
+
+  "clients" : {
+    "contracts": "Шартномалар",
+    "back_to_clients": "Мижозларга қайтиш",
+    "history": "Тарих",
+    "delete": "Ўчириш",
+    "columns" : "Устунлар",
+    "clients" : "Мижозлар",
+    "createClients" : "Янги мижоз қўшиш",
+    "editClients" : "Мижозни таҳрирлаш",
+    "send": "Юбориш",
+    "close": "Ёпиш",
+    "add" : "Қўшиш",
+    "search": "Қидириш",
+    "columnsArry" : {
+      "title" : "Компания номи",
+      "phone" : "Телефон"
+    },
+    "profile": {
+      "client_name": "Мижоз исми:",
+      "create_date": "Яратилган сана:",
+      "contract": "Шартнома:",
+      "added_by": "Қўшган:",
+      "phone_number": "Телефон рақами:"
+    },
+    "table": {
+      "id": "ID",
+      "contractNumber": "Шартнома рақами",
+      "contractDate": "Шартнома санаси",
+      "company": "Компания",
+      "inn": "СТИР",
+      "active": "Фаол",
+      "inactive": "Фаол эмас"
+    },
+
+    "inputModalArray": {
+      "company_name": "Фирма номи",
+      "fio": "Ф.И.О",
+      "phone_number": "Телефон",
+      "contract_no": "Шартнома рақами",
+      "director_position": "Раҳбар лавозими",
+      "director": "Директор Ф.И.О",
+      "director_add": "Ф.И.О тўлиқ",
+      "customer": "Юридик номи",
+      "cust_bank_code": "МФО/БИК/SWIFT",
+      "customer_bank": "Банк",
+      "customer_bank_acc": "Ҳисоб рақам",
+      "customer_tin": "Мижоз ИНН",
+      "customer_address": "Юридик манзил",
+      "customer_vat": "ҚҚС коди",
+      "acc_tel": "Бухгалтер телефон рақами",
+      "treaty_code": "Шартнома коди 1С",
+      "customer_oked": "ОКЭД",
+      "created_at": "Шартнома санаси"
+    },
+
+    "exportValues": {
+      "id": "ID",
+      "company_name": "Компания номи",
+      "fio": "Ф.И.О",
+      "phone_number": "Телефон",
+      "contract_no": "Шартнома рақами",
+      "director_position": "Директор лавозими",
+      "director": "Директор",
+      "director_add": "Директор манзили",
+      "customer": "Мижоз",
+      "cust_bank_code": "Мижоз банк коди",
+      "customer_bank": "Мижоз банки",
+      "customer_bank_acc": "Мижоз банк ҳисобрақами",
+      "customer_tin": "Мижоз ИНН",
+      "customer_address": "Мижоз манзили",
+      "customer_vat": "Мижоз ҚҚС",
+      "acc_tel": "Бухгалтер телефони",
+      "customer_oked": "Мижоз ОКЭД",
+      "treaty_code": "Шартнома коди",
+      "created_at": "Яратилган сана",
+      "updated_at": "Янгиланган сана"
+    }
+  },
+
+  "drivers": {
+    "driversForm": {
+      "back": "Орақага",
+      "addTitle": "Ҳайдовчи қўшиш",
+      "editTitle": "Ҳайдовчини таҳрирлаш",
+      "fullName": "Ф.И.Ш.",
+      "phoneNumber": "Телефон рақами",
+      "addPhone": "Телефон қўшиш",
+      "brand": "Автомобил маркаси",
+      "width": "Автомобил кенглиги (м)",
+      "height": "Автомобил баландлиги (м)",
+      "length": "Автомобил узунлиги (м)",
+      "capacity": "Автомобил сиғими (м³)",
+      "carrying": "Юк кўтариш қобилияти",
+      "condition": {
+        "label": "Автомобил ҳолати",
+        "new": "Янги",
+        "good": "Яхши",
+        "satisfactory": "Қониқарли"
+      },
+      "type": "Автомобил тури",
+      "trailerNumber": "Тиркама рақами",
+      "number": "Давлат рақами",
+      "addFile": "Файл қўшиш",
+      "close": "Ёпиш",
+      "addBtn": "Қўшиш",
+      "adding": "Қўшилмоқда..."
+    },
+
+    "profile": {
+      "name": "Ҳайдовчи исми",
+      "createDate": "Яратилган сана",
+      "endDate": "Таҳрирланган сана",
+      "brand": "Автомобил маркаси",
+      "carrying": "Юк кўтариш қобилияти",
+      "phoneNumbers": "Телефон рақамлари",
+      "texPassport": "Тех паспорт",
+      "number": "Давлат рақами",
+      "trailerNumber": "Тиркама рақами",
+      "height": "Баландлик",
+      "capacity": "Сиғим",
+      "length": "Узунлик",
+      "width": "Кенглик"
+    },
+    "drivers": "Ҳайдовчилар",
+
+    "columns": {
+      "name": "Исми",
+      "phone": "Телефон",
+      "car_number": "Машина рақами",
+      "trailer_number": "Ярим прицепа рақами"
+    },
+
+    "exportValues": {
+      "fio": "Ҳайдовчи Ф.И.О",
+      "phone_number": "Телефон",
+      "number": "Давлат рақами",
+      "trailer_number": "Тиркама рақами",
+      "brand": "Марка",
+      "length": "Узунлиги (м)",
+      "width": "Эни (м)",
+      "height": "Бalandлиги (м)",
+      "capacity": "Сиғими",
+      "carrying": "Юк кўтариш қуввати (т)",
+      "condition": "Ҳолати",
+      "type": "ТС тури",
+      "created_by": "Ҳайдовчини қўшган",
+      "created_at": "Қўшилган сана"
+    }
+  },
+
+  "employees" : {
+    "employees" : "Ходимлар",
+    "createEmployees": "Ходим қўшиш",
+    "editEmployees": "Ходимни таҳрирлаш",
+
+
+    "inputModalArray": {
+      "user_type": "Фойдаланувчи тури",
+      "full_name": "Тўлиқ исм",
+      "phone_number": "Телефон рақами",
+      "tg_user_id": "Фойдаланувчи ID (Telegram)",
+      "tg_nick_name": "Telegram тахаллус",
+      "email": "Электрон почта",
+      "password": "Парол",
+      "code": "Код",
+      "tin": "ИНН"
+    },
+
+    "exportValues": {
+      "id": "ID",
+      "name": "Фойдаланувчи исми",
+      "email": "Электрон почта",
+      "tin": "ИНН",
+      "phone_number": "Телефон рақами",
+      "tg_user_id": "Telegram ID",
+      "tg_nick_name": "Telegram ник",
+      "code": "Ҳодим коди",
+      "avatar": "Аватар",
+      "status": "Ҳолати (1 - Актив, -1 - Актив эмас)",
+      "created_by": "Ҳодимни қўшган шахс",
+      "created_at": "Яратилган сана"
+    },
+    "table": {
+      "avatar": "Аватар",
+      "full_name": "Ф.И.О",
+      "phone_number": "Телефон рақами",
+      "tin": "ИНН",
+      "created_at": "Яратилган сана",
+      "status": "Ҳолати",
+      "action": "Амал"
+    }
+  },
+
+  "history": {
+    "title": "Ўзгаришлар тарихи",
+    "record": "Ёзув",
+    "by": "томонидан",
+    "actions": {
+      "created": "яратилди",
+      "updated": "янгиланди",
+      "deleted": "ўчирилди"
+    },
+    "showDetails": "Тафсилотларни кўриш",
+    "hideDetails": "Тафсилотларни яшириш",
+    "initialValues": "Бошланғич қийматлар сақланди.",
+    "recordDeleted": "Ёзув ўчирилди.",
+    "notFound": "Топилмади!"
   }
+
+
 }

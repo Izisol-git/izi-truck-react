@@ -17,13 +17,11 @@
     "totalClients": "Jami mijozlar",
     "totalEmployees": "Jami xodimlar",
     "inLastWeek": "oxirgi haftada",
-
     "title": "Boshqaruv paneli",
     "orders": "📦 Buyurtmalar",
     "truckLoad": "🚛 Yuk mashinalari yuklanishi (%)",
     "recentOrders": "📋 So‘nggi buyurtmalar",
     "driversStatus": "👷‍♂️ Haydovchilar holati",
-
     "table": {
       "id": "ID",
       "client": "Mijoz",
@@ -32,16 +30,445 @@
       "inProgress": "Yetkazilmoqda",
       "closed": "Yopilgan"
     },
-
     "drivers": {
       "busy": "Band",
       "waiting": "Kutmoqda",
       "vacation": "Ta’til"
     },
-
     "dateFrom": "Boshlanish sanasi",
     "dateTo": "Tugash sanasi",
     "actionsClear": "Tozalash",
-    "actionsSearch": "Qidirish"
+    "actionsSearch": "Qidirish",
+    "full": "To‘liq",
+    "half": "Yarim",
+    "empty": "Bo‘sh",
+    "truckLoadChart": "Yuk hajmi (%)"
+  },
+  "export": "Yuklab olish",
+  "export_to_excel": "Excelga yuklab olish",
+  "ordersTranslation": {
+    "order_id": "Buyurtma raqami",
+    "order_date": "Buyurtma sanasi",
+    "point_of_departure": "Jo‘natilish punkti",
+    "point_of_destination": "Manzil punkti",
+    "country_of_departure": "Jo‘natilgan mamlakat",
+    "country_of_destination": "Qabul qiluvchi mamlakat",
+    "shipment_type": "Tashish turi",
+    "transport_value": "TS hajmi",
+    "customs_clearance1": "Bojxonadan o‘tkazish joyi",
+    "weight_of_cargo": "Yuk og‘irligi",
+    "shipment_date": "Yuklash sanasi",
+    "nature_of_cargo": "Yuk nomi",
+    "car_number": "Avtomobil raqami",
+    "carp_number": "Yarim tirkama raqami",
+    "carrier_contract_no": "Tashuvchi shartnoma raqami",
+    "carrier_company": "Tashuvchi kompaniya",
+    "carrier_tin": "Tashuvchining INN",
+    "carrier_contract_date": "Tashuvchi shartnoma sanasi",
+    "act_date": "Akt sanasi",
+    "carrier_price_transfer": "To‘lov summasi (so‘mda)",
+    "mode": "Rejim",
+    "ordersCreate" : "Yangi buyurtma yaratish",
+    "edit_order": "Buyurtmani tahrirlash",
+    "cancel": "Bekor qilish",
+    "driver_assigned": "Haydovchi tayinlangan",
+    "completed": "Yakunlangan",
+    "order_details": "Buyurtma tafsilotlari",
+    "back_to_orders" : "Buyurtmalarga qaytish",
+    "close": "Yopish",
+    "map" : "Xarita",
+    "excel": "excel",
+    "add": "Qo‘shish",
+    "suggest_add": "Taklif kiritish",
+    "suggest_view": "Taklifni ko‘rish",
+    "suggests_view": "Takliflarni ko‘rish",
+    "search_show": "Qidiruvni ko‘rsatish",
+    "all": "Hammasi",
+    "has_act": "Akt bor",
+    "no_act": "Akt yo‘q",
+    "ordersCard": {
+      "order_info": "Buyurtma ma’lumotlari",
+      "act_date": "Akt sanasi:",
+      "order_source": "Buyurtma manbai:",
+      "status": "Holati:",
+      "car_number": "Mashina raqami:",
+      "details": "Batafsil",
+      "route_info": "Yoʻnalish maʼlumotlari",
+      "loading": "YUKLASH",
+      "unloading": "TUSHIRISH",
+      "timeline": "Vaqt jadvali",
+      "start": "Boshlanish",
+      "end": "Tugash",
+      "loading_date": "Yuklash sanasi",
+      "unloading_date": "Tushirish sanasi",
+      "payment": "To‘lov",
+      "edit": "Tahrirlash",
+      "driver_assigned": "Haydovchi tayinlangan",
+      "unknown": "Noma'lum"
+    },
+    "filters": {
+      "order_id_or_cargo": "Order ID yoki Yuk nomi",
+      "select_company": "Kompaniyani tanlang",
+      "arrival_time": "Kelish vaqti",
+      "departure_time": "Ketish vaqti",
+      "clear_input": "Maydonlarni tozalash",
+      "close": "Yopish",
+      "search": "Qidirish"
+    }
+
+  },
+  "didoxTranslation": {
+    "back": "Buyurtmalar",
+    "title": "DIDOX",
+    "has_lgota": "QQS bo‘yicha imtiyoz mavjud",
+    "has_vat": "QQS mavjud",
+    "nds12": "QQS 12% mavjud",
+    "factura_type": "Hisob-faktura turi",
+    "ikpu": "IKPU",
+    "single_sided_type": "Bir tomonlama tur",
+    "lgota_id": "Imtiyoz ID",
+    "sending": "Yuborilmoqda...",
+    "send": "Yuborish",
+    "sent_documents": "Yuborilgan hujjatlar"
+  },
+  "queriesTranslation": {
+
+    "_comment": "*************************** Bu qism excel uchun  *******************************",
+
+    "id": "ID",
+    "title": "Ariza nomi",
+    "client": "Mijoz",
+    "client_inn": "Mijoz INN",
+    "transport_type": "Transport turi",
+    "transport_volume": "Transport hajmi",
+    "count_of_cars": "Mashinalar soni",
+    "weight": "Og‘irlik (kg)",
+    "payment_method": "To‘lov usuli",
+    "client_enumeration_price": "Mijoz narxi (o‘tkazma)",
+    "client_enumeration_currency": "Mijoz narxi valyutasi",
+    "mode": "Rejim",
+    "degree_of_danger": "Xavflilik darajasi",
+    "load_time_from": "Yuklash sanasi",
+    "notes": "Izohlar",
+    "created_at": "Yaratilgan sana",
+    "updated_at": "Yangilangan sana",
+    "from_country": "Jo‘natilgan mamlakat",
+    "from_region": "Jo‘natilgan hudud",
+    "from_city": "Jo‘natilgan shahar",
+    "to_country": "Manzil mamlakati",
+    "to_region": "Manzil hududi",
+    "to_city": "Manzil shahri",
+
+    "_comment_2": "****************************** Bu qism create page uchun ************************************",
+
+    "nds": "QQS",
+    "client_price": "Mijoz narxi",
+    "location_of_departure": "Jo'natuvchi manzili",
+    "location_of_destination": "Qabul qiluvchi manzili",
+    "country_of_departure": "Jo'natuvchi mamlakat",
+    "point_of_departure": "Jo'natuvchi shahri",
+    "country_of_destination": "Qabul qiluvchi mamlakat",
+    "point_of_destination": "Qabul qiluvchi shahri",
+    "weight_of_cargo": "Yuk og'irligi [kg]",
+    "status_of_cargo": "Yuk xavflimi?",
+    "shipment_date": "Yuklash sanasi",
+    "unload_date": "Tushirish sanasi",
+    "nature_of_cargo": "Yuk nomi",
+    "payment_condition": "To'lov turi",
+    "sender_contact": "Jo'natuvchi kontaktlari",
+    "receiver_contact": "Qabul qiluvchi (deklarant) kontaktlari",
+    "tr_number": "Yuk mashina raqami",
+    "carrier_additional": "Qo‘shimcha ma’lumot",
+    "close": "Yopish",
+    "add": "Qo‘shish",
+    "edit": "Tahrirlash",
+
+    "back": "So'rovlarga qaytish",
+    "cargo_name": "Yuk nomi",
+    "is_dangerous": "Yuk xavflimi?",
+    "hazard_level": "Xavf darajasi",
+    "cargo_weight": "Yuk og'irligi (kg)",
+    "country_departure": "Jo'nash davlati",
+    "region_departure": "Jo'nash viloyati",
+    "city_departure": "Jo'nash shahri",
+    "country_destination": "Borish davlati",
+    "region_destination": "Borish viloyati",
+    "city_destination": "Borish shahri",
+    "loading_date": "Yuklash sanasi",
+    "payment_type": "To'lov turi",
+
+    "filters" : {
+      "search": "Qidirish",
+      "arrival_time": "Kelish vaqti",
+      "departure_time": "Ketish vaqti",
+      "clear_input": "Maydonni tozalash"
+    },
+    "queriesCard": {
+      "payment_cash": "Pul o‘tkazmalari",
+      "payment_enumeration": "Naqd",
+      "payment_combined": "Qisman o‘tkazma",
+      "status_pending": "Kutilmoqda",
+      "status_delivered": "Yetkazildi",
+      "cargo": "Yuk",
+      "payment_type": "To‘lov turi",
+      "client": "Mijoz",
+      "client_price": "Mijoz narxi",
+      "weight": "Og‘irlik",
+      "show": "Ko‘rish",
+      "edit": "Tahrirlash",
+      "cancel": "Bekor qilingan",
+      "cancel_reason": "Bekor qilish sababi:"
+    },
+
+    "logisticsInterface": {
+      "status": {
+        "label": "STATUS",
+        "pending": "Kutilmoqda",
+        "delivered": "Yetkazildi",
+        "undefined": "Aniqlanmagan"
+      },
+      "origin": {
+        "country": "Jo‘natish mamlakati",
+        "region": "Jo‘natish viloyati",
+        "city": "Jo‘natish shahri"
+      },
+      "destination": {
+        "country": "Bорish mamlakati",
+        "region": "Bорish viloyati",
+        "city": "Bорish shahri"
+      },
+      "client": {
+        "name": "Mijoz nomi",
+        "inn": "Mijoz INN",
+        "carrier": "Tashuvchi nomi",
+        "carrierInn": "Tashuvchi INN"
+      },
+      "transport": {
+        "type": "TRANSPORT TIPI",
+        "volume": "TRANSPORT HAJMI",
+        "quantity": "MASHINALAR SONI",
+        "weight": "YUK VAZNI (KG)"
+      },
+      "additional": {
+        "id": "ID",
+        "dangerLevel": "Xavf darajasi",
+        "mode": "Rejim",
+        "loadingDate": "Yuklash sanasi",
+        "created": "Yaratilgan",
+        "updated": "Yangilangan",
+        "paymentType": "To‘lov turi",
+        "cargo": "Yuk",
+        "clientPrice": "Mijoz narxi"
+      },
+      "buttons": {
+        "delete": "O‘chirish",
+        "edit": "Tahrirlash"
+      }
+    }
+
+  },
+  "clients" : {
+    "contracts": "Shartnomalar",
+    "back_to_clients": "Mijozlarga qaytish",
+    "history": "Tarix",
+    "delete": "O‘chirish",
+    "columns" : "Ustunlar",
+    "clients" : "Mijozlar",
+    "createClients" : "Yangi mijoz qo‘shish",
+    "editClients" : "Mijozni tahrirlash",
+    "send": "Yuborish",
+    "close": "Yopish",
+    "add" : "Qo'shish",
+    "search": "Qidirish",
+    "columnsArry" : {
+      "title" : "Kompaniya nomi",
+      "phone" : "Telefon"
+    },
+    "profile": {
+      "client_name": "Mijoz ismi:",
+      "create_date": "Yaratilgan sana:",
+      "contract": "Shartnoma:",
+      "added_by": "Qo‘shgan:",
+      "phone_number": "Telefon raqami:"
+    },
+    "table": {
+      "id": "ID",
+      "contractNumber": "Shartnoma raqami",
+      "contractDate": "Shartnoma sanasi",
+      "company": "Kompaniya",
+      "inn": "STIR",
+      "active": "Faol",
+      "inactive": "Faol emas"
+    },
+
+    "inputModalArray": {
+      "company_name": "Firma nomi",
+      "fio": "F.I.O",
+      "phone_number": "Telefon",
+      "contract_no": "Shartnoma raqami",
+      "director_position": "Rahbar lavozimi",
+      "director": "Direktor F.I.O",
+      "director_add": "F.I.O to‘liq",
+      "customer": "Yuridik nomi",
+      "cust_bank_code": "MFO/BIK/SWIFT",
+      "customer_bank": "Bank",
+      "customer_bank_acc": "Hisob raqam",
+      "customer_tin": "Mijoz INN",
+      "customer_address": "Yuridik manzil",
+      "customer_vat": "QQS kodi",
+      "acc_tel": "Buxgalter telefon raqami",
+      "treaty_code": "Shartnoma kodi 1C",
+      "customer_oked": "OKED",
+      "created_at": "Shartnoma sanasi"
+    },
+
+    "exportValues": {
+      "id": "ID",
+      "company_name": "Kompaniya nomi",
+      "fio": "F.I.O",
+      "phone_number": "Telefon",
+      "contract_no": "Shartnoma raqami",
+      "director_position": "Direktor lavozimi",
+      "director": "Direktor",
+      "director_add": "Direktor manzili",
+      "customer": "Mijoz",
+      "cust_bank_code": "Mijoz bank kodi",
+      "customer_bank": "Mijoz banki",
+      "customer_bank_acc": "Mijoz bank hisobraqami",
+      "customer_tin": "Mijoz INN",
+      "customer_address": "Mijoz manzili",
+      "customer_vat": "Mijoz QQS",
+      "acc_tel": "Buxgalter telefoni",
+      "customer_oked": "Mijoz OKED",
+      "treaty_code": "Shartnoma kodi",
+      "created_at": "Yaratilgan sana",
+      "updated_at": "Yangilangan sana"
+    }
+  },
+  "drivers": {
+    "driversForm": {
+      "back": "Orqaga",
+      "addTitle": "Haydovchi qo‘shish",
+      "editTitle": "Haydovchini tahrirlash",
+      "fullName": "F.I.Sh.",
+      "phoneNumber": "Telefon raqami",
+      "addPhone": "Telefon qo‘shish",
+      "brand": "Avtomobil markasi",
+      "width": "Avtomobil kengligi (metr)",
+      "height": "Avtomobil balandligi (metr)",
+      "length": "Avtomobil uzunligi (metr)",
+      "capacity": "Avtomobil sig‘imi (m³)",
+      "carrying": "Yuk ko‘tarish qobiliyati",
+      "condition": {
+        "label": "Avtomobil holati",
+        "new": "Yangi",
+        "good": "Yaxshi",
+        "satisfactory": "Qoniqarli"
+      },
+      "type": "Avtomobil turi",
+      "trailerNumber": "Tirkama raqami",
+      "number": "Davlat raqami",
+      "addFile": "Fayl qo‘shish",
+      "close": "Yopish",
+      "addBtn": "Qo‘shish",
+      "adding": "Qo‘shilmoqda..."
+    },
+
+    "profile": {
+      "name": "Haydovchi ismi",
+      "createDate": "Yaratilgan sana",
+      "endDate": "Tahrirlangan sana",
+      "brand": "Avtomobil markasi",
+      "carrying": "Yuk ko‘tarish qobiliyati",
+      "phoneNumbers": "Telefon raqamlari",
+      "texPassport": "Tex pasport",
+      "number": "Davlat raqami",
+      "trailerNumber": "Tirkama raqami",
+      "height": "Balandlik",
+      "capacity": "Sig‘im",
+      "length": "Uzunlik",
+      "width": "Kenglik"
+    },
+    "drivers": "Haydovchilar",
+    "columns": {
+      "name": "Ism",
+      "phone": "Telefon",
+      "car_number": "Mashina raqami",
+      "trailer_number": "Yarim pritsepa raqami"
+    },
+    "exportValues": {
+      "fio": "Haydovchi F.I.O",
+      "phone_number": "Telefon",
+      "number": "Davlat raqami",
+      "trailer_number": "Tirkama raqami",
+      "brand": "Marka",
+      "length": "Uzunligi (m)",
+      "width": "Eni (m)",
+      "height": "Balandligi (m)",
+      "capacity": "Sig‘imi",
+      "carrying": "Yuk ko‘tarish quvvati (t)",
+      "condition": "Holati",
+      "type": "TS turi",
+      "created_by": "Haydovchini qo‘shgan",
+      "created_at": "Qo‘shilgan sana"
+    }
+  },
+  "employees" : {
+    "employees" : "Xodimlar",
+    "createEmployees": "Xodim qo'shish",
+    "editEmployees": "Xodimni tahrirlash",
+
+
+    "inputModalArray": {
+      "user_type": "Foydalanuvchi turi",
+      "full_name": "To‘liq ism",
+      "phone_number": "Telefon raqami",
+      "tg_user_id": "Foydalanuvchi ID (Telegram)",
+      "tg_nick_name": "Telegram taxallus",
+      "email": "Elektron pochta",
+      "password": "Parol",
+      "code": "Kod",
+      "tin": "INN"
+    },
+
+    "exportValues": {
+      "id": "ID",
+      "name": "Foydalanuvchi ismi",
+      "email": "Elektron pochta",
+      "tin": "INN",
+      "phone_number": "Telefon raqam",
+      "tg_user_id": "Telegram ID",
+      "tg_nick_name": "Telegram nick",
+      "code": "Hodim kodi",
+      "avatar": "Avatar",
+      "status": "Holati (1-Aktiv, -1-Aktiv emas)",
+      "created_by": "Hodimni qo‘shgan shaxs",
+      "created_at": "Yaratilgan sana"
+    },
+    "table": {
+      "avatar": "Avatar",
+      "full_name": "F.I.O",
+      "phone_number": "Telefon raqam",
+      "tin": "INN",
+      "created_at": "Yaratilgan sana",
+      "status": "Holati",
+      "action": "Amal"
+    }
+  },
+  "history": {
+    "title": "O'zgarishlar tarixi",
+    "record": "Yozuv",
+    "by": "tomonidan",
+    "actions": {
+      "created": "yaratildi",
+      "updated": "yangilandi",
+      "deleted": "o'chirildi"
+    },
+    "showDetails": "Tafsilotlarni ko‘rish",
+    "hideDetails": "Tafsilotlarni yashirish",
+    "initialValues": "Boshlang‘ich qiymatlar saqlandi.",
+    "recordDeleted": "Yozuv o‘chirildi.",
+    "notFound": "Topilmadi!"
   }
+
 }

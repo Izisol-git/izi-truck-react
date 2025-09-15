@@ -44,7 +44,6 @@ function Queries() {
         }
     }
 
-
     // console.log(queries?.data)
 
     useEffect(() => {
@@ -55,31 +54,32 @@ function Queries() {
 
 
     const exportValues = [
-        {id: "id", value: "ID"},
-        {id: "title", value: "Название заявки"},
-        {id: "client", value: "Клиент"},
-        {id: "client_inn", value: "ИНН клиента"},
-        {id: "transport_type", value: "Вид транспорта"},
-        {id: "transport_volume", value: "Объем транспорта"},
-        {id: "count_of_cars", value: "Количество машин"},
-        {id: "weight", value: "Вес (кг)"},
-        {id: "payment_method", value: "Метод оплаты"},
-        {id: "client_enumeration_price", value: "Цена клиента (перечисление)"},
-        {id: "client_enumeration_currency", value: "Валюта цены клиента"},
-        {id: "mode", value: "Режим (для рефрижератора)"},
-        {id: "degree_of_danger", value: "Степень опасности"},
-        {id: "load_time_from", value: "Дата загрузки"},
-        {id: "notes", value: "Примечания"},
-        {id: "status_of_cargo", value: "Статус груза"},
-        {id: "created_at", value: "Дата создания"},
-        {id: "updated_at", value: "Дата обновления"},
-        {id: "from_country", value: "Страна отправления"},
-        {id: "from_region", value: "Регион отправления"},
-        {id: "from_city", value: "Город отправления"},
-        {id: "to_country", value: "Страна назначения"},
-        {id: "to_region", value: "Регион назначения"},
-        {id: "to_city", value: "Город назначения"},
+        { id: "id", value: "queriesTranslation.id" },
+        { id: "title", value: "queriesTranslation.title" },
+        { id: "client", value: "queriesTranslation.client" },
+        { id: "client_inn", value: "queriesTranslation.client_inn" },
+        { id: "transport_type", value: "queriesTranslation.transport_type" },
+        { id: "transport_volume", value: "queriesTranslation.transport_volume" },
+        { id: "count_of_cars", value: "queriesTranslation.count_of_cars" },
+        { id: "weight", value: "queriesTranslation.weight" },
+        { id: "payment_method", value: "queriesTranslation.payment_method" },
+        { id: "client_enumeration_price", value: "queriesTranslation.client_enumeration_price" },
+        { id: "client_enumeration_currency", value: "queriesTranslation.client_enumeration_currency" },
+        { id: "mode", value: "queriesTranslation.mode" },
+        { id: "degree_of_danger", value: "queriesTranslation.degree_of_danger" },
+        { id: "load_time_from", value: "queriesTranslation.load_time_from" },
+        { id: "notes", value: "queriesTranslation.notes" },
+        { id: "status_of_cargo", value: "queriesTranslation.status_of_cargo" },
+        { id: "created_at", value: "queriesTranslation.created_at" },
+        { id: "updated_at", value: "queriesTranslation.updated_at" },
+        { id: "from_country", value: "queriesTranslation.from_country" },
+        { id: "from_region", value: "queriesTranslation.from_region" },
+        { id: "from_city", value: "queriesTranslation.from_city" },
+        { id: "to_country", value: "queriesTranslation.to_country" },
+        { id: "to_region", value: "queriesTranslation.to_region" },
+        { id: "to_city", value: "queriesTranslation.to_city" },
     ];
+
 
 
     return (
@@ -95,12 +95,12 @@ function Queries() {
                             <InputMUI
                                 value={filters?.search}
                                 onChange={(e) => setFilters({...filters, search: e.target.value})}
-                                variant={'outlined'} label={'Search'}/>
+                                variant={'outlined'}   label={t("queriesTranslation.filters.search")}/>
                         </div>
 
                         <div className={'relative w-[20%]'}>
                             <MyCalendar
-                                label={'Kelish vaqti'}
+                                label={t("queriesTranslation.filters.arrival_time")}
                                 value={filters?.from}
                                 onChange={(val) => setFilters({...filters, from: val})}
                             />
@@ -108,7 +108,7 @@ function Queries() {
                         </div>
                         <div className={'relative w-[20%]'}>
                             <MyCalendar
-                                label={'Ketish vaqti'}
+                                label={t("queriesTranslation.filters.departure_time")}
                                 value={filters?.to}
                                 onChange={(val) => setFilters({...filters, to: val})}
                             />
@@ -129,18 +129,18 @@ function Queries() {
                                         }
                                     })
                                 }}
-                                className="w-36 relative overflow-hidden rounded font-semibold bg-transparent border-2 text-blue border-blue   transition-all duration-300 ease-in-out  hover:text-white hover:bg-blue py-[6px] px-3 dark:hover:bg-navBgHover dark:border-darkText dark:text-darkText"
+                                className="relative overflow-hidden rounded font-semibold bg-transparent border-2 text-blue border-blue   transition-all duration-300 ease-in-out  hover:text-white hover:bg-blue py-[6px] px-3 dark:hover:bg-navBgHover dark:border-darkText dark:text-darkText"
                             >
-                                Clear input
+                                {t("queriesTranslation.filters.clear_input")}
 
                             </button>
                             <button
                                 onClick={() => getQueries(filters, pageqq)}
 
-                                className="w-36 relative overflow-hidden rounded font-semibold bg-transparent border-2 text-blue border-blue transition-all duration-300 ease-in-out  hover:text-white hover:bg-blue py-[6px] px-3 dark:hover:bg-navBgHover dark:border-darkText dark:text-darkText"
+                                className="  relative overflow-hidden rounded font-semibold bg-transparent border-2 text-blue border-blue transition-all duration-300 ease-in-out  hover:text-white hover:bg-blue py-[6px] px-3 dark:hover:bg-navBgHover dark:border-darkText dark:text-darkText"
                             >
                                 <i className="fa-solid fa-magnifying-glass mr-2"></i>
-                                Search
+                                {t("queriesTranslation.filters.search")}
 
                             </button>
                         </div>
@@ -160,7 +160,7 @@ function Queries() {
                         <button
                             onClick={() => navigate("/queries/create")}
                             className={'flex items-center py-2 px-3 bg-blue text-white rounded hover:ring-2 ring-blue outline-none dark:bg-btnBgDark'}>
-                            <i className={'fas fa-plus mr-2'}></i>Добавить
+                            <i className={'fas fa-plus mr-2'}></i>{t('queriesTranslation.add')}
                         </button>
                     </div>
 

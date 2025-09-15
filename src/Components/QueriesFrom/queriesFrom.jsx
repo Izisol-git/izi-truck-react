@@ -8,14 +8,16 @@ import {
     GetQueriesId,
     updateQueries
 } from "../../features/Queries/queriesThunks.js";
-import {Button, CurrencyInput, InputMUI, MyCalendar, SelectMUI} from "../index.js";
-import {TextareaAutosize} from "@mui/material";
+import { CurrencyInput, InputMUI, MyCalendar, SelectMUI} from "../index.js";
+import {Button, TextareaAutosize} from "@mui/material";
+import {useTranslation} from "react-i18next";
 
 function QueriesFrom({mode}) {
     const {id} = useParams();
     const {loading} = useSelector((state) => state.queries);
     const navigate = useNavigate();
     const dispatch = useDispatch();
+    const {t} = useTranslation();
     const [currency, setCurrency] = useState('2');
     const [errors, setErrors] = useState({});
     const [formData, setFormData] = useState({
@@ -199,8 +201,21 @@ function QueriesFrom({mode}) {
                 <div className={'w-[90%] bg-white px-4  mx-auto py-5 rounded-md shadow dark:bg-darkBgTwo'}>
                     <div className={'h-[40px] gap-4 relative text-center center  w-full   mb-10'}>
                         <div className={'w-max  absolute top-0 left-0'} onClick={() => navigate(`/queries`)}>
-                            <Button color={'dark:bg-btnBgDark'} icon={<i className="fa-solid fa-arrow-left"></i>}
-                                    value={'Queries'}/>
+                            {/*<Button color={'dark:bg-btnBgDark'} icon={<i className="fa-solid fa-arrow-left"></i>}*/}
+                            {/*        value={'Queries'}/>*/}
+                            <Button
+                                onClick={() => navigate(`/queries`)}
+                                sx={{
+                                    background : '#1D2D5B',
+                                    '.dark &':{
+                                        background : '#2B4764',
+                                    }
+                                }}
+                                color={'info'}
+                                variant={'contained'}>
+                                <i className="fa-solid fa-right-from-bracket mr-2"></i>
+                                {t('queriesTranslation.back')}
+                            </Button>
                         </div>
                         {/*<p className={'text-blue font-bold text-xl dark:text-darkText'}>Byurtmani Ko'rish</p>*/}
                     </div>
@@ -217,8 +232,8 @@ function QueriesFrom({mode}) {
                                 }}
                                 options={allSelect?.clients || []}
                                 variant={'outlined'}
-                                label={'Клиент'}
-                                placeholder={'Клиент'}
+                                label={t('queriesTranslation.client')}
+                                placeholder={t('queriesTranslation.client')}
                             />
                         </div>
                         <div className={"w-full"}>
@@ -229,7 +244,7 @@ function QueriesFrom({mode}) {
                                 onChange={(e) =>
                                     setFormData({...formData, title: e.target.value})
                                 }
-                                variant={'outlined'} label={'Наименование груза'}
+                                variant={'outlined'} label={t('queriesTranslation.cargo_name')}
                             />
                         </div>
                         <div className={"w-full "}>
@@ -244,8 +259,8 @@ function QueriesFrom({mode}) {
                                 }}
                                 options={dangerous || []}
                                 variant={'outlined'}
-                                label={'Опасный ли груз?'}
-                                placeholder={'Опасный ли груз?'}
+                                label={t('queriesTranslation.is_dangerous')}
+                                placeholder={t('queriesTranslation.is_dangerous')}
                             />
                         </div>
                         {
@@ -262,8 +277,8 @@ function QueriesFrom({mode}) {
                                         }}
                                         options={hazardLevel || []}
                                         variant={'outlined'}
-                                        label={'Степень опасности'}
-                                        placeholder={'Степень опасности'}
+                                        label={t('queriesTranslation.hazard_level')}
+                                        placeholder={t('queriesTranslation.hazard_level')}
                                     />
                                 </div>
                                 :
@@ -277,7 +292,7 @@ function QueriesFrom({mode}) {
                                 onChange={(e) =>
                                     setFormData({...formData, weight: e.target.value})
                                 }
-                                variant={'outlined'} label={'Вес груза (кг)'}
+                                variant={'outlined'} label={t('queriesTranslation.cargo_weight')}
                             />
                         </div>
                         <div className={"w-full  "}>
@@ -293,8 +308,8 @@ function QueriesFrom({mode}) {
                                 }}
                                 options={allSelect?.transport_volumes || []}
                                 variant={'outlined'}
-                                label={'Объем транспорта'}
-                                placeholder={'Объем транспорта'}
+                                label={t('queriesTranslation.transport_volume')}
+                                placeholder={t('queriesTranslation.transport_volume')}
 
                             />
                         </div>
@@ -310,8 +325,8 @@ function QueriesFrom({mode}) {
                                 }}
                                 options={allSelect?.transport_types || []}
                                 variant={'outlined'}
-                                label={'Тип транспорта'}
-                                placeholder={'Тип транспорта'}
+                                label={t('queriesTranslation.transport_type')}
+                                placeholder={t('queriesTranslation.transport_type')}
 
                             />
                         </div>
@@ -325,7 +340,7 @@ function QueriesFrom({mode}) {
                                         onChange={(e) =>
                                             setFormData({...formData, mode: e.target.value})
                                         }
-                                        variant={'outlined'} label={'Режим'}
+                                        variant={'outlined'} label={t('queriesTranslation.mode')}
                                     />
                                 </div>
                                 :
@@ -354,8 +369,8 @@ function QueriesFrom({mode}) {
                                 }}
                                 options={allSelect?.countries || []}
                                 variant={'outlined'}
-                                label={'Country of departure'}
-                                placeholder={'Country of departure'}
+                                label={t('queriesTranslation.country_departure')}
+                                placeholder={t('queriesTranslation.country_departure')}
 
                             />
                         </div>
@@ -371,8 +386,8 @@ function QueriesFrom({mode}) {
                                 }}
                                 options={allSelect?.regions_from || []}
                                 variant={'outlined'}
-                                label={'Region of departure'}
-                                placeholder={'Region of departure'}
+                                label={t('queriesTranslation.region_departure')}
+                                placeholder={t('queriesTranslation.region_departure')}
 
                             />
                         </div>
@@ -388,8 +403,8 @@ function QueriesFrom({mode}) {
                                 }}
                                 options={allSelect?.cities_from || []}
                                 variant={'outlined'}
-                                label={'City of departure'}
-                                placeholder={'City of departure'}
+                                label={t('queriesTranslation.city_departure')}
+                                placeholder={t('queriesTranslation.city_departure')}
 
                             />
                         </div>
@@ -405,8 +420,8 @@ function QueriesFrom({mode}) {
                                 }}
                                 options={allSelect?.countries || []}
                                 variant={'outlined'}
-                                label={'Country of destination'}
-                                placeholder={'Country of destination'}
+                                label={t('queriesTranslation.country_destination')}
+                                placeholder={t('queriesTranslation.country_destination')}
 
                             />
                         </div>
@@ -422,8 +437,8 @@ function QueriesFrom({mode}) {
                                 }}
                                 options={allSelect?.regions_to || []}
                                 variant={'outlined'}
-                                label={'Region of destination'}
-                                placeholder={'Region of destination'}
+                                label={t('queriesTranslation.region_destination')}
+                                placeholder={t('queriesTranslation.region_destination')}
 
                             />
                         </div>
@@ -439,8 +454,8 @@ function QueriesFrom({mode}) {
                                 }}
                                 options={allSelect?.cities_to || []}
                                 variant={'outlined'}
-                                label={'City of destination'}
-                                placeholder={'City of destination'}
+                                label={t('queriesTranslation.city_destination')}
+                                placeholder={t('queriesTranslation.city_destination')}
 
                             />
                         </div>
@@ -453,11 +468,12 @@ function QueriesFrom({mode}) {
                         <div className={"w-full "}>
                             <div className={'relative'}>
                                 <MyCalendar
+                                    label={t('queriesTranslation.loading_date')}
                                     errorMassage={errors?.load_time_from}
                                     value={formData?.load_time_from ?? ''} // misol uchun yangi property
                                     onChange={(val) => setFormData({...formData, load_time_from: val})}/>
-                                <p className={`absolute text-[12px] pt-1 px-1 font-medium -top-[14px] left-2   ${formData.load_time_from ? 'text-red-500' : 'text-[#3B82F6]'} dark:text-darkText bg-white dark:bg-darkBgTwo`}>
-                                    Дата погрузки</p>
+                                {/*<p className={`absolute text-[12px] pt-1 px-1 font-medium -top-[14px] left-2   ${formData.load_time_from ? 'text-red-500' : 'text-[#3B82F6]'} dark:text-darkText bg-white dark:bg-darkBgTwo`}>*/}
+                                {/*    Дата погрузки</p>*/}
 
                                 {/*{*/}
                                 {/*    formData.unload_date ?*/}
@@ -477,7 +493,7 @@ function QueriesFrom({mode}) {
                                 onChange={(e) => setFormData({
                                     ...formData,
                                     client_enumeration_price: e.target.value
-                                })} label={'Цена клиента (Переч-е)'}/>
+                                })} label={t('queriesTranslation.client_price')}/>
 
 
                         </div>
@@ -493,15 +509,15 @@ function QueriesFrom({mode}) {
                                 }}
                                 options={typePayment || []}
                                 variant={'outlined'}
-                                label={'Тип оплаты'}
-                                placeholder={'Тип оплаты'}
+                                label={t('queriesTranslation.payment_condition')}
+                                placeholder={t('queriesTranslation.payment_condition')}
 
                             />
                         </div>
                         <div className="w-full col-span-2">
                             <TextareaAutosize
                                 aria-label="empty textarea"
-                                placeholder="Заметки для оперейшн"
+                                placeholder={t('queriesTranslation.carrier_additional')}
                                 // value={suggestionsData?.notes || ""}
                                 // onChange={(e) =>
                                 //     setSuggestionsData((prev) => ({...prev, notes: e.target.value}))
@@ -524,7 +540,7 @@ function QueriesFrom({mode}) {
                                 }}
                                 className="w-36 relative overflow-hidden rounded font-semibold bg-transparent border-2 text-blue border-blue transition-all duration-300 ease-in-out  hover:text-white hover:bg-blue py-2 px-3 dark:hover:bg-navBgHover dark:border-darkText dark:text-darkText"
                             >
-                                Close
+                                {t('queriesTranslation.close')}
                             </button>
                             <button onClick={() => {
 
@@ -537,7 +553,7 @@ function QueriesFrom({mode}) {
                             }}
                                     className="w-36 relative overflow-hidden rounded font-semibold bg-transparent border-2 text-blue border-blue transition-all duration-300 ease-in-out  hover:text-white hover:bg-blue py-2 px-3 dark:hover:bg-navBgHover dark:border-darkText dark:text-darkText"
                             >
-                                Add
+                                {mode === 'edit' ? t('queriesTranslation.edit'): t('queriesTranslation.add')}
                             </button>
                         </div>
                     </div>

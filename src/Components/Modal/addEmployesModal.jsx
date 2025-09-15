@@ -1,14 +1,15 @@
-import React, {useEffect, useState} from 'react';
+import React, {useEffect, useRef, useState} from 'react';
 
-import {SelectMUI, InputMUI, ButtonMUI, RadioGroup} from "../index.js";
+import {SelectMUI, InputMUI, ButtonMUI, RadioGroup, MyCalendar} from "../index.js";
 import {Button} from "@mui/material";
 import {useDispatch, useSelector} from "react-redux";
-import {closeModal} from "../../features/EmployeSModalToggle/employesModalToggle.js";
+import {closeModal, openModal} from "../../features/EmployeSModalToggle/employesModalToggle.js";
 import {addEmployee, EmployeesId, updateEmployee} from "../../features/Employees/employeeThunks.js";
 import {addClient, ClientId, editClient, getClientsSelect} from "../../features/customers/clientsThunks.js";
 import {useParams} from "react-router-dom";
+import {useTranslation} from "react-i18next";
 
-function AddEmployesModal({h1, inputModalArray = [], setEmployeesId   , id}) {
+function AddEmployesModal({h1, inputModalArray = [], setEmployeesId, id}) {
     const [inputVariant, setInputVariant] = useState("outlined");
     const {loadingAddEmployee} = useSelector((state) => state.employees);
     const {loadingClient} = useSelector((state) => state.customers);
@@ -16,6 +17,7 @@ function AddEmployesModal({h1, inputModalArray = [], setEmployeesId   , id}) {
     // const loading = h1 === "Employees" ? loadingAddEmployee : h1 === "Customers" ? loadingClients : h1 === "Drivers" ? loadingDrivers : false;
     const addEditToggle = useSelector((state) => state.employesModal.addEditToggle);
     const dispatch = useDispatch();
+    const ref = useRef();
     const isOpen = useSelector((state) => state.employesModal.isOpen);
     const [selectArry, setSelectArry] = useState();
     const [options, setOptions] = useState();
@@ -24,7 +26,7 @@ function AddEmployesModal({h1, inputModalArray = [], setEmployeesId   , id}) {
     const [errors, setErrors] = useState();
     const {employeesId} = useSelector((state) => state.employesModal);
     const {customersId} = useSelector((state) => state.employesModal);
-
+    const {t} = useTranslation();
     const [inputModal, setInputModal] = useState(
         inputModalArray.reduce((acc, item) => {
             acc[item.post] = item.value;
@@ -36,16 +38,16 @@ function AddEmployesModal({h1, inputModalArray = [], setEmployeesId   , id}) {
 
 
     const getSelect = async () => {
-       try {
-           const res = await dispatch(getClientsSelect()).unwrap()
-           const newArray = res.contracts.map(({customer, id}) => ({title: customer, id}));
-           if (h1 === 'Customers') {
-               setOptions(newArray);
-           }
-           console.log(newArray);
-       }catch(err) {
-           console.error(err);
-       }
+        try {
+            const res = await dispatch(getClientsSelect()).unwrap()
+            const newArray = res.contracts.map(({customer, id}) => ({title: customer, id}));
+            if (h1 === 'Customers') {
+                setOptions(newArray);
+            }
+            console.log(newArray);
+        } catch (err) {
+            console.error(err);
+        }
     }
 
 
@@ -98,9 +100,23 @@ function AddEmployesModal({h1, inputModalArray = [], setEmployeesId   , id}) {
 
             setInputModal({
                 company_name: res?.data?.company_name,
-                customer_id:res?.data?.customer_id,
-                fio:res?.data?.fio,
-                phone_number: res?.data?.phone_number
+                contract_no: res?.data?.contract?.contract_no,
+                fio: res?.data?.fio,
+                phone_number: res?.data?.phone_number,
+                director_position: res?.data?.contract?.director_position,
+                director: res?.data?.contract?.director,
+                director_add: res?.data?.contract?.director_add,
+                customer: res?.data?.contract?.customer,
+                cust_bank_code: res?.data?.contract?.cust_bank_code,
+                customer_bank: res?.data?.contract?.customer_bank,
+                customer_tin: res?.data?.contract?.customer_tin,
+                customer_address: res?.data?.contract?.customer_address,
+                customer_vat: res?.data?.contract?.customer_vat,
+                acc_tel: res?.data?.contract?.acc_tel,
+                treaty_code: res?.data?.contract?.treaty_code,
+                customer_oked: res?.data?.contract?.customer_oked,
+                created_at: res?.data?.contract?.created_at,
+
             });
             // console.log(updatedInputModal);
         } catch (error) {
@@ -112,13 +128,13 @@ function AddEmployesModal({h1, inputModalArray = [], setEmployeesId   , id}) {
         if ((employeesId || id) && addEditToggle === false && h1 === 'Employees') {
             getEmployeesId()
         }
-    }, [employeesId,id, isOpen])
+    }, [employeesId, id, isOpen])
 
     useEffect(() => {
         if ((customersId || id) && addEditToggle === false && h1 === 'Customers') {
             getCustomersId()
         }
-    }, [customersId,id, isOpen])
+    }, [customersId, id, isOpen])
 
     useEffect(() => {
         clearEmployeesModal()
@@ -281,15 +297,51 @@ function AddEmployesModal({h1, inputModalArray = [], setEmployeesId   , id}) {
 
     // console.log(user?.user?.roles[0]?.name);
 
+
+    // Tashqariga bosilganda modalni yopish
+    // useEffect(() => {
+    //     console.log(ref.current)
+    //     const handleClickOutside = (event) => {
+    //         if (ref.current && !ref.current.contains(event.target)) {
+    //             dispatch(closeModal())
+    //             console.log(event.target)
+    //             console.log(ref.current.contains(event.target))
+    //
+    //         }
+    //     };
+    //
+    //     if (isOpen) {
+    //         document.addEventListener("mousedown", handleClickOutside);
+    //     } else {
+    //         document.removeEventListener("mousedown", handleClickOutside);
+    //     }
+    //
+    //     return () => {
+    //         document.removeEventListener("mousedown", handleClickOutside);
+    //     };
+    // }, [isOpen]);
+
+
+    const title = () => {
+        if (h1 === "Customers") {
+            return (addEditToggle ? t('clients.createClients') : t('clients.editClients'));
+        }
+        if (h1 === "Employees") {
+            return (addEditToggle ? t('employees.createEmployees') : t('employees.editEmployees'));
+        }
+    }
+
+
     return (
-        <div>
+        <div ref={ref} className={'bg-blue w-full fixed  inset-1/2 z-10 '}>
             <div
                 // onMouseLeave={()=> dispatch(closeModal())}
-                className={`${isOpen ? "w-1/3 opacity-1" : "w-0 opacity-0"}  fixed overflow-scroll  scrollbar-hide top-0 right-0 bottom-0 h-[100dvh] bg-white shadow-2xl z-10   transition-all duration-300 ease-in-out   flex flex-col justify-between items-start dark:bg-darkBgTwo dark:shadow-none `}>
-                <div className={'w-full px-6'}>
+
+                className={`${isOpen ? "w-1/3 opacity-1" : "w-0 opacity-0"}   fixed overflow-scroll  scrollbar-hide top-0 right-0 bottom-0 h-[100dvh] bg-white shadow-2xl z-10   transition-all duration-300 ease-in-out   flex flex-col justify-between items-start dark:bg-darkBgTwo dark:shadow-none `}>
+                <div className={'w-full px-6 '}>
                     <div
-                        className={"flex items-center justify-between border-b    border-blue p-4 dark:border-darkText"}>
-                        <p className={'text-blue font-bold text-lg dark:text-darkText'}>{addEditToggle ? "Add" : "Edit"} {h1}</p>
+                        className={"flex items-center justify-between border-b     border-blue p-4 dark:border-darkText"}>
+                        <p className={'text-blue font-bold text-lg dark:text-darkText'}> {title()}</p>
                         <div onClick={() => {
                             clearEmployeesModal()
                             dispatch(closeModal())
@@ -307,7 +359,7 @@ function AddEmployesModal({h1, inputModalArray = [], setEmployeesId   , id}) {
                     <div className={"pt-6  items-center justify-between flex flex-wrap gap-y-4"}>
                         {
                             inputModalArray.map((item, index) => (
-                                item.type === "select"  ?
+                                item.type === "select" ?
                                     item.superAdmin ?
                                         user?.user?.roles[0]?.name !== 'super-admin'
                                             ?
@@ -320,8 +372,8 @@ function AddEmployesModal({h1, inputModalArray = [], setEmployeesId   , id}) {
                                                         options={options || []}
                                                         variant={inputVariant}
                                                         addEditToggle={addEditToggle}
-                                                        label={item?.label}
-                                                        placeholder={item.label}
+                                                        label={t(`${item?.label}`)}
+                                                        placeholder={t(`${item?.label}`)}
                                                         value={
                                                             addEditToggle
                                                                 ? inputModal.type
@@ -335,45 +387,61 @@ function AddEmployesModal({h1, inputModalArray = [], setEmployeesId   , id}) {
                                                     />
                                                 </div>
                                             )
-                                    :
-                                    (
-                                        <div key={index} className="w-full">
+                                        :
+                                        (
+                                            <div key={index} className="w-full">
                                                 <SelectMUI
                                                     errorMassage={errors?.[item.post]}
                                                     options={options || []}
                                                     variant={inputVariant}
                                                     addEditToggle={addEditToggle}
-                                                    label={item?.label}
-                                                    placeholder={item.label}
+                                                    label={t(`${item?.label}`)}
+                                                    placeholder={t(`${item?.label}`)}
                                                     value={
                                                         !addEditToggle
                                                             // ? inputModal.type
-                                                                ? options?.find(opt => String(opt.id) === String(inputModal?.customer_id)) || null
-                                                                // : null
+                                                            ? options?.find(opt => String(opt.id) === String(inputModal?.customer_id)) || null
+                                                            // : null
                                                             : inputModal?.customer_id || null
                                                     }
 
                                                     onChange={(newValue) =>
-                                                       addEditToggle ? setInputModal({...inputModal,  customer_id: newValue ?? null})
-                                                        :
-                                                        setInputModal({...inputModal,  customer_id: newValue.id ?? null})
+                                                        addEditToggle ? setInputModal({
+                                                                ...inputModal,
+                                                                customer_id: newValue ?? null
+                                                            })
+                                                            :
+                                                            setInputModal({
+                                                                ...inputModal,
+                                                                customer_id: newValue.id ?? null
+                                                            })
 
 
                                                     }
                                                 />
                                             </div>
-                                    )
-                                    : (
-                                    <div key={index} className="w-[50%] flex px-2">
-                                        <InputMUI
-                                            errorMassage={errors?.[item.post]}
-                                            onChange={(e) => inputvalue(e, item.post)}
-                                            variant={inputVariant}
-                                            label={item.label}
-                                            value={inputModal[item.post] ?? ""}
-                                        />
-                                    </div>
-                                )
+                                        )
+                                    : item.type === "text" || item.type === "password" || item.type === 'email' ? (
+                                            <div key={index} className="w-[50%] flex px-2">
+                                                <InputMUI
+                                                    errorMassage={errors?.[item.post]}
+                                                    onChange={(e) => inputvalue(e, item.post)}
+                                                    variant={inputVariant}
+                                                    label={t(`${item?.label}`)}
+                                                    value={inputModal[item.post] ?? ""}
+                                                />
+                                            </div>
+                                        )
+                                        :
+                                        item.type === "date" ? (
+                                                <MyCalendar
+                                                    label={t(`${item?.label}`)}
+                                                    value={inputModal[item.post]}
+                                                    onChange={(val) => setInputModal({...inputModal, created_at: val})}
+                                                />
+                                            )
+                                            : ""
+
                             ))
                         }
 
@@ -407,7 +475,7 @@ function AddEmployesModal({h1, inputModalArray = [], setEmployeesId   , id}) {
                                     PutEmployees()
                                 }}
                             variant="outlined" color="primary">
-                        {loadingClient || loadingAddEmployee || loadingAddDrivers ? "Sending..." : "send"}
+                        {loadingClient || loadingAddEmployee || loadingAddDrivers ? `${t('clients.send')}...` : `${t('clients.send')}`}
                     </Button>
                     <Button sx={{
                         width: "50%",
@@ -423,7 +491,7 @@ function AddEmployesModal({h1, inputModalArray = [], setEmployeesId   , id}) {
                                 // setEmployeesId(Object.fromEntries(Object.keys(employeesId).map(key => [key, ""])));
                             }}
                             variant="outlined" color="error">
-                        Close
+                        {t('clients.close')}
                     </Button>
 
 

@@ -11,6 +11,7 @@ import { MapContainer, TileLayer, Marker, useMapEvents } from "react-leaflet";
 import "leaflet/dist/leaflet.css";
 import L from "leaflet";
 import {Button} from "../index.js";
+import {useTranslation} from "react-i18next";
 
 // Default marker icon fix for Leaflet
 delete L.Icon.Default.prototype._getIconUrl;
@@ -37,6 +38,7 @@ function LocationPicker({ position, setPosition }) {
 
 const LocationInput = ({ label, value, onChange }) => {
     const [open, setOpen] = useState(false);
+    const {t} = useTranslation();
 
     // 📍 Boshlang‘ich qiymat: Toshkent
     const [position, setPosition] = useState([41.3111, 69.2797]);
@@ -96,7 +98,7 @@ const LocationInput = ({ label, value, onChange }) => {
                 variant="contained"
                 rounded={'rounded-r'}
                 onClick={() => setOpen(true)}
-                value={'Xarita'}
+                value={t('ordersTranslation.map')}
                 color={'dark:bg-btnBgDark'}
             />
 
@@ -133,7 +135,7 @@ const LocationInput = ({ label, value, onChange }) => {
                             width={'w-max'}
                             variant="contained"
                             onClick={() => setOpen(false)}
-                            value={'Yopish'}
+                            value={t('ordersTranslation.close')}
                         />
 
                     </Box>

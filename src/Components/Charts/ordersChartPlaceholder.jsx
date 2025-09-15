@@ -8,6 +8,7 @@ import {
     Tooltip,
     Legend,
 } from 'chart.js';
+import {useTranslation} from "react-i18next";
 
 ChartJS.register(LineElement, CategoryScale, LinearScale, PointElement, Tooltip, Legend);
 
@@ -24,11 +25,12 @@ const options = {
 };
 
 const OrdersChartPlaceholder = ({statistics}) => {
+    const {t} = useTranslation();
     const data = {
         labels: statistics?.dates,
         datasets: [
             {
-                label: 'Buyurtmalar',
+                label: t('navbar.orders'),
                 data: statistics?.order_counts,
                 fill: false,
                 borderColor: '#7C3AED',

@@ -20,7 +20,7 @@ function DriversPagination({row , index , data , setEmployeesId , arry , navigat
     const navigate = useNavigate();
     const findId = (id) => {
         const newData = data.find((employee) => employee.id === id);
-        setEmployeesId(newData)
+        // setEmployeesId(newData)
         console.log(newData)
     }
 

@@ -5,7 +5,7 @@ import {useEffect} from "react";
 import {getEmployees} from "../../../features/Employees/employeeThunks.js";
 import {useDispatch} from "react-redux";
 
-const PaginationFooter =({total})=> {
+const PaginationFooter =({total , onClick , filters})=> {
     const [searchParams, setSearchParams] = useSearchParams();
 
 
@@ -15,10 +15,8 @@ const PaginationFooter =({total})=> {
     const handleChange = (event, value) => {
         setSearchParams({ page: value }); // URL yangilanadi (?page=2)
         localStorage.setItem('EmployeesPge' , value);
+        onClick({ ...filters, search_status: 2 }, value);
     };
-
-
-
     return (
         <Stack spacing={2}>
             <Pagination

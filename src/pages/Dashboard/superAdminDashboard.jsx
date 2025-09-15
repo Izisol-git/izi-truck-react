@@ -1,7 +1,7 @@
 import React, {useEffect, useState} from 'react';
 import {ArrowTrendingUpIcon} from '@heroicons/react/24/solid';
 import {OrdersChartPlaceholder, StatisticsFilter, TruckLoadPieChart} from "../../Components/index.js";
-import {useDispatch} from "react-redux";
+import {useDispatch, useSelector} from "react-redux";
 import {getStatistics} from "../../features/Statistics/statisticsThunks.js";
 import {AdapterDayjs} from "@mui/x-date-pickers/AdapterDayjs";
 import {Box, Button, TextField} from "@mui/material";
@@ -38,7 +38,8 @@ function Counter({ target }) {
 
 function SuperAdminDashboard() {
     const dispatch = useDispatch();
-    const [statistics, setStatistics] = useState();
+    // const [statistics, setStatistics] = useState();
+    const {statistics} = useSelector(state => state.statistics);
     const [search, setSearch] = useState({
         from: null,
         to: null,
@@ -52,7 +53,7 @@ function SuperAdminDashboard() {
                 to: search.to ? dayjs(search.to).format("YYYY-MM-DD") : "",
             })).unwrap();
             console.log(res)
-            setStatistics(res)
+            // setStatistics(res)
         }
         catch (error) {
             console.log(error);
@@ -62,7 +63,9 @@ function SuperAdminDashboard() {
 
     useEffect(() => {
 
-        getStatistic(search)
+        if(statistics.length === 0) {
+            getStatistic(search)
+        }
         // dispatch(getCurrentUser());
     } , [dispatch])
 

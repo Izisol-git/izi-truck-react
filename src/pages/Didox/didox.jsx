@@ -6,6 +6,7 @@ import {useDispatch, useSelector} from "react-redux";
 import {addDidoxId} from "../../features/orders/ordersThunks.js";
 import Stack from "@mui/material/Stack";
 import Alert from "@mui/material/Alert";
+import {useTranslation} from "react-i18next";
 
 // import { Label } from "@/components/ui/label"
 
@@ -14,6 +15,7 @@ function Didox() {
     const navigate = useNavigate();
     const dispatch = useDispatch();
     const {id} = useParams();
+    const {t} = useTranslation();
     const dbOrders = localStorage.getItem("dbOrders");
     const {addDidox} = useSelector((state) => state.orders);
     const [message, setMessage] = React.useState("");
@@ -111,23 +113,20 @@ function Didox() {
     return (
         <div className={'relative'}>
             <div className={'bg-bacWhite w-full min-h-[calc(100dvh-70px)] py-5 dark:bg-darkBg'}>
-
-
-                <div className={'w-[90%] bg-white px-4  mx-auto py-5 rounded-md shadow  dark:bg-darkBgTwo'}>
-
-                    <div className="  flex items-center justify-between relative h-[40px] w-full px-2">
+                <div className={'w-[90%] bg-white px-4 mx-auto py-5 rounded-md shadow dark:bg-darkBgTwo'}>
+                    <div className="flex items-center justify-between relative h-[40px] w-full px-2">
                         {/* Chap tomonda back tugma */}
                         <div onClick={() => navigate(-1)}>
                             <Button
                                 icon={<i className="fa-solid fa-arrow-left"></i>}
-                                value={"Orders"}
+                                value= {t("ordersTranslation.order_details")}
                                 color={'dark:bg-btnBgDark'}
                             />
                         </div>
 
                         {/* Markazda sarlavha */}
                         <p className="text-blue font-bold text-xl text-center flex-1 dark:text-darkText">
-                            Didox
+                            {t("didoxTranslation.title")}
                         </p>
                     </div>
 
@@ -136,24 +135,17 @@ function Didox() {
                             <FormControlLabel
                                 control={
                                     <Checkbox
-
                                         checked={didoxData.has_lgota}
                                         onChange={(e) => setDidoxData({...didoxData, has_lgota: e.target.checked})}
                                         sx={{
-                                            "&.Mui-checked": {
-                                                color: "#1D2D5B", // Tailwind class ni oladi
-                                            },
+                                            "&.Mui-checked": {color: "#1D2D5B"},
                                             color: '#1D2D5B',
-                                            '.dark &': {
-                                                color: '#fff',
-                                            },
-                                            ".dark &.Mui-checked": {
-                                                color: "#fff",
-                                            }
+                                            '.dark &': {color: '#fff'},
+                                            ".dark &.Mui-checked": {color: "#fff"}
                                         }}
                                     />
                                 }
-                                label="Есть льгота по НДС"
+                                label={t("didoxTranslation.has_lgota")}
                             />
                             <FormControlLabel
                                 control={
@@ -161,48 +153,35 @@ function Didox() {
                                         checked={didoxData.has_vat}
                                         onChange={(e) => setDidoxData({...didoxData, has_vat: e.target.checked})}
                                         sx={{
-                                            "&.Mui-checked": {
-                                                color: "#1D2D5B", // Tailwind class ni oladi
-                                            },
+                                            "&.Mui-checked": {color: "#1D2D5B"},
                                             color: '#1D2D5B',
-                                            '.dark &': {
-                                                color: '#fff',
-                                            },
-                                            ".dark &.Mui-checked": {
-                                                color: "#fff",
-                                            }
+                                            '.dark &': {color: '#fff'},
+                                            ".dark &.Mui-checked": {color: "#fff"}
                                         }}
                                     />
                                 }
-                                label="Есть НДС"
+                                label={t("didoxTranslation.has_vat")}
                             />
                             <FormControlLabel
                                 control={
                                     <Checkbox
-                                        // color={'#1D2D5B'}
                                         checked={didoxData.nds12}
                                         onChange={(e) => setDidoxData({...didoxData, nds12: e.target.checked})}
-                                        // className="text-[#1D2D5B] dark:text-white "
                                         sx={{
-                                            "&.Mui-checked": {
-                                                color: "#1D2D5B", // Tailwind class ni oladi
-                                            },
+                                            "&.Mui-checked": {color: "#1D2D5B"},
                                             color: '#1D2D5B',
-                                            '.dark &': {
-                                                color: '#fff',
-                                            },
-                                            ".dark &.Mui-checked": {
-                                                color: "#fff",
-                                            }
+                                            '.dark &': {color: '#fff'},
+                                            ".dark &.Mui-checked": {color: "#fff"}
                                         }}
                                     />
                                 }
-                                label="Есть НДС 12%"
+                                label={t("didoxTranslation.nds12")}
                             />
                         </div>
                     </div>
+
                     <div className={'grid grid-cols-1 gap-y-5 mt-5'}>
-                        <div className={' grid grid-cols-2 gap-4 w-full  '}>
+                        <div className={'grid grid-cols-2 gap-4 w-full'}>
                             <div className="flex items-center ">
                                 <SelectMUI
                                     errorMassage={error?.factura_type}
@@ -210,9 +189,9 @@ function Didox() {
                                     onChange={(val) => setDidoxData({...didoxData, factura_types: val})}
                                     options={factura_type || []}
                                     variant={'outlined'}
-                                    label={'Тип счёт-фактуры'}
-                                    placeholder={'Тип счёт-фактуры'}/>
-
+                                    label={t("didoxTranslation.factura_type")}
+                                    placeholder={t("didoxTranslation.factura_type")}
+                                />
                             </div>
                             <div className="flex items-center ">
                                 <SelectMUI
@@ -221,12 +200,13 @@ function Didox() {
                                     onChange={(val) => setDidoxData({...didoxData, ikpus: val})}
                                     options={IKPUS || []}
                                     variant={'outlined'}
-                                    label={'ИКПУ'}
-                                    placeholder={'ИКПУ'}/>
-
+                                    label={t("didoxTranslation.ikpu")}
+                                    placeholder={t("didoxTranslation.ikpu")}
+                                />
                             </div>
                         </div>
-                        <div className={' grid grid-cols-2 gap-4 w-full  '}>
+
+                        <div className={'grid grid-cols-2 gap-4 w-full'}>
                             <div className="flex items-center ">
                                 <SelectMUI
                                     errorMassage={error?.single_sided_type}
@@ -234,45 +214,43 @@ function Didox() {
                                     onChange={(val) => setDidoxData({...didoxData, single_sided_type: val})}
                                     options={single_sided_type || []}
                                     variant={'outlined'}
-                                    label={'Односторонний тип'}
-                                    placeholder={'Односторонний тип'}/>
-
+                                    label={t("didoxTranslation.single_sided_type")}
+                                    placeholder={t("didoxTranslation.single_sided_type")}
+                                />
                             </div>
                             <div className="flex items-center ">
-                                <InputMUI errorMassage={error?.lgota_id} disabled={!didoxData.has_lgota}
-                                          value={didoxData.lgota_id ?? ''}
-                                          onChange={(e) =>
-                                              setDidoxData({...didoxData, lgota_id: e.target.value})
-                                          }
-                                          variant={'outlined'} label={'ID льготы'}
+                                <InputMUI
+                                    errorMassage={error?.lgota_id}
+                                    disabled={!didoxData.has_lgota}
+                                    value={didoxData.lgota_id ?? ''}
+                                    onChange={(e) => setDidoxData({...didoxData, lgota_id: e.target.value})}
+                                    variant={'outlined'}
+                                    label={t("didoxTranslation.lgota_id")}
                                 />
-
                             </div>
                         </div>
-                        <div className={'w-full flex items-center justify-end '}>
+
+                        <div className={'w-full flex items-center justify-end'}>
                             <div className={'min-w-[15%]'}>
-                                <Button onClick={() => {
-                                    didox()
-                                }}
-                                        icon={<i className="fa-solid fa-share mr-2"></i>}
-                                        value={addDidox ? "Sending..." : "Send"}
-                                        color={'dark:bg-btnBgDark'}
+                                <Button
+                                    onClick={() => didox()}
+                                    icon={<i className="fa-solid fa-share mr-2"></i>}
+                                    value={addDidox ? t("didoxTranslation.sending") : t("didoxTranslation.send")}
+                                    color={'dark:bg-btnBgDark'}
                                 />
                             </div>
                         </div>
                     </div>
-
                 </div>
 
-                <div className={'w-[90%] bg-white px-4  mt-5  mx-auto py-5 rounded-md shadow  dark:bg-darkBgTwo'}>
-                    <p>Отправленные документы</p>
+                <div className={'w-[90%] bg-white px-4 mt-5 mx-auto py-5 rounded-md shadow dark:bg-darkBgTwo'}>
+                    <p>{t("didoxTranslation.sent_documents")}</p>
                 </div>
             </div>
 
             <div className={'w-1/3 absolute top-0 right-6'}>
                 {message && <AlertMessage/>}
             </div>
-
         </div>
     );
 }

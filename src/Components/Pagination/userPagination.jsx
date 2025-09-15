@@ -24,6 +24,8 @@ import {
 import {useDispatch, useSelector} from "react-redux";
 import {searchContracts} from "../../features/Contracts/contractThunks.js";
 import {openExcelModal} from "../../features/EmployeSModalToggle/employesModalToggle.js";
+import {current} from "@reduxjs/toolkit";
+import {useTranslation} from "react-i18next";
 
 const UserPagination = ({arry, navigateURL, data, total, setEmployeesId, employeesId , setSearch ,dataIndex }) => {
 
@@ -35,6 +37,9 @@ const UserPagination = ({arry, navigateURL, data, total, setEmployeesId, employe
     const loadingCustomers = useSelector((state) => state.customers.loading)
     const loadingDrivers = useSelector((state) => state.drivers.loading)
     const loadingEmployees =  useSelector((state) => state.drivers.loading)
+    const {i18n , t} = useTranslation();
+    const currentLang = i18n.language;
+
 
 
 
@@ -68,7 +73,7 @@ const UserPagination = ({arry, navigateURL, data, total, setEmployeesId, employe
             }}>
                 <div className=" flex items-center justify-between">
                     <TextField
-                        label="Qidirish (Ism bo‘yicha)"
+                        label={t('clients.search')}
                         variant="outlined"
                         onChange={(event) => setSearch(event.target.value)}
                         fullWidth
@@ -160,12 +165,11 @@ const UserPagination = ({arry, navigateURL, data, total, setEmployeesId, employe
                                             }}>
 
                                                 <TableSortLabel
-
                                                     // active={index === 0 ? orderBy === "id" : orderBy === row.title}
                                                     // direction={orderBy === row.title ? orderDirection : "asc"}
                                                     // onClick={() => handleSortRequest(row.title)}
                                                 >
-                                                    {row.title}
+                                                    {row?.key ? t(`${row.key}`) : row.title }
                                                 </TableSortLabel>
                                             </TableCell>
                                         )
@@ -290,7 +294,7 @@ const UserPagination = ({arry, navigateURL, data, total, setEmployeesId, employe
             </Paper>
 
 
-            <AddEmployesModal/>
+            {/*<AddEmployesModal />*/}
 
         </>
     );

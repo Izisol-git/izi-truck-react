@@ -3,10 +3,12 @@ import React, {useState} from 'react';
 import {useDispatch, useSelector} from "react-redux";
 import {useNavigate} from "react-router-dom";
 import {AddToggle, AddToggleDrivers} from "../../../features/EmployeSModalToggle/employesModalToggle.js";
+import {useTranslation} from "react-i18next";
 
 const UserNavbar = ({value, columnsArry, setColumnsArry, openModal}) => {
     const dispatch = useDispatch();
     const navigate = useNavigate();
+    const {t} = useTranslation();
     const isOpen = useSelector((state) => state.employesModal.isOpen);
     const [dropdown, setDropdown] = useState(false);
     const changeColumnsArry = (index) => {
@@ -16,9 +18,23 @@ const UserNavbar = ({value, columnsArry, setColumnsArry, openModal}) => {
         console.log(newArray);
     }
 
+    const title =()=>{
+        if(value === "Customers" ){
+            return (t('clients.clients'))
+        }
+        if(value === "Drivers" ){
+            return (t('drivers.drivers'))
+        }
+        if(value === "Employees" ){
+            return (t('employees.employees'))
+        }
+    }
+
+
+
     return (
         <div className="flex items-center  py-5 justify-between">
-            <p className={'text-2xl text-blue font-semibold dark:text-darkText'}>{value}</p>
+            <p className={'text-2xl text-blue font-semibold dark:text-darkText'}>{title()}</p>
             <div className="center gap-4">
                 {
                     value === 'Notifications' ? '' :
@@ -29,7 +45,7 @@ const UserNavbar = ({value, columnsArry, setColumnsArry, openModal}) => {
                             value === 'Contracts' ? navigate('/contracts/clients/create') : ''
                         }}
                                 className={'py-2 px-3 bg-[#38CB6E] text-white rounded hover:ring-2 ring-[#38CB6E] outline-none'}>
-                            <i className={'fas fa-plus mr-2'}></i>Добавить
+                            <i className={'fas fa-plus mr-2'}></i>{t('clients.add')}
                         </button>
                 }
                 <div className="relative">
@@ -38,7 +54,7 @@ const UserNavbar = ({value, columnsArry, setColumnsArry, openModal}) => {
                     }} onClick={() => setDropdown(!dropdown)}
                             className={'py-2 px-3 bg-blue text-white rounded hover:ring-2 ring-blue outline-none dark:bg-btnBgDark dark:ring-btnBgDark'}>
                         <i
-                            className={'fas fa-columns'}></i>Columns
+                            className={'fas fa-columns mr-2'}></i>{t('clients.columns')}
                     </button>
 
                     <div onMouseEnter={() => {
@@ -60,7 +76,7 @@ const UserNavbar = ({value, columnsArry, setColumnsArry, openModal}) => {
                                     <div className="w-[10%] ">{item.active &&
                                         <i className="fa-solid fa-check"></i>}
                                     </div>
-                                    <p className={'w-[90%] whitespace-nowrap'}>{item.title}</p>
+                                    <p className={'w-[90%] whitespace-nowrap'}>{item.key ? t(`${item.key}`) : item.title}</p>
                                 </div>
                             ))
                         }

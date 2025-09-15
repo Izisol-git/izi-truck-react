@@ -1,13 +1,14 @@
 import * as React from 'react';
 import Button from '@mui/material/Button';
 import ButtonGroup from '@mui/material/ButtonGroup';
+import {useTranslation} from "react-i18next";
 
 const OrdersDropDown = ({activeStatus ,setActiveStatus , setFilters , filters , onClick , pageqq}) => {
 
 
 
 
-
+const {t} = useTranslation();
 
 
     return (
@@ -54,7 +55,7 @@ const OrdersDropDown = ({activeStatus ,setActiveStatus , setFilters , filters , 
                     },
                 }}
             >
-                Hammasi
+                {t('ordersTranslation.all')}
             </Button>
 
             {/* Akt Yo‘q */}
@@ -87,7 +88,7 @@ const OrdersDropDown = ({activeStatus ,setActiveStatus , setFilters , filters , 
                     },
                 }}
             >
-                Akt Yo‘q
+                {t('ordersTranslation.no_act')}
             </Button>
 
             {/* Akt Bor */}
@@ -120,7 +121,7 @@ const OrdersDropDown = ({activeStatus ,setActiveStatus , setFilters , filters , 
                     },
                 }}
             >
-                Akt bor
+                {t('ordersTranslation.has_act')}
             </Button>
         </ButtonGroup>
     </>

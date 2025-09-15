@@ -11,13 +11,14 @@ import {exportDriverExcel} from "../../features/Drivers/driversThunks.js";
 import {exportEmployeeExcel} from "../../features/Employees/employeeThunks.js";
 import {exportClientsExcel} from "../../features/customers/clientsThunks.js";
 import {exportQueriesExcel} from "../../features/Queries/queriesThunks.js";
+import {useTranslation} from "react-i18next";
 
 const  ExcelModal =({data , mode , selectedKeys , setSelectedKeys , page , search })=> {
 
     const dispatch = useDispatch();
     const {isOpenExcelModal} = useSelector((state) => state.employesModal);
     const {exporting} = useSelector((state)=>state.orders)
-
+    const {t} = useTranslation();
 
     const handleCheckboxChange = (id, checked) => {
         if (checked) {
@@ -106,7 +107,7 @@ const  ExcelModal =({data , mode , selectedKeys , setSelectedKeys , page , searc
             >
                 {/* Header */}
                 <div className={"flex items-center justify-between p-4"}>
-                    <p className={"text-blue font-bold text-2xl dark:text-white"}>Export to Excel</p>
+                    <p className={"text-blue font-bold text-2xl dark:text-white"}>{t('export_to_excel')}</p>
                     <div
                         onClick={() => dispatch(closeExcelModal())}
                         className={
@@ -143,7 +144,7 @@ const  ExcelModal =({data , mode , selectedKeys , setSelectedKeys , page , searc
                                     }}
                                 />
                             }
-                            label={value.value}
+                            label={t(value.value)}
                             sx={{
                                 ".dark &": { color: "white" }, // label text dark mode oq
                             }}
@@ -169,7 +170,7 @@ const  ExcelModal =({data , mode , selectedKeys , setSelectedKeys , page , searc
                             ) : (
                                 <>
                                     <i className="fa-solid fa-cloud-arrow-down text-white mr-2"></i>
-                                    Export
+                                    {t('export')}
                                 </>
                             )}
                         </button>

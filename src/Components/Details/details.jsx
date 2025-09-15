@@ -1,7 +1,6 @@
 import React from 'react';
 import {
     AddEmployesModal,
-    Button,
     ProfileInfoCard,
     ProfileInfoCardDrivers,
     ProfileInfoClients,
@@ -10,45 +9,80 @@ import {
 } from "../index.js";
 import {
     EditToggle,
-    openContractsModal,
     openModal,
     openModalHistory
 } from "../../features/EmployeSModalToggle/employesModalToggle.js";
 import {useNavigate} from "react-router-dom";
 import {useDispatch} from "react-redux";
+import {useTranslation} from "react-i18next";
+import {Button} from "@mui/material";
 
 function Details({inputModalArray, btnValue, data, id, contract}) {
     const navigate = useNavigate();
     const dispatch = useDispatch();
+    const {t } = useTranslation();
     console.log(contract)
     return (
         <div>
             <div className={'bg-bacWhite min-h-[calc(100dvh-70px)] dark:bg-darkBg  '}>
                 <div className={'flex items-center justify-between py-5  w-[90%] mx-auto '}>
                     <div className={'w-max '} onClick={() => navigate(`/users/${btnValue.toLowerCase()}`)}>
-                        <Button color={'dark:bg-btnBgDark'} icon={<i className="fa-solid fa-arrow-left"></i>}
-                                value={btnValue}/>
+                        <Button
+                            onClick={() => navigate(`/orders`)}
+                            sx={{
+                                background : '#1D2D5B',
+                                '.dark &':{
+                                    background : '#2B4764',
+                                }
+                            }}
+                            color={'info'}
+                            variant={'contained'}>
+                            <i className="fa-solid fa-right-from-bracket mr-2"></i>
+                            {t('clients.back_to_clients')}
+                        </Button>
+                        {/*<Button color={'dark:bg-btnBgDark'} icon={<i className="fa-solid fa-arrow-left"></i>}*/}
+                        {/*        value={btnValue}/>*/}
                     </div>
                     <div className={'flex items-center justify-between gap-2'}>
                         <div onClick={() => dispatch(openModalHistory())} className={'w-max'}>
-                            <Button color={'dark:bg-btnBgDark'}
-                                // color={'#EAB308'}
-                                    icon={<i className="fa-regular fa-clock"></i>}
-                                    value={'History'}/>
+                            <Button
+                                color={'info'}
+                                variant={'contained'}>
+                                <i className="fa-regular fa-clock mr-2"></i>
+                                {t('clients.history')}
+                            </Button>
+                            {/*<Button color={'dark:bg-btnBgDark'}*/}
+                            {/*    // color={'#EAB308'}*/}
+                            {/*        icon={<i className="fa-regular fa-clock"></i>}*/}
+                            {/*        value={'History'}/>*/}
                         </div>
                         <div className={'w-max'}>
-                            <Button color={'dark:bg-btnBgDark'} onClick={() => {
-                                dispatch(EditToggle())
-                                btnValue === 'Drivers' ? navigate(`/users/${btnValue.toLowerCase()}/edit`, btnValue) : dispatch(openModal())
-                            }}
-                                // color={'#38CB6E'}
-                                    icon={<i className="fa-solid fa-pen-to-square"></i>}
-                                    value={'Edit'}/>
+
+                            <Button
+                                onClick={() => {
+                                    dispatch(EditToggle())
+                                    btnValue === 'Drivers' ? navigate(`/users/${btnValue.toLowerCase()}/edit`, btnValue) : dispatch(openModal())
+                                }}
+                                color={'warning'}
+                                variant={'contained'}>
+                                <i className="fa-solid fa-pen-to-square mr-2"></i>
+                                {t('clients.editClients')}
+                            </Button>
+
+                            {/*<Button color={'dark:bg-btnBgDark'}*/}
+                            {/*    // color={'#38CB6E'}*/}
+
+                            {/*        value={'Edit'}/>*/}
                         </div>
                         <div className={'w-max'}>
-                            <Button color={'dark:bg-btnBgDark'}
-                                // color={'red'}
-                                    icon={<i className="fa-solid fa-trash"></i>} value={'Delete'}/>
+                            <Button
+                                color={'error'}
+                                variant={'contained'}>
+                                <i className="fa-solid fa-trash mr-2"></i>
+                                {t('clients.delete')}
+                            </Button>
+
+
                         </div>
                     </div>
                 </div>
@@ -67,7 +101,7 @@ function Details({inputModalArray, btnValue, data, id, contract}) {
                         <div
                             className={'bg-white w-[90%] mt-4 py-4 px-6  mx-auto shadow-2xl rounded dark:bg-darkBgTwo'}>
                             <div className={'my-5 flex items-center justify-between'}>
-                                <p className={'text-2xl text-blue font-semibold dark:text-darkText'}> Contracts</p>
+                                <p className={'text-2xl text-blue font-semibold dark:text-darkText'}> {t('clients.contracts')}</p>
 
                             </div>
                             <div className={'w-[100%]  mx-auto  '}>

@@ -11,12 +11,13 @@ import {
     alpha, Button,
 } from "@mui/material";
 import {
-    TrendingFlat,
     Person,
     LocalShipping,
     Payment,
     Scale,
-    AccessTime, PriceChangeOutlined, RouteOutlined,
+    AccessTime,
+    PriceChangeOutlined,
+    RouteOutlined,
 } from "@mui/icons-material";
 import dayjs from "../../utils/dayjs.js";
 import {useNavigate} from "react-router-dom";
@@ -25,27 +26,38 @@ import {
     openQueriesShow
 } from "../../features/EmployeSModalToggle/employesModalToggle.js";
 import {useDispatch} from "react-redux";
-import {LogisticsInterface} from "../index.js";
 import React from "react";
+import {useTranslation} from "react-i18next";
 
 export default function QueriesCard({transaction}) {
     const dispatch = useDispatch();
     const navigate = useNavigate();
+    const {t} = useTranslation();
+
+    const {i18n} = useTranslation();
+
+
+    dayjs.locale(i18n.language)
+
 
     const getPaymentMethodLabel = (method) => {
-        const methods = {
-            cash: "Перечисления",
-            enumeration: "Нақд",
-            combined: "Ярим перечисления",
-        };
+        const methods = {cash: "Перечисления", enumeration: "Нақд", combined: "Ярим перечисления",};
         return methods[method] || "-";
     };
+    // const getPaymentMethodLabel = (method) => {
+    //     const methods = {
+    //         cash: t("queriesTranslation.queriesCard.payment_cash"),
+    //         enumeration: t("queriesTranslation.queriesCard.payment_enumeration"),
+    //         combined: t("queriesTranslation.queriesCard.payment_combined"),
+    //     };
+    //     return methods[method] || "-";
+    // };
 
     const getStatusStyle = (statusId) => {
         if (statusId === 2) {
-            return {label: "Ожидается", color: "error"};
+            return {label: t("queriesTranslation.queriesCard.status_pending"), color: "error"};
         }
-        return {label: "Доставлен", color: "success"};
+        return {label: t("queriesTranslation.queriesCard.status_delivered"), color: "success"};
     };
 
     const status = getStatusStyle(transaction?.status_id);
@@ -69,7 +81,7 @@ export default function QueriesCard({transaction}) {
                         sx={{
                             width: 40,
                             height: 40,
-                            bgcolor: "primary.main", // asosiy primary rang
+                            bgcolor: "primary.main",
                         }}
                     >
                         <LocalShipping fontSize="small"/>
@@ -103,8 +115,8 @@ export default function QueriesCard({transaction}) {
                 }
                 sx={{
                     "& .MuiCardHeader-action": {
-                        alignSelf: "center", // markazga olib keladi
-                        marginTop: 0,        // default yuqoriga chiqishini olib tashlaydi
+                        alignSelf: "center",
+                        marginTop: 0,
                     },
                 }}
             />
@@ -113,7 +125,7 @@ export default function QueriesCard({transaction}) {
                 <Stack spacing={2} paddingX={2}>
                     {/* Main Info */}
                     <Box display="grid" gridTemplateColumns="1fr" gap={1}>
-                        <Box display="flex" justifyContent="space-between" alignItems={["center"]}>
+                        <Box display="flex" justifyContent="space-between" alignItems="center">
                             <Typography
                                 variant="caption"
                                 color="text.secondary"
@@ -124,14 +136,14 @@ export default function QueriesCard({transaction}) {
                                 fontWeight={600}
                             >
                                 <LocalShipping color="success" fontSize="small"/>
-                                Груз
+                                {t("queriesTranslation.queriesCard.cargo")}
                             </Typography>
                             <Typography variant="body1" fontWeight={600} color="text.secondary">
                                 {transaction?.title}
                             </Typography>
                         </Box>
 
-                        <Box display="flex" justifyContent="space-between" alignItems={["center"]}>
+                        <Box display="flex" justifyContent="space-between" alignItems="center">
                             <Typography
                                 variant="caption"
                                 color="text.secondary"
@@ -142,14 +154,14 @@ export default function QueriesCard({transaction}) {
                                 fontWeight={600}
                             >
                                 <Payment color="success" fontSize="small"/>
-                                Тип оплаты
+                                {t("queriesTranslation.queriesCard.payment_type")}
                             </Typography>
                             <Typography variant="body1" fontWeight={600} color="text.secondary">
                                 {getPaymentMethodLabel(transaction?.payment_method)}
                             </Typography>
                         </Box>
 
-                        <Box display="flex" justifyContent="space-between" alignItems={["center"]}>
+                        <Box display="flex" justifyContent="space-between" alignItems="center">
                             <Typography
                                 variant="caption"
                                 color="text.secondary"
@@ -160,36 +172,33 @@ export default function QueriesCard({transaction}) {
                                 fontWeight={600}
                             >
                                 <Person color="success" fontSize="small"/>
-                                Клиент
+                                {t("queriesTranslation.queriesCard.client")}
                             </Typography>
                             <Typography variant="body1" fontWeight={600} color="text.secondary">
                                 {transaction?.client?.fio}
                             </Typography>
                         </Box>
 
-                        <Box display="flex" justifyContent="space-between" alignItems={["center"]}>
-
-                            <Typography variant="caption"
-                                        color="text.secondary"
-                                        display="flex"
-                                        alignItems="center"
-                                        fontSize={14}
-                                        fontWeight={600}
-                                        gap={0.5}>
-
-
-                                <PriceChangeOutlined color="success" fontSize="small"/>
-                                Цена клиента
-                            </Typography>
+                        <Box display="flex" justifyContent="space-between" alignItems="center">
                             <Typography
-                                variant="body1" fontWeight={600} color="text.secondary"
+                                variant="caption"
+                                color="text.secondary"
+                                display="flex"
+                                alignItems="center"
+                                fontSize={14}
+                                fontWeight={600}
+                                gap={0.5}
                             >
+                                <PriceChangeOutlined color="success" fontSize="small"/>
+                                {t("queriesTranslation.queriesCard.client_price")}
+                            </Typography>
+                            <Typography variant="body1" fontWeight={600} color="text.secondary">
                                 {transaction?.client_enumeration_price}{" "}
                                 {transaction?.client_enumeration_currency?.toUpperCase()}
                             </Typography>
                         </Box>
 
-                        <Box display="flex" justifyContent="space-between" alignItems={["center"]}>
+                        <Box display="flex" justifyContent="space-between" alignItems="center">
                             <Typography
                                 variant="caption"
                                 color="text.secondary"
@@ -200,7 +209,7 @@ export default function QueriesCard({transaction}) {
                                 fontWeight={600}
                             >
                                 <Scale color="success" fontSize="small"/>
-                                Вес
+                                {t("queriesTranslation.queriesCard.weight")}
                             </Typography>
                             <Typography variant="body1" fontWeight={600} color="text.secondary">
                                 {transaction?.weight}
@@ -211,54 +220,7 @@ export default function QueriesCard({transaction}) {
                     <Divider/>
 
                     {/* Status */}
-                    <Box display="flex" justifyContent="space-between" alignItems="center">
-                        <Chip
-                            label={status.label}
-                            color={status.color}
-                            variant="soft"
-                            sx={{
-                                fontWeight: 600,
-                                textTransform: "uppercase",
-                                letterSpacing: 0.5,
-                            }}
-                        />
 
-
-                        <Box display="flex" gap={1}>
-                            <Button
-                                onClick={() => {
-                                    dispatch(AddQueriesId(transaction?.id))
-                                    dispatch(openQueriesShow())
-                                }}
-                                variant={'contained'} color={'info'}>
-
-                                <i className="fa-solid fa-eye mr-2"></i>
-                                Show
-                            </Button>
-                            <Button onClick={() => {
-                                navigate(`/queries/edit/${transaction?.id}`);
-                            }} variant={'contained'} color={'warning'}>
-                                <i className={'fa-solid fa-pen-to-square mr-2'}></i>
-                                Edit
-                            </Button>
-                        </Box>
-
-                        {/*<Chip*/}
-
-                        {/*    label={status.label}*/}
-                        {/*    color={status.color}*/}
-                        {/*    variant="soft"*/}
-                        {/*    sx={{*/}
-                        {/*        fontWeight: 600,*/}
-                        {/*        textTransform: "uppercase",*/}
-                        {/*        letterSpacing: 0.5,*/}
-                        {/*        borderRadius:0*/}
-                        {/*    }}*/}
-                        {/*/>*/}
-                        {transaction.status === 0 && transaction.cancelReason && (
-                            <Chip label="Отмена" color="error" size="small" variant="soft"/>
-                        )}
-                    </Box>
 
                     {/* Cancel Reason */}
                     {transaction.cancelReason && (
@@ -271,7 +233,7 @@ export default function QueriesCard({transaction}) {
                             })}
                         >
                             <Typography variant="caption" color="error.main" fontWeight={600}>
-                                Причина отмены:
+                                {t("queriesTranslation.queriesCard.cancel_reason")}
                             </Typography>
                             <Typography variant="body2" color="error.dark">
                                 {transaction.cancelReason}
@@ -279,9 +241,62 @@ export default function QueriesCard({transaction}) {
                         </Box>
                     )}
                 </Stack>
+
+                <Box display="flex" marginTop={2} justifyContent="space-between" alignItems="center">
+                    <Chip
+                        label={status.label}
+                        color={status.color}
+                        variant="soft"
+                        sx={{
+                            fontWeight: 600,
+                            textTransform: "uppercase",
+                            letterSpacing: 0.5,
+                            fontSize : 12
+                        }}
+                    />
+
+                    <Box display="flex" gap={1}>
+                        <Button
+                            onClick={() => {
+                                dispatch(AddQueriesId(transaction?.id));
+                                dispatch(openQueriesShow());
+                            }}
+                            variant="contained"
+                            color="info"
+                            sx={{
+                                fontSize:'12px',
+                                fontWeight: 600,
+                            }}
+                        >
+                            <i className="fa-solid fa-eye mr-2"></i>
+                            {t("queriesTranslation.queriesCard.show")}
+                        </Button>
+                        <Button
+                            onClick={() => {
+                                navigate(`/queries/edit/${transaction?.id}`);
+                            }}
+                            variant="contained"
+                            color="warning"
+                            sx={{
+                                fontSize:'12px',
+                                fontWeight: 600,
+                            }}
+                        >
+                            <i className="fa-solid fa-pen-to-square mr-2"></i>
+                            {t("queriesTranslation.queriesCard.edit")}
+                        </Button>
+                    </Box>
+
+                    {transaction.status === 0 && transaction.cancelReason && (
+                        <Chip
+                            label={t("queriesTranslation.queriesCard.cancel")}
+                            color="error"
+                            size="small"
+                            variant="soft"
+                        />
+                    )}
+                </Box>
             </CardContent>
-
-
         </Card>
     );
 }

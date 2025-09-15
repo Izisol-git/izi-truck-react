@@ -30,11 +30,11 @@ const ordersSlice = createSlice({
         });
         builder.addCase(getFilteredOrders.fulfilled, (state, action) => {
             state.loading = false;
-            // state.orders = action.payload;
+            state.orders = action.payload;
         });
         builder.addCase(getFilteredOrders.rejected, (state, action) => {
             state.loading = false;
-            state.error = action.payload;
+            state.error = action.payload.orders;
         });
         // act data
         builder.addCase(actDataAdd.pending, (state) => {
@@ -85,12 +85,9 @@ const ordersSlice = createSlice({
         });
         builder.addCase(editOrder.fulfilled, (state, action) => {
             state.loading = false;
-            const index = state.orders.findIndex(order => order.id === action.payload.id);
-            // if (index !== -1) state.orders[index] = action.payload;
         });
         builder.addCase(editOrder.rejected, (state, action) => {
             state.loading = false;
-            // state.error = action.payload;
         });
 
         // DELETE order

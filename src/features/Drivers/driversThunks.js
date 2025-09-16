@@ -1,5 +1,5 @@
 import { createAsyncThunk } from "@reduxjs/toolkit";
-import DriversService   from "../../Api/Drivers/driversService.js";
+import DriversService   from "../../API/Drivers/driversService.js";
 
 // Xodimlarni olish
 export const getDrivers = createAsyncThunk(

@@ -1,5 +1,5 @@
 import { createAsyncThunk } from "@reduxjs/toolkit";
-import OrdersService from "../../Api/orders/OrdersService.js";
+import OrdersService from "../../API/orders/OrdersService.js";
 
 // GET – barcha orderslarni olish
 export const getOrders = createAsyncThunk(

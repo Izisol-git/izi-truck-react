@@ -1,5 +1,5 @@
 import { createAsyncThunk } from "@reduxjs/toolkit";
-import ClientsService from "../../Api/customers/ClientsService.js";
+import ClientsService from "../../API/customers/ClientsService.js";
 
 // GET – barcha clientlarni olish
 export const getClients = createAsyncThunk(

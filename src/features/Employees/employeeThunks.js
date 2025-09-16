@@ -1,5 +1,5 @@
 import { createAsyncThunk } from "@reduxjs/toolkit";
-import EmployeeService from "../../Api/Employees/employeesService.js";
+import EmployeeService from "../../API/Employees/employeesService.js";
 
 
 // Xodimlarni olish

@@ -72,7 +72,7 @@ const ProfileDropdown = ({ sunToggle }) => {
         <div className="relative inline-block text-left z-10" ref={dropdownRef}>
             <div onClick={toggleDropdown} className="flex items-center gap-4 ">
                 <button className="w-12 h-12 rounded-full overflow-hidden">
-                    <img src="../../../public/profile.png" alt="Profile" className="w-full h-full object-cover" />
+                    <img src="/profile.png" alt="Profile" className="w-full h-full object-cover" />
                 </button>
             </div>
 
@@ -84,7 +84,7 @@ const ProfileDropdown = ({ sunToggle }) => {
                 {/* Profile Header */}
                 <div onClick={toggleDropdown} className="flex items-center gap-4 px-4 py-2 border ">
                     <div className="w-12 h-12 rounded-full overflow-hidden  ">
-                        <img src="../../../public/profile.png" alt="Profile" className="w-full h-full object-cover" />
+                        <img src="/profile.png" alt="Profile" className="w-full h-full object-cover" />
                     </div>
                     <div className="flex-1 ">
                         <div className="flex items-center gap-2 mb-1">

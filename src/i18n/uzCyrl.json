@@ -114,6 +114,16 @@
       "clear_input": "Майдонларни тозалаш",
       "close": "Ёпиш",
       "search": "Қидириш"
+    },
+    "allOffers": "Барча таклифлар",
+    "table": {
+       "trailer_info": "Трейлер маълумоти",
+      "status": "Ҳолат",
+      "route": "Йўналиш",
+      "price": "Нархи",
+      "created_at": "Яратилган сана",
+      "cargo_weight": "Юк оғирлиги",
+      "cargo_name": "Юк номи"
     }
 
 
@@ -426,6 +436,19 @@
     "createEmployees": "Ходим қўшиш",
     "editEmployees": "Ходимни таҳрирлаш",
 
+    "employeeProfile": {
+      "name": "Ходим исми",
+      "createDate": "Яратилган сана",
+      "endDate": "Якуний сана",
+      "email": "Электрон почта",
+      "status": "Ҳолати",
+      "statusActive": "Фаол",
+      "statusInvalid": "Нофаол",
+      "phoneNumber": "Телефон рақами",
+      "telegramId": "Фойдаланувчи ID (Telegram)",
+      "telegramNick": "Telegram тахаллуси",
+      "tin": "СТИР"
+    },
 
     "inputModalArray": {
       "user_type": "Фойдаланувчи тури",
@@ -464,6 +487,39 @@
     }
   },
 
+  "invoices": {
+    "invoices": "Ҳисоблар",
+    "reloadEimzo": "E-IMZO’ни қайта юклаш",
+    "modal": {
+      "title": "Электрон имзо танлаш",
+      "loading": "Сертификатлар юкланмоқда...",
+      "cancel": "Бекор қилиш",
+      "sign": "Имзолаш"
+    },
+
+    "documents": {
+      "type": "Ҳужжат тури",
+      "updateDate": "Янгиланиш санаси",
+      "contractor": "Контрагент",
+      "tin": "СТИР",
+      "docNumberDate": "Ҳужжат рақами ва санаси",
+      "contractNumberDate": "Шартнома рақами ва санаси",
+      "supplyCost": "Етказиб бериш қиймати",
+      "vatAmount": "ҚҚС суммаcи"
+    },
+    "status": {
+      "draft": "Қоралама",
+      "partnerSign": "Ҳамкор имзосини кутмоқда",
+      "yourSign": "Сизнинг имзонгизни кутмоқда",
+      "signed": "Имзоланган",
+      "rejected": "Имзодан бош тортилди",
+      "deleted": "Ўчирилди",
+      "agentSign": "Агент имзосини кутмоқда",
+      "invalid": "Амалда эмас",
+      "cancelledByGNK": "ДСК томонидан бекор қилинган"
+    }
+  },
+
   "history": {
     "title": "Ўзгаришлар тарихи",
     "record": "Ёзув",
@@ -478,6 +534,48 @@
     "initialValues": "Бошланғич қийматлар сақланди.",
     "recordDeleted": "Ёзув ўчирилди.",
     "notFound": "Топилмади!"
+  },
+
+  "notifications": {
+    "noNotifications": "Билдиришномалар мавжуд эмас",
+    "chats": {
+      "title": "Чатлар"
+    }
+  },
+  "profile": {
+    "viewProfile": "Профилни кўриш",
+    "helpCenter": "Ёрдам маркази",
+    "accountSettings": "Ҳисоб созламалари",
+    "chats": "Чатлар",
+    "darkMode": "Қоронғу режим",
+    "logOut": "Чиқиш"
+  },
+  "offersOrders": {
+    "writeYourOffer": "Таклифингизни ёзинг",
+    "route": "Маршрут",
+    "cargoName": "Юк номи",
+    "cargoWeight": "Юк оғирлиги",
+    "trailerSpec": "Тиркама хусусияти",
+    "offerPrice": "Таклиф суммаси",
+    "close": "Бекор қилиш",
+    "send": "Юбориш",
+    "sending": "Юборилмоқда..."
+  },
+  "offersOrdersCarrier": {
+    "title": "Сизга мос таклиф бор",
+    "direction": "Йўналиш",
+    "cargoName": "Юк номи",
+    "weight": "Юк оғирлиги",
+    "trailerInfo": "Трейлер маълумоти",
+    "response": "Жавобингиз",
+    "price": "Нархи",
+    "availableVehicles": "Мавжуд машиналар",
+    "estimatedArrival": "Етиб бориш санаси",
+    "responsiblePhone": "Масул шахс телефони",
+    "notes": "Изоҳ",
+    "close": "Бекор қилиш",
+    "send": "Юбориш",
+    "sending": "Юборилмоқда..."
   }
 
 

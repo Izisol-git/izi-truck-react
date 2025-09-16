@@ -2,6 +2,7 @@ import { useEffect, useState } from "react";
 import {useDispatch, useSelector} from "react-redux";
 import {closeInvoicesModal} from "../../features/EmployeSModalToggle/employesModalToggle.js";
 import {getInvoices, LogoutInvoice} from "../../features/Invoices/invoicesThunks.js";
+import {useTranslation} from "react-i18next";
 
 export default function ImzoComponent({  onSignSuccess }) {
     const [certs, setCerts] = useState([]);
@@ -11,6 +12,7 @@ export default function ImzoComponent({  onSignSuccess }) {
     const dispatch = useDispatch();
     const EIMZO_MAJOR = 3;
     const EIMZO_MINOR = 27;
+    const {t} = useTranslation();
 
     useEffect(() => {
         if (isOpen) {
@@ -128,18 +130,31 @@ export default function ImzoComponent({  onSignSuccess }) {
 
     return (
         <div className="fixed inset-0 z-50 flex items-center justify-center bg-black bg-opacity-50">
-            <div className="bg-white text-black dark:bg-gray-800 dark:text-white p-6 rounded-xl w-full max-w-xl shadow-lg relative">
-                <h2 className="text-xl font-bold mb-4">Elektron imzo tanlash</h2>
+            <div
+                className="bg-white text-black dark:bg-gray-800 dark:text-white p-6 rounded-xl w-full max-w-xl shadow-lg relative">
+                <h2 className="text-xl font-bold mb-4">
+                    {t("invoices.modal.title")}
+                </h2>
 
                 {loading ? (
-                    <p>⏳ Sertifikatlar yuklanmoqda...</p>
+                    <p>⏳ {t("invoices.modal.loading")}</p>
                 ) : (
-                    <div>{certs.map(cert => cert.html)}</div>
+                    <div>{certs.map((cert) => cert.html)}</div>
                 )}
 
                 <div className="mt-4 flex justify-end gap-2">
-                    <button onClick={()=> dispatch(closeInvoicesModal())} className="px-4 py-2 bg-gray-400 rounded">Bekor qilish</button>
-                    <button onClick={sign} className="px-4 py-2 bg-blue text-white rounded">Imzolash</button>
+                    <button
+                        onClick={() => dispatch(closeInvoicesModal())}
+                        className="px-4 py-2 bg-gray-400 rounded"
+                    >
+                        {t("invoices.modal.cancel")}
+                    </button>
+                    <button
+                        onClick={sign}
+                        className="px-4 py-2 bg-blue text-white rounded"
+                    >
+                        {t("invoices.modal.sign")}
+                    </button>
                 </div>
             </div>
         </div>

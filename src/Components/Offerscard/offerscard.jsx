@@ -19,48 +19,36 @@ import {
     PriceChangeOutlined,
     RouteOutlined,
 } from "@mui/icons-material";
+import InfoOutlineIcon from '@mui/icons-material/InfoOutline';
 import dayjs from "../../utils/dayjs.js";
 import {useNavigate} from "react-router-dom";
 import {
-    AddQueriesId,
+    AddOffersId,
+    AddQueriesId, EditToggleOffers, openOffersModal,
     openQueriesShow
 } from "../../features/EmployeSModalToggle/employesModalToggle.js";
 import {useDispatch} from "react-redux";
 import React from "react";
 import {useTranslation} from "react-i18next";
 
-export default function QueriesCard({transaction}) {
+export default function OffersCard({data , suggestionId}) {
     const dispatch = useDispatch();
     const navigate = useNavigate();
     const {t} = useTranslation();
-
     const {i18n} = useTranslation();
-
-
     dayjs.locale(i18n.language)
 
 
-    const getPaymentMethodLabel = (method) => {
-        const methods = {cash: "Перечисления", enumeration: "Нақд", combined: "Ярим перечисления",};
-        return methods[method] || "-";
-    };
-    // const getPaymentMethodLabel = (method) => {
-    //     const methods = {
-    //         cash: t("queriesTranslation.queriesCard.payment_cash"),
-    //         enumeration: t("queriesTranslation.queriesCard.payment_enumeration"),
-    //         combined: t("queriesTranslation.queriesCard.payment_combined"),
-    //     };
-    //     return methods[method] || "-";
-    // };
 
     const getStatusStyle = (statusId) => {
-        if (statusId === 2) {
-            return {label: t("queriesTranslation.queriesCard.status_pending"), color: "error"};
+        if (statusId === '1'){
+            return {label: 'Active', color: "success"};
+
         }
-        return {label: t("queriesTranslation.queriesCard.status_delivered"), color: "success"};
+        return {label: 'error', color: "error"};
     };
 
-    const status = getStatusStyle(transaction?.status_id);
+    const status = getStatusStyle(data?.status);
 
     return (
         <Card
@@ -90,18 +78,15 @@ export default function QueriesCard({transaction}) {
                 title={
                     <Box display="flex" alignItems="center" gap={1}>
                         <Typography color="text.secondary" variant="subtitle1" fontWeight={600}>
-                            {transaction?.from_address[0]?.city?.title}
+                            {data?.route }
                         </Typography>
-                        <RouteOutlined color="secondary" fontSize="small"/>
-                        <Typography color="text.secondary" variant="subtitle1" fontWeight={600}>
-                            {transaction?.to_address[0]?.city?.title}
-                        </Typography>
+
                     </Box>
                 }
                 action={
                     <Chip
                         icon={<AccessTime sx={{fontSize: 16}}/>}
-                        label={dayjs(transaction?.created_at).fromNow()}
+                        label={dayjs(data?.created_at).fromNow()}
                         size="small"
                         color="warning"
                         variant="soft"
@@ -141,7 +126,7 @@ export default function QueriesCard({transaction}) {
                                 {t("queriesTranslation.queriesCard.cargo")}
                             </Typography>
                             <Typography variant="body1" fontWeight={600} color="text.secondary">
-                                {transaction?.title}
+                                {data?.cargo_name}
                             </Typography>
                         </Box>
 
@@ -156,10 +141,10 @@ export default function QueriesCard({transaction}) {
                                 fontWeight={600}
                             >
                                 <Payment color="success" fontSize="small"/>
-                                {t("queriesTranslation.queriesCard.payment_type")}
+                               Sana
                             </Typography>
                             <Typography variant="body1" fontWeight={600} color="text.secondary">
-                                {getPaymentMethodLabel(transaction?.payment_method)}
+                                {new Date(data?.created_at).ddmmyyyy()}
                             </Typography>
                         </Box>
 
@@ -173,11 +158,11 @@ export default function QueriesCard({transaction}) {
                                 gap={0.5}
                                 fontWeight={600}
                             >
-                                <Person color="success" fontSize="small"/>
-                                {t("queriesTranslation.queriesCard.client")}
+                                <InfoOutlineIcon color="success" fontSize="small"/>
+
                             </Typography>
                             <Typography variant="body1" fontWeight={600} color="text.secondary">
-                                {transaction?.client?.fio}
+                                {data?.trailer_info}
                             </Typography>
                         </Box>
 
@@ -195,8 +180,7 @@ export default function QueriesCard({transaction}) {
                                 {t("queriesTranslation.queriesCard.client_price")}
                             </Typography>
                             <Typography variant="body1" fontWeight={600} color="text.secondary">
-                                {transaction?.client_enumeration_price}{" "}
-                                {transaction?.client_enumeration_currency?.toUpperCase()}
+                                {data?.price}
                             </Typography>
                         </Box>
 
@@ -214,7 +198,7 @@ export default function QueriesCard({transaction}) {
                                 {t("queriesTranslation.queriesCard.weight")}
                             </Typography>
                             <Typography variant="body1" fontWeight={600} color="text.secondary">
-                                {transaction?.weight}
+                                {data?.cargo_weight}
                             </Typography>
                         </Box>
                     </Box>
@@ -224,24 +208,7 @@ export default function QueriesCard({transaction}) {
                     {/* Status */}
 
 
-                    {/* Cancel Reason */}
-                    {transaction.cancelReason && (
-                        <Box
-                            sx={(theme) => ({
-                                bgcolor: alpha(theme.palette.error.light, 0.08),
-                                border: `1px solid ${alpha(theme.palette.error.main, 0.3)}`,
-                                borderRadius: 2,
-                                p: 1.5,
-                            })}
-                        >
-                            <Typography variant="caption" color="error.main" fontWeight={600}>
-                                {t("queriesTranslation.queriesCard.cancel_reason")}
-                            </Typography>
-                            <Typography variant="body2" color="error.dark">
-                                {transaction.cancelReason}
-                            </Typography>
-                        </Box>
-                    )}
+
                 </Stack>
 
                 <Box display="flex" marginTop={2} justifyContent="space-between" alignItems="center">
@@ -260,8 +227,8 @@ export default function QueriesCard({transaction}) {
                     <Box display="flex" gap={1}>
                         <Button
                             onClick={() => {
-                                dispatch(AddQueriesId(transaction?.id));
-                                dispatch(openQueriesShow());
+                                // dispatch(AddQueriesId(data?.id));
+                                // dispatch(openQueriesShow());
                             }}
                             variant="contained"
                             color="info"
@@ -275,7 +242,10 @@ export default function QueriesCard({transaction}) {
                         </Button>
                         <Button
                             onClick={() => {
-                                navigate(`/queries/edit/${transaction?.id}`);
+                                // navigate(`/queries/edit/${data?.id}`);
+                                dispatch(EditToggleOffers())
+                                dispatch(openOffersModal())
+                                dispatch(AddOffersId(data?.id))
                             }}
                             variant="contained"
                             color="warning"
@@ -289,14 +259,14 @@ export default function QueriesCard({transaction}) {
                         </Button>
                     </Box>
 
-                    {transaction.status === 0 && transaction.cancelReason && (
-                        <Chip
-                            label={t("queriesTranslation.queriesCard.cancel")}
-                            color="error"
-                            size="small"
-                            variant="soft"
-                        />
-                    )}
+                    {/*{transaction.status === 0 && transaction.cancelReason && (*/}
+                    {/*    <Chip*/}
+                    {/*        label={t("queriesTranslation.queriesCard.cancel")}*/}
+                    {/*        color="error"*/}
+                    {/*        size="small"*/}
+                    {/*        variant="soft"*/}
+                    {/*    />*/}
+                    {/*)}*/}
                 </Box>
             </CardContent>
         </Card>

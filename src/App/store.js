@@ -1,8 +1,8 @@
 // src/app/store.js
-import { configureStore } from '@reduxjs/toolkit';
+import { configureStore, combineReducers } from '@reduxjs/toolkit';
 import counterReducer from '../features/counter/counterSlice';
 import employesModalReducer from "../features/EmployeSModalToggle/employesModalToggle.js";
-import authReducer from "../features/auth/authSlice";
+import authReducer from "../features/Auth/authSlice.js";
 import employeeReducer from "../features/Employees/employeeSlice.js";
 import driversReducer from "../features/Drivers/driversSlice.js";
 import customersReducer from "../features/customers/clientsSlice.js";
@@ -14,20 +14,31 @@ import notificationReducer from "../features/Notification/notificationSlice.js";
 import statisticsReducer from "../features/Statistics/statisticsSlice.js";
 import queriesReducer from "../features/Queries/queriesSlice.js";
 
+// combineReducers orqali root reducer yaratamiz
+const appReducer = combineReducers({
+    counter: counterReducer,
+    employesModal: employesModalReducer,
+    auth: authReducer,
+    employees : employeeReducer,
+    drivers : driversReducer,
+    customers : customersReducer,
+    orders : ordersReducer,
+    invoices : invoicesReducer,
+    suggestions : suggestionsReducer,
+    contracts : contractReducer,
+    notification : notificationReducer,
+    statistics : statisticsReducer,
+    queries : queriesReducer,
+});
+
+// logout bo'lganda barcha state tozalansin
+const rootReducer = (state, action) => {
+    if (action.type === 'auth/logout') {
+        state = undefined; // barcha redux state reset qilinadi
+    }
+    return appReducer(state, action);
+};
+
 export const store = configureStore({
-    reducer: {
-        counter: counterReducer,
-        employesModal: employesModalReducer,
-        auth: authReducer,
-        employees : employeeReducer,
-        drivers : driversReducer,
-        customers : customersReducer,
-        orders : ordersReducer,
-        invoices : invoicesReducer,
-        suggestions : suggestionsReducer,
-        contracts : contractReducer,
-        notification : notificationReducer,
-        statistics : statisticsReducer,
-        queries : queriesReducer,
-    },
+    reducer: rootReducer,
 });

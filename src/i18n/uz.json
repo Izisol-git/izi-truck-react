@@ -114,6 +114,16 @@
       "clear_input": "Maydonlarni tozalash",
       "close": "Yopish",
       "search": "Qidirish"
+    },
+    "allOffers": "Barcha takliflar",
+    "table": {
+       "trailer_info": "Treyler ma'lumoti",
+      "status": "Holat",
+      "route": "Yo'nalish",
+      "price": "Narxi",
+      "created_at": "Yaratilgan sana",
+      "cargo_weight": "Yuk og'irligi",
+      "cargo_name": "Yuk nomi"
     }
 
   },
@@ -418,6 +428,20 @@
     "createEmployees": "Xodim qo'shish",
     "editEmployees": "Xodimni tahrirlash",
 
+    "employeeProfile": {
+      "name": "Xodim ismi",
+      "createDate": "Yaratilgan sana",
+      "endDate": "Yakuniy sana",
+      "email": "Elektron pochta",
+      "status": "Holati",
+      "statusActive": "Faol",
+      "statusInvalid": "Nofaol",
+      "phoneNumber": "Telefon raqami",
+      "telegramId": "Foydalanuvchi ID (Telegram)",
+      "telegramNick": "Telegram taxallusi",
+      "tin": "STIR"
+    },
+
 
     "inputModalArray": {
       "user_type": "Foydalanuvchi turi",
@@ -455,6 +479,39 @@
       "action": "Amal"
     }
   },
+
+  "invoices": {
+    "invoices": "Hisobotlar",
+    "reloadEimzo": "E-IMZO’ni qayta yuklash",
+    "modal": {
+      "title": "Elektron imzo tanlash",
+      "loading": "Sertifikatlar yuklanmoqda...",
+      "cancel": "Bekor qilish",
+      "sign": "Imzolash"
+    },
+
+    "documents": {
+      "type": "Hujjat turi",
+      "updateDate": "Yangilanish sanasi",
+      "contractor": "Kontragent",
+      "tin": "STIR",
+      "docNumberDate": "Hujjat raqami va sanasi",
+      "contractNumberDate": "Shartnoma raqami va sanasi",
+      "supplyCost": "Yetkazib berish qiymati",
+      "vatAmount": "QQS summasi"
+    },
+    "status": {
+      "draft": "Qoralama",
+      "partnerSign": "Hamkor imzosini kutmoqda",
+      "yourSign": "Sizning imzoingizni kutmoqda",
+      "signed": "Imzolangan",
+      "rejected": "Imzodan bosh tortildi",
+      "deleted": "O‘chirildi",
+      "agentSign": "Agent imzosini kutmoqda",
+      "invalid": "Amalda emas",
+      "cancelledByGNK": "DSQ tomonidan bekor qilingan"
+    }
+  },
   "history": {
     "title": "O'zgarishlar tarixi",
     "record": "Yozuv",
@@ -469,6 +526,48 @@
     "initialValues": "Boshlang‘ich qiymatlar saqlandi.",
     "recordDeleted": "Yozuv o‘chirildi.",
     "notFound": "Topilmadi!"
+  },
+
+  "notifications": {
+    "noNotifications": "Bildirishnomalar mavjud emas",
+    "chats": {
+      "title": "Chatlar"
+    }
+  },
+  "profile": {
+    "viewProfile": "Profilni ko‘rish",
+    "helpCenter": "Yordam markazi",
+    "accountSettings": "Hisob sozlamalari",
+    "chats": "Chatlar",
+    "darkMode": "Qorong‘i rejim",
+    "logOut": "Chiqish"
+  },
+  "offersOrders": {
+    "writeYourOffer": "Taklifingizni yozing",
+    "route": "Marshrut",
+    "cargoName": "Yuk nomi",
+    "cargoWeight": "Yuk og'irligi",
+    "trailerSpec": "Tirkama xususiyati",
+    "offerPrice": "Taklif summasi",
+    "close": "Bekor qilish",
+    "send": "Yuborish",
+    "sending": "Yuborilmoqda..."
+  },
+  "offersOrdersCarrier": {
+    "title": "Sizga mos taklif bor",
+    "direction": "Yo'nalish",
+    "cargoName": "Yuk nomi",
+    "weight": "Yuk og'irligi",
+    "trailerInfo": "Treyler ma'lumoti",
+    "response": "Javobingiz",
+    "price": "Narxi",
+    "availableVehicles": "Mavjud mashinalar",
+    "estimatedArrival": "Yetib borish sanasi",
+    "responsiblePhone": "Masul shaxs telefoni",
+    "notes": "Izoh",
+    "close": "Bekor qilish",
+    "send": "Yuborish",
+    "sending": "Yuborilmoqda..."
   }
 
 }

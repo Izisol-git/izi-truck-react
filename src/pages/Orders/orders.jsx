@@ -12,9 +12,8 @@ import {OrdersDropDown} from "../../Components/index.js";
 import TouchRipple from "@mui/material/ButtonBase/TouchRipple";
 import {useNavigate, useSearchParams} from "react-router-dom";
 import {useDispatch, useSelector} from "react-redux";
-import {openExcelModal, openOffersModal} from "../../features/EmployeSModalToggle/employesModalToggle.js";
+import {openExcelModal} from "../../features/EmployeSModalToggle/employesModalToggle.js";
 import {getFilteredOrders} from "../../features/orders/ordersThunks.js";
-import {getSuggestions} from "../../features/suggestions/suggestionsThunks.js";
 import ExcelModal from "../../Components/Modal/excelModal.jsx";
 import {useTranslation} from "react-i18next";
 
@@ -46,14 +45,7 @@ function Orders() {
         from_date: "",
         to_date: "",
     });
-    const getSuggestion = async () => {
-        try {
-            const res = await dispatch(getSuggestions()).unwrap()
-            setSuggestions(res)
-        } catch (err) {
-            console.log(err);
-        }
-    }
+
     const findOrders = async (filters, pageqq) => {
        try {
            const res = await dispatch(getFilteredOrders({filters: filters, pageqq: pageqq})).unwrap()
@@ -164,22 +156,20 @@ function Orders() {
                             <TouchRipple ref={rippleRefs.add} center={false}/>
                         </button>
 
-                        <button
-                            onClick={(e) => {
-                                handleClick(e, rippleRefs.suggest)
-                                dispatch(openOffersModal())
-                                getSuggestion()
-                            }}
-                            className="relative overflow-hidden rounded bg-[#EAB308] dark:bg-btnBgDark text-white py-2 px-3"
-                        >
-                            <i className="fas fa-comment-alt mr-2"></i>
-                            {user?.user?.roles[0]?.name === 'super-admin'
-                                ? t("ordersTranslation.suggest_add")
-                                : t("ordersTranslation.suggest_view")}
-                            <TouchRipple ref={rippleRefs.suggest} center={false}/>
-                        </button>
-
-                        {user?.user?.roles[0]?.name === 'super-admin' && (
+                        {/*<button*/}
+                        {/*    onClick={(e) => {*/}
+                        {/*        handleClick(e, rippleRefs.suggest)*/}
+                        {/*        dispatch(openOffersModal())*/}
+                        {/*        getSuggestion()*/}
+                        {/*    }}*/}
+                        {/*    className="relative overflow-hidden rounded bg-[#EAB308] dark:bg-btnBgDark text-white py-2 px-3"*/}
+                        {/*>*/}
+                        {/*    <i className="fas fa-comment-alt mr-2"></i>*/}
+                        {/*    {t("ordersTranslation.suggest_add")}*/}
+                        {/*    {t("ordersTranslation.suggest_view")}*/}
+                        {/*    <TouchRipple ref={rippleRefs.suggest} center={false}/>*/}
+                        {/*</button>*/}
+                        {/*{user?.user?.roles[0]?.name === 'super-admin' && (*/}
                             <button
                                 onClick={(e) => {
                                     handleClick(e, rippleRefs.view)
@@ -190,7 +180,7 @@ function Orders() {
                                 <i className="fas fa-eye mr-2"></i> {t("ordersTranslation.suggests_view")}
                                 <TouchRipple ref={rippleRefs.view} center={false}/>
                             </button>
-                        )}
+                        {/*)}*/}
 
                         <button
                             onClick={(e) => {
@@ -306,10 +296,7 @@ function Orders() {
                 <PaginationFooter filters={filters} onClick={findOrders} total={orders}/>
             </div>
 
-            {
-                user?.user?.roles[0]?.name === 'super-admin' ? <OffersOrders/> :
-                    <OffersOrdersCarrier setSuggestions={setSuggestions} suggestions={suggestions}/>
-            }
+
 
 
             <ExcelModal search={filters} selectedKeys={selectedKeys} setSelectedKeys={setSelectedKeys}

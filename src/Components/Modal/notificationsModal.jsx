@@ -7,12 +7,13 @@ import {useDispatch} from "react-redux";
 import {useNavigate} from "react-router-dom";
 import Badge from "@mui/material/Badge";
 import NotificationsIcon from "@mui/icons-material/Notifications";
+import {useTranslation} from "react-i18next";
 
 function NotificationsModal({notifications , count}) {
     const dispatch = useDispatch();
     const navigate = useNavigate();
     const [isOpen, setOpen] = React.useState(false);
-    console.log(notifications)
+    const {t} = useTranslation();
     const dropdownRef = useRef();
 
     useEffect(() => {
@@ -66,7 +67,7 @@ function NotificationsModal({notifications , count}) {
                     ))
                 ) : (
                     <div className="px-4 py-2 text-gray-500 dark:text-gray-400">
-                        No notifications
+                        {t('notifications.noNotifications')}
                     </div>
                 )}
             </div>

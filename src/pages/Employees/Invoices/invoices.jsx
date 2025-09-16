@@ -3,12 +3,10 @@ import ImzoComponent from "../../../Components/IMZOComponent/ImzoComponent.jsx";
 import { useDispatch, useSelector } from "react-redux";
 import { openInvoicesModal } from "../../../features/EmployeSModalToggle/employesModalToggle.js";
 import axios from "axios";
-import {getInvoices, getInvoicesStatus} from "../../../features/Invoices/invoicesThunks.js";
+import { getInvoices } from "../../../features/Invoices/invoicesThunks.js";
 import { useSearchParams } from "react-router-dom";
 import {
-    EmployeesPagination,
     UserPagination,
-    InvoicesPagination,
     Loading,
 } from "../../../Components/index.js";
 import RadioGroup from "@mui/material/RadioGroup";
@@ -16,15 +14,17 @@ import Radio from "@mui/material/Radio";
 import TouchRipple from "@mui/material/ButtonBase/TouchRipple";
 import FormControl from "@mui/material/FormControl";
 import FormControlLabel from "@mui/material/FormControlLabel";
+import { useTranslation } from "react-i18next";
 
 const Invoices = () => {
+    const { t } = useTranslation();
     const dispatch = useDispatch();
     const [searchParams, setSearchParams] = useSearchParams();
 
     const [total, setTotal] = useState();
     const [employeesId, setEmployeesId] = useState();
     const [employeesData, setEmployeesData] = useState();
-    const { loading, error } = useSelector((state) => state.invoices);
+    const { loading } = useSelector((state) => state.invoices);
 
     // localStorage bilan sinxron state
     const [activeRadio, setActiveRadio] = useState(
@@ -36,10 +36,7 @@ const Invoices = () => {
 
     const fetchInvoices = async () => {
         try {
-            const obj = {
-                activeRadio,
-                pageqq,
-            };
+            const obj = { activeRadio, pageqq };
             const res = await dispatch(getInvoices(obj));
             setTotal(res.payload);
             setEmployeesData(res.payload.data);
@@ -61,19 +58,14 @@ const Invoices = () => {
     useEffect(() => {
         setSearchParams({
             ...Object.fromEntries(searchParams),
-            page: 1, // 0 emas, odatda pagination 1-dan boshlanadi
+            page: 1,
         });
     }, [activeRadio]);
 
     function handleSignSuccess({ pkcs7, hex, tin }) {
         console.log("✅ Imzo muvaffaqiyatli", { pkcs7, hex, tin });
 
-        const sendData = {
-            data: pkcs7,
-            hex: hex,
-            tin: tin,
-        };
-
+        const sendData = { data: pkcs7, hex: hex, tin: tin };
         const token = localStorage.getItem("token");
 
         axios
@@ -84,9 +76,8 @@ const Invoices = () => {
                 },
             })
             .then((res) => {
-                console.log("Success:", res.data?.success);
                 if (res.data?.success === true) {
-                    fetchInvoices()
+                    fetchInvoices();
                 }
             })
             .catch((err) => {
@@ -95,27 +86,26 @@ const Invoices = () => {
     }
 
     const statusList = [
-        { label: "Черновик", value: 0 },
-        { label: "Ожидают подписи партнера", value: 1 },
-        { label: "Ожидает вашей подписи", value: 2 },
-        { label: "Подписан", value: 3 },
-        { label: "Отказ от подписи", value: 4 },
-        { label: "Удален", value: 5 },
-        { label: "Ожидают подписи агента", value: 6 },
-        { label: "НЕ ДЕЙСТВИТЕЛЬНЫЙ", value: 40 },
-        { label: "Аннулирован ГНК", value: 50 },
+        { label: "Черновик", key: "invoices.status.draft", value: 0 },
+        { label: "Ожидают подписи партнера", key: "invoices.status.partnerSign", value: 1 },
+        { label: "Ожидает вашей подписи", key: "invoices.status.yourSign", value: 2 },
+        { label: "Подписан", key: "invoices.status.signed", value: 3 },
+        { label: "Отказ от подписи", key: "invoices.status.rejected", value: 4 },
+        { label: "Удален", key: "invoices.status.deleted", value: 5 },
+        { label: "Ожидают подписи агента", key: "invoices.status.agentSign", value: 6 },
+        { label: "НЕ ДЕЙСТВИТЕЛЬНЫЙ", key: "invoices.status.invalid", value: 40 },
+        { label: "Аннулирован ГНК", key: "invoices.status.cancelledByGNK", value: 50 },
     ];
 
     const [columnsArry, setColumnsArry] = useState([
-        { title: "Тип документа", active: true },
-        { title: "Дата обновления", active: true },
-        { title: "Контрагент", active: true },
-        { title: "ИНН", active: true },
-        { title: "Номер и дата документа", active: true },
-        { title: "Номер и дата договора", active: true },
-        { title: "Стоимость поставки", active: true },
-        { title: "Сумма НДС", active: true },
-
+        { title: "Тип документа", key: "invoices.documents.type", active: true },
+        { title: "Дата обновления", key: "invoices.documents.updateDate", active: true },
+        { title: "Контрагент", key: "invoices.documents.contractor", active: true },
+        { title: "ИНН", key: "invoices.documents.tin", active: true },
+        { title: "Номер и дата документа", key: "invoices.documents.docNumberDate", active: true },
+        { title: "Номер и дата договора", key: "invoices.documents.contractNumberDate", active: true },
+        { title: "Стоимость поставки", key: "invoices.documents.supplyCost", active: true },
+        { title: "Сумма НДС", key: "invoices.documents.vatAmount", active: true },
     ]);
 
     const handleRadioChange = (value) => {
@@ -125,15 +115,15 @@ const Invoices = () => {
 
     return (
         <div className={"bg-bacWhite min-h-[calc(100dvh-70px)] dark:bg-darkBg"}>
-            <div className={"w-[90%] mx-auto flex items-center py-5 justify-between "}>
-                <p className={"text-2xl text-blue font-semibold"}>Invoices</p>
+            <div className={"w-[90%] mx-auto flex items-center py-5 justify-between"}>
+                <p className={"text-2xl text-blue font-semibold"}>{t('invoices.invoices')}</p>
                 <button
                     onClick={() => dispatch(openInvoicesModal())}
                     className={
                         "py-2 px-3 bg-blue text-white rounded hover:ring-2 ring-blue outline-none"
                     }
                 >
-                    E-IMZO’ni qayta yuklash
+                    {t("invoices.reloadEimzo")}
                 </button>
             </div>
 
@@ -147,19 +137,17 @@ const Invoices = () => {
                                         key={item.value}
                                         onClick={() => handleRadioChange(item.value)}
                                         style={{ position: "relative", overflow: "hidden" }}
-                                        className={`border-2 px-3 rounded-lg cursor-pointer text-[14px]   ${
+                                        className={`border-2 px-3 rounded-lg cursor-pointer text-[14px] ${
                                             activeRadio === item.value ? "bg-gray-200 dark:bg-navBgHover" : ""
                                         }`}
                                     >
                                         <FormControlLabel
-                                            value={item.label}
+                                            value={item.value}
                                             control={
                                                 <Radio
                                                     sx={{
-                                                        color: "#1D2D5B", // light mode
+                                                        color: "#1D2D5B",
                                                         "&.Mui-checked": { color: "#1D2D5B" },
-
-                                                        // dark mode
                                                         "@media (prefers-color-scheme: dark)": {
                                                             color: "#fff",
                                                             "&.Mui-checked": { color: "#fff" },
@@ -168,7 +156,7 @@ const Invoices = () => {
                                                     checked={activeRadio === item.value}
                                                 />
                                             }
-                                            label={item.label}
+                                            label={t(item.key, { defaultValue: item.label })}
                                         />
                                         <TouchRipple ref={null} center={false} />
                                     </button>
@@ -186,11 +174,13 @@ const Invoices = () => {
                             setEmployeesId={setEmployeesId}
                             total={total}
                             data={employeesData}
-                            arry={columnsArry}
+                            arry={columnsArry.map((col) => ({
+                                ...col,
+                                title: t(col.key, { defaultValue: col.title }),
+                            }))}
                             setColumnsArry={setColumnsArry}
                             navigateURL={"invoices"}
                         />
-                        // ""
                     )}
                 </div>
             </div>

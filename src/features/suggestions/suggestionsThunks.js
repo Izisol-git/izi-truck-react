@@ -8,7 +8,7 @@ export const addSuggestions = createAsyncThunk(
         try {
             return await suggestionsService.addsuggestions(data);
         } catch (err) {
-            return rejectWithValue(err.response?.data || "Failed to fetch clients");
+            return rejectWithValue(err.response?.data || "Failed to fetch suggestions");
         }
     }
 )
@@ -18,17 +18,49 @@ export const addSuggestionsReply = createAsyncThunk(
         try {
             return await suggestionsService.addSuggestionsReply(id , data);
         } catch (err) {
-            return rejectWithValue(err.response?.data || "Failed to fetch clients");
+            return rejectWithValue(err.response?.data || "Failed to fetch suggestions");
         }
     }
 )
-export const getSuggestions = createAsyncThunk(
-    'suggestions/getSuggestions',
+
+export const editSuggestions = createAsyncThunk(
+    'suggestions/editSuggestions',
+    async (id , { rejectWithValue }) => {
+        try {
+            return await suggestionsService.editSuggestions(id);
+        } catch (err) {
+            return rejectWithValue(err.response?.data || "Failed to fetch suggestions");
+        }
+    }
+)
+
+export const getSuggestionsId = createAsyncThunk(
+    'suggestions/getSuggestionsId',
+    async (id , { rejectWithValue }) => {
+        try {
+            return await suggestionsService.getSuggestionsId(id);
+        } catch (err) {
+            return rejectWithValue(err.response?.data || "Failed to fetch suggestions");
+        }
+    }
+)
+export const getSuggestionsUser = createAsyncThunk(
+    'suggestions/getSuggestionsUser',
     async (_, { rejectWithValue }) => {
         try {
-            return await suggestionsService.getSuggestions();
+            return await suggestionsService.getSuggestionsUser();
         } catch (err) {
-            return rejectWithValue(err.response?.data || "Failed to fetch clients");
+            return rejectWithValue(err.response?.data || "Failed to fetch suggestions");
+        }
+    }
+)
+export const getSuggestionsAdmin = createAsyncThunk(
+    'suggestions/getSuggestionsAdmin',
+    async (pageqq, { rejectWithValue }) => {
+        try {
+            return await suggestionsService.getSuggestionsAdmin(pageqq);
+        } catch (err) {
+            return rejectWithValue(err.response?.data || "Failed to fetch suggestions");
         }
     }
 )

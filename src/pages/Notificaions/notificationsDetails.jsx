@@ -4,9 +4,11 @@ import {UserNavbar} from "../index.js";
 import {Chats, UserPagination} from "../../Components/index.js";
 import {useDispatch} from "react-redux";
 import {getAllChatsID} from "../../features/Notification/notificationsThunks.js";
+import {useTranslation} from "react-i18next";
 
 function NotificationsDetails() {
     const {id} = useParams();
+    const {t} = useTranslation();
     const [columnsArry, setColumnsArry] = useState([
         {title: "Аватар", active: true},
         {title: "Full name", active: true},
@@ -45,7 +47,7 @@ function NotificationsDetails() {
 
 
                     <div className="flex items-center  py-5 justify-between">
-                        <p className={'text-2xl text-blue font-semibold dark:text-darkText'}>Chats</p>
+                        <p className={'text-2xl text-blue font-semibold dark:text-darkText'}>{t('notifications.chats.title')}</p>
                     </div>
 
 

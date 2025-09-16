@@ -51,3 +51,4 @@ export {default as DriversFrom} from "./DriversForm/driversFrom.jsx";
 export {default as QueriesFrom} from "./QueriesFrom/queriesFrom.jsx";
 export {default as LogisticsInterface} from "./Modal/queriesShow.jsx";
 export {default as StatisticsFilter} from "./StatisticsFilter/statisticsFilter.jsx";
+export {default as OffersCard} from "./Offerscard/offerscard.jsx";

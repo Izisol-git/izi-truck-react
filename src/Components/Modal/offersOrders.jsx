@@ -1,42 +1,96 @@
 import React, {useEffect, useState} from 'react';
 import {useDispatch, useSelector} from "react-redux";
-import {closeModalHistory, closeOffersModal} from "../../features/EmployeSModalToggle/employesModalToggle.js";
+import {closeOffersModal} from "../../features/EmployeSModalToggle/employesModalToggle.js";
 import {InputMUI} from "../index.js";
 import InputFileUpload from "../Buttons/fileButton.jsx";
 import {Button} from "@mui/material";
-import {addSuggestions} from "../../features/suggestions/suggestionsThunks.js";
+import {
+    addSuggestions,
+    editSuggestions,
+    getSuggestionsAdmin, getSuggestionsId,
+    getSuggestionsUser
+} from "../../features/suggestions/suggestionsThunks.js";
+import {useTranslation} from "react-i18next";
 
 function OffersOrders() {
+    const {t} = useTranslation();
     const isOpenOffersModal = useSelector(state => state.employesModal.isOpenOffersModal);
-    const {addLoadingSuggestions} = useSelector((state)=>state.suggestions);
-    const [suggestionsData, setSuggestionsData] = useState(
-        {
+    const {addLoadingSuggestions} = useSelector((state) => state.suggestions);
+    const {addEditToggleOffers} = useSelector((state) => state.employesModal);
+    const {offersId} = useSelector((state) => state.employesModal);
+    const {user} = useSelector((state) => state.auth);
+    // const [getSuggestions, setSuggestions] = useState();
+    const [suggestionsData, setSuggestionsData] = useState({
+        route: '',
+        cargo_name: '',
+        cargo_weight: '',
+        trailer_spec: '',
+        price: ''
+    });
+
+    const dispatch = useDispatch();
+
+    useEffect(() => {
+        setSuggestionsData({
             route: '',
             cargo_name: '',
             cargo_weight: '',
             trailer_spec: '',
             price: ''
+        });
+    }, [isOpenOffersModal]);
+
+
+    const getSuggestionId = async () => {
+        try {
+            const res = await dispatch(getSuggestionsId(offersId)).unwrap()
+            setSuggestionsData(
+                {
+                    route: res?.route,
+                    cargo_name: res?.cargo_name,
+                    cargo_weight: res?.cargo_weight,
+                    trailer_spec: res?.cargo_weight,
+                    price: res?.cargo_weight,
+                }
+            )
+            console.log(res);
+        }catch (error) {
+            console.log(error);
         }
-    );
+    }
 
     useEffect(() => {
-        setSuggestionsData(
-            {
-                route: '',
-                cargo_name: '',
-                cargo_weight: '',
-                trailer_spec: '',
-                price: ''
-            }
-        )
-    } , [isOpenOffersModal])
+        if (!addEditToggleOffers) {
+            getSuggestionId();
+        }
+    }, [offersId])
 
-
-    const Suggestions = async (data) => {
-
+    const editSuggestion = async () => {
         try {
-            const res = await dispatch(addSuggestions( suggestionsData)).unwrap();
-            dispatch(closeOffersModal())
+            const res = await dispatch(editSuggestions(offersId)).unwrap();
+            dispatch(closeOffersModal());
+            console.log(res);
+        } catch (e) {
+            console.error(e);
+        }
+    }
+    const Suggestions = async () => {
+        try {
+            const res = await dispatch(addSuggestions(suggestionsData)).unwrap();
+            dispatch(closeOffersModal());
+            if (user?.user?.roles[0]?.name === "super-admin") {
+                try {
+                    const res = await dispatch(getSuggestionsAdmin({})).unwrap()
+                } catch (err) {
+                    console.log(err);
+                }
+            } else {
+                try {
+                    const res = await dispatch(getSuggestionsUser()).unwrap()
+                } catch (err) {
+                    console.log(err);
+                }
+            }
             console.log(res);
         } catch (e) {
             console.error(e);
@@ -48,40 +102,26 @@ function OffersOrders() {
         document.body.style.overflow = isOpenOffersModal ? "hidden" : "auto";
     }, [isOpenOffersModal]);
 
-    const dispatch = useDispatch();
     return (
         <>
             {/* Overlay */}
             <div
-                className={`fixed inset-0 bg-black/40 dark:bg-black/70 backdrop-blur-sm transition-opacity duration-300 z-[1099] ${
-                    isOpenOffersModal ? "opacity-100" : "opacity-0 pointer-events-none"
-                }`}
+                className={`fixed inset-0 bg-black/40 dark:bg-black/70 backdrop-blur-sm transition-opacity duration-300 z-[1099] ${isOpenOffersModal ? "opacity-100" : "opacity-0 pointer-events-none"}`}
                 onClick={() => dispatch(closeOffersModal())}
             ></div>
 
             {/* Modal */}
             <div
-                className={`fixed top-1/2 left-1/2 w-[30%] max-h-[90vh] 
-                bg-white text-gray-900 
-                dark:bg-darkBg dark:text-darkText 
-                border border-gray-200 dark:border-gray-700 
-                shadow-2xl rounded overflow-y-auto 
-                transform transition-all duration-500 ease-out z-[1100]
-                ${
-                    isOpenOffersModal
-                        ? "opacity-100 scale-100 -translate-x-1/2 -translate-y-1/2"
-                        : "opacity-0 scale-90 -translate-x-1/2 -translate-y-1/2 pointer-events-none"
-                }`}
+                className={`fixed top-1/2 left-1/2 w-[30%] max-h-[90vh] bg-white text-gray-900 dark:bg-darkBg dark:text-darkText border border-gray-200 dark:border-gray-700 shadow-2xl rounded overflow-y-auto transform transition-all duration-500 ease-out z-[1100]
+                ${isOpenOffersModal ? "opacity-100 scale-100 -translate-x-1/2 -translate-y-1/2" : "opacity-0 scale-90 -translate-x-1/2 -translate-y-1/2 pointer-events-none"}`}
             >
                 <div className={"pb-4"}>
                     {/* Header */}
                     <div className={"flex items-center justify-between p-4"}>
-                        <p className={"text-blue font-bold"}>Taklifingizni yozing</p>
+                        <p className={"text-blue font-bold"}>{addEditToggleOffers ? t("offersOrders.writeYourOffer") : "Edit"}</p>
                         <div
                             onClick={() => dispatch(closeOffersModal())}
-                            className={
-                                "w-[30px] center h-[30px] hover:bg-gray-200 dark:hover:bg-gray-700 rounded"
-                            }
+                            className={"w-[30px] center h-[30px] hover:bg-gray-200 dark:hover:bg-gray-700 rounded"}
                         >
                             <i className="fa-solid fa-xmark text-blue"></i>
                         </div>
@@ -92,23 +132,20 @@ function OffersOrders() {
                         <InputMUI
                             value={suggestionsData.route || ""}
                             onChange={(value) =>
-                                setSuggestionsData({ ...suggestionsData, route: value.target.value })
+                                setSuggestionsData({...suggestionsData, route: value.target.value})
                             }
                             variant={"outlined"}
-                            label={"Marshrut"}
+                            label={t("offersOrders.route")}
                         />
                     </div>
                     <div className={"px-4 py-2"}>
                         <InputMUI
                             value={suggestionsData.cargo_name || ""}
                             onChange={(value) =>
-                                setSuggestionsData({
-                                    ...suggestionsData,
-                                    cargo_name: value.target.value,
-                                })
+                                setSuggestionsData({...suggestionsData, cargo_name: value.target.value})
                             }
                             variant={"outlined"}
-                            label={"Yuk nomi"}
+                            label={t("offersOrders.cargoName")}
                         />
                     </div>
                     <div className={"px-4 py-2"}>
@@ -116,70 +153,62 @@ function OffersOrders() {
                             type={"number"}
                             value={suggestionsData.cargo_weight || ""}
                             onChange={(value) =>
-                                setSuggestionsData({
-                                    ...suggestionsData,
-                                    cargo_weight: value.target.value,
-                                })
+                                setSuggestionsData({...suggestionsData, cargo_weight: value.target.value})
                             }
                             variant={"outlined"}
-                            label={"Yuk og'irligi"}
+                            label={t("offersOrders.cargoWeight")}
                         />
                     </div>
                     <div className={"px-4 py-2"}>
                         <InputMUI
                             value={suggestionsData.trailer_spec || ""}
                             onChange={(value) =>
-                                setSuggestionsData({
-                                    ...suggestionsData,
-                                    trailer_spec: value.target.value,
-                                })
+                                setSuggestionsData({...suggestionsData, trailer_spec: value.target.value})
                             }
                             variant={"outlined"}
-                            label={"Tirkama xususiyati"}
+                            label={t("offersOrders.trailerSpec")}
                         />
                     </div>
                     <div className={"px-4 py-2"}>
                         <InputMUI
                             value={suggestionsData.price || ""}
                             onChange={(value) =>
-                                setSuggestionsData({
-                                    ...suggestionsData,
-                                    price: value.target.value,
-                                })
+                                setSuggestionsData({...suggestionsData, price: value.target.value})
                             }
                             variant={"outlined"}
-                            label={"Taklif summasi"}
+                            label={t("offersOrders.offerPrice")}
                         />
                     </div>
 
                     {/* File Upload */}
                     <div className={"px-4 py-2"}>
-                        <InputFileUpload />
+                        <InputFileUpload/>
                     </div>
 
                     {/* Footer Buttons */}
                     <div className={"px-4 py-2 flex gap-4"}>
                         <Button
-                            sx={{ width: "50%" }}
+                            sx={{width: "50%"}}
                             variant="outlined"
                             color="error"
                             onClick={() => dispatch(closeOffersModal())}
                         >
-                            Close
+                            {t("offersOrders.close")}
                         </Button>
                         <Button
-                            sx={{ borderColor: "#1D2D5B", width: "50%", color: "#1D2D5B" }}
+                            sx={{borderColor: "#1D2D5B", width: "50%", color: "#1D2D5B"}}
                             variant="outlined"
                             color="primary"
-                            onClick={Suggestions}
+                            onClick={() => {
+                                addEditToggleOffers ? Suggestions() : editSuggestion()
+                            }}
                         >
-                            {addLoadingSuggestions ? "sending..." : "Send"}
+                            {addLoadingSuggestions ? t("offersOrders.sending") : t("offersOrders.send")}
                         </Button>
                     </div>
                 </div>
             </div>
         </>
-
     );
 }
 

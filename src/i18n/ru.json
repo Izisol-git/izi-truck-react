@@ -118,6 +118,17 @@
       "clear_input": "Очистить поля",
       "close": "Закрыть",
       "search": "Поиск"
+    },
+    "allOffers": "Все предложения",
+    "table": {
+
+      "trailer_info": "Информация о трейлере",
+      "status": "Статус",
+      "route": "Маршрут",
+      "price": "Цена",
+      "created_at": "Дата создания",
+      "cargo_weight": "Вес груза",
+      "cargo_name": "Название груза"
     }
 
   },
@@ -427,6 +438,20 @@
     "editEmployees": "Редактировать сотрудника",
     "employees" : "Сотрудники",
 
+    "employeeProfile": {
+      "name": "Имя сотрудника",
+      "createDate": "Дата создания",
+      "endDate": "Дата окончания",
+      "email": "Электронная почта",
+      "status": "Статус",
+      "statusActive": "Активный",
+      "statusInvalid": "Неактивный",
+      "phoneNumber": "Номер телефона",
+      "telegramId": "ID пользователя (Telegram)",
+      "telegramNick": "Ник в Telegram",
+      "tin": "ИНН"
+    },
+
     "inputModalArray": {
       "user_type": "Тип пользователя",
       "full_name": "Полное имя",
@@ -463,6 +488,40 @@
     }
   },
 
+  "invoices": {
+    "invoices": "Счета",
+    "reloadEimzo": "Перезагрузить E-IMZO",
+    "modal": {
+      "title": "Выбор электронной подписи",
+      "loading": "Загрузка сертификатов...",
+      "cancel": "Отмена",
+      "sign": "Подписать"
+    },
+
+
+    "documents": {
+      "type": "Тип документа",
+      "updateDate": "Дата обновления",
+      "contractor": "Контрагент",
+      "tin": "ИНН",
+      "docNumberDate": "Номер и дата документа",
+      "contractNumberDate": "Номер и дата договора",
+      "supplyCost": "Стоимость поставки",
+      "vatAmount": "Сумма НДС"
+    },
+    "status": {
+      "draft": "Черновик",
+      "partnerSign": "Ожидают подписи партнера",
+      "yourSign": "Ожидает вашей подписи",
+      "signed": "Подписан",
+      "rejected": "Отказ от подписи",
+      "deleted": "Удален",
+      "agentSign": "Ожидают подписи агента",
+      "invalid": "НЕ ДЕЙСТВИТЕЛЬНЫЙ",
+      "cancelledByGNK": "Аннулирован ГНК"
+    }
+  },
+
   "history": {
     "title": "История изменений",
     "record": "Запись",
@@ -477,7 +536,52 @@
     "initialValues": "Начальные значения сохранены.",
     "recordDeleted": "Запись была удалена.",
     "notFound": "Не найдено!"
+  },
+
+  "notifications": {
+    "noNotifications": "Нет уведомлений",
+    "chats": {
+      "title": "Чаты"
+    }
+  },
+  "profile": {
+    "viewProfile": "Просмотр профиля",
+    "helpCenter": "Центр помощи",
+    "accountSettings": "Настройки аккаунта",
+    "chats": "Чаты",
+    "darkMode": "Темная тема",
+    "logOut": "Выйти"
+  },
+
+  "offersOrders": {
+    "writeYourOffer": "Напишите ваше предложение",
+    "route": "Маршрут",
+    "cargoName": "Название груза",
+    "cargoWeight": "Вес груза",
+    "trailerSpec": "Характеристика прицепа",
+    "offerPrice": "Сумма предложения",
+    "close": "Закрыть",
+    "send": "Отправить",
+    "sending": "Отправляется..."
+  },
+  "offersOrdersCarrier": {
+    "title": "Имеется подходящее предложение",
+    "direction": "Маршрут",
+    "cargoName": "Название груза",
+    "weight": "Вес груза",
+    "trailerInfo": "Информация о прицепе",
+    "response": "Ваш ответ",
+    "price": "Цена",
+    "availableVehicles": "Доступные машины",
+    "estimatedArrival": "Дата прибытия",
+    "responsiblePhone": "Телефон ответственного",
+    "notes": "Примечание",
+    "close": "Закрыть",
+    "send": "Отправить",
+    "sending": "Отправляется..."
   }
+
+
 
 
 }

@@ -9,8 +9,20 @@ class suggestionsService {
         const res = await api.post(`/suggestions/${id}/reply` , data);
         return res.data;
     }
-    static async getSuggestions() {
-        const res = await api.get(`/suggestions/once`);
+    static async editSuggestions(id ) {
+        const res = await api.put(`/suggestions/${id}`);
+        return res.data;
+    }
+    static async getSuggestionsId(id ) {
+        const res = await api.get(`/suggestions/show/${id}`);
+        return res.data;
+    }
+    static async getSuggestionsUser(pageqq) {
+        const res = await api.get(`/suggestions?page=${pageqq}`);
+        return res.data;
+    }
+    static async getSuggestionsAdmin(pageqq) {
+        const res = await api.get(`/admin/suggestions?page=${pageqq}`);
         return res.data;
     }
 }

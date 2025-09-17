@@ -32,8 +32,8 @@ const ProfileInfoCardDrivers = ({ width, shadow, data }) => {
                             <img
                                 src={
                                     data?.avatar !== ""
-                                        ? "../../../public/profile.png"
-                                        : "../../../public/profile.png"
+                                        ? "/profile.png"
+                                        : "/profile.png"
                                 }
                                 alt="User avatar"
                                 className="w-44 h-44 object-cover"

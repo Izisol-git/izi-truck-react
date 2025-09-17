@@ -2,9 +2,9 @@ import React, {useEffect, useRef, useState} from 'react';
 import {useTranslation} from "react-i18next";
 
 const languages = [
-    {code: 'uz', label: 'O‘zbekcha', flag: '../../../public/uzbekistan.png'},
-    {code: 'uzCyrl', label: 'Ўзбекча', flag: '../../../public/uzbekistan.png'},
-    {code: 'ru', label: 'Русский', flag: '../../../public/russia.png'},
+    {code: 'uz', label: 'O‘zbekcha', flag: '/uzbekistan.png'},
+    {code: 'uzCyrl', label: 'Ўзбекча', flag: '/uzbekistan.png'},
+    {code: 'ru', label: 'Русский', flag: '/russia.png'},
 ];
 
 

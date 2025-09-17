@@ -22,7 +22,7 @@ const ProfileInfoCardEmployees = ({ width, shadow, data }) => {
             {/* LEFT */}
             <div className="flex flex-col space-y-4 border-r-4 border-dashed">
                 <div className="flex flex-col justify-center h-full items-center gap-4">
-                    <img src={data?.avatar !== '' ? ' ../../../public/profile.png' : '../../../public/profile.png'}
+                    <img src={data?.avatar !== '' ? '/profile.png' : '/profile.png'}
 
                          alt="User avatar"
                          className="w-44 h-44   object-cover  "

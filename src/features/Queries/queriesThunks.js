@@ -50,6 +50,17 @@ export const GetQueriesId = createAsyncThunk(
         }
     }
 );
+// createOrder
+export const createOrder = createAsyncThunk(
+    "orders/createOrder",
+    async (id, { rejectWithValue }) => {
+        try {
+            return await QueriesService.createOrder(id);
+        } catch (err) {
+            return rejectWithValue(err.response?.data || "Failed to fetch queries");
+        }
+    }
+);
 // update queries
 export const updateQueries = createAsyncThunk(
     "orders/updateQueries",

@@ -24,6 +24,10 @@ const QueriesService = {
         const res = await axios.get(`/queries/${id}`);
         return res.data;
     },
+    async createOrder(id) {
+        const res = await axios.post(`/queries/createOrder/${id}`);
+        return res.data;
+    },
     async update(id , formData) {
         const res = await axios.put(`/queries/${id}` , formData);
         return res.data;

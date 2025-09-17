@@ -3,25 +3,27 @@ import {useParams} from "react-router-dom";
 import {UserNavbar} from "../index.js";
 import {Chats, UserPagination} from "../../Components/index.js";
 import {useDispatch} from "react-redux";
-import {getAllChatsID} from "../../features/Notification/notificationsThunks.js";
+import {getAllChatsID, getNotifications} from "../../features/Notification/notificationsThunks.js";
 import {useTranslation} from "react-i18next";
 
 function NotificationsDetails() {
     const {id} = useParams();
     const {t} = useTranslation();
-    const [columnsArry, setColumnsArry] = useState([
-        {title: "Аватар", active: true},
-        {title: "Full name", active: true},
-        {title: "User Name", active: true},
-        {title: "From type", active: true},
-        {title: "Created at", active: true},
-        {title: "Is read", active: true},
-        {title: "Action", active: true},
-    ])
 
     const [chatsData , setChatsData] = useState();
     const [chatUser , setChatUser] = useState();
     const dispatch = useDispatch();
+
+
+    const getAll = async () => {
+        try {
+            const  res = await dispatch(getNotifications()).unwrap();
+            console.log(res)
+            // setNotificationData(res.messages);
+        }catch(err){
+            console.log(err);
+        }
+    }
 
     const getChatsId =async () => {
         try {
@@ -37,7 +39,8 @@ function NotificationsDetails() {
 
     useEffect(() => {
         getChatsId()
-    } , [])
+        getAll()
+    } , [id])
 
 
     return (

@@ -11,7 +11,7 @@ import {useNavigate} from "react-router-dom";
 import {useDispatch} from "react-redux";
 import {readNotifications} from "../../features/Notification/notificationsThunks.js";
 
-function NotificationsPagination({row  ,data ,arry,index,setEmployeesId,employeesId,navigateURL}) {
+function NotificationsPagination({row  ,arry,index,navigateURL}) {
     const  navigate = useNavigate();
     const dispatch = useDispatch();
     const addReadNotification = async (id) => {

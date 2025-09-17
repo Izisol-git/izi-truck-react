@@ -243,9 +243,6 @@ const UserPagination = ({arry, navigateURL, data, total, setEmployeesId, employe
                                         arry={arry}
                                         row={row}
                                         index={index}
-                                        data={data}
-                                        setEmployeesId={setEmployeesId}
-                                        employeesId={employeesId}
                                         />
                                     ) : navigateURL === 'chats' ? (
                                         <ChatsPagination

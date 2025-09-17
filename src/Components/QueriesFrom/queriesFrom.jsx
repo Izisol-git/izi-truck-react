@@ -2,6 +2,7 @@ import React, {useEffect, useState} from 'react';
 import {useNavigate, useParams} from "react-router-dom";
 import {useDispatch, useSelector} from "react-redux";
 import {
+    createOrder,
     CreateQueries,
     getAllSelect,
     getQueriesAll,
@@ -56,6 +57,28 @@ function QueriesFrom({mode}) {
     useEffect(() => {
         document.body.style.overflow = "auto";
     }, []);
+
+    const createOrderId =async () => {
+        try {
+            const res = await dispatch(createOrder(id));
+            navigate('/queries');
+            try {
+                const res2 = await dispatch(getQueriesAll({
+                    pageqq: 1, search: {
+                        search: "",
+                        from: '',
+                        to: ''
+                    }
+                })).unwrap()
+                // console.log(res2)
+
+            } catch (error) {
+                console.error(error)
+            }
+        }catch(error) {
+            console.log(error);
+        }
+    }
 
 
     const getQueriesId = async () => {
@@ -201,7 +224,7 @@ function QueriesFrom({mode}) {
             <div className={'bg-bacWhite w-full min-h-[calc(100dvh-70px)] py-5 dark:bg-darkBg'}>
                 <div className={'w-[90%] bg-white px-4  mx-auto py-5 rounded-md shadow dark:bg-darkBgTwo'}>
                     <div className={'h-[40px] gap-4 relative text-center center  w-full   mb-10'}>
-                        <div className={'w-max  absolute top-0 left-0'} onClick={() => navigate(`/queries`)}>
+                        <div className={'  absolute flex items-center justify-between w-full top-0 left-0'} >
                             {/*<Button color={'dark:bg-btnBgDark'} icon={<i className="fa-solid fa-arrow-left"></i>}*/}
                             {/*        value={'Queries'}/>*/}
                             <Button
@@ -216,6 +239,21 @@ function QueriesFrom({mode}) {
                                 variant={'contained'}>
                                 <i className="fa-solid fa-right-from-bracket mr-2"></i>
                                 {t('queriesTranslation.back')}
+                            </Button>
+                            <Button
+                                onClick={() => {
+                                    createOrderId()
+                                }}
+                                sx={{
+                                    background: '#1D2D5B',
+                                    '.dark &': {
+                                        background: '#2B4764',
+                                    }
+                                }}
+                                color={'info'}
+                                variant={'contained'}>
+                                <i className="fa-solid fa-cart-plus mr-2"></i>
+                                Zakaz yaratish
                             </Button>
                         </div>
                         {/*<p className={'text-blue font-bold text-xl dark:text-darkText'}>Byurtmani Ko'rish</p>*/}

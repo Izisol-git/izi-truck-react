@@ -117,6 +117,7 @@ function SuperAdminDashboard() {
                                 textField: {
                                     size: "small",
                                     fullWidth: true,
+
                                 },
                             }}
                         />

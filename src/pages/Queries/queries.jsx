@@ -10,6 +10,7 @@ import TouchRipple from "@mui/material/ButtonBase/TouchRipple";
 import ExcelModal from "../../Components/Modal/excelModal.jsx";
 import {useTranslation} from "react-i18next";
 import dayjs from "dayjs";
+import {Button} from "@mui/material";
 
 
 function Queries() {
@@ -147,21 +148,28 @@ function Queries() {
                     </div>
 
                     <div className={'flex items-center gap-2'}>
-                        <button
-                            onClick={(e) => {
+                        <Button
+                            variant="contained"
+                            size="large"
+                            color={'success'}
+                            onClick={() => {
                                 dispatch(openExcelModal())
                             }}
-                            className="relative overflow-hidden rounded bg-green-500 hover:ring-2 ring-green-500 dark:bg-btnBgDark text-white py-2 px-3"
-                        >
+                         >
                             <i className="fa-solid fa-table mr-2"></i> excel
 
-                            <TouchRipple center={false}/>
-                        </button>
-                        <button
+                        </Button>
+                        <Button
+                            variant="contained"
+                            size="large"
+                            color={'success'}
+                            sx={{
+                                background:"#1D2D5B"
+                            }}
                             onClick={() => navigate("/queries/create")}
-                            className={'flex items-center py-2 px-3 bg-blue text-white rounded hover:ring-2 ring-blue outline-none dark:bg-btnBgDark'}>
+                            >
                             <i className={'fas fa-plus mr-2'}></i>{t('queriesTranslation.add')}
-                        </button>
+                        </Button>
                     </div>
 
 

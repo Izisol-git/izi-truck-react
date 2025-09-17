@@ -29,7 +29,7 @@ function NavbarY() {
         try {
             const  res = await dispatch(getNotifications()).unwrap();
             // console.log(res)
-            setCounter(res.count);
+            // setCounter(res.count);
             setNotifications(res.messages);
         }catch(err){
             console.log(err);
@@ -43,10 +43,8 @@ function NavbarY() {
 
     useEffect(() => {
         count()
-
         const token = localStorage.getItem("token");
         // console.log(token);
-
         // Pusher client
         const pusher = new Pusher(import.meta.env.VITE_PUSHER_KEY, {
             cluster: import.meta.env.VITE_PUSHER_CLUSTER,
@@ -65,6 +63,7 @@ function NavbarY() {
         channel.bind("App\\Events\\MessageEvent", (data) => {
             console.log("✅ Xabar keldi:", data);
             setNotifications((prev) => [data, ...prev]);
+            dispatch(addNotification(data));
             console.log(notifications);
         });
 

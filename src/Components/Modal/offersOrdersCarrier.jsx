@@ -1,20 +1,25 @@
-import React, { useEffect, useState } from 'react';
-import { closeOffersModal } from "../../features/EmployeSModalToggle/employesModalToggle.js";
-import { InputMUI, MyCalendar } from "../index.js";
+import React, {useEffect, useState} from 'react';
+import {closeOffersModal} from "../../features/EmployeSModalToggle/employesModalToggle.js";
+import {InputMUI, MyCalendar} from "../index.js";
 import InputFileUpload from "../Buttons/fileButton.jsx";
-import { Button, TextareaAutosize } from "@mui/material";
-import { useDispatch, useSelector } from "react-redux";
-import { MapPin, Package, TruckIcon, Weight } from "lucide-react";
-import { addSuggestionsReply } from "../../features/suggestions/suggestionsThunks.js";
-import { useTranslation } from "react-i18next";
+import {Button, TextareaAutosize} from "@mui/material";
+import {useDispatch, useSelector} from "react-redux";
+import {MapPin, Package, TruckIcon, Weight} from "lucide-react";
+import {
+    addSuggestionsReply,
+    getSuggestionsAdmin,
+    getSuggestionsUser
+} from "../../features/suggestions/suggestionsThunks.js";
+import {useTranslation} from "react-i18next";
 
-function OffersOrdersCarrier({ suggestions }) {
-    const { t } = useTranslation();
+function OffersOrdersCarrier({mode , indexData}) {
+    const {t} = useTranslation();
     const isOpenOffersModal = useSelector(state => state.employesModal.isOpenOffersModal);
     const dispatch = useDispatch();
-    const { user } = useSelector(state => state.auth);
-    const { offers } = useSelector(state => state.employesModal);
-    const { addLoadingSuggestionsId } = useSelector((state) => state.suggestions);
+    const {user} = useSelector(state => state.auth);
+    const {suggestionsId} = useSelector(state => state.suggestions);
+    // const { offers } = useSelector(state => state.employesModal);
+    const {addLoadingSuggestionsId} = useSelector((state) => state.suggestions);
 
     const [suggestionsData, setSuggestionsData] = useState({
         suggestion_id: '',
@@ -27,10 +32,10 @@ function OffersOrdersCarrier({ suggestions }) {
     });
 
     const data = {
-        direction: offers?.route,
-        cargoName: offers?.cargo_name,
-        weight: offers?.cargo_weight,
-        trailerInfo: offers?.trailer_info,
+        direction: suggestionsId?.route,
+        cargoName: suggestionsId?.cargo_name,
+        weight: suggestionsId?.cargo_weight,
+        trailerInfo: suggestionsId?.trailer_info,
     };
     const formatDateForMySQL = (date) => {
         if (!date) return null;
@@ -56,7 +61,21 @@ function OffersOrdersCarrier({ suggestions }) {
             carrier_id: user?.user?.id
         };
         try {
-            const res  = await dispatch(addSuggestionsReply({ id: offers?.id, data: obj })).unwrap()
+            const res = await dispatch(addSuggestionsReply({id: suggestionsId?.id, data: obj})).unwrap()
+
+            if (user?.user?.roles[0]?.name === "super-admin") {
+                try {
+                    const res1 = await dispatch(getSuggestionsAdmin({})).unwrap()
+                } catch (err) {
+                    console.log(err);
+                }
+            } else {
+                try {
+                    const res1 = await dispatch(getSuggestionsUser()).unwrap()
+                } catch (err) {
+                    console.log(err);
+                }
+            }
             dispatch(closeOffersModal());
         } catch (err) {
             console.log(err);
@@ -64,16 +83,33 @@ function OffersOrdersCarrier({ suggestions }) {
     };
 
     useEffect(() => {
-        setSuggestionsData({
-            suggestion_id: '',
-            carrier_id: '',
-            reply_price: '',
-            available_vehicles: '',
-            estimated_arrival: '',
-            responsible_phone: '',
-            textura: '',
-        });
-    }, [isOpenOffersModal]);
+
+        if (mode === 'show') {
+            console.log(indexData);
+            setSuggestionsData((prev) => ({
+                ...prev,
+                responsible_phone: indexData?.responsible_phone,
+                textura: indexData?.note,
+                reply_price: indexData?.price,
+                available_vehicles: indexData?.available_vehicles,
+                estimated_arrival: indexData?.created_at,
+            }));
+
+        }
+
+    }, [indexData , isOpenOffersModal])
+    console.log(suggestionsData)
+    // useEffect(() => {
+    //     setSuggestionsData({
+    //         suggestion_id: '',
+    //         carrier_id: '',
+    //         reply_price: '',
+    //         available_vehicles: '',
+    //         estimated_arrival: '',
+    //         responsible_phone: '',
+    //         textura: '',
+    //     });
+    // }, [isOpenOffersModal]);
 
     useEffect(() => {
         document.body.style.overflow = isOpenOffersModal ? "hidden" : "auto";
@@ -106,7 +142,7 @@ function OffersOrdersCarrier({ suggestions }) {
                 <div className="pb-4">
                     {/* Header */}
                     <div className="flex items-center justify-between p-4">
-                        <p className="text-blue font-bold dark:text-darkText">{t("offersOrdersCarrier.title")}</p>
+                        <p className="text-blue font-bold dark:text-darkText">{mode === 'show ' ? t("offersOrdersCarrier.title") : t("offersOrdersCarrier.given_suggestion")}</p>
                         <div
                             onClick={() => dispatch(closeOffersModal())}
                             className="w-[30px] center h-[30px] hover:bg-gray-200 dark:hover:bg-gray-700 rounded"
@@ -120,7 +156,7 @@ function OffersOrdersCarrier({ suggestions }) {
                         <div className="grid grid-cols-1 md:grid-cols-2 gap-x-12 gap-y-6 text-sm">
                             {/* Yo'nalish */}
                             <div className="flex items-start gap-2">
-                                <MapPin className="w-5 h-5 text-indigo-500 shrink-0 mt-0.5" />
+                                <MapPin className="w-5 h-5 text-indigo-500 shrink-0 mt-0.5"/>
                                 <div>
                                     <p className="font-semibold text-gray-700 dark:text-darkText">
                                         {t("offersOrdersCarrier.direction")}:
@@ -131,7 +167,7 @@ function OffersOrdersCarrier({ suggestions }) {
 
                             {/* Yuk nomi */}
                             <div className="flex items-start gap-2">
-                                <Package className="w-5 h-5 text-indigo-500 shrink-0 mt-0.5" />
+                                <Package className="w-5 h-5 text-indigo-500 shrink-0 mt-0.5"/>
                                 <div>
                                     <p className="font-semibold text-gray-700 dark:text-darkText">
                                         {t("offersOrdersCarrier.cargoName")}:
@@ -142,7 +178,7 @@ function OffersOrdersCarrier({ suggestions }) {
 
                             {/* Yuk og'irligi */}
                             <div className="flex items-start gap-2">
-                                <Weight className="w-5 h-5 text-indigo-500 shrink-0 mt-0.5" />
+                                <Weight className="w-5 h-5 text-indigo-500 shrink-0 mt-0.5"/>
                                 <div>
                                     <p className="font-semibold text-gray-700 dark:text-darkText">
                                         {t("offersOrdersCarrier.weight")}:
@@ -153,7 +189,7 @@ function OffersOrdersCarrier({ suggestions }) {
 
                             {/* Treyler ma'lumoti */}
                             <div className="flex items-start gap-2">
-                                <TruckIcon className="w-5 h-5 text-indigo-500 shrink-0 mt-0.5" />
+                                <TruckIcon className="w-5 h-5 text-indigo-500 shrink-0 mt-0.5"/>
                                 <div>
                                     <p className="font-semibold text-gray-700 dark:text-darkText">
                                         {t("offersOrdersCarrier.trailerInfo")}:
@@ -171,8 +207,9 @@ function OffersOrdersCarrier({ suggestions }) {
 
                     <div className="px-4 py-2 flex items-center gap-4">
                         <InputMUI
+                            disabled={mode === 'show'}
                             type={"number"}
-                            value={suggestionsData.reply_price || ""}
+                            value={suggestionsData?.reply_price || ""}
                             onChange={(value) =>
                                 setSuggestionsData({
                                     ...suggestionsData,
@@ -183,6 +220,7 @@ function OffersOrdersCarrier({ suggestions }) {
                             label={t("offersOrdersCarrier.price")}
                         />
                         <InputMUI
+                            disabled={mode === 'show'}
                             type={"number"}
                             value={suggestionsData.available_vehicles || ""}
                             onChange={(value) =>
@@ -199,9 +237,10 @@ function OffersOrdersCarrier({ suggestions }) {
                     <div className="px-4 py-2 grid grid-cols-2 gap-4">
                         <div className="relative">
                             <MyCalendar
+                                disabled={mode === 'show'}
                                 value={suggestionsData.estimated_arrival}
                                 onChange={(val) =>
-                                    setSuggestionsData({ ...suggestionsData, estimated_arrival: val })
+                                    setSuggestionsData({...suggestionsData, estimated_arrival: val})
                                 }
                             />
                             <p className="absolute text-[12px] pt-1 px-1 font-medium -top-[14px] left-2 text-[#3B82F6] dark:text-darkText bg-white dark:bg-darkBg">
@@ -210,6 +249,7 @@ function OffersOrdersCarrier({ suggestions }) {
                         </div>
 
                         <InputMUI
+                            disabled={mode === 'show'}
                             value={suggestionsData.responsible_phone || ""}
                             onChange={(value) =>
                                 setSuggestionsData({
@@ -228,7 +268,7 @@ function OffersOrdersCarrier({ suggestions }) {
                             placeholder={t("offersOrdersCarrier.notes")}
                             value={suggestionsData?.textura || ""}
                             onChange={(e) =>
-                                setSuggestionsData((prev) => ({ ...prev, textura: e.target.value }))
+                                setSuggestionsData((prev) => ({...prev, textura: e.target.value}))
                             }
                             minRows={3}
                             style={{
@@ -243,45 +283,51 @@ function OffersOrdersCarrier({ suggestions }) {
                     </div>
 
                     {/* Footer */}
-                    <div className="px-4 py-2 flex gap-4">
-                        <Button
-                            sx={{
-                                width: "50%",
-                                ".dark &": {
-                                    backgroundColor: "#2B4764",
-                                    color: "#FFFFFF",
-                                    border: "none",
-                                    '&:hover': {
-                                        backgroundColor: "#374151",
-                                    },
-                                },
-                            }}
-                            variant="outlined"
-                            color="error"
-                            onClick={() => dispatch(closeOffersModal())}
-                        >
-                            {t("offersOrdersCarrier.close")}
-                        </Button>
-                        <Button
-                            sx={{
-                                borderColor: "#1D2D5B",
-                                width: "50%",
-                                color: "#1D2D5B",
-                                ".dark &": {
-                                    backgroundColor: "#2B4764",
-                                    color: "#FFFFFF",
-                                    '&:hover': {
-                                        backgroundColor: "#374151",
-                                    },
-                                },
-                            }}
-                            variant="outlined"
-                            color="primary"
-                            onClick={addSuggestionsId}
-                        >
-                            {addLoadingSuggestionsId ? t("offersOrdersCarrier.sending") : t("offersOrdersCarrier.send")}
-                        </Button>
-                    </div>
+                    {
+                        mode !== 'show'
+                            ?
+                            <div className="px-4 py-2 flex gap-4">
+                                <Button
+                                    sx={{
+                                        width: "50%",
+                                        ".dark &": {
+                                            backgroundColor: "#2B4764",
+                                            color: "#FFFFFF",
+                                            border: "none",
+                                            '&:hover': {
+                                                backgroundColor: "#374151",
+                                            },
+                                        },
+                                    }}
+                                    variant="outlined"
+                                    color="error"
+                                    onClick={() => dispatch(closeOffersModal())}
+                                >
+                                    {t("offersOrdersCarrier.close")}
+                                </Button>
+                                <Button
+                                    sx={{
+                                        borderColor: "#1D2D5B",
+                                        width: "50%",
+                                        color: "#1D2D5B",
+                                        ".dark &": {
+                                            backgroundColor: "#2B4764",
+                                            color: "#FFFFFF",
+                                            '&:hover': {
+                                                backgroundColor: "#374151",
+                                            },
+                                        },
+                                    }}
+                                    variant="outlined"
+                                    color="primary"
+                                    onClick={addSuggestionsId}
+                                >
+                                    {addLoadingSuggestionsId ? t("offersOrdersCarrier.sending") : t("offersOrdersCarrier.send")}
+                                </Button>
+                            </div>
+                            :
+                            ""
+                    }
                 </div>
             </div>
         </>

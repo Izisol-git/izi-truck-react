@@ -9,8 +9,8 @@ class suggestionsService {
         const res = await api.post(`/suggestions/${id}/reply` , data);
         return res.data;
     }
-    static async editSuggestions(id ) {
-        const res = await api.put(`/suggestions/${id}`);
+    static async editSuggestions(offersId, suggestionsData ) {
+        const res = await api.put(`/suggestions/${offersId}` , suggestionsData);
         return res.data;
     }
     static async getSuggestionsId(id ) {

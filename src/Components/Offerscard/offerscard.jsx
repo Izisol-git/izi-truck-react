@@ -27,25 +27,36 @@ import {
     AddQueriesId, EditToggleOffers, openOffersModal,
     openQueriesShow
 } from "../../features/EmployeSModalToggle/employesModalToggle.js";
-import {useDispatch} from "react-redux";
+import {useDispatch, useSelector} from "react-redux";
 import React from "react";
 import {useTranslation} from "react-i18next";
+import {getSuggestionsId} from "../../features/suggestions/suggestionsThunks.js";
 
-export default function OffersCard({data , suggestionId}) {
+export default function OffersCard({data }) {
     const dispatch = useDispatch();
     const navigate = useNavigate();
     const {t} = useTranslation();
     const {i18n} = useTranslation();
+    const {user} = useSelector((state) => state.auth);
     dayjs.locale(i18n.language)
+
+    const getSuggestionId = async (offersId) => {
+        try {
+            const res = await dispatch(getSuggestionsId(offersId)).unwrap()
+            console.log(res);
+        }catch (error) {
+            console.log(error);
+        }
+    }
 
 
 
     const getStatusStyle = (statusId) => {
         if (statusId === '1'){
-            return {label: 'Active', color: "success"};
+            return {label: t('queriesTranslation.queriesCard.active'), color: "success"};
 
         }
-        return {label: 'error', color: "error"};
+        return {label: t('queriesTranslation.queriesCard.inactive'), color: "error"};
     };
 
     const status = getStatusStyle(data?.status);
@@ -141,7 +152,7 @@ export default function OffersCard({data , suggestionId}) {
                                 fontWeight={600}
                             >
                                 <Payment color="success" fontSize="small"/>
-                               Sana
+                                {t("queriesTranslation.queriesCard.date")}
                             </Typography>
                             <Typography variant="body1" fontWeight={600} color="text.secondary">
                                 {new Date(data?.created_at).ddmmyyyy()}
@@ -159,7 +170,7 @@ export default function OffersCard({data , suggestionId}) {
                                 fontWeight={600}
                             >
                                 <InfoOutlineIcon color="success" fontSize="small"/>
-
+                                {t("queriesTranslation.queriesCard.info")}
                             </Typography>
                             <Typography variant="body1" fontWeight={600} color="text.secondary">
                                 {data?.trailer_info}
@@ -227,6 +238,9 @@ export default function OffersCard({data , suggestionId}) {
                     <Box display="flex" gap={1}>
                         <Button
                             onClick={() => {
+                                // if(user?.user?.roles[0]?.name === "super-admin") {
+                                    navigate(`/orders/replies/${data?.id}`)
+                                // }
                                 // dispatch(AddQueriesId(data?.id));
                                 // dispatch(openQueriesShow());
                             }}
@@ -246,6 +260,7 @@ export default function OffersCard({data , suggestionId}) {
                                 dispatch(EditToggleOffers())
                                 dispatch(openOffersModal())
                                 dispatch(AddOffersId(data?.id))
+                                getSuggestionId(data?.id)
                             }}
                             variant="contained"
                             color="warning"

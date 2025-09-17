@@ -296,13 +296,8 @@ function Orders() {
                 <PaginationFooter filters={filters} onClick={findOrders} total={orders}/>
             </div>
 
-
-
-
             <ExcelModal search={filters} selectedKeys={selectedKeys} setSelectedKeys={setSelectedKeys}
                         data={exportValues} mode={'order'}/>
-
-
         </div>
     );
 }

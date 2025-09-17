@@ -1,5 +1,5 @@
 import React, {useEffect, useRef, useState} from 'react';
-import { CurrencyInput, InputMUI, LocationInput, MyCalendar, SelectMUI, SwitchMUI} from "../index.js";
+import {CurrencyInput, InputMUI, LocationInput, MyCalendar, SelectMUI, SwitchMUI} from "../index.js";
 import {useNavigate, useParams} from "react-router-dom";
 import {useDispatch, useSelector} from "react-redux";
 import {
@@ -164,6 +164,7 @@ function OrdersFrom({mode}) {
                 receiver_contact: res?.order?.receiver_contact,
                 carrier_additional: res?.order?.carrier_additional,
                 tr_number: res?.order?.tr_number,
+                driver_id: res?.order?.driver_id || '',
             }
             // console.log(obj.client_id);
             setFormData(obj)
@@ -189,6 +190,7 @@ function OrdersFrom({mode}) {
         // })
         setFormData({
             ...formData,
+            carrier_id: user?.user?.name ,
         })
 
         try {
@@ -226,10 +228,9 @@ function OrdersFrom({mode}) {
     }, [formData, mode]);
 
 
-
     useEffect(() => {
         getSelectAll()
-        if (mode === 'edit' && formData.nds) {
+        if ((mode === 'edit' || mode === "show") && formData.nds) {
             OrdersId(id)
         }
         if (mode === 'show') {
@@ -242,7 +243,6 @@ function OrdersFrom({mode}) {
         [`point[${i + 1}]`]: row.point.id,
         [`point_price[${i + 1}]`]: row.point_price
     }));
-
 
 
     const addOrders = async () => {
@@ -295,7 +295,7 @@ function OrdersFrom({mode}) {
             sender_contact: formData.sender_contact,
             receiver_contact: formData.receiver_contact,
             tr_number: formData.tr_number,
-            carrier_additional:formData.carrier_additional,
+            carrier_additional: formData.carrier_additional,
         }
         rows.forEach((row, index) => {
             if (row.point && row.point.id) obj[`point[${index}]`] = row.point.id;
@@ -420,13 +420,13 @@ function OrdersFrom({mode}) {
             <div className={'bg-bacWhite w-full min-h-[calc(100dvh-70px)] py-5 dark:bg-darkBg'}>
                 <div className={'w-[90%] bg-white px-4  mx-auto py-5 rounded-md shadow dark:bg-darkBgTwo'}>
                     <div className={'h-[40px] gap-4 relative text-center center  w-full   mb-10'}>
-                        <div className={'w-max  absolute top-0 left-0'} >
+                        <div className={'w-max  absolute top-0 left-0'}>
                             <Button
                                 onClick={() => navigate(`/orders`)}
                                 sx={{
-                                    background : '#1D2D5B',
-                                    '.dark &':{
-                                        background : '#2B4764',
+                                    background: '#1D2D5B',
+                                    '.dark &': {
+                                        background: '#2B4764',
                                     }
                                 }}
                                 color={'info'}
@@ -467,7 +467,7 @@ function OrdersFrom({mode}) {
                     {
                         mode === 'show' ?
                             <>
-                                <div className={'mb-10'}>
+                                <div className={'mb-5'}>
                                     <FormControl>
                                         <RadioGroup row>
                                             <div className="flex flex-wrap gap-2 text-blue dark:text-darkText">
@@ -512,6 +512,70 @@ function OrdersFrom({mode}) {
                             : ""
                     }
 
+                    {
+                        mode === 'edit' || (mode === 'show' && localStorage.getItem('dbOrders') === "mysql") ?
+                            <>
+                                <div className={'  grid grid-cols-2 gap-4'}>
+                                    <div className={"w-full"}>
+                                        <SelectMUI
+                                            errorMassage={errors?.driver_id}
+                                            {...{
+                                                value:
+                                                    mode !== "add"
+                                                        ? data?.drivers?.find((opt) => opt.id === formData?.driver_id) || null
+                                                        : formData?.driver_id,
+                                            }}
+                                            onChange={(val) => {
+                                                mode !== "add" ? setFormData({
+                                                    ...formData,
+                                                    driver_id: val.id
+                                                }) : setFormData({...formData, driver_id: val})
+                                            }}
+                                            options={data?.drivers || []}
+                                            variant={'outlined'}
+                                            label={t('ordersTranslation.driver')}
+                                            placeholder={t('ordersTranslation.driver')}
+                                        />
+                                    </div>
+
+
+                                    <div className={''}>
+                                        <InputMUI errorMassage={errors?.carrier_id}
+                                                  value={user?.user?.name ?? ''}
+                                                  onChange={(e) =>
+                                                      setFormData({...formData, carrier_id: e.target.value})
+                                                  }
+                                                  variant={'outlined'} label={t('ordersTranslation.carrier')}
+                                        />
+                                    </div>
+                                </div>
+
+                            </>
+                            :
+                            ""
+                    }
+                    {
+                        (mode === 'show' && localStorage.getItem('dbOrders') === "mysql") ?
+                            <div className={'col-span-2   flex items-center justify-end mt-5 '}>
+                                <Button
+                                    onClick={()=>{
+                                        EditOrder(id, formData)
+                                    }}
+                                    sx={{
+                                        backgroundColor: '#1D2D5B',
+                                    }}
+                                    variant={'contained'}
+                                >
+                                    {loading ? `${t('ordersTranslation.sending')}` : t('ordersTranslation.send')}
+                                </Button>
+                            </div>
+                            :
+                            ""
+                    }
+                </div>
+
+
+                <div className={'w-[90%] bg-white px-4  mx-auto py-5 rounded-md shadow mt-5 dark:bg-darkBgTwo'}>
                     <div className={'  grid grid-cols-2 gap-4'}>
                         <div className={"w-full "}>
                             <SelectMUI
@@ -603,10 +667,7 @@ function OrdersFrom({mode}) {
                         </div>
 
                     </div>
-
                 </div>
-
-
                 <div className={'w-[90%] bg-white px-4  mx-auto py-5 rounded-md shadow mt-5 dark:bg-darkBgTwo'}>
                     <div className={'grid grid-cols-4 gap-4'}>
                         <div className={" col-span-2"}>
@@ -858,7 +919,8 @@ function OrdersFrom({mode}) {
                             />
                         </div>
                         <div className={""}>
-                            <InputMUI errorMassage={errors?.carrier_additional} value={formData?.carrier_additional ?? ''}
+                            <InputMUI errorMassage={errors?.carrier_additional}
+                                      value={formData?.carrier_additional ?? ''}
                                       onChange={(e) =>
                                           setFormData({...formData, carrier_additional: e.target.value})
                                       }

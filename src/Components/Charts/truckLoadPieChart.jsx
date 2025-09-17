@@ -1,33 +1,52 @@
-import { useTranslation } from 'react-i18next';
-import { Doughnut } from 'react-chartjs-2';
-import { Chart as ChartJS, ArcElement, Tooltip, Legend } from 'chart.js';
+import {Bar, Line} from 'react-chartjs-2';
+import {
+    Chart as ChartJS,
+    CategoryScale,
+    LinearScale,
+    BarElement,
+    Title,
+    Tooltip,
+    Legend,
+} from 'chart.js';
+import {useTranslation} from "react-i18next";
 
-ChartJS.register(ArcElement, Tooltip, Legend);
+// Chart.js modullarini ro'yxatdan o'tkazish
+ChartJS.register(CategoryScale, LinearScale, BarElement, Title, Tooltip, Legend);
 
-export const TruckLoadPieChart = () => {
-    const { t } = useTranslation(); // i18n hook
+export default function TruckLoadPieChart({statistics}) {
+    const {t } = useTranslation();
 
     const data = {
-        labels: [t('dashboard.full'), t('dashboard.half'), t('dashboard.empty')],
-        datasets: [{
-            label: t('dashboard.truckLoad'),
-            data: [60, 25, 15],
-            backgroundColor: ['#10B981', '#FBBF24', '#EF4444'],
-            hoverOffset: 4
-        }]
+        labels: statistics?.dates,
+        datasets: [
+            {
+                label: t('dashboard.queries'),
+                data: statistics?.queries,
+                backgroundColor: 'rgba(75, 192, 192, 0.6)',
+                borderRadius: 8,
+            },
+        ],
     };
 
     const options = {
         responsive: true,
         plugins: {
-            legend: { position: 'top' },
-            title: { display: true, text: t('dashboard.truckLoadChart') }
-        }
+            legend: {
+                position: 'top',
+            },
+            title: {
+                display: true,
+            },
+        },
     };
 
     return (
         <div className="bg-white rounded shadow-sm p-4 border border-gray-100 w-full dark:bg-darkBgTwo">
-            <Doughnut className="mx-auto" data={data} options={options} />
+
+            < Bar
+                data={data}
+                options={options}
+            />;
         </div>
-    );
-};
+    )
+}

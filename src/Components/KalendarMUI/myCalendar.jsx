@@ -5,14 +5,15 @@ import { DatePicker } from '@mui/x-date-pickers/DatePicker';
 
 
 
-function MyCalendar({label , value , onChange}) {
+function MyCalendar({label , value , onChange ,disabled}) {
 
 
     return (
         <LocalizationProvider dateAdapter={AdapterDateFns}>
             <DatePicker
+                disabled={disabled}
                 label={label}
-                value={value}
+                value={value ? new Date(value) : null}
                 onChange={(val) => onChange(val)}
                 slotProps={{
                     textField: {

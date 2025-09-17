@@ -3,7 +3,7 @@ export {default as LanguageDropdown} from "./lng/lng.jsx";
 export {default as ProfileDropdown} from "./Profile/profile.jsx";
 export {default as Button} from "./Buttons/button.jsx";
 export {default as Navbar} from "./Navbar/navbarY.jsx";
-export {TruckLoadPieChart} from "./Charts/truckLoadPieChart.jsx";
+export {default as TruckLoadPieChart} from "./Charts/truckLoadPieChart.jsx";
 export {default as OrdersChartPlaceholder} from "./Charts/ordersChartPlaceholder.jsx";
 export {default as EmployeesPagination} from "./Pagination/EmployeesPagination.jsx";
 export {default as ProfileInfoCard} from "./Modal/ProfileInfoCardEmployees.jsx";

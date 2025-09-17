@@ -25,9 +25,9 @@ export const addSuggestionsReply = createAsyncThunk(
 
 export const editSuggestions = createAsyncThunk(
     'suggestions/editSuggestions',
-    async (id , { rejectWithValue }) => {
+    async ({offersId, suggestionsData } , { rejectWithValue }) => {
         try {
-            return await suggestionsService.editSuggestions(id);
+            return await suggestionsService.editSuggestions(offersId, suggestionsData);
         } catch (err) {
             return rejectWithValue(err.response?.data || "Failed to fetch suggestions");
         }

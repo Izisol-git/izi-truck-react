@@ -11,7 +11,8 @@ import dayjs from "../../utils/dayjs.js";
 import {Button, Chip} from "@mui/material";
 import {useDispatch, useSelector} from "react-redux";
 import {AddOffersId, openOffersModal} from "../../features/EmployeSModalToggle/employesModalToggle.js";
-import {OffersCard} from "../index.js";
+import {OffersCard, OffersOrdersCarrier} from "../index.js";
+import {useState} from "react";
 
 function createData(Offer, OfferLabel, Carrier, Price, AvailableTransports, ArrivalTime, Telephone, Note, DateOfReply) {
     return {
@@ -27,11 +28,8 @@ const ShowOffersTable = ({data}) => {
     const {t} = useTranslation();
     const {user} = useSelector((state) => state.auth);
     const dispatch = useDispatch();
-
+    const [indexData, setIndexData] = useState();
     return (
-
-
-
         <TableContainer component={Paper}>
             <Table sx={{minWidth: 650}} aria-label="simple table">
                 <TableHead>
@@ -43,68 +41,61 @@ const ShowOffersTable = ({data}) => {
                         <TableCell align="left">{t("ordersTranslation.table.cargo_weight")}</TableCell>
                         <TableCell align="left">{t("ordersTranslation.table.created_at")}</TableCell>
                         <TableCell align="left">{t("ordersTranslation.table.trailer_info")}</TableCell>
-                        <TableCell
-                            align="left">{user?.user?.roles[0]?.name === "super-admin" ? t("ordersTranslation.table.status") : 'Javob bermoq'}</TableCell>
+                        <TableCell>Javobni ko'rish</TableCell>
 
                     </TableRow>
                 </TableHead>
                 <TableBody>
-                    {data?.map((row, index) => (
-                        <TableRow
-                            key={index}
-                            sx={{'&:last-child td, &:last-child th': {border: 0}}}
-                        >
-                            <TableCell component="th" scope="row">
-                                {row?.route}
-                            </TableCell>
-                            {/*<TableCell align="left">{row?.Carrier}</TableCell>*/}
-                            <TableCell align="left">{row?.price}</TableCell>
-                            <TableCell align="left">{row?.cargo_name}</TableCell>
-                            <TableCell align="left">{row?.cargo_weight}</TableCell>
-                            <TableCell align="left">{new Date(row?.created_at)?.ddmmyyyy()}</TableCell>
-                            <TableCell align="left">{row?.trailer_info}</TableCell>
+                    {data?.replies?.length !== 0
+                        ?
+                        data?.replies?.map((row, index) => (
+                            <TableRow
+                                key={index}
+                                sx={{'&:last-child td, &:last-child th': {border: 0}}}
+                            >
+                                <TableCell component="th" scope="row">
+                                    {data?.route}
+                                </TableCell>
+                                {/*<TableCell align="left">{row?.Carrier}</TableCell>*/}
+                                <TableCell align="left">{data?.price}</TableCell>
+                                <TableCell align="left">{data?.cargo_name}</TableCell>
+                                <TableCell align="left">{data?.cargo_weight}</TableCell>
+                                <TableCell align="left">{new Date(row?.created_at)?.ddmmyyyy()}</TableCell>
+                                <TableCell align="left">{data?.trailer_info}</TableCell>
+                                <TableCell align="left">
+                                    <Button
+                                        sx={{
+                                            background: "#1D2D5B"
+                                        }}
+                                        variant="contained"
+                                        color="primary"
+                                        size="small"
+                                        onClick={() => {
+                                            dispatch(openOffersModal())
+                                            dispatch(AddOffersId(row))
+                                            setIndexData(row)
+                                        }}
+                                    >
+                                        <i className="fa-solid fa-eye mr-2"></i>
+                                        Javobni ko'rish
+                                    </Button>
+                                </TableCell>
 
-                            {
-                                user?.user?.roles[0]?.name === "super-admin"
-                                    ?
-                                    <TableCell align="left">{
-                                        row?.status !== '1' ?
-                                            <Chip
-                                                label={'Faol'}
-                                                color={'success'}
-                                                variant="outlined"
-                                                size="small"
-                                            />
-                                            :
-                                            <Chip
-                                                label={'Faol emas'}
-                                                color={'warning'}
-                                                variant="outlined"
-                                                size="small"
-                                            />
-                                    }</TableCell>
-                                    :
-                                    <TableCell align="left">
-                                        <Button
-                                            variant="contained"
-                                            color="warning"
-                                            size="small"
-                                            onClick={() => {
-                                                dispatch(openOffersModal())
-                                                dispatch(AddOffersId(row))
-                                            }}
-                                        >
-                                            <i className="fa-solid fa-pen-nib mr-2"></i>
-                                            Javob berish
-                                        </Button>
-                                    </TableCell>
-                            }
+                            </TableRow>
+                        ))
+                        :
+                        <TableRow>
+                            <TableCell align="center" colSpan={7}>
+                                Ma'lumot topilmadi
+                            </TableCell>
                         </TableRow>
-                    ))}
+                    }
                 </TableBody>
             </Table>
+            <OffersOrdersCarrier mode={'show'} indexData={indexData}/>
         </TableContainer>
-    );
+    )
+        ;
 }
 
 export default ShowOffersTable;

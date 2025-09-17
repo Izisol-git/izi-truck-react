@@ -4,7 +4,7 @@ import {OrdersChartPlaceholder, StatisticsFilter, TruckLoadPieChart} from "../..
 import {useDispatch, useSelector} from "react-redux";
 import {getStatistics} from "../../features/Statistics/statisticsThunks.js";
 import {AdapterDayjs} from "@mui/x-date-pickers/AdapterDayjs";
-import {Box, Button, TextField} from "@mui/material";
+import {Box, Button, Chip} from "@mui/material";
 import {DatePicker} from "@mui/x-date-pickers/DatePicker";
 import dayjs from "dayjs";
 import {LocalizationProvider} from "@mui/x-date-pickers/LocalizationProvider";
@@ -12,8 +12,7 @@ import {useTranslation} from "react-i18next";
 import {BookUser, Clipboard, FileText, Folders, Moon, Users, UsersRound} from "lucide-react";
 
 
-
-function Counter({ target }) {
+function Counter({target}) {
     const [count, setCount] = useState(0);
 
     useEffect(() => {
@@ -35,7 +34,6 @@ function Counter({ target }) {
 }
 
 
-
 function SuperAdminDashboard() {
     const dispatch = useDispatch();
     // const [statistics, setStatistics] = useState();
@@ -54,8 +52,7 @@ function SuperAdminDashboard() {
             })).unwrap();
             console.log(res)
             // setStatistics(res)
-        }
-        catch (error) {
+        } catch (error) {
             console.log(error);
         }
     }
@@ -63,11 +60,11 @@ function SuperAdminDashboard() {
 
     useEffect(() => {
 
-        if(statistics.length === 0) {
+        if (statistics.length === 0) {
             getStatistic(search)
         }
         // dispatch(getCurrentUser());
-    } , [dispatch])
+    }, [dispatch])
 
 
     const {t} = useTranslation();
@@ -75,28 +72,28 @@ function SuperAdminDashboard() {
     const dashboardCard = [
         {
             title: t("dashboard.totalOrders"),
-            icon: <Folders className="w-8 h-8 text-primary" /> ,
+            icon: <Folders className="w-8 h-8 text-primary"/>,
             amount: `${statistics?.total_orders || 0}`,
             data: t("dashboard.inLastWeek"),
             percent: "20%",
         },
         {
             title: t("dashboard.totalDrivers"),
-            icon: <Users className="w-8 h-8 text-secondary" />,
+            icon: <Users className="w-8 h-8 text-secondary"/>,
             amount: `${statistics?.total_drivers || 0}`,
             data: t("dashboard.inLastWeek"),
             percent: "1.8%",
         },
         {
             title: t("dashboard.totalClients"),
-            icon: <BookUser  className="w-8 h-8 text-warning" />,
+            icon: <BookUser className="w-8 h-8 text-warning"/>,
             amount: `${statistics?.total_clients || 0}`,
             data: t("dashboard.inLastWeek"),
             percent: "1.8%",
         },
         {
             title: t("dashboard.totalEmployees"),
-            icon: <UsersRound  className="w-8 h-8 text-success" />,
+            icon: <UsersRound className="w-8 h-8 text-success"/>,
             amount: `${statistics?.total_employees || 0}`,
             data: t("dashboard.inLastWeek"),
             percent: "1.2%",
@@ -201,10 +198,10 @@ function SuperAdminDashboard() {
 
                 {/* TRUCK LOAD */}
                 <div className="bg-white rounded shadow-sm col-span-2 p-4 flex flex-col gap-3 w-full dark:bg-darkBgTwo">
-                    <h2 className="text-lg text-blue font-semibold mb-4 dark:text-darkText">
-                        {t("dashboard.truckLoad")}
+                    <h2 className="text-lg text-center text-blue font-semibold mb-4 dark:text-darkText">
+                        {t("dashboard.queries")}
                     </h2>
-                    <TruckLoadPieChart/>
+                    <TruckLoadPieChart statistics={statistics}/>
                 </div>
 
                 {/* RECENT ORDERS */}
@@ -217,24 +214,27 @@ function SuperAdminDashboard() {
                             <thead className="dark:text-darkText dark:font-bold">
                             <tr>
                                 <th>{t("dashboard.table.id")}</th>
-                                <th>{t("dashboard.table.client")}</th>
                                 <th>{t("dashboard.table.address")}</th>
                                 <th>{t("dashboard.table.status")}</th>
                             </tr>
                             </thead>
                             <tbody>
-                            <tr>
-                                <th>#1452</th>
-                                <td>Temir Yo‘llari</td>
-                                <td>Toshkent → Buxoro</td>
-                                <td className="text-[#2563eb]">{t("dashboard.table.inProgress")}</td>
-                            </tr>
-                            <tr>
-                                <th>#1451</th>
-                                <td>Artel Logistics</td>
-                                <td>Toshkent → Andijon</td>
-                                <td className="text-[#16a34a]">{t("dashboard.table.closed")}</td>
-                            </tr>
+                            {
+                                statistics?.last_orders?.map((item, index) => (
+                                    <tr>
+                                        <th>{index + 1}</th>
+                                        <td>{item.destination_location.replace(',', '  →  ')}</td>
+                                        <td>
+                                            {
+                                                item.status === 0 ?
+                                                    <Chip size={'small'} className="text-" variant={'filled'}  color={'warning'} label={t("ordersTranslation.ordersCard.unknown")}/>
+                                                    :
+                                                    <Chip size={'small'} className="text-" variant={'filled'}  color={'success'} label={t("ordersTranslation.ordersCard.driver_assigned")}/>
+                                             }
+                                        </td>
+                                    </tr>
+                                ))
+                            }
                             </tbody>
                         </table>
                     </div>

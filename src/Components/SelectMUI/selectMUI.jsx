@@ -20,6 +20,7 @@ export default function SelectMUI({ label, placeholder, variant,  value, onChang
                     option?.title ||
                     option?.company_name ||
                     option?.name ||
+                    option?.fio ||
                     option?.label ||
                     option?.value ||
                     ""
@@ -34,6 +35,7 @@ export default function SelectMUI({ label, placeholder, variant,  value, onChang
                             option?.title ||
                             option?.company_name ||
                             option?.name ||
+                            option?.fio ||
                             option?.label ||
                             option?.value || " "
                         }

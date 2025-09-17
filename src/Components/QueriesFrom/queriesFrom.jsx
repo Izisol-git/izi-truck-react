@@ -116,6 +116,7 @@ function QueriesFrom({mode}) {
     const createQuerie = async () => {
         const obj = {
             ...formData,
+            load_time_from : new Date( formData.load_time_from).yyyymmdd(),
             client_enumeration_currency: currency === '1' ? 'usd' : currency === '2' ? 'uzs' : currency === '3' ? 'rub' : currency === '4' ? 'eur' : '',
         }
         try {
@@ -145,7 +146,7 @@ function QueriesFrom({mode}) {
     const updateQuerie = async () => {
         console.log(formData)
         try {
-            const res = dispatch(updateQueries({id, formData})).unwrap()
+            const res = dispatch(updateQueries({id, formData : {...formData , load_time_from : new Date( formData.load_time_from).yyyymmdd()}})).unwrap()
             try {
                 const res2 = await dispatch(getQueriesAll({
                     pageqq: 1, search: {

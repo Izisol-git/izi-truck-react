@@ -34,12 +34,12 @@ function Drivers() {
     const [selectedKeys, setSelectedKeys] = useState([]);
     const [dataIndex , setDataIndex] = useState(0);
     const [columnsArry, setColumnsArry] = useState([
-        { key: "drivers.columns.name", title: "Имя", active: true },
-        { key: "drivers.columns.phone", title: "Телефон", active: true },
-        { key: "drivers.columns.car_number", title: "Номер автомобиля", active: true },
-        { key: "drivers.columns.trailer_number", title: "Номер полу прицепа", active: true },
-        {title: "Action", active: true},
-    ])
+        { key: "notifications.notificationsTable.avatar", title: "Аватар", active: true },
+        { key: "notifications.notificationsTable.full_name", title: "Full name", active: true },
+        { key: "notifications.notificationsTable.username", title: "User Name", active: true },
+        { key: "notifications.notificationsTable.created_at", title: "Created at", active: true },
+        { key: "notifications.notificationsTable.action", title: "Action", active: true }
+    ]);
 
 
 

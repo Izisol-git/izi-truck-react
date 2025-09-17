@@ -27,13 +27,13 @@ import {
     EditClientContracts,
     Notifications,
     NotificationsDetails,
-    AddQueries, EditQueries
+    AddQueries, EditQueries, ShowOffersId
 }
     from './pages/index.js'
 import {BrowserRouter, Routes, Route, Navigate} from "react-router-dom";
 import {ContractLayouts, SuperAdminLayouts, UserLayouts} from "./layouts/index.js"
 import {OffersOrders} from "./Components/index.js";
-import {useDispatch} from "react-redux";
+import {useDispatch, useSelector} from "react-redux";
 import {getCurrentUser} from "./features/Auth/authThunks.js";
 import AddClientContracts from "./pages/Contracts/ClientContracts/addClientContracts.jsx";
 // import io from "socket.io-client";
@@ -91,11 +91,12 @@ import AddClientContracts from "./pages/Contracts/ClientContracts/addClientContr
 function App() {
 
     const dispatch = useDispatch();
+    const {user} = useSelector((state) => state.auth)
 
 
     useEffect(() => {
         const token = localStorage.getItem("token");
-        if (token) {
+        if (token && user === null) {
             dispatch(getCurrentUser());
         }
     }, [dispatch]);
@@ -129,6 +130,7 @@ function App() {
                     <Route path="orders" element={<Orders />} />
                     <Route path="orders/create" element={<AddOrders />} />
                     <Route path="orders/replies" element={<ShowOffers />} />
+                    <Route path="orders/replies/:id" element={<ShowOffersId />} />
                     <Route path="orders/edit/:id" element={<EditOrders />} />
                     <Route path="orders/:id" element={<ShowOrdersId />} />
                     <Route path="trucks" element={<Trucks />} />

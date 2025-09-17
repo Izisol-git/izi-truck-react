@@ -41,7 +41,6 @@ const OrdersChartPlaceholder = ({statistics}) => {
 
     return (
         <div className="bg-white rounded shadow-sm p-4 border border-gray-100 w-full dark:bg-darkBgTwo">
-
             <Line   className={'w-full'} data={data} options={options} />
         </div>
     );

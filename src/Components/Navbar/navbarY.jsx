@@ -94,15 +94,15 @@ function NavbarY() {
                 { name: "navbar.invoices", icon: "fas fa-user-tie mr-2", navigate: "invoices" }
             ]
         },
-        {
-            label: "navbar.contracts",
-            icon: "fa-solid fa-file-signature mr-2",
-            navigate: "/contracts",
-            active: false,
-            arry: [
-                { name: "navbar.clientContracts", icon: "fas fa-user-friends mr-2", navigate: "clients" }
-            ]
-        }
+        // {
+        //     label: "navbar.contracts",
+        //     icon: "fa-solid fa-file-signature mr-2",
+        //     navigate: "/contracts",
+        //     active: false,
+        //     arry: [
+        //         { name: "navbar.clientContracts", icon: "fas fa-user-friends mr-2", navigate: "clients" }
+        //     ]
+        // }
     ]);
 
 

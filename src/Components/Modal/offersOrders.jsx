@@ -3,7 +3,7 @@ import {useDispatch, useSelector} from "react-redux";
 import {closeOffersModal} from "../../features/EmployeSModalToggle/employesModalToggle.js";
 import {InputMUI} from "../index.js";
 import InputFileUpload from "../Buttons/fileButton.jsx";
-import {Button} from "@mui/material";
+import {Button, Checkbox, FormControlLabel} from "@mui/material";
 import {
     addSuggestions,
     editSuggestions,
@@ -15,10 +15,10 @@ import {useTranslation} from "react-i18next";
 function OffersOrders() {
     const {t} = useTranslation();
     const isOpenOffersModal = useSelector(state => state.employesModal.isOpenOffersModal);
-    const {addLoadingSuggestions} = useSelector((state) => state.suggestions);
+    const {addLoadingSuggestions ,suggestionsId} = useSelector((state) => state.suggestions);
     const {addEditToggleOffers} = useSelector((state) => state.employesModal);
     const {offersId} = useSelector((state) => state.employesModal);
-    const {user} = useSelector((state) => state.auth);
+     const {user} = useSelector((state) => state.auth);
     // const [getSuggestions, setSuggestions] = useState();
     const [suggestionsData, setSuggestionsData] = useState({
         route: '',
@@ -27,7 +27,11 @@ function OffersOrders() {
         trailer_spec: '',
         price: ''
     });
+    const [status, setStatus] = useState(1); // boshlang'ich qiymat -1
 
+    const handleChange = (event) => {
+        setStatus(event.target.checked ? -1 : 1);
+    };
     const dispatch = useDispatch();
 
     useEffect(() => {
@@ -41,34 +45,41 @@ function OffersOrders() {
     }, [isOpenOffersModal]);
 
 
-    const getSuggestionId = async () => {
-        try {
-            const res = await dispatch(getSuggestionsId(offersId)).unwrap()
-            setSuggestionsData(
-                {
-                    route: res?.route,
-                    cargo_name: res?.cargo_name,
-                    cargo_weight: res?.cargo_weight,
-                    trailer_spec: res?.cargo_weight,
-                    price: res?.cargo_weight,
-                }
-            )
-            console.log(res);
-        }catch (error) {
-            console.log(error);
-        }
-    }
+
+
 
     useEffect(() => {
-        if (!addEditToggleOffers) {
-            getSuggestionId();
+        if (suggestionsId) {
+            setSuggestionsData(
+                {
+                    route: suggestionsId?.route,
+                    cargo_name: suggestionsId?.cargo_name,
+                    cargo_weight: suggestionsId?.cargo_weight,
+                    trailer_spec: suggestionsId?.trailer_spec,
+                    price: suggestionsId?.price,
+                }
+            )
         }
-    }, [offersId])
+    }, [offersId , suggestionsId])
 
     const editSuggestion = async () => {
         try {
-            const res = await dispatch(editSuggestions(offersId)).unwrap();
+            const res = await dispatch(editSuggestions({offersId, suggestionsData: {...suggestionsData , status : status} })).unwrap();
+            if ( user?.user?.roles[0]?.name === "super-admin") {
+                try {
+                    const res1 = await dispatch(getSuggestionsAdmin({})).unwrap()
+                } catch (err) {
+                    console.log(err);
+                }
+            } else {
+                try {
+                    const res1 = await dispatch(getSuggestionsUser()).unwrap()
+                } catch (err) {
+                    console.log(err);
+                }
+            }
             dispatch(closeOffersModal());
+
             console.log(res);
         } catch (e) {
             console.error(e);
@@ -77,20 +88,21 @@ function OffersOrders() {
     const Suggestions = async () => {
         try {
             const res = await dispatch(addSuggestions(suggestionsData)).unwrap();
-            dispatch(closeOffersModal());
+
             if (user?.user?.roles[0]?.name === "super-admin") {
                 try {
-                    const res = await dispatch(getSuggestionsAdmin({})).unwrap()
+                    const res1 = await dispatch(getSuggestionsAdmin({})).unwrap()
                 } catch (err) {
                     console.log(err);
                 }
             } else {
                 try {
-                    const res = await dispatch(getSuggestionsUser()).unwrap()
+                    const res1 = await dispatch(getSuggestionsUser()).unwrap()
                 } catch (err) {
                     console.log(err);
                 }
             }
+            dispatch(closeOffersModal());
             console.log(res);
         } catch (e) {
             console.error(e);
@@ -180,6 +192,19 @@ function OffersOrders() {
                         />
                     </div>
 
+
+                  <div className={"px-4 py-2"}>
+                      <FormControlLabel
+                          control={
+                              <Checkbox
+                                  checked={status === -1}     // 1 bo‘lsa belgilangan
+                                  onChange={handleChange}    // almashganda 1 yoki -1 qiladi
+                              />
+                          }
+                          label={`${t('offersOrders.status')}: ${status === 1 ? t('offersOrders.active') : t('offersOrders.inactive')}`}     // ko‘rsatish uchun
+                      />
+
+                  </div>
                     {/* File Upload */}
                     <div className={"px-4 py-2"}>
                         <InputFileUpload/>

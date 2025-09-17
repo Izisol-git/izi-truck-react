@@ -1,16 +1,17 @@
 import {createSlice} from "@reduxjs/toolkit";
-import {addSuggestions, addSuggestionsReply, getSuggestionsUser , getSuggestionsAdmin} from "./suggestionsThunks.js";
+import {addSuggestions, getSuggestionsId, addSuggestionsReply, getSuggestionsUser, getSuggestionsAdmin} from "./suggestionsThunks.js";
 
 const suggestionsSlice = createSlice({
     name: "suggestions",
     initialState: {
         suggestions: [],
+        suggestionsId: [],
         addLoadingSuggestions: false,
         addLoadingSuggestionsId: false,
         error: null,
     },
     reducers: {},
-    extraReducers:(builder) => {
+    extraReducers: (builder) => {
         builder
             .addCase(addSuggestions.pending, (state) => {
                 state.addLoadingSuggestions = true;
@@ -23,7 +24,7 @@ const suggestionsSlice = createSlice({
             })
 
 
-        // getSuggestionsAdmin
+            // getSuggestionsAdmin
             .addCase(getSuggestionsAdmin.pending, (state) => {
                 state.addLoadingSuggestions = true;
             })
@@ -36,7 +37,20 @@ const suggestionsSlice = createSlice({
             })
 
 
-        // getSuggestionsUser
+            // getSuggestionsId
+            .addCase(getSuggestionsId.pending, (state) => {
+                state.addLoadingSuggestions = true;
+            })
+            .addCase(getSuggestionsId.fulfilled, (state, action) => {
+                state.suggestionsId = action.payload;
+                state.addLoadingSuggestions = false;
+            })
+            .addCase(getSuggestionsId.rejected, (state) => {
+                state.addLoadingSuggestions = false;
+            })
+
+
+            // getSuggestionsUser
             .addCase(getSuggestionsUser.pending, (state) => {
                 state.addLoadingSuggestions = true;
             })
@@ -48,7 +62,7 @@ const suggestionsSlice = createSlice({
                 state.addLoadingSuggestions = false;
             })
 
-        // addSuggestionsReply
+            // addSuggestionsReply
             .addCase(addSuggestionsReply.pending, (state) => {
                 state.addLoadingSuggestionsId = true;
             })

@@ -77,6 +77,10 @@ export default function OrderLogisticsCard({order}) {
                         <div className="pt-2 flex flex-col justify-between flex-1">
                             <div>
                                 <p className="text-sm font-semibold text-blue">
+                                    {t("ordersTranslation.ordersCard.cargo_name")}
+                                    <span className="ml-2">{order?.nature_of_cargo || "-"}</span>
+                                </p>
+                                <p className="text-sm font-semibold text-blue mt-2">
                                     {t("ordersTranslation.ordersCard.act_date")}
                                     <span className="ml-2">{order?.act_date || "-"}</span>
                                 </p>

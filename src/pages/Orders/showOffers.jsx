@@ -25,7 +25,8 @@ function ShowOffers() {
 
 
     const getSuggestion = async () => {
-        if (user?.user?.roles[0]?.name === "super-admin") {
+
+        if (user?.user?.roles[0]?.name && user?.user?.roles[0]?.name === "super-admin") {
             try {
                 const res = await dispatch(getSuggestionsAdmin(pageqq)).unwrap()
                 console.log(res)
@@ -33,7 +34,8 @@ function ShowOffers() {
             } catch (err) {
                 console.log(err);
             }
-        } else {
+        }
+        if (user?.user?.roles[0]?.name && user?.user?.roles[0]?.name !== "super-admin") {
             try {
                 const res = await dispatch(getSuggestionsUser(pageqq)).unwrap()
                 console.log(res)
@@ -46,8 +48,10 @@ function ShowOffers() {
 
 
     useEffect(() => {
-        getSuggestion()
-    }, [pageqq ])
+        if(user?.user?.roles[0]?.name) {
+            getSuggestion()
+        }
+    }, [pageqq , user ])
 
 
     return (
@@ -79,7 +83,7 @@ function ShowOffers() {
                                     <Button variant={'contained'} sx={{
                                         backgroundColor: "#1D2D5B",
                                     }}>
-                                        yangi taklif qo'shish
+                                        {t('ordersTranslation.create_new_suggestion')}
                                     </Button>
                                 </div>
                             </div>
@@ -96,6 +100,7 @@ function ShowOffers() {
                     {
                         suggestions?.data?.map((suggestion) => (
                             <OffersCard data={suggestion} suggestionId={suggestion?.id} />
+
                         ))
                     }
                 </div>

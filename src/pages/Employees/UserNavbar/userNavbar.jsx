@@ -27,6 +27,8 @@ const UserNavbar = ({value, columnsArry, setColumnsArry, openModal}) => {
         }
         if(value === "Employees" ){
             return (t('employees.employees'))
+        }if(value === "Notifications" ){
+            return (t('notifications.notifications'))
         }
 
     }

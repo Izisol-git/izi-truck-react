@@ -13,14 +13,12 @@ function Notifications(props) {
     const [notificationData, setNotificationData] = useState();
     const {user} = useSelector((state) => state.auth);
     const [columnsArry, setColumnsArry] = useState([
-        {title: "Аватар", active: true},
-        {title: "Full name", active: true},
-        {title: "User Name", active: true},
-        {title: "Created at", active: true},
-        // {title: "is_read", active: true},
-        {title: "Action", active: true},
-    ])
-
+        { key: "notifications.notificationsTable.avatar", title: "Аватар", active: true },
+        { key: "notifications.notificationsTable.full_name", title: "Full name", active: true },
+        { key: "notifications.notificationsTable.username", title: "User Name", active: true },
+        { key: "notifications.notificationsTable.created_at", title: "Created at", active: true },
+        { key: "notifications.notificationsTable.action", title: "Action", active: true }
+    ]);
     const getAll = async () => {
         try {
             const  res = await dispatch(getNotifications()).unwrap();

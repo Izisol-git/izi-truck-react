@@ -19,7 +19,7 @@
     "inLastWeek": "oxirgi haftada",
     "title": "Boshqaruv paneli",
     "orders": "📦 Buyurtmalar",
-    "truckLoad": "🚛 Yuk mashinalari yuklanishi (%)",
+    "queries": "so'rovlar",
     "recentOrders": "📋 So‘nggi buyurtmalar",
     "driversStatus": "👷‍♂️ Haydovchilar holati",
     "table": {
@@ -47,6 +47,10 @@
   "export": "Yuklab olish",
   "export_to_excel": "Excelga yuklab olish",
   "ordersTranslation": {
+    "driver": "Haydovchi",
+    "carrier": "Yuk tashuvchi",
+    "sending": "Yuborilmoqda...",
+    "send": "Yuborish",
     "order_id": "Buyurtma raqami",
     "order_date": "Buyurtma sanasi",
     "point_of_departure": "Jo‘natilish punkti",
@@ -87,6 +91,7 @@
     "has_act": "Akt bor",
     "no_act": "Akt yo‘q",
     "ordersCard": {
+      "cargo_name": "yuk nomi",
       "order_info": "Buyurtma ma’lumotlari",
       "act_date": "Akt sanasi:",
       "order_source": "Buyurtma manbai:",
@@ -116,8 +121,10 @@
       "search": "Qidirish"
     },
     "allOffers": "Barcha takliflar",
+    "create_new_suggestion": "Yangi taklif yaratish",
+    "info": "ma'lumot",
     "table": {
-       "trailer_info": "Treyler ma'lumoti",
+      "trailer_info": "Treyler ma'lumoti",
       "status": "Holat",
       "route": "Yo'nalish",
       "price": "Narxi",
@@ -214,6 +221,11 @@
       "clear_input": "Maydonni tozalash"
     },
     "queriesCard": {
+      "info": "ma'lumot",
+      "date": "sana",
+      "active": "Faol",
+      "inactive": "Faol emas",
+      "status": "Status",
       "payment_cash": "Pul o‘tkazmalari",
       "payment_enumeration": "Naqd",
       "payment_combined": "Qisman o‘tkazma",
@@ -529,7 +541,16 @@
   },
 
   "notifications": {
+
+    "notifications": "Bildirishnomalar",
     "noNotifications": "Bildirishnomalar mavjud emas",
+    "notificationsTable": {
+      "avatar": "Avatar",
+      "full_name": "To‘liq ism",
+      "username": "Foydalanuvchi nomi",
+      "created_at": "Yaratilgan sana",
+      "action": "Amal"
+    },
     "chats": {
       "title": "Chatlar"
     }
@@ -543,6 +564,9 @@
     "logOut": "Chiqish"
   },
   "offersOrders": {
+    "active": "Faol",
+    "inactive": "Faol emas",
+    "status": "Status",
     "writeYourOffer": "Taklifingizni yozing",
     "route": "Marshrut",
     "cargoName": "Yuk nomi",
@@ -554,6 +578,8 @@
     "sending": "Yuborilmoqda..."
   },
   "offersOrdersCarrier": {
+    "answered_suggestions": "Javob berilgan takliflar",
+    "given_suggestion": "Berilgan taklif",
     "title": "Sizga mos taklif bor",
     "direction": "Yo'nalish",
     "cargoName": "Yuk nomi",

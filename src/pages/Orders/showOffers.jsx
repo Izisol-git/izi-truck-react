@@ -99,7 +99,7 @@ function ShowOffers() {
                 <div className={'grid grid-cols-3 gap-3'}>
                     {
                         suggestions?.data?.map((suggestion) => (
-                            <OffersCard data={suggestion} suggestionId={suggestion?.id} />
+                            <OffersCard role={user?.user?.roles[0]?.name} data={suggestion} suggestionId={suggestion?.id} />
 
                         ))
                     }

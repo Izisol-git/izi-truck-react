@@ -32,7 +32,7 @@ import React from "react";
 import {useTranslation} from "react-i18next";
 import {getSuggestionsId} from "../../features/suggestions/suggestionsThunks.js";
 
-export default function OffersCard({data }) {
+export default function OffersCard({data , role }) {
     const dispatch = useDispatch();
     const navigate = useNavigate();
     const {t} = useTranslation();
@@ -270,7 +270,7 @@ export default function OffersCard({data }) {
                             }}
                         >
                             <i className="fa-solid fa-pen-to-square mr-2"></i>
-                            {t("queriesTranslation.queriesCard.edit")}
+                            {role === 'super-admin' ? t("queriesTranslation.queriesCard.edit") : t("offersOrdersCarrier.reply") }
                         </Button>
                     </Box>
 

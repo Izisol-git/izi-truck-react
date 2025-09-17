@@ -586,6 +586,7 @@
     "sending": "Юборилмоқда..."
   },
   "offersOrdersCarrier": {
+    "reply": "Жавоб ёзиш",
     "answered_suggestions": "Жавоб берилган таклифлар",
     "given_suggestion": "Берилган таклиф",
     "title": "Сизга мос таклиф бор",

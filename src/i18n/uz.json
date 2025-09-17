@@ -578,6 +578,7 @@
     "sending": "Yuborilmoqda..."
   },
   "offersOrdersCarrier": {
+    "reply": "Javob yozish",
     "answered_suggestions": "Javob berilgan takliflar",
     "given_suggestion": "Berilgan taklif",
     "title": "Sizga mos taklif bor",

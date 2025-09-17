@@ -589,6 +589,7 @@
     "sending": "Отправляется..."
   },
   "offersOrdersCarrier": {
+    "reply": "Написать ответ",
     "answered_suggestions": "Предложения с ответом",
     "given_suggestion": "Данное предложение",
     "title": "Имеется подходящее предложение",

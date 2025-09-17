@@ -42,7 +42,7 @@ const Login = () => {
             <div className="hidden lg:block w-1/2 bg-blue relative">
                 <div className="flex items-center justify-center h-full px-8">
                     <img
-                        src="../../../public/truck-login.svg"
+                        src="/truck-login.svg"
                         alt="Login Illustration"
                         className="max-h-[80%]"
                     />

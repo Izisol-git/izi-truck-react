@@ -88,7 +88,7 @@ import AddClientContracts from "./pages/Contracts/ClientContracts/addClientContr
 //     }
 // }
 
-function App() {
+function App( ) {
 
     const dispatch = useDispatch();
     const {user} = useSelector((state) => state.auth)
@@ -121,7 +121,7 @@ function App() {
                 <Route path="/login" element={<Login />} />
                 <Route path="/forgot-password" element={<ForgotLogin />} />
 
-                <Route element={<SuperAdminLayouts />}>
+                <Route element={<SuperAdminLayouts   />}>
                     <Route path="/" element={<Navigate to="/dashboard" replace />} />
                     <Route path="dashboard" element={<Dashboard />} />
                     <Route path="queries" element={<Queries />} />

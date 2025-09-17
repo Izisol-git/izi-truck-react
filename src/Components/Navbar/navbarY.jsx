@@ -12,7 +12,7 @@ import {getNotifications} from "../../features/Notification/notificationsThunks.
 import {addNotification} from "../../features/Notification/notificationSlice.js";
 import {useTranslation} from "react-i18next";
 
-function NavbarY() {
+function NavbarY( ) {
     const dispatch = useDispatch();
     const navigate = useNavigate();
     const location = useLocation();
@@ -108,7 +108,7 @@ function NavbarY() {
     useEffect(() => {
         const darkMode = localStorage.getItem("dark") === "true"; // string bilan solishtirish
         setIsSun(darkMode);
-        if (darkMode) {
+         if (darkMode) {
             document.documentElement.classList.add("dark");
             document.documentElement.classList.remove("light");
         } else {
@@ -120,8 +120,7 @@ function NavbarY() {
     const sunToggle = () => {
         const newMode = !isSun;
         setIsSun(newMode);
-
-        if (newMode) {
+         if (newMode) {
             document.documentElement.classList.add("dark");
             document.documentElement.classList.remove("light");
             localStorage.setItem("dark", "true");   // string saqlash
@@ -223,7 +222,7 @@ function NavbarY() {
                     {/*    <i onClick={sunToggle}*/}
                     {/*       className={'fas fa-sun font-bold cursor-pointer text-blue dark:text-white'}></i>*/}
                     {/*)}*/}
-                    <ProfileDropdown   sunToggle={sunToggle}/>
+                    <ProfileDropdown    sunToggle={sunToggle}/>
                 </div>
             </div>
         </div>

@@ -33,7 +33,7 @@ function Notifications(props) {
             const  res = await dispatch(getCahts()).unwrap();
             console.log(res)
             setTotal(res)
-            setNotificationData(res.data);
+            setNotificationData(res);
         }catch(err){
             console.log(err);
         }
@@ -41,6 +41,7 @@ function Notifications(props) {
     // console.log(notificationData);
 
     useEffect(()=>{
+        console.log('ishladi')
         getAll()
         getAllChats()
     } , [])
@@ -51,9 +52,6 @@ function Notifications(props) {
            <div>
                <div className={'bg-bacWhite flex min-h-[calc(100dvh-70px)] dark:bg-darkBg '}>
                    <div className="w-[90%] mx-auto">
-
-
-
                        <UserNavbar value={'Notifications'} columnsArry={columnsArry}
                                    setColumnsArry={setColumnsArry}/>
                        {/*{loading ? <Loading/> :*/}

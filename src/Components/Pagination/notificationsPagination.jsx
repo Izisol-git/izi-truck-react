@@ -55,7 +55,9 @@ function NotificationsPagination({row  ,arry,index,navigateURL}) {
                     ".dark &": {
                         color: "white",
                     },
-                }}>NULL</TableCell>}
+                }}>
+                    <div className={'w-[40px] h-[40px]'}><img src='/profile.png' alt="foto"/></div>
+                </TableCell>}
                 {arry[1].active && <TableCell sx={{
                     color: "black",
                     ".dark &": {

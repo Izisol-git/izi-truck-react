@@ -61,7 +61,7 @@ const UserPagination = ({arry, navigateURL, data, total, setEmployeesId, employe
     // useEffect(()=> {
     //     search()
     // } , [searchData])
-    console.log(data)
+    // console.log(data)
 
     return (
         <>
@@ -243,6 +243,7 @@ const UserPagination = ({arry, navigateURL, data, total, setEmployeesId, employe
                                         arry={arry}
                                         row={row}
                                         index={index}
+
                                         />
                                     ) : navigateURL === 'chats' ? (
                                         <ChatsPagination

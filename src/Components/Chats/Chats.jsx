@@ -123,8 +123,8 @@ function Chats({ chatsData, chatUser, currentUserId , chatId , getChatsId }) {
     };
 
     return (
-        <div ref={containerRef} className="bg-white relative px-4 mx-auto pt-5 rounded-md shadow h-[calc(100dvh-160px)] overflow-y-scroll dark:bg-darkBgTwo">
-            <div className={''}>
+        <div ref={containerRef} className="bg-white flex flex-col   relative px-4 mx-auto pt-5 rounded-md shadow h-[calc(100dvh-160px)] overflow-y-scroll dark:bg-darkBgTwo">
+            <div className={'  flex-1'}>
                 {chatsData?.map((item) => (
                     <UserChats
                         key={item.id}
@@ -137,7 +137,7 @@ function Chats({ chatsData, chatUser, currentUserId , chatId , getChatsId }) {
 
             {/* Input + File + Send */}
             <div
-                className="sticky -bottom-1 left-0 w-full  bg-white dark:bg-darkBgTwo px-3 py-2 flex items-center gap-2  ">
+                className="sticky  -bottom-1 left-0 w-full  bg-white dark:bg-darkBgTwo px-3 py-2 flex items-center gap-2 mb-3 ">
                 {/* Fayl tanlash */}
                 <input
                     type="file"

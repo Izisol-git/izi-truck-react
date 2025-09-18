@@ -33,38 +33,38 @@ function Root() {
     }, []);
 
     // MUI theme yaratamiz
-    // const theme = useMemo(
-    //     () =>
-    //         createTheme({
-    //             palette: {
-    //                 mode,
-    //                 primary: { main: "#1976d2" },
-    //                 secondary: { main: "#9c27b0" },
-    //                 ...(mode === "dark" && {
-    //                     background: {
-    //                         default: "#212121",
-    //                         paper: "#303030",
-    //                     },
-    //                 }),
-    //             },
-    //             components: {
-    //                 MuiButton: {
-    //                     styleOverrides: {
-    //                         root: { fontWeight: 500 },
-    //                     },
-    //                 },
-    //             },
-    //         }),
-    //     [mode]
-    // );
+    const theme = useMemo(
+        () =>
+            createTheme({
+                palette: {
+                    mode,
+                    primary: { main: "#1976d2" },
+                    secondary: { main: "#9c27b0" },
+                    ...(mode === "dark" && {
+                        background: {
+                            default: "#212121",
+                            paper: "#303030",
+                        },
+                    }),
+                },
+                components: {
+                    MuiButton: {
+                        styleOverrides: {
+                            root: { fontWeight: 500 },
+                        },
+                    },
+                },
+            }),
+        [mode]
+    );
 
     return (
         <StrictMode>
             <Provider store={store}>
-                {/*<ThemeProvider theme={theme}>*/}
-                {/*    <CssBaseline />*/}
+                <ThemeProvider theme={theme}>
+                    <CssBaseline />
                     <App />
-                {/*</ThemeProvider>*/}
+                </ThemeProvider>
             </Provider>
         </StrictMode>
     );

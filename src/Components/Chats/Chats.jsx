@@ -1,9 +1,9 @@
 import React, {useEffect, useRef , useState} from "react";
 import {IconButton, TextField} from "@mui/material";
-import {useDispatch} from "react-redux";
+import {useDispatch, useSelector} from "react-redux";
 import {sendMessages} from "../../features/Notification/notificationsThunks.js";
 
-export const UserChats = ({ item, chatUser, currentUserId }) => {
+export const UserChats = ({ item, chatUser, currentUserId , user }) => {
 
 
     // vaqt formatlash
@@ -17,6 +17,47 @@ export const UserChats = ({ item, chatUser, currentUserId }) => {
 
     const BASE_URL = import.meta.env.VITE_API_URL.replace("/api", "");
 
+    const showFile = (item) => {
+        if (!item?.file_type) return "";
+
+        switch (item.file_type) {
+            case "photo":
+
+                return (
+                    <img
+                        src={`https://backend.izitruck.uz/storage/messages/photo_68cc028f2d05b.jpg`}
+                        alt={item.file_name}
+                        className="mt-2 rounded-lg max-w-[300px] max-h-[200px] object-cover"
+                    />
+                );
+
+            // Video fayllari
+
+            case "video":
+                return (
+                    <video
+                        controls
+                        className="mt-2 rounded-lg max-w-[400px] max-h-[300px] bg-black"
+                    >
+                        <source src={`${BASE_URL}/storage/${item.file_path}`} type={item.type} />
+                        Your browser does not support the video tag.
+                    </video>
+                );
+
+            // Agar boshqa fayl chiqsa
+            default:
+                return (
+                    <a
+                        href={`${BASE_URL}/storage/${item.file_path}`}
+                        download
+                        className="text-blue-500 underline mt-2 block"
+                    >
+                        {item.file_name}
+                    </a>
+                );
+        }
+    };
+
 
     return (
         <div
@@ -27,7 +68,7 @@ export const UserChats = ({ item, chatUser, currentUserId }) => {
             {/* Avatar faqat boshqa foydalanuvchilar uchun */}
             {item?.from_type !== 'admin' && (
                 <div className="w-8 h-8 rounded-full bg-gray-300 flex-shrink-0">
-                    <img src="../../../public/profile.png" alt="foto"/>
+                    <img src="/profile.png" alt="foto"/>
                 </div>
             )}
 
@@ -45,17 +86,13 @@ export const UserChats = ({ item, chatUser, currentUserId }) => {
                     }`}
                 >
                     <span>{formatDate(item.created_at)}</span>
-                    <span>{chatUser.first_name + " " + chatUser.last_name}</span>
+                    <span>{ item?.from_type === 'admin' ?  (user?.user?.name)  : (chatUser.first_name + " " + chatUser.last_name)}</span>
                 </div>
                 {/* Matn yoki rasm */}
                 <div className={'flex items-end  gap-4'}>
 
                     {item.file_type !== null && (
-                        <img
-                            src={`${BASE_URL}/storage/${item.file_path}`}
-                            alt={item.file_name}
-                            className="mt-2 rounded-lg max-w-[200px]"
-                        />
+                        showFile(item)
                     )}
 
                     <p >{item.text}
@@ -70,7 +107,7 @@ export const UserChats = ({ item, chatUser, currentUserId }) => {
             {/* Avatar faqat o‘zim uchun */}
             {item?.from_type === 'admin' && (
                 <div className="w-8 h-8 rounded-full bg-gray-300 flex-shrink-0">
-                    <img src="../../../public/profile.png" alt="foto"/>
+                    <img src="/public/profile.png" alt="foto"/>
                 </div>
             )}
         </div>
@@ -82,6 +119,8 @@ function Chats({ chatsData, chatUser, currentUserId , chatId , getChatsId }) {
     // const [message, setMessage] = useState("");
     const [file, setFile] = useState(null);
     const  dispatch = useDispatch();
+    const {getAllChatsID} = useSelector((state) => state.notification);
+    const {user} = useSelector((state) => state.auth);
     const [sendData, setSendData] = useState({
         text:'',
         file : ''
@@ -91,7 +130,7 @@ function Chats({ chatsData, chatUser, currentUserId , chatId , getChatsId }) {
         if (containerRef.current) {
             containerRef.current.scrollTop = containerRef.current.scrollHeight;
         }
-    }, [chatsData]);
+    }, [getAllChatsID?.chat]);
 
     const handleSend = async () => {
         try {
@@ -125,12 +164,13 @@ function Chats({ chatsData, chatUser, currentUserId , chatId , getChatsId }) {
     return (
         <div ref={containerRef} className="bg-white flex flex-col   relative px-4 mx-auto pt-5 rounded-md shadow h-[calc(100dvh-160px)] overflow-y-scroll dark:bg-darkBgTwo">
             <div className={'  flex-1'}>
-                {chatsData?.map((item) => (
+                {getAllChatsID?.messages?.map((item) => (
                     <UserChats
                         key={item.id}
                         item={item}
-                        chatUser={chatUser}
+                        chatUser={getAllChatsID?.chat}
                         currentUserId={currentUserId}
+                        user={user}
                     />
                 ))}
             </div>

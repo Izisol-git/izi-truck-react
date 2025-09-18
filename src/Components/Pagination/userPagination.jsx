@@ -27,7 +27,7 @@ import {openExcelModal} from "../../features/EmployeSModalToggle/employesModalTo
 import {current} from "@reduxjs/toolkit";
 import {useTranslation} from "react-i18next";
 
-const UserPagination = ({arry, navigateURL, data, total, setEmployeesId, employeesId , setSearch ,dataIndex }) => {
+const UserPagination = ({arry, navigateURL, data, total, setEmployeesId, employeesId, setSearch, dataIndex}) => {
 
 
     const dispatch = useDispatch();
@@ -36,11 +36,9 @@ const UserPagination = ({arry, navigateURL, data, total, setEmployeesId, employe
     const loadingContracts = useSelector((state) => state.contracts.loading)
     const loadingCustomers = useSelector((state) => state.customers.loading)
     const loadingDrivers = useSelector((state) => state.drivers.loading)
-    const loadingEmployees =  useSelector((state) => state.drivers.loading)
-    const {i18n , t} = useTranslation();
+    const loadingEmployees = useSelector((state) => state.drivers.loading)
+    const {i18n, t} = useTranslation();
     const currentLang = i18n.language;
-
-
 
 
     // useEffect(() => {
@@ -116,12 +114,18 @@ const UserPagination = ({arry, navigateURL, data, total, setEmployeesId, employe
                               "
                     />
 
+                    {
+                        navigateURL !== "invoices"
+                            ?
+                            <div className="flex items-center ">
+                                <img onClick={() => {
+                                    dispatch(openExcelModal())
+                                }} className={'w-8 h-8 cursor-pointer'} src="/public/xls.png" alt="excel"/>
+                            </div>
+                            :
+                            ''
+                    }
 
-                    <div className="flex items-center ">
-                        <img onClick={()=>{
-                            dispatch(openExcelModal())
-                        }} className={'w-8 h-8 cursor-pointer'} src="../../../public/xls.png" alt="excel"/>
-                    </div>
 
                 </div>
 
@@ -169,7 +173,7 @@ const UserPagination = ({arry, navigateURL, data, total, setEmployeesId, employe
                                                     // direction={orderBy === row.title ? orderDirection : "asc"}
                                                     // onClick={() => handleSortRequest(row.title)}
                                                 >
-                                                    {row?.key ? t(`${row.key}`) : row.title }
+                                                    {row?.key ? t(`${row.key}`) : row.title}
                                                 </TableSortLabel>
                                             </TableCell>
                                         )
@@ -181,104 +185,102 @@ const UserPagination = ({arry, navigateURL, data, total, setEmployeesId, employe
                         </TableHead>
 
                         {
-                            (navigateURL === 'clients' ? loadingContracts : navigateURL === 'customers' ? loadingCustomers : navigateURL === 'drivers' ? loadingDrivers : navigateURL === 'employees' ? loadingEmployees : '') ? <TableRow>
-                                <TableCell colSpan={9}>
-                                    <Loading />
-                                </TableCell>
-                            </TableRow> : <TableBody>
-                                {data?.data && data?.data.map((row, index) => (
-                                    navigateURL === "employees" ? (
-                                        <EmployeesPagination
-                                            dataIndex={dataIndex}
-                                            key={index}
-                                            navigateURL={navigateURL}
-                                            arry={arry}
-                                            row={row}
-                                            index={index}
-                                            data={data}
-                                            setEmployeesId={setEmployeesId}
-                                            employeesId={employeesId}
+                            (navigateURL === 'clients' ? loadingContracts : navigateURL === 'customers' ? loadingCustomers : navigateURL === 'drivers' ? loadingDrivers : navigateURL === 'employees' ? loadingEmployees : '') ?
+                                <TableRow>
+                                    <TableCell colSpan={9}>
+                                        <Loading/>
+                                    </TableCell>
+                                </TableRow> : <TableBody>
+                                    {data?.data && data?.data.map((row, index) => (
+                                        navigateURL === "employees" ? (
+                                            <EmployeesPagination
+                                                dataIndex={dataIndex}
+                                                key={index}
+                                                navigateURL={navigateURL}
+                                                arry={arry}
+                                                row={row}
+                                                index={index}
+                                                data={data}
+                                                setEmployeesId={setEmployeesId}
+                                                employeesId={employeesId}
 
-                                        />
-                                    ) : navigateURL === "drivers" ? (
-                                        <DriversPagination
-                                            dataIndex={dataIndex}
-                                            key={index}
-                                            navigateURL={navigateURL}
-                                            arry={arry}
-                                            row={row}
-                                            index={index}
-                                            data={data}
-                                            setEmployeesId={setEmployeesId}
-                                            employeesId={employeesId}
+                                            />
+                                        ) : navigateURL === "drivers" ? (
+                                            <DriversPagination
+                                                dataIndex={dataIndex}
+                                                key={index}
+                                                navigateURL={navigateURL}
+                                                arry={arry}
+                                                row={row}
+                                                index={index}
+                                                data={data}
+                                                setEmployeesId={setEmployeesId}
+                                                employeesId={employeesId}
 
-                                        />
-                                    ) : navigateURL === "customers" ? (
-                                        <CustomersPagination
+                                            />
+                                        ) : navigateURL === "customers" ? (
+                                            <CustomersPagination
 
-                                            key={index}
-                                            navigateURL={navigateURL}
-                                            arry={arry}
-                                            row={row}
-                                            index={index}
-                                            data={data}
-                                            setEmployeesId={setEmployeesId}
-                                            employeesId={employeesId}
-                                        />
-                                    ) : navigateURL === "clients" ? (
-                                        <ContractsPagination
-                                            key={index}
-                                            navigateURL={navigateURL}
-                                            arry={arry}
-                                            row={row}
-                                            index={index}
-                                            data={data}
-                                            setEmployeesId={setEmployeesId}
-                                            employeesId={employeesId}
-                                        />
-                                    ) : navigateURL === 'notifications' ? (
-                                        <NotificationsPagination
-                                        key={index}
-                                        navigateURL={navigateURL}
-                                        arry={arry}
-                                        row={row}
-                                        index={index}
+                                                key={index}
+                                                navigateURL={navigateURL}
+                                                arry={arry}
+                                                row={row}
+                                                index={index}
+                                                data={data}
+                                                setEmployeesId={setEmployeesId}
+                                                employeesId={employeesId}
+                                            />
+                                        ) : navigateURL === "clients" ? (
+                                            <ContractsPagination
+                                                key={index}
+                                                navigateURL={navigateURL}
+                                                arry={arry}
+                                                row={row}
+                                                index={index}
+                                                data={data}
+                                                setEmployeesId={setEmployeesId}
+                                                employeesId={employeesId}
+                                            />
+                                        ) : navigateURL === 'notifications' ? (
+                                            <NotificationsPagination
+                                                key={index}
+                                                navigateURL={navigateURL}
+                                                arry={arry}
+                                                row={row}
+                                                index={index}
 
-                                        />
-                                    ) : navigateURL === 'chats' ? (
-                                        <ChatsPagination
-                                            key={index}
-                                            navigateURL={navigateURL}
-                                            arry={arry}
-                                            row={row}
-                                            index={index}
-                                            data={data}
-                                            setEmployeesId={setEmployeesId}
-                                            employeesId={employeesId}
-                                        />
-                                    ) : (
-                                        <InvoicesPagination
-                                            key={index}
-                                            navigateURL={navigateURL}
-                                            arry={arry}
-                                            row={row}
-                                            index={index}
-                                            data={data}
-                                            setEmployeesId={setEmployeesId}
-                                            employeesId={employeesId}
+                                            />
+                                        ) : navigateURL === 'chats' ? (
+                                            <ChatsPagination
+                                                key={index}
+                                                navigateURL={navigateURL}
+                                                arry={arry}
+                                                row={row}
+                                                index={index}
+                                                data={data}
+                                                setEmployeesId={setEmployeesId}
+                                                employeesId={employeesId}
+                                            />
+                                        ) : (
+                                            <InvoicesPagination
+                                                key={index}
+                                                navigateURL={navigateURL}
+                                                arry={arry}
+                                                row={row}
+                                                index={index}
+                                                data={data}
+                                            />
+                                        )
+                                    ))}
 
-                                        />
-                                    )
-                                ))}
-
-                                {data && data.length === 0 && (
-                                    <TableRow>
-                                        <TableCell colSpan={arry.length+1} align="center">
-                                            Maʼlumot topilmadi
-                                        </TableCell>
-                                    </TableRow>
-                                )}
-                            </TableBody>
+                                    {data && data.length === 0 && (
+                                        <TableRow>
+                                            <TableCell colSpan={arry.length + 1} align="center">
+                                                Maʼlumot topilmadi
+                                            </TableCell>
+                                        </TableRow>
+                                    )}
+                                </TableBody>
                         }
 
                     </Table>

@@ -91,8 +91,12 @@ export default function ImzoComponent({  onSignSuccess }) {
     }
 
     const EimzoLogout = async  () => {
-        const res = await dispatch(LogoutInvoice());
-        console.log(res);
+        try {
+            const res = await dispatch(LogoutInvoice());
+        }
+        catch (e) {
+            console.error(e);
+        }
     }
 
     function sign() {
@@ -100,7 +104,6 @@ export default function ImzoComponent({  onSignSuccess }) {
             alert("Iltimos, sertifikat tanlang!");
             return;
         }
-
         window.EIMZOClient.loadKey(selectedKey, function (keyId) {
             window.EIMZOClient.createPkcs7(keyId, selectedKey.TIN, null, function (pkcs7, hex) {
                 if (onSignSuccess) {

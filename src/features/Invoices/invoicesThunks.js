@@ -23,6 +23,16 @@ export const getInvoicesStatus = createAsyncThunk(
         }
     }
 );
+export const EimzoConnection = createAsyncThunk(
+    "invoices/EimzoConnection",
+    async (senData,{ rejectWithValue }) => {
+        try {
+            return await InvoicesService.eimzoConnections(senData);
+        } catch (err) {
+            return rejectWithValue(err.response?.data || "Failed to fetch invoices");
+        }
+    }
+);
 
 // // Yangi invoice qo‘shish
 // export const addInvoice = createAsyncThunk(

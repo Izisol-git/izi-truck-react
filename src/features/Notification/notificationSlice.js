@@ -1,10 +1,11 @@
 import { createSlice } from "@reduxjs/toolkit";
-import {getNotifications} from "./notificationsThunks.js";
+import {getAllChatsID, getNotifications} from "./notificationsThunks.js";
 
 const notificationSlice = createSlice({
     name: "notifications",
     initialState: {
         notifications: [],
+        getAllChatsID: [],
         loading: false,
         error: null,
     },
@@ -27,6 +28,19 @@ const notificationSlice = createSlice({
             state.notifications = action.payload;
         });
         builder.addCase(getNotifications.rejected, (state, action) => {
+            state.loading = false;
+            state.error = action.payload;
+        });
+        // GET getAllChatsID
+        builder.addCase(getAllChatsID.pending, (state) => {
+            state.loading = true;
+            state.error = null;
+        });
+        builder.addCase(getAllChatsID.fulfilled, (state, action) => {
+            state.loading = false;
+            state.getAllChatsID = action.payload;
+        });
+        builder.addCase(getAllChatsID.rejected, (state, action) => {
             state.loading = false;
             state.error = action.payload;
         });

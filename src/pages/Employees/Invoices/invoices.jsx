@@ -3,7 +3,7 @@ import ImzoComponent from "../../../Components/IMZOComponent/ImzoComponent.jsx";
 import { useDispatch, useSelector } from "react-redux";
 import { openInvoicesModal } from "../../../features/EmployeSModalToggle/employesModalToggle.js";
 import axios from "axios";
-import { getInvoices } from "../../../features/Invoices/invoicesThunks.js";
+import {EimzoConnection, getInvoices} from "../../../features/Invoices/invoicesThunks.js";
 import { useSearchParams } from "react-router-dom";
 import {
     UserPagination,
@@ -20,11 +20,10 @@ const Invoices = () => {
     const { t } = useTranslation();
     const dispatch = useDispatch();
     const [searchParams, setSearchParams] = useSearchParams();
-
     const [total, setTotal] = useState();
-    const [employeesId, setEmployeesId] = useState();
     const [employeesData, setEmployeesData] = useState();
     const { loading } = useSelector((state) => state.invoices);
+    console.log(employeesData)
 
     // localStorage bilan sinxron state
     const [activeRadio, setActiveRadio] = useState(
@@ -37,11 +36,10 @@ const Invoices = () => {
     const fetchInvoices = async () => {
         try {
             const obj = { activeRadio, pageqq };
-            const res = await dispatch(getInvoices(obj));
-            setTotal(res.payload);
-            setEmployeesData(res.payload.data);
-
-            if (res.payload?.success === false) {
+            const res = await dispatch(getInvoices(obj)).unwrap()
+            setTotal(res);
+            setEmployeesData(res);
+            if (res?.success === false) {
                 dispatch(openInvoicesModal());
             }
         } catch (e) {
@@ -62,27 +60,31 @@ const Invoices = () => {
         });
     }, [activeRadio]);
 
-    function handleSignSuccess({ pkcs7, hex, tin }) {
+    async  function handleSignSuccess({ pkcs7, hex, tin }) {
         console.log("✅ Imzo muvaffaqiyatli", { pkcs7, hex, tin });
-
         const sendData = { data: pkcs7, hex: hex, tin: tin };
-        const token = localStorage.getItem("token");
-
-        axios
-            .post("https://backend.izitruck.uz/api/save_pkcs7", sendData, {
-                headers: {
-                    Authorization: `Bearer ${token}`,
-                    "Content-Type": "application/json",
-                },
-            })
-            .then((res) => {
-                if (res.data?.success === true) {
-                    fetchInvoices();
-                }
-            })
-            .catch((err) => {
-                console.error("Error:", err.response?.data || err.message);
-            });
+        try{
+            const res = await dispatch(EimzoConnection(sendData)).unwrap()
+            if (res.data?.success === true) {
+                fetchInvoices();
+            }
+        }
+        catch(err){
+            console.error("Error:", err.response?.data || err.message);
+        }
+        // axios
+        //     .post("https://backend.izitruck.uz/api/save_pkcs7", sendData, {
+        //         headers: {
+        //             Authorization: `Bearer ${token}`,
+        //             "Content-Type": "application/json",
+        //         },
+        //     })
+        //     .then((res) => {
+        //
+        //     })
+        //     .catch((err) => {
+        //
+        //     });
     }
 
     const statusList = [
@@ -171,7 +173,6 @@ const Invoices = () => {
                         <Loading />
                     ) : (
                         <UserPagination
-                            setEmployeesId={setEmployeesId}
                             total={total}
                             data={employeesData}
                             arry={columnsArry.map((col) => ({

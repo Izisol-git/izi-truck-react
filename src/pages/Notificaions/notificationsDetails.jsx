@@ -2,7 +2,7 @@ import React, {useEffect, useState} from 'react';
 import {useParams} from "react-router-dom";
 import {UserNavbar} from "../index.js";
 import {Chats, UserPagination} from "../../Components/index.js";
-import {useDispatch} from "react-redux";
+import {useDispatch, useSelector} from "react-redux";
 import {getAllChatsID, getNotifications} from "../../features/Notification/notificationsThunks.js";
 import {useTranslation} from "react-i18next";
 
@@ -10,38 +10,43 @@ function NotificationsDetails() {
     const {id} = useParams();
     const {t} = useTranslation();
 
-    const [chatsData , setChatsData] = useState();
-    const [chatUser , setChatUser] = useState();
+    const [chatsData, setChatsData] = useState();
+    const [chatUser, setChatUser] = useState();
     const dispatch = useDispatch();
+    const {notifications} = useSelector((state) => state.notification);
 
 
     const getAll = async () => {
         try {
-            const  res = await dispatch(getNotifications()).unwrap();
+            const res = await dispatch(getNotifications()).unwrap();
             console.log(res)
             // setNotificationData(res.messages);
-        }catch(err){
+        } catch (err) {
             console.log(err);
         }
     }
 
-    const getChatsId =async () => {
+    const getChatsId = async () => {
         try {
             const res = await dispatch(getAllChatsID(id)).unwrap();
             console.log(res);
             setChatsData(res.messages);
             setChatUser(res.chat);
-        }
-        catch (error) {
+        } catch (error) {
             console.log(error);
         }
     }
 
     useEffect(() => {
-        getChatsId()
-        getAll()
-    } , [id])
+        getAll();
+        getChatsId();
+    }, [id]);
 
+    useEffect(() => {
+        if (notifications?.messages?.length > 0) {
+            getChatsId();
+        }
+    }, [notifications]);
 
     return (
         <div>
@@ -54,7 +59,7 @@ function NotificationsDetails() {
                     </div>
 
 
-                    <Chats getChatsId={getChatsId}  chatId={id} chatsData={chatsData} chatUser={chatUser} />
+                    <Chats getChatsId={getChatsId} chatId={id} chatsData={chatsData} chatUser={chatUser}/>
 
 
                     {/*{loading ? <Loading/> :*/}

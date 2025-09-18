@@ -18,27 +18,20 @@ function NavbarY( ) {
     const location = useLocation();
     const {user} = useSelector((state) => state.auth);
     const [isSun, setIsSun] = useState(
-        localStorage.getItem("dark") === "true" // stringni boolean ga aylantiryapti
+        localStorage.getItem("dark") === "true"
     );
     const [notifications, setNotifications] = useState([]);
-    const [counter, setCounter] = useState(0);
     Pusher.logToConsole = true;
     const {t} = useTranslation();
 
     const count = async () => {
         try {
             const  res = await dispatch(getNotifications()).unwrap();
-            // console.log(res)
-            // setCounter(res.count);
             setNotifications(res.messages);
         }catch(err){
             console.log(err);
         }
     }
-    //
-    // useEffect(()=>{
-    //
-    // } , [])
 
 
     useEffect(() => {

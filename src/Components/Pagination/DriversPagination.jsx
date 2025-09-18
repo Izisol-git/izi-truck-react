@@ -9,20 +9,21 @@ import {
 import {ProfileInfoCardDrivers} from "../index.js";
 import {useDispatch, useSelector} from "react-redux";
 import {useNavigate} from "react-router-dom";
+import {AddDriversId} from "../../features/Drivers/driversSlice.js";
 
 function DriversPagination({row , index , data , setEmployeesId , arry , navigateURL , dataIndex }) {
 
 
     const dispatch = useDispatch();
-    const isOpenMOdal = useSelector((state) => state.employesModal.isOpen);
+    const {drivers} = useSelector((state) => state.drivers);
 
     const [isOpen, setIsOpen] = useState(-1);
     const navigate = useNavigate();
-    const findId = (id) => {
-        const newData = data.find((employee) => employee.id === id);
-        // setEmployeesId(newData)
-        console.log(newData)
-    }
+    // const findId = (id) => {
+    //     const newData = data.find((employee) => employee.id === id);
+    //     // setEmployeesId(newData)
+    //     console.log(newData)
+    // }
 
     return (
         <>
@@ -51,7 +52,7 @@ function DriversPagination({row , index , data , setEmployeesId , arry , navigat
                     ".dark &": {
                         color: "white",
                     },
-                }}>{dataIndex.per_page * (dataIndex.current_page-1) + index+1}</TableCell>
+                }}>{drivers.per_page * (drivers.current_page-1) + index+1}</TableCell>
                 {/*{arry[0].active && <TableCell sx={{*/}
                 {/*    color: "black",*/}
                 {/*    ".dark &": {*/}
@@ -110,11 +111,10 @@ function DriversPagination({row , index , data , setEmployeesId , arry , navigat
                     <div className="flex items-center gap-1 ">
                         <div onClick={(e) => {
                             e.stopPropagation();
-                            findId(row.id)
-                            dispatch(DriversId(row.id))
+                            dispatch(AddDriversId(row))
                             localStorage.setItem('driversId' , row?.id)
                             dispatch(EditToggle())
-                            navigate("/users/drivers/edit");
+                            navigate(`/users/drivers/edit/${row?.id}`);
                         }}
                              className=" bg-yellow-500 w-[30px] h-[30px] rounded center text-[14px] group">
                             <i
@@ -122,7 +122,7 @@ function DriversPagination({row , index , data , setEmployeesId , arry , navigat
                         </div>
                         <div onClick={(e) => {
                             e.stopPropagation();
-                            dispatch(DriversId(row.id))
+                            dispatch(AddDriversId(row))
                             localStorage.setItem('driversId' , row?.id)
                             navigate(`/users/${navigateURL}/detail/${row.id}`)
                         }}
@@ -131,7 +131,7 @@ function DriversPagination({row , index , data , setEmployeesId , arry , navigat
                         </div>
                         <div onClick={(e) => {
                             e.stopPropagation();
-                            dispatch(DriversId(row.id))
+                            dispatch(AddDriversId(row))
                             dispatch(openModalHistory())
                         }}
                              className="bg-[#38CB6E] w-[30px] h-[30px] rounded center text-[14px] group">

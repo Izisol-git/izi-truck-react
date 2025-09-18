@@ -2,16 +2,16 @@ import React, {useEffect, useState} from 'react';
 import {useNavigate} from "react-router-dom";
 import {useDispatch, useSelector} from "react-redux";
 import axios from "axios";
-import {addDriver, driversGetId, editDriver} from "../../features/Drivers/driversThunks.js";
-import { InputMUI, SelectMUI} from "../index.js";
+import {addDriver, driversGetId, editDriver, getDrivers} from "../../features/Drivers/driversThunks.js";
+import {InputMUI, SelectMUI} from "../index.js";
 import FileButton from "../Buttons/fileButton.jsx";
-import { useTranslation } from "react-i18next";
+import {useTranslation} from "react-i18next";
 import {Button} from "@mui/material";
 
 function DriversFrom({mode}) {
     const navigate = useNavigate();
     const dispatch = useDispatch();
-    const { t } = useTranslation();
+    const {t} = useTranslation();
 
     // oddiy inputlar uchun state
     const [fullName, setFullName] = useState("");
@@ -24,46 +24,51 @@ function DriversFrom({mode}) {
     const [carNumber, setCarNumber] = useState("");
     const [trailerNumber, setTrailerNumber] = useState("");
     const [carCondition, setCarCondition] = useState("");
-    const [carType, setCarType] = useState("");
+    const [carType, setCarType] = useState();
     const [carTypeArray, setCarTypeArray] = useState();
     const [error, setError] = useState();
     const [EditDriversArry, setEditDriversArry] = useState();
     const [driversPhone, setDriversPhone] = useState([{id: Date.now(), phone: ""}]);
     const [driversAddFile, setDriversAddFile] = useState([]);
     const loading = useSelector((state) => state.drivers.loadingAddDrivers);
+    const {drivers} = useSelector((state) => state.drivers);
+    const {driversId} = useSelector((state) => state.drivers);
 
     // edit uchun id olish
-    const DriversId = async (id) => {
-        const res = await dispatch(driversGetId(id));
-        setEditDriversArry(res.payload.driver);
+    const DriversId = async () => {
+        // const res = await dispatch(driversGetId(id));
+        setEditDriversArry(driversId);
     };
     useEffect(() => {
-        if(mode === "edit") {
-            DriversId(localStorage.getItem('driversId'));
+        if (mode === "edit") {
+            DriversId();
         }
     }, []);
 
     // Edit inputlarni to‘ldirish
     useEffect(() => {
-        if (EditDriversArry) {
-            setFullName(EditDriversArry?.fio || "");
-            setCarBrand(EditDriversArry?.brand || "");
-            setCarNumber(EditDriversArry?.number || "");
-            setCarWidth(EditDriversArry?.width || "");
-            setCarHeight(EditDriversArry?.height || "");
-            setCarLength(EditDriversArry?.length || "");
-            setCarCapacity(EditDriversArry?.capacity || "");
-            setCarLoad(EditDriversArry?.carrying || "");
-            setTrailerNumber(EditDriversArry?.trailer_number || "");
+        if (mode === "edit") {
+            console.log("EditDriversArry", driversId);
+            setFullName(driversId?.fio || "");
+            setCarBrand(driversId?.brand || "");
+            setCarNumber(driversId?.number || "");
+            setCarWidth(driversId?.width || "");
+            setCarHeight(driversId?.height || "");
+            setCarLength(driversId?.length || "");
+            setCarCapacity(driversId?.capacity || "");
+            setCarLoad(driversId?.carrying || "");
+            setTrailerNumber(driversId?.trailer_number || "");
             setCarCondition(
-                top100Films.find((opt) => String(opt.id) === String(EditDriversArry?.condition)) || null
+                top100Films.find((opt) => String(opt.id) === String(driversId?.condition)) || null
             );
-            setCarType(
-                carTypeArray?.find((opt) => String(opt.id) === String(EditDriversArry?.type)) || null
-            );
-            if (Array.isArray(EditDriversArry?.phone_number)) {
+            // setCarType(EditDriversArry?.type)
+
+            // setCarType(
+            //     carTypeArray?.find((opt) => opt.id === driversId?.type) || null
+            // );
+            if (Array.isArray(driversId?.phone_number)) {
                 setDriversPhone(
-                    EditDriversArry?.phone_number.map((p, index) => ({
+                    driversId?.phone_number.map((p, index) => ({
                         id: Date.now() + index,
                         phone: p,
                     }))
@@ -72,27 +77,35 @@ function DriversFrom({mode}) {
                 setDriversPhone([{id: Date.now(), phone: ""}]);
             }
         }
-    }, [EditDriversArry]);
+    }, []);
+    const fetchData = async () => {
+        try {
+            const res = await axios.get(
+                "https://backend.izitruck.uz/api/drivers/create",
+                {
+                    headers: {
+                        Accept: "application/json",
+                        "Content-Type": "application/json",
+                        Authorization: `Bearer ${localStorage.getItem("token")}`,
+                    },
+                }
+            );
+
+            setCarTypeArray(res.data.transport_types);
+            if (mode === "edit") {
+                setCarType(
+                    res?.data?.transport_types?.find((opt) => opt.id === driversId?.type) || null
+                );
+            }
+
+
+        } catch (error) {
+            console.error(error);
+        }
+    };
 
     // transport types olish
     useEffect(() => {
-        const fetchData = async () => {
-            try {
-                const res = await axios.get(
-                    "https://backend.izitruck.uz/api/drivers/create",
-                    {
-                        headers: {
-                            Accept: "application/json",
-                            "Content-Type": "application/json",
-                            Authorization: `Bearer ${localStorage.getItem("token")}`,
-                        },
-                    }
-                );
-                setCarTypeArray(res.data.transport_types);
-            } catch (error) {
-                console.error(error);
-            }
-        };
         fetchData();
     }, []);
 
@@ -153,16 +166,30 @@ function DriversFrom({mode}) {
             carrying: carLoad,
             number: carNumber,
             trailer_number: trailerNumber,
-            condition: carCondition.id,
-            type: carType.id,
+            condition: carCondition?.id,
+            type: carType?.id,
         };
-        dispatch(addDriver(driverData))
-            .unwrap()
-            .then(() => {
-                resetForm();
-                navigate("/users/drivers");
-            })
-            .catch((err) => setError(err.errors));
+        try {
+            const res = await dispatch(addDriver(driverData)).unwrap()
+            navigate("/users/drivers");
+            resetForm();
+            try {
+                const res2 = await dispatch(getDrivers({
+                    page: 1,
+                    search: ''
+                })).unwrap()
+                console.log(res2);
+            } catch (error) {
+                console.log(error)
+            }
+
+        } catch (error) {
+            console.log(error);
+            setError(error?.errors);
+        }
+
+
+
     };
 
     const EdithandleSubmit = async () => {
@@ -180,13 +207,29 @@ function DriversFrom({mode}) {
             condition: carCondition?.id,
             type: carType?.id,
         };
-        dispatch(editDriver({id: localStorage.getItem('driversId'), driverData: driverData}))
-            .unwrap()
-            .then(() => {
-                resetForm();
-                navigate("/users/drivers");
-            })
-            .catch((err) => console.error(err));
+        try {
+
+            const res = await dispatch(editDriver({
+                id: localStorage.getItem('driversId'),
+                driverData: driverData
+            })).unwrap()
+
+            resetForm();
+            navigate("/users/drivers");
+            try {
+                const res2 = await dispatch(getDrivers({
+                    page: 1,
+                    search: ''
+                })).unwrap()
+                console.log(res2);
+            } catch (error) {
+                console.log(error)
+            }
+
+        } catch (err) {
+            console.error(err);
+        }
+
     };
 
     return (
@@ -198,7 +241,7 @@ function DriversFrom({mode}) {
                         className="w-max absolute top-0 left-0"
                         onClick={() => navigate(`/users/drivers`)}
                     >
-                        <Button  sx={{
+                        <Button sx={{
                             background: '#1D2D5B',
                             '.dark &': {
                                 background: '#2B4764',
@@ -276,25 +319,43 @@ function DriversFrom({mode}) {
             {/* Car info */}
             <div className="w-[90%] bg-white px-4 mx-auto py-5 rounded-md shadow mt-5 dark:bg-darkBgTwo">
                 <div className="grid grid-cols-3 gap-4">
-                    <InputMUI label={t("drivers.driversForm.brand")} value={carBrand} onChange={(e)=>setCarBrand(e.target.value)} />
-                    <InputMUI label={t("drivers.driversForm.width")} value={carWidth} onChange={(e)=>setCarWidth(e.target.value)} />
-                    <SelectMUI label={t("drivers.driversForm.condition.label")} value={carCondition} onChange={setCarCondition} options={top100Films} />
+                    <InputMUI errorMassage={error?.brand
+                    } label={t("drivers.driversForm.brand")} value={carBrand}
+                              onChange={(e) => setCarBrand(e.target.value)}/>
+                    <InputMUI errorMassage={error?.width
+                    } label={t("drivers.driversForm.width")} value={carWidth}
+                              onChange={(e) => setCarWidth(e.target.value)}/>
+                    <SelectMUI errorMassage={error?.condition} label={t("drivers.driversForm.condition.label")}
+                               value={carCondition}
+                               onChange={setCarCondition} options={top100Films}/>
                 </div>
 
                 <div className="grid grid-cols-3 gap-4 mt-5">
-                    <InputMUI label={t("drivers.driversForm.height")} value={carHeight} onChange={(e)=>setCarHeight(e.target.value)} />
-                    <SelectMUI label={t("drivers.driversForm.type")} value={carType} onChange={setCarType} options={carTypeArray || []} />
-                    <InputMUI label={t("drivers.driversForm.trailerNumber")} value={trailerNumber} onChange={(e)=>setTrailerNumber(e.target.value)} />
+                    <InputMUI errorMassage={error?.height} label={t("drivers.driversForm.height")} value={carHeight}
+                              onChange={(e) => setCarHeight(e.target.value)}/>
+                    <SelectMUI errorMassage={error?.type} label={t("drivers.driversForm.type")}
+                               value={carType}
+                               onChange={setCarType}
+                               options={carTypeArray || []}
+                    />
+                    <InputMUI errorMassage={error?.trailer_number} label={t("drivers.driversForm.trailerNumber")}
+                              value={trailerNumber}
+                              onChange={(e) => setTrailerNumber(e.target.value)}/>
                 </div>
 
                 <div className="grid grid-cols-3 gap-4 mt-5">
-                    <InputMUI label={t("drivers.driversForm.number")} value={carNumber} onChange={(e)=>setCarNumber(e.target.value)} />
-                    <InputMUI label={t("drivers.driversForm.capacity")} value={carCapacity} onChange={(e)=>setCarCapacity(e.target.value)} />
-                    <InputMUI label={t("drivers.driversForm.length")} value={carLength} onChange={(e)=>setCarLength(e.target.value)} />
+                    <InputMUI errorMassage={error?.number} label={t("drivers.driversForm.number")} value={carNumber}
+                              onChange={(e) => setCarNumber(e.target.value)}/>
+                    <InputMUI errorMassage={error?.capacity} label={t("drivers.driversForm.capacity")}
+                              value={carCapacity}
+                              onChange={(e) => setCarCapacity(e.target.value)}/>
+                    <InputMUI errorMassage={error?.length} label={t("drivers.driversForm.length")} value={carLength}
+                              onChange={(e) => setCarLength(e.target.value)}/>
                 </div>
 
                 <div className="grid grid-cols-3 gap-4 mt-5">
-                    <InputMUI label={t("drivers.driversForm.carrying")} value={carLoad} onChange={(e)=>setCarLoad(e.target.value)} />
+                    <InputMUI errorMassage={error?.carrying} label={t("drivers.driversForm.carrying")} value={carLoad}
+                              onChange={(e) => setCarLoad(e.target.value)}/>
                 </div>
 
                 {/* Fayllar */}
@@ -321,18 +382,20 @@ function DriversFrom({mode}) {
                 <div className="py-5 w-full flex items-center justify-end gap-4">
                     <Button
                         sx={{
-                            background:"#1D2D5B"
+                            background: "#1D2D5B"
                         }}
                         size={'large'} variant={'contained'} onClick={() => navigate(`/users/drivers`)}
-                            >
+                    >
                         {t("drivers.driversForm.close")}
                     </Button>
                     <Button
                         sx={{
-                            background:"#1D2D5B"
+                            background: "#1D2D5B"
                         }}
-                        size={'large'}  variant={'contained'}  onClick={()=>{ mode === 'add' ? AddhandleSubmit() : EdithandleSubmit();}}
-                           >
+                        size={'large'} variant={'contained'} onClick={() => {
+                        mode === 'add' ? AddhandleSubmit() : EdithandleSubmit();
+                    }}
+                    >
                         {!loading ? t("drivers.driversForm.addBtn") : t("drivers.driversForm.adding")}
                     </Button>
                 </div>

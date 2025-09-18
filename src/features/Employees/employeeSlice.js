@@ -1,15 +1,21 @@
-import { createSlice } from "@reduxjs/toolkit";
-import {getEmployees, addEmployee, deleteEmployee, updateEmployee} from "./employeeThunks";
+import {createAsyncThunk, createSlice} from "@reduxjs/toolkit";
+import {getEmployees, addEmployee, deleteEmployee, updateEmployee, EmployeesId, getContractId} from "./employeeThunks";
 
 const employeeSlice = createSlice({
     name: "employees",
     initialState: {
-        items: [],
+        employees: [],
+        employeesId: [],
+        contractID : [],
         loading: false,
         loadingAddEmployee: false,
         error: null,
     },
-    reducers: {},
+    reducers: {
+        AddEmployeeId(state, action){
+            state.employeesId = action.payload;
+        }
+    },
     extraReducers: (builder) => {
         builder
             // Fetch
@@ -19,16 +25,41 @@ const employeeSlice = createSlice({
             })
             .addCase(getEmployees.fulfilled, (state, action) => {
                 state.loading = false;
-                // state.items = action.payload;
+                state.employees = action.payload.data;
             })
             .addCase(getEmployees.rejected, (state, action) => {
+                state.loading = false;
+                state.error = action.payload;
+            })
+            // Fetch
+            .addCase(EmployeesId.pending, (state) => {
+                state.loading = true;
+                state.error = null;
+            })
+            .addCase(EmployeesId.fulfilled, (state, action) => {
+                state.loading = false;
+                state.employeesId = action.payload.data;
+            })
+            .addCase(EmployeesId.rejected, (state, action) => {
+                state.loading = false;
+                state.error = action.payload;
+            })
+            // Fetch
+            .addCase(getContractId.pending, (state) => {
+                state.loading = true;
+                state.error = null;
+            })
+            .addCase(getContractId.fulfilled, (state, action) => {
+                state.loading = false;
+                state.contractID = action.payload.data;
+            })
+            .addCase(getContractId.rejected, (state, action) => {
                 state.loading = false;
                 state.error = action.payload;
             })
 
             .addCase(addEmployee.pending, (state) => {
                 state.loadingAddEmployee = true;
-
             })
 
             .addCase(addEmployee.fulfilled, (state, action) => {
@@ -59,5 +90,7 @@ const employeeSlice = createSlice({
             });
     },
 });
+
+export const {AddEmployeeId} = employeeSlice.actions;
 
 export default employeeSlice.reducer;

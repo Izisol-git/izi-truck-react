@@ -13,7 +13,7 @@ export const getOrders = createAsyncThunk(
     }
 );
 export const getShowOrders = createAsyncThunk(
-    "orders/getOrders",
+    "orders/getShowOrders",
     async ({id , db}, { rejectWithValue }) => {
         try {
             return await OrdersService.getShowOrdersId(id , db);
@@ -23,7 +23,7 @@ export const getShowOrders = createAsyncThunk(
     }
 );
 export const addDidoxId  = createAsyncThunk(
-    "orders/getOrders",
+    "orders/addDidoxId",
     async ({id , obj}, { rejectWithValue }) => {
         try {
             return await OrdersService.addDidox(id , obj);
@@ -34,7 +34,7 @@ export const addDidoxId  = createAsyncThunk(
 );
 
 export const getOrdersId = createAsyncThunk(
-    "orders/getOrders",
+    "orders/getOrdersId",
     async (id, { rejectWithValue }) => {
         try {
             return await OrdersService.orderId(id);
@@ -45,7 +45,7 @@ export const getOrdersId = createAsyncThunk(
 );
 
 export const getState = createAsyncThunk(
-    "orders/getOrders",
+    "orders/getState",
     async (page, { rejectWithValue }) => {
         try {
             return await OrdersService.getSelectLocationState(page);
@@ -55,7 +55,7 @@ export const getState = createAsyncThunk(
     }
 );
 export const getStateTwo = createAsyncThunk(
-    "orders/getOrders",
+    "orders/getStateTwo",
     async (page, { rejectWithValue }) => {
         try {
             return await OrdersService.getSelectLocationStateTwo(page);
@@ -66,7 +66,7 @@ export const getStateTwo = createAsyncThunk(
 );
 
 export const ordersSelect = createAsyncThunk(
-    "orders/getOrders",
+    "orders/ordersSelect",
     async (_, { rejectWithValue }) => {
         try {
             return await OrdersService.getSelect();

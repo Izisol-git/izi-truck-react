@@ -26,7 +26,7 @@ export const addClient = createAsyncThunk(
 );
 
 export const getClientsSelect = createAsyncThunk(
-    "clients/addClient",
+    "clients/getClientsSelect",
     async (_, { rejectWithValue }) => {
         try {
             return await ClientsService.getClientsSelect();
@@ -53,7 +53,7 @@ export const editClient = createAsyncThunk(
 
 
 export const ClientId = createAsyncThunk(
-    "clients/deleteClient",
+    "clients/ClientId",
     async (id, { rejectWithValue }) => {
         try {
             return await ClientsService.clientsId(id);

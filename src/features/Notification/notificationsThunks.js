@@ -2,7 +2,7 @@ import {createAsyncThunk} from "@reduxjs/toolkit";
 import NotificationsService from "../../API/Notifications/notificationsService.js";
 
 export const getNotifications = createAsyncThunk(
-    "employees/notifications",
+    "employees/getNotifications",
     async (page, { rejectWithValue }) => {
         try {
             return await NotificationsService.getAll(page);

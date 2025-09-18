@@ -4,12 +4,17 @@ import {addDriver, driversGetId, editDriver, getDrivers} from "./driversThunks.j
 const driversSlice = createSlice({
     name: "drivers",
     initialState: {
-        items: [],
+        drivers: [],
+        driversId: [],
         loading: false,
         loadingAddDrivers: false,
         error: null,
     },
-    reducers: {},
+    reducers: {
+        AddDriversId(state, action){
+            state.driversId = action.payload;
+        }
+    },
     extraReducers: (builder) => {
         builder
             // Fetch
@@ -19,7 +24,7 @@ const driversSlice = createSlice({
             })
             .addCase(getDrivers.fulfilled, (state, action) => {
                 state.loading = false;
-                // state.items = action.payload;
+                state.drivers = action.payload.data;
             })
             .addCase(getDrivers.rejected, (state, action) => {
                 state.loading = false;
@@ -30,6 +35,7 @@ const driversSlice = createSlice({
             })
             .addCase(driversGetId.fulfilled, (state, action) => {
                 state.loading = false;
+                state.driversId = action.payload.driver;
             })
             .addCase(driversGetId.rejected, (state, action) => {
                 state.loading = false;
@@ -80,5 +86,7 @@ const driversSlice = createSlice({
         // });
     },
 });
+
+export const {AddDriversId} = driversSlice.actions;
 
 export default driversSlice.reducer;

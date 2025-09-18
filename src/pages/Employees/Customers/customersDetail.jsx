@@ -4,12 +4,13 @@ import {Details } from "../../../Components/index.js";
 import {inputModalArray} from "../../../Data/customersData.js";
 import {useParams} from "react-router-dom";
 import {ClientId} from "../../../features/customers/clientsThunks.js";
-import {useDispatch} from "react-redux";
+import {useDispatch, useSelector} from "react-redux";
 
 function CustomersDetail() {
     const {id} = useParams();
     const dispatch = useDispatch();
     const [data ,setData ] = useState();
+    const {clientsId} = useSelector((state) => state.customers);
 
     const ClientSId = async ()=> {
        try {
@@ -22,7 +23,9 @@ function CustomersDetail() {
        }
     }
     useEffect(()=>{
-        ClientSId()
+        if(clientsId?.length === 0){
+            ClientSId()
+        }
     } , [])
 
 

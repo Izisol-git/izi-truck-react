@@ -75,7 +75,7 @@ export default function TableEmployeesMUI({ contracts }) {
                     </TableHead>
                     <TableBody>
                         <TableRow
-                            key={contracts?.id}
+                            key={contracts?.contract?.id}
                             sx={{
                                 '&:last-child td, &:last-child th': { border: 0 },
                                 '.dark &': { bgcolor: '#303030' }
@@ -85,31 +85,31 @@ export default function TableEmployeesMUI({ contracts }) {
                                 '.dark &': {
                                     color: 'white'
                                 }
-                            }}>{contracts?.id}</TableCell>
+                            }}>{contracts?.contract?.id}</TableCell>
                             <TableCell  sx={{
                                 '.dark &': {
                                     color: 'white'
                                 }
-                            }}>{contracts?.contract_no}</TableCell>
+                            }}>{contracts?.contract?.contract_no}</TableCell>
                             <TableCell  sx={{
                                 '.dark &': {
                                     color: 'white'
                                 }
                             }}>
-                                {contracts?.created_at
-                                    ? new Date(contracts?.created_at).toISOString().split("T")[0]
+                                {contracts?.contract?.created_at
+                                    ? new Date(contracts?.contract?.created_at).ddmmyyyy()
                                     : "—"}
                             </TableCell>
                             <TableCell  sx={{
                                 '.dark &': {
                                     color: 'white'
                                 }
-                            }}>{contracts?.customer}</TableCell>
+                            }}>{contracts?.contract?.customer}</TableCell>
                             <TableCell  sx={{
                                 '.dark &': {
                                     color: 'white'
                                 }
-                            }}>{contracts?.customer_tin}</TableCell>
+                            }}>{contracts?.contract?.customer_tin}</TableCell>
                         </TableRow>
                     </TableBody>
                 </Table>
@@ -190,21 +190,18 @@ export default function TableEmployeesMUI({ contracts }) {
                                 }}
                             >
                                 <TableCell  sx={{
-                                    bgcolor: '#F2F6F9',
                                     '.dark &': {
                                         bgcolor: '#374151',
                                         color: 'white'
                                     }
                                 }}>{index + 1}</TableCell>
                                 <TableCell  sx={{
-                                    bgcolor: '#F2F6F9',
                                     '.dark &': {
                                         bgcolor: '#374151',
                                         color: 'white'
                                     }
                                 }}>{row?.contract_no}</TableCell>
                                 <TableCell  sx={{
-                                    bgcolor: '#F2F6F9',
                                     '.dark &': {
                                         bgcolor: '#374151',
                                         color: 'white'
@@ -215,14 +212,12 @@ export default function TableEmployeesMUI({ contracts }) {
                                         : "—"}
                                 </TableCell>
                                 <TableCell  sx={{
-                                    bgcolor: '#F2F6F9',
                                     '.dark &': {
                                         bgcolor: '#374151',
                                         color: 'white'
                                     }
                                 }}>{row?.carrier}</TableCell>
                                 <TableCell  sx={{
-                                    bgcolor: '#F2F6F9',
                                     '.dark &': {
                                         bgcolor: '#374151',
                                         color: 'white'

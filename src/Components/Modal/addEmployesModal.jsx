@@ -4,8 +4,8 @@ import {SelectMUI, InputMUI, ButtonMUI, RadioGroup, MyCalendar} from "../index.j
 import {Button} from "@mui/material";
 import {useDispatch, useSelector} from "react-redux";
 import {closeModal, openModal} from "../../features/EmployeSModalToggle/employesModalToggle.js";
-import {addEmployee, EmployeesId, updateEmployee} from "../../features/Employees/employeeThunks.js";
-import {addClient, ClientId, editClient, getClientsSelect} from "../../features/customers/clientsThunks.js";
+import {addEmployee, EmployeesId, getEmployees, updateEmployee} from "../../features/Employees/employeeThunks.js";
+import {addClient, ClientId, editClient, getClients, getClientsSelect} from "../../features/customers/clientsThunks.js";
 import {useParams} from "react-router-dom";
 import {useTranslation} from "react-i18next";
 
@@ -24,8 +24,8 @@ function AddEmployesModal({h1, inputModalArray = [], setEmployeesId, id}) {
     const {clientsUpdetId} = useSelector((state) => state.employesModal);
     const {user} = useSelector((state) => state.auth);
     const [errors, setErrors] = useState();
-    const {employeesId} = useSelector((state) => state.employesModal);
-    const {customersId} = useSelector((state) => state.employesModal);
+    const {employeesId} = useSelector((state) => state.employees);
+    const {clientsId} = useSelector((state) => state.customers);
     const {t} = useTranslation();
     const [inputModal, setInputModal] = useState(
         inputModalArray.reduce((acc, item) => {
@@ -58,10 +58,10 @@ function AddEmployesModal({h1, inputModalArray = [], setEmployeesId, id}) {
     //     console.log(res)
     // }
 
-    const getEmployeesId = async () => {
-        try {
-            const res = await dispatch(EmployeesId(id ? id : employeesId)).unwrap();
-            console.log(res.data)
+    const getEmployeesId =  () => {
+        // try {
+        //     const res = await dispatch(EmployeesId(id ? id : employeesId)).unwrap();
+        //     console.log(res.data)
 
             // // inputModalArray bo'yicha res dan mos keladigan qiymatlarni olish
             // const updatedInputModal = inputModalArray.map(item => ({
@@ -70,58 +70,59 @@ function AddEmployesModal({h1, inputModalArray = [], setEmployeesId, id}) {
             // }));
 
             setInputModal({
-                name: res?.data?.user?.name,
-                email: res?.data?.user?.email,
+                name: employeesId?.user?.name,
+                email: employeesId?.user?.email,
                 password: "",
-                tin: res?.data?.tin,
-                phone_number: res?.data?.phone_number,
-                tg_user_id: res?.data?.tg_user_id,
-                tg_nick_name: res?.data?.tg_nick_name,
-                code: res?.data?.code,
+                tin: employeesId?.tin,
+                phone_number: employeesId?.phone_number,
+                tg_user_id: employeesId?.tg_user_id,
+                tg_nick_name: employeesId?.tg_nick_name,
+                code: employeesId?.code,
                 avatar: '',
-                type: res?.data?.type,
+                type: employeesId?.type,
             });
             // console.log(updatedInputModal);
-        } catch (error) {
-            console.log(error);
-        }
+        // } catch (error) {
+        //     console.log(error);
+        // }
     };
-    const getCustomersId = async () => {
-        // console.log('ishladi')
-        try {
-            const res = await dispatch(ClientId(id ? id : customersId)).unwrap();
-            console.log(res.data)
+    const getCustomersId =  () => {
+        console.log(clientsId)
+        // try {
+        //     const res = await dispatch(ClientId(id ? id : clientsId?.id)).unwrap();
+        //     console.log(res.data)
 
             // // inputModalArray bo'yicha res dan mos keladigan qiymatlarni olish
             // const updatedInputModal = inputModalArray.map(item => ({
             //     ...item,
             //     value: res[item.post] || ''  // res[item.post] bo'lmasa bo'sh string
             // }));
-
+        // if (!clientsId) return;
             setInputModal({
-                company_name: res?.data?.company_name,
-                contract_no: res?.data?.contract?.contract_no,
-                fio: res?.data?.fio,
-                phone_number: res?.data?.phone_number,
-                director_position: res?.data?.contract?.director_position,
-                director: res?.data?.contract?.director,
-                director_add: res?.data?.contract?.director_add,
-                customer: res?.data?.contract?.customer,
-                cust_bank_code: res?.data?.contract?.cust_bank_code,
-                customer_bank: res?.data?.contract?.customer_bank,
-                customer_tin: res?.data?.contract?.customer_tin,
-                customer_address: res?.data?.contract?.customer_address,
-                customer_vat: res?.data?.contract?.customer_vat,
-                acc_tel: res?.data?.contract?.acc_tel,
-                treaty_code: res?.data?.contract?.treaty_code,
-                customer_oked: res?.data?.contract?.customer_oked,
-                created_at: res?.data?.contract?.created_at,
+                company_name: clientsId?.company_name,
+                contract_no: clientsId?.contract?.contract_no,
+                fio: clientsId?.fio,
+                phone_number: clientsId?.phone_number,
+                director_position: clientsId?.contract?.director_position,
+                director: clientsId?.contract?.director,
+                director_add: clientsId?.contract?.director_add,
+                customer: clientsId?.contract?.customer,
+                cust_bank_code: clientsId?.contract?.cust_bank_code,
+                customer_bank_acc: clientsId?.contract?.customer_bank_acc,
+                customer_bank: clientsId?.contract?.customer_bank,
+                customer_tin: clientsId?.contract?.customer_tin,
+                customer_address: clientsId?.contract?.customer_address,
+                customer_vat: clientsId?.contract?.customer_vat,
+                acc_tel: clientsId?.contract?.acc_tel,
+                treaty_code: clientsId?.contract?.treaty_code,
+                customer_oked: clientsId?.contract?.customer_oked,
+                created_at: clientsId?.contract?.created_at,
 
             });
             // console.log(updatedInputModal);
-        } catch (error) {
-            console.log(error);
-        }
+        // } catch (error) {
+        //     console.log(error);
+        // }
     };
 
     useEffect(() => {
@@ -131,14 +132,16 @@ function AddEmployesModal({h1, inputModalArray = [], setEmployeesId, id}) {
     }, [employeesId, id, isOpen])
 
     useEffect(() => {
-        if ((customersId || id) && addEditToggle === false && h1 === 'Customers') {
+        if (addEditToggle === false && h1 === 'Customers' && (clientsId || id) ) {
             getCustomersId()
         }
-    }, [customersId, id, isOpen])
+    },  [clientsId , isOpen])
 
-    useEffect(() => {
-        clearEmployeesModal()
-    }, [isOpen])
+    // useEffect(() => {
+    //     if(!isOpen){
+    //         clearEmployeesModal()
+    //     }
+    // }, [isOpen])
     // company_name phone_number fio id
 
     useEffect(() => {
@@ -178,38 +181,38 @@ function AddEmployesModal({h1, inputModalArray = [], setEmployeesId, id}) {
         code: "",
         avatar: ""
     });
-    useEffect(() => {
-        if ((customersId || id) && addEditToggle === false && h1 === "Customers") {
-            // const newData = options?.find((customer_id) => customer_id.id === employeesId?.id);
-            // console.log(newData);
-            setInputModal(prev => ({
-                ...prev,
-                company_name: employeesId?.company_name,
-                phone_number: employeesId?.phone_number,
-                customer_id: employeesId?.id,
-                fio: employeesId?.fio,
-            }));
-            // console.log(options?.find((customer_id) => customer_id.id === 256)?.title);
-            // console.log(employeesId?.id);
-        }
-        if ((employeesId || id) && addEditToggle === false && h1 === "Employees") {
-            // const newData = options?.find((customer_id) => customer_id.id === employeesId?.id);
-            // console.log(newData);
-            setInputModal(prev => ({
-                ...prev,
-                code: employeesId?.code,
-                email: employeesId?.user?.email,
-                name: employeesId?.user?.name,
-                password: employeesId?.password,
-                phone_number: employeesId?.phone_number,
-                tg_nick_name: employeesId?.tg_nick_name,
-                tg_user_id: employeesId?.tg_user_id,
-                tin: employeesId?.tin,
-            }));
-            // console.log(options?.find((customer_id) => customer_id.id === 256)?.title);
-            // console.log(employeesId?.id);
-        }
-    }, [addEditToggle, employeesId]);
+    // useEffect(() => {
+    //     if ((clientsId || id) && addEditToggle === false && h1 === "Customers") {
+    //         // const newData = options?.find((customer_id) => customer_id.id === employeesId?.id);
+    //         // console.log(newData);
+    //         setInputModal(prev => ({
+    //             ...prev,
+    //             company_name: employeesId?.company_name,
+    //             phone_number: employeesId?.phone_number,
+    //             customer_id: employeesId?.id,
+    //             fio: employeesId?.fio,
+    //         }));
+    //         // console.log(options?.find((customer_id) => customer_id.id === 256)?.title);
+    //         // console.log(employeesId?.id);
+    //     }
+    //     if ((employeesId || id) && addEditToggle === false && h1 === "Employees") {
+    //         // const newData = options?.find((customer_id) => customer_id.id === employeesId?.id);
+    //         // console.log(newData);
+    //         setInputModal(prev => ({
+    //             ...prev,
+    //             code: employeesId?.code,
+    //             email: employeesId?.user?.email,
+    //             name: employeesId?.user?.name,
+    //             password: employeesId?.password,
+    //             phone_number: employeesId?.phone_number,
+    //             tg_nick_name: employeesId?.tg_nick_name,
+    //             tg_user_id: employeesId?.tg_user_id,
+    //             tin: employeesId?.tin,
+    //         }));
+    //         // console.log(options?.find((customer_id) => customer_id.id === 256)?.title);
+    //         // console.log(employeesId?.id);
+    //     }
+    // }, [addEditToggle, employeesId]);
 
 
     useEffect(() => {
@@ -227,9 +230,18 @@ function AddEmployesModal({h1, inputModalArray = [], setEmployeesId, id}) {
                 ...inputModal,
             }
             try {
-                await dispatch(addClient(obj)).unwrap();
+                const res = await dispatch(addClient(obj)).unwrap();
                 clearEmployeesModal();
                 dispatch(closeModal());
+                try {
+                    try {
+                        const result = await dispatch(getClients({page: 1, search: ''})).unwrap()
+                    } catch (error) {
+                        console.log(error);
+                    }
+                }catch (e) {
+                    console.error(e);
+                }
 
             } catch (error) {
                 console.error("Xatolik:", error);
@@ -254,11 +266,17 @@ function AddEmployesModal({h1, inputModalArray = [], setEmployeesId, id}) {
     const PutEmployees = async () => {
         if (h1 === 'Employees') {
             try {
-                await dispatch(updateEmployee({id: id ? id : employeesId, employeeData: inputModal})).unwrap();
+                await dispatch(updateEmployee({id: id ? id : employeesId?.id, employeeData: inputModal})).unwrap();
                 clearEmployeesModal();
                 dispatch(closeModal());
                 // setEmployeesId(Object.fromEntries(Object.keys(employeesId).map(key => [key, ""])));
                 console.log(inputModal)
+                try {
+                    const result = await dispatch(getEmployees({page: 1, search: ''})).unwrap()
+                    console.log(result.data)
+                } catch (err) {
+                    console.log(err)
+                }
             } catch (error) {
                 console.error("Xatolik:", error);
                 console.log({name: addEmployees?.name});
@@ -269,10 +287,19 @@ function AddEmployesModal({h1, inputModalArray = [], setEmployeesId, id}) {
         if (h1 === 'Customers') {
             console.log(inputModal)
             try {
-                await dispatch(editClient({id: id ? id : customersId, clientData: inputModal})).unwrap();
+                await dispatch(editClient({id: id ? id : clientsId?.id, clientData: inputModal})).unwrap();
                 clearEmployeesModal();
                 dispatch(closeModal());
                 // setEmployeesId(Object.fromEntries(Object.keys(employeesId).map(key => [key, ""])));
+                try {
+                    try {
+                        const result = await dispatch(getClients({page: 1, search: ''})).unwrap()
+                    } catch (error) {
+                        console.log(error);
+                    }
+                }catch (e) {
+                    console.error(e);
+                }
             } catch (error) {
                 console.error("Xatolik:", error);
                 setErrors(error.errors);
@@ -293,33 +320,34 @@ function AddEmployesModal({h1, inputModalArray = [], setEmployeesId, id}) {
             return acc;
         }, {});
         setInputModal(formData);
+        setErrors({})
     }
 
     // console.log(user?.user?.roles[0]?.name);
 
 
     // Tashqariga bosilganda modalni yopish
-    // useEffect(() => {
-    //     console.log(ref.current)
-    //     const handleClickOutside = (event) => {
-    //         if (ref.current && !ref.current.contains(event.target)) {
-    //             dispatch(closeModal())
-    //             console.log(event.target)
-    //             console.log(ref.current.contains(event.target))
-    //
-    //         }
-    //     };
-    //
-    //     if (isOpen) {
-    //         document.addEventListener("mousedown", handleClickOutside);
-    //     } else {
-    //         document.removeEventListener("mousedown", handleClickOutside);
-    //     }
-    //
-    //     return () => {
-    //         document.removeEventListener("mousedown", handleClickOutside);
-    //     };
-    // }, [isOpen]);
+    useEffect(() => {
+        const handleClickOutside = (event) => {
+            if (
+                ref.current &&
+                ref.current.contains(event.target)
+            ) {
+                clearEmployeesModal();
+                dispatch(closeModal());
+            }
+        };
+
+        if (isOpen) {
+            document.addEventListener("mousedown", handleClickOutside);
+        } else {
+            document.removeEventListener("mousedown", handleClickOutside);
+        }
+
+        return () => {
+            document.removeEventListener("mousedown", handleClickOutside);
+        };
+    }, [isOpen]);
 
 
     const title = () => {
@@ -333,7 +361,12 @@ function AddEmployesModal({h1, inputModalArray = [], setEmployeesId, id}) {
 
 
     return (
-        <div ref={ref} className={'bg-blue w-full fixed  inset-1/2 z-10 '}>
+
+        <>
+            <div ref={ref} className={`fixed inset-0 bg-black/40 dark:bg-black/70 backdrop-blur-sm transition-opacity duration-300 z-10 ${isOpen ? "opacity-100" : "opacity-0 pointer-events-none"}`}>
+
+
+            </div>
             <div
                 // onMouseLeave={()=> dispatch(closeModal())}
 
@@ -448,14 +481,14 @@ function AddEmployesModal({h1, inputModalArray = [], setEmployeesId, id}) {
 
                     </div>
 
-                    <div className={"py-6 flex flex-col gap-y-6 "}>
+                    {/*<div className={"pt-5 flex flex-col gap-y-6 "}>*/}
 
-                        <RadioGroup onchange={setInputVariant}/>
-                    </div>
+                    {/*    <RadioGroup onchange={setInputVariant}/>*/}
+                    {/*</div>*/}
                 </div>
 
 
-                <div className={" w-full px-6 flex items-center justify-end gap-x-6 mb-6 "}>
+                <div className={" w-full px-6 flex items-center justify-end gap-x-6 mb-5 mt-5 "}>
 
 
                     <Button sx={{
@@ -498,7 +531,8 @@ function AddEmployesModal({h1, inputModalArray = [], setEmployeesId, id}) {
                 </div>
             </div>
 
-        </div>
+        </>
+
 
     )
 

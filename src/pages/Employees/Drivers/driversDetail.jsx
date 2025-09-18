@@ -2,26 +2,34 @@ import React, {useEffect, useState} from 'react';
 import {Details} from "../../../Components/index.js";
 import {inputModalArray} from "../../../Data/driversData.js";
 import {useParams} from "react-router-dom";
-import {useDispatch} from "react-redux"
+import {useDispatch, useSelector} from "react-redux"
 import {driversGetId} from "../../../features/Drivers/driversThunks.js";
 
 function DriversDetail() {
     const {id} = useParams();
     const dispatch = useDispatch();
     const [data ,setData ] = useState();
+    const {driversId} = useSelector((state) => state.drivers);
+
     const DriversId = async (id)=> {
-        const res = await dispatch(driversGetId(id))
-        setData(res.payload.driver)
-        console.log(res.payload.driver)
+        try {
+            const res = await dispatch(driversGetId(id)).unwrap()
+            setData(res.driver)
+        }
+        catch (error) {
+            console.log(error);
+        }
     }
     useEffect(()=>{
-        DriversId(id)
+        if(driversId.length === 0){
+            DriversId(id)
+        }
     } , [])
     // const Contracts = [
     //     {contractNumber: '7/1' , contractDate : '2022-01-07' , company:'EGS' , status: false}
     // ]
     return (
-        <Details data={data}   inputModalArray={inputModalArray} btnValue={'Drivers'} />
+        <Details data={data} id={id}   inputModalArray={inputModalArray} btnValue={'Drivers'} />
     );
 }
 export default DriversDetail;

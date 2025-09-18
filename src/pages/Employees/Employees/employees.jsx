@@ -20,15 +20,13 @@ function Employees() {
     const dispatch = useDispatch();
     const [searchParams] = useSearchParams();
     const pageqq = searchParams.get("page") || 1;
-    const [total, setTotal] = useState();
     const [searchEmployees, setSearchEmployees] = useState('');
-    const [employeesId, setEmployeesId] = useState();
-    const [employeesData, setEmployeesData] = useState();
     const addEditToggle = useSelector((state) => state.employesModal.addEditToggle);
     const [selectedKeys, setSelectedKeys] = useState([]);
     const id = useSelector((state) => state.employesModal.employeesId);
+    const {employees} = useSelector((state) => state.employees);
+    const {employeesId} = useSelector((state) => state.employees);
     const [data, setData] = useState();
-    const [dataIndex, setDataIndex] = useState(0);
     const {t} = useTranslation();
 
 
@@ -57,15 +55,10 @@ function Employees() {
             EmployeesGetId(id)
         }
     }, [id])
+
     const employeeData = async () => {
         try {
             const result = await dispatch(getEmployees({page: pageqq, search: searchEmployees})).unwrap()
-            setEmployeesData(result.data.data);
-            setTotal(result.data)
-            setDataIndex({
-                current_page: result.data.current_page,
-                per_page: result.data.per_page,
-            })
             console.log(result.data)
         } catch (err) {
             console.log(err)
@@ -74,10 +67,13 @@ function Employees() {
 
     useEffect(() => {
 
-        employeeData();
+        if(employees?.length === 0) {
+            employeeData();
+        }
 
-        // console.log(employeesPaginationData);
-    }, [pageqq, dispatch, searchEmployees]); // ⚡ page o‘zgarsa qayta fetch bo‘ladi
+
+
+    }, [pageqq, dispatch, searchEmployees]);
 
 
     const exportValues = [
@@ -102,14 +98,14 @@ function Employees() {
                 <div className="w-[90%] mx-auto">
                     <UserNavbar openModal={() => dispatch(openModal())} value={'Employees'} columnsArry={columnsArry}
                                 setColumnsArry={setColumnsArry}/>
-                    <UserPagination dataIndex={dataIndex} setSearch={setSearchEmployees} setEmployeesId={setEmployeesId}
-                                    total={total} data={employeesData} arry={columnsArry}
+                    <UserPagination   setSearch={setSearchEmployees}
+                                     data={employees} arry={columnsArry}
                                     setColumnsArry={setColumnsArry}
                                     navigateURL={'employees'}/>
 
-                    <AddEmployesModal setEmployeesId={setEmployeesId} employeesId={employeesId} data={employeesData}
+                    <AddEmployesModal   employeesId={employeesId} data={employees}
                                       h1={"Employees"} inputModalArray={inputModalArray}/>
-                    <Timeline data={data}/>
+                    <Timeline data={employeesId}/>
 
                 </div>
             </div>

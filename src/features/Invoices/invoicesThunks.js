@@ -3,7 +3,7 @@ import InvoicesService from "../../API/invoices/invoicesService.js";
 
 // Invoicelarni olish
 export const getInvoices = createAsyncThunk(
-    "invoices/fetchInvoices",
+    "invoices/getInvoices",
     async (data,{ rejectWithValue }) => {
         try {
             return await InvoicesService.getAll(data);
@@ -14,7 +14,7 @@ export const getInvoices = createAsyncThunk(
 );
 
 export const getInvoicesStatus = createAsyncThunk(
-    "invoices/fetchInvoices",
+    "invoices/getInvoicesStatus",
     async (  index,{ rejectWithValue }) => {
         try {
             return await InvoicesService.getStatus(index);
@@ -50,7 +50,7 @@ export const getInvoicesStatus = createAsyncThunk(
 //
 
 export const LogoutInvoice = createAsyncThunk(
-    "invoices/deleteInvoice",
+    "invoices/LogoutInvoice",
     async (_, { rejectWithValue }) => {
         try {
             return await InvoicesService.logout();

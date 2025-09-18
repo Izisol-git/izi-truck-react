@@ -5,12 +5,13 @@ import { DatePicker } from '@mui/x-date-pickers/DatePicker';
 
 
 
-function MyCalendar({label , value , onChange ,disabled}) {
+function MyCalendar({label , value , onChange ,disabled , disablePortal = false}) {
 
 
     return (
         <LocalizationProvider dateAdapter={AdapterDateFns}>
             <DatePicker
+                disablePortal={disablePortal}
                 disabled={disabled}
                 label={label}
                 value={value ? new Date(value) : null}

@@ -10,8 +10,10 @@ import {
     openModalHistory
 } from "../../features/EmployeSModalToggle/employesModalToggle.js";
 import {ProfileInfoCardDrivers, ProfileInfoClients} from "../index.js";
+import {AddClientId} from "../../features/customers/clientsSlice.js";
 
-function CustomersPagination({row, index, data, setEmployeesId, arry, navigateURL, employeesId , dataIndex}) {
+function CustomersPagination({row, index, data, setEmployeesId, arry, navigateURL, employeesId }) {
+    const {clients} = useSelector((state) => state.customers);
 
     const dispatch = useDispatch();
     const isOpenMOdal = useSelector((state) => state.employesModal.isOpen);
@@ -25,7 +27,7 @@ function CustomersPagination({row, index, data, setEmployeesId, arry, navigateUR
         console.log(newData)
     }
 
-    // console.log(data)
+    console.log(row)
 
     return (
         <>
@@ -58,7 +60,7 @@ function CustomersPagination({row, index, data, setEmployeesId, arry, navigateUR
                     ".dark &": {
                         color: "white",
                     },
-                }}>{dataIndex.per_page * (dataIndex.current_page-1) + index+1}</TableCell>
+                }}>{clients.per_page * (clients.current_page-1) + index+1}</TableCell>
                 {arry[0].active && <TableCell sx={{
                     color: "black",
                     ".dark &": {
@@ -112,7 +114,7 @@ function CustomersPagination({row, index, data, setEmployeesId, arry, navigateUR
                             // setEmployeesId(row.id)
                             // console.log(row.id);
                             // findId(row.id)
-                            dispatch(AddCustomersId(row.id))
+                            dispatch(AddClientId(row))
                             dispatch(openModal())
                             dispatch(EditToggle())
                             dispatch(ClientsUpdetId(row.id))
@@ -124,7 +126,7 @@ function CustomersPagination({row, index, data, setEmployeesId, arry, navigateUR
                         <div onClick={(e) => {
                             e.stopPropagation();
                             navigate(`/users/${navigateURL}/detail/${row.id}`)
-                            dispatch(AddCustomersId(row.id))
+                            dispatch(AddClientId(row))
                         }}
                              className="bg-[#5E83D4] w-[30px] h-[30px] rounded center text-[14px] group">
                             <i className="fa-solid fa-eye   text-white group-hover:scale-125 transition-all duration-300 ease-in-out"></i>
@@ -132,7 +134,7 @@ function CustomersPagination({row, index, data, setEmployeesId, arry, navigateUR
                         <div onClick={(e) => {
                             e.stopPropagation();
                             dispatch(openModalHistory())
-                            dispatch(AddCustomersId(row.id))
+                            dispatch(AddClientId(row))
                         }}
                              className="bg-[#38CB6E] w-[30px] h-[30px] rounded center text-[14px] group">
                             <i className="fa-regular fa-clock   text-white group-hover:scale-125 transition-all duration-300 ease-in-out"></i>

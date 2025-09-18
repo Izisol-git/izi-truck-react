@@ -6,7 +6,7 @@ import QueriesService from "../../API/Queries/queriesService.js";
 
 // GET – barcha Querieslarni olish
 export const getQueriesAll = createAsyncThunk(
-    "orders/getQueries",
+    "orders/getQueriesAll",
     async ({pageqq , search}, { rejectWithValue }) => {
         try {
             return await QueriesService.getAll(pageqq , search);
@@ -30,7 +30,7 @@ export const getAllSelect = createAsyncThunk(
 
 //   queries create
 export const CreateQueries = createAsyncThunk(
-    "orders/AddQueries",
+    "orders/CreateQueries",
     async ({data}, { rejectWithValue }) => {
         try {
             return await QueriesService.create(data);
@@ -41,7 +41,7 @@ export const CreateQueries = createAsyncThunk(
 );
 // queriesId
 export const GetQueriesId = createAsyncThunk(
-    "orders/queriesId",
+    "orders/GetQueriesId",
     async (id, { rejectWithValue }) => {
         try {
             return await QueriesService.queriesId(id);

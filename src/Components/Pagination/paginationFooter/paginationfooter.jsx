@@ -1,9 +1,6 @@
 import { useSearchParams } from "react-router-dom";
 import Pagination from "@mui/material/Pagination";
 import Stack from "@mui/material/Stack";
-import {useEffect} from "react";
-import {getEmployees} from "../../../features/Employees/employeeThunks.js";
-import {useDispatch} from "react-redux";
 
 const PaginationFooter =({total , onClick , filters})=> {
     const [searchParams, setSearchParams] = useSearchParams();

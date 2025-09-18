@@ -1,16 +1,20 @@
 import {createSlice} from "@reduxjs/toolkit";
-import {getClients, addClient, editClient} from "./clientsThunks";
-import {closeModal} from "../EmployeSModalToggle/employesModalToggle.js";
+import {getClients, addClient, editClient, ClientId} from "./clientsThunks";
 
 const clientsSlice = createSlice({
     name: "clients",
     initialState: {
-        list: [],
+        clients: [],
+        clientsId: [],
         loading: false,
         loadingClient : false,
         error: null,
     },
-    reducers: {},
+    reducers: {
+        AddClientId (state, action) {
+            state.clientsId = action.payload
+        }
+    },
     extraReducers: (builder) => {
         builder
             // GET
@@ -19,9 +23,22 @@ const clientsSlice = createSlice({
             })
             .addCase(getClients.fulfilled, (state, action) => {
                 state.loading = false;
-                state.list = action.payload;
+                state.clients = action.payload.clients;
             })
             .addCase(getClients.rejected, (state, action) => {
+                state.loading = false;
+                state.error = action.payload;
+            })
+
+            // ClientId
+            .addCase(ClientId.pending, (state) => {
+                state.loading = true;
+            })
+            .addCase(ClientId.fulfilled, (state, action) => {
+                state.loading = false;
+                state.clientsId = action.payload.data;
+            })
+            .addCase(ClientId.rejected, (state, action) => {
                 state.loading = false;
                 state.error = action.payload;
             })
@@ -65,5 +82,7 @@ const clientsSlice = createSlice({
         // });
     },
 });
+
+export const { AddClientId } = clientsSlice.actions;
 
 export default clientsSlice.reducer;

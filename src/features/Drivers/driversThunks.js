@@ -3,7 +3,7 @@ import DriversService   from "../../API/Drivers/driversService.js";
 
 // Xodimlarni olish
 export const getDrivers = createAsyncThunk(
-    "employees/fetchEmployees",
+    "employees/getDrivers",
     async ({page , search }, { rejectWithValue }) => {
         try {
             return await DriversService.getAll(page , search );
@@ -14,7 +14,7 @@ export const getDrivers = createAsyncThunk(
 );
 
 export const driversGetId = createAsyncThunk(
-    "clients/deleteClient",
+    "clients/driversGetId",
     async (id, { rejectWithValue }) => {
         try {
             return await DriversService.driversId(id);

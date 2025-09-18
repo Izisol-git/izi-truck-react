@@ -152,7 +152,7 @@ function App( ) {
                         <Route path="customers/detail/:id" element={<CustomersDetail />} />
                         <Route path="drivers/detail/:id" element={<DriversDetail />} />
                         <Route path="drivers/create" element={<AddDrivers />} />
-                        <Route path="drivers/edit" element={<EditDrivers />} />
+                        <Route path="drivers/edit/:id" element={<EditDrivers />} />
                         <Route path="customers" element={<Customers />} />
                         <Route path="drivers" element={<Drivers />} />
                         <Route path="invoices" element={<Invoices />} />

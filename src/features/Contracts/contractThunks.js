@@ -24,7 +24,7 @@ export const searchContracts = createAsyncThunk(
 );
 
 export const addContractsData = createAsyncThunk(
-    "clients/contractData",
+    "clients/addContractsData",
     async (  contractData  , { rejectWithValue }) => {
         try {
             return await ContractService.addContracts(  contractData);

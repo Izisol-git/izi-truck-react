@@ -186,7 +186,7 @@ const UserPagination = ({arry, navigateURL, data, total, setEmployeesId, employe
                                     <Loading />
                                 </TableCell>
                             </TableRow> : <TableBody>
-                                {data && data.map((row, index) => (
+                                {data?.data && data?.data.map((row, index) => (
                                     navigateURL === "employees" ? (
                                         <EmployeesPagination
                                             dataIndex={dataIndex}
@@ -215,7 +215,7 @@ const UserPagination = ({arry, navigateURL, data, total, setEmployeesId, employe
                                         />
                                     ) : navigateURL === "customers" ? (
                                         <CustomersPagination
-                                            dataIndex={dataIndex}
+
                                             key={index}
                                             navigateURL={navigateURL}
                                             arry={arry}
@@ -284,7 +284,7 @@ const UserPagination = ({arry, navigateURL, data, total, setEmployeesId, employe
                 </TableContainer>
 
                 <div className={'py-4 flex items-center justify-end px-4'}>
-                    <PaginationFooter total={total}/>
+                    <PaginationFooter total={data}/>
                 </div>
 
 

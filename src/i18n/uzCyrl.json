@@ -28,7 +28,11 @@
       "address": "Манзил",
       "status": "Ҳолати",
       "inProgress": "Етказилмоқда",
-      "closed": "Ёпилган"
+      "closed": "Ёпилган",
+
+      "cargo_name": "Юк номи",
+      "tr_number": "Машина рақами",
+      "date": "Сана"
     },
     "drivers": {
       "busy": "Банд",

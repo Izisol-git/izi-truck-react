@@ -10,7 +10,7 @@ const ProfileDropdown = ({ sunToggle }) => {
     const [open, setOpen] = useState(false);
     const dropdownRef = useRef();
     const dispatch = useDispatch();
-    const [darkMode, setDarkMode] = useState(Number(localStorage.getItem("dark")) || false);
+    const [darkMode, setDarkMode] = useState(localStorage.getItem("dark")|| false);
     const { user } = useSelector((state) => state.auth);
     const navigate = useNavigate();
 
@@ -108,7 +108,7 @@ const ProfileDropdown = ({ sunToggle }) => {
                             </div>
                             {item.hasAction && (
                                 <Switch
-                                    checked={darkMode}
+                                    checked={darkMode === 'true'}
                                     onChange={handleDarkModeToggle}
                                     size="small"
                                     sx={{

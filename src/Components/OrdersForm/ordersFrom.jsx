@@ -841,7 +841,6 @@ function OrdersFrom({mode}) {
                                            }) : setFormData({...formData, status_of_cargo: val})
                                        }}
                             />
-
                         </div>
                         {
                             formData?.status_of_cargo?.id === 1 || formData?.status_of_cargo === 1 ?

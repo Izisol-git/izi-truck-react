@@ -28,6 +28,7 @@ import {
 import {useDispatch} from "react-redux";
 import React from "react";
 import {useTranslation} from "react-i18next";
+import {AddQueries} from "../../features/Queries/queriesSlice.js";
 
 export default function QueriesCard({transaction}) {
     const dispatch = useDispatch();
@@ -261,7 +262,9 @@ export default function QueriesCard({transaction}) {
                         <Button
                             onClick={() => {
                                 dispatch(AddQueriesId(transaction?.id));
+                                dispatch(AddQueries(transaction))
                                 dispatch(openQueriesShow());
+
                             }}
                             variant="contained"
                             color="info"
@@ -276,6 +279,7 @@ export default function QueriesCard({transaction}) {
                         <Button
                             onClick={() => {
                                 navigate(`/queries/edit/${transaction?.id}`);
+                                dispatch(AddQueries(transaction))
                             }}
                             variant="contained"
                             color="warning"

@@ -28,7 +28,10 @@
       "address": "Manzil",
       "status": "Holati",
       "inProgress": "Yetkazilmoqda",
-      "closed": "Yopilgan"
+      "closed": "Yopilgan",
+      "cargo_name": "Yuk nomi",
+      "tr_number": "Mashina raqami",
+      "date": "Sana"
     },
     "drivers": {
       "busy": "Band",

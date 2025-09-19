@@ -206,7 +206,7 @@ function SuperAdminDashboard() {
                 </div>
 
                 {/* RECENT ORDERS */}
-                <div className="bg-white rounded shadow-sm col-span-2 p-4 flex flex-col gap-3 w-full dark:bg-darkBgTwo">
+                <div className="bg-white rounded shadow-sm col-span-4 p-4 flex flex-col gap-3 w-full dark:bg-darkBgTwo">
                     <h2 className="text-lg text-center text-blue font-semibold mb-4 dark:text-darkText">
                         {t("dashboard.recentOrders")}
                     </h2>
@@ -216,6 +216,9 @@ function SuperAdminDashboard() {
                             <tr>
                                 <th>{t("dashboard.table.id")}</th>
                                 <th>{t("dashboard.table.address")}</th>
+                                <th>{t("dashboard.table.cargo_name")}</th>
+                                <th>{t("dashboard.table.tr_number")}</th>
+                                <th>{t("dashboard.table.date")}</th>
                                 <th>{t("dashboard.table.status")}</th>
                             </tr>
                             </thead>
@@ -225,13 +228,21 @@ function SuperAdminDashboard() {
                                     <tr>
                                         <th>{index + 1}</th>
                                         <td>{item.destination_location.replace(',', '  →  ')}</td>
+                                        <td>{item.nature_of_cargo}</td>
+                                        <td>{item.tr_number}</td>
+
+                                        <td>{new Date(item.created_at).ddmmyyyy()}</td>
                                         <td>
                                             {
                                                 item.status === 0 ?
-                                                    <Chip size={'small'} className="text-" variant={'filled'}  color={'warning'} label={t("ordersTranslation.ordersCard.unknown")}/>
+                                                    <Chip size={'small'} className="text-" variant={'filled'}
+                                                          color={'warning'}
+                                                          label={t("ordersTranslation.ordersCard.unknown")}/>
                                                     :
-                                                    <Chip size={'small'} className="text-" variant={'filled'}  color={'success'} label={t("ordersTranslation.ordersCard.driver_assigned")}/>
-                                             }
+                                                    <Chip size={'small'} className="text-" variant={'filled'}
+                                                          color={'success'}
+                                                          label={t("ordersTranslation.ordersCard.driver_assigned")}/>
+                                            }
                                         </td>
                                     </tr>
                                 ))
@@ -241,26 +252,26 @@ function SuperAdminDashboard() {
                     </div>
                 </div>
 
-                {/* DRIVERS STATUS */}
-                <div className="bg-white rounded shadow-sm col-span-2 p-4 flex flex-col gap-3 w-full dark:bg-darkBgTwo">
-                    <h2 className="text-lg text-blue text-center font-semibold mb-4 dark:text-darkText">
-                        {t("dashboard.driversStatus")}
-                    </h2>
-                    <div className="p-2 flex flex-col gap-3">
-                        <div className="flex items-center justify-between w-full">
-                            <p className="font-semibold text-blue dark:text-darkText">👷 Sh.Ergashev</p>
-                            <p className="text-[#16a34a]">{t("dashboard.drivers.busy")}</p>
-                        </div>
-                        <div className="flex items-center justify-between w-full">
-                            <p className="font-semibold text-blue dark:text-darkText">👷 N.Karimov</p>
-                            <p className="text-yellow-500">{t("dashboard.drivers.waiting")}</p>
-                        </div>
-                        <div className="flex items-center justify-between w-full">
-                            <p className="font-semibold text-blue dark:text-darkText">👷 D.Saidov</p>
-                            <p className="text-red-500">{t("dashboard.drivers.vacation")}</p>
-                        </div>
-                    </div>
-                </div>
+                {/*/!* DRIVERS STATUS *!/*/}
+                {/*<div className="bg-white rounded shadow-sm col-span-2 p-4 flex flex-col gap-3 w-full dark:bg-darkBgTwo">*/}
+                {/*    <h2 className="text-lg text-blue text-center font-semibold mb-4 dark:text-darkText">*/}
+                {/*        {t("dashboard.driversStatus")}*/}
+                {/*    </h2>*/}
+                {/*    <div className="p-2 flex flex-col gap-3">*/}
+                {/*        <div className="flex items-center justify-between w-full">*/}
+                {/*            <p className="font-semibold text-blue dark:text-darkText">👷 Sh.Ergashev</p>*/}
+                {/*            <p className="text-[#16a34a]">{t("dashboard.drivers.busy")}</p>*/}
+                {/*        </div>*/}
+                {/*        <div className="flex items-center justify-between w-full">*/}
+                {/*            <p className="font-semibold text-blue dark:text-darkText">👷 N.Karimov</p>*/}
+                {/*            <p className="text-yellow-500">{t("dashboard.drivers.waiting")}</p>*/}
+                {/*        </div>*/}
+                {/*        <div className="flex items-center justify-between w-full">*/}
+                {/*            <p className="font-semibold text-blue dark:text-darkText">👷 D.Saidov</p>*/}
+                {/*            <p className="text-red-500">{t("dashboard.drivers.vacation")}</p>*/}
+                {/*        </div>*/}
+                {/*    </div>*/}
+                {/*</div>*/}
             </div>
         </div>
     );

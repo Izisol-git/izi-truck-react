@@ -190,7 +190,7 @@ function Queries() {
                 <PaginationFooter total={queries}/>
             </div>
 
-            <LogisticsInterface data={queries}/>
+            <LogisticsInterface />
             <ExcelModal search={filters} selectedKeys={selectedKeys} setSelectedKeys={setSelectedKeys}
                         data={exportValues} mode={'queries'}/>
         </div>

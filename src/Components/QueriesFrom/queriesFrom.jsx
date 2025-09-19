@@ -9,18 +9,20 @@ import {
     GetQueriesId,
     updateQueries
 } from "../../features/Queries/queriesThunks.js";
-import { CurrencyInput, InputMUI, MyCalendar, SelectMUI} from "../index.js";
+import {CurrencyInput, InputMUI, MyCalendar, SelectMUI} from "../index.js";
 import {Button, TextareaAutosize} from "@mui/material";
 import {useTranslation} from "react-i18next";
 
 function QueriesFrom({mode}) {
     const {id} = useParams();
     const {loading} = useSelector((state) => state.queries);
+    const {queriesId} = useSelector((state) => state.queries);
     const navigate = useNavigate();
     const dispatch = useDispatch();
     const {t} = useTranslation();
     const [currency, setCurrency] = useState('2');
     const [errors, setErrors] = useState({});
+
     const [formData, setFormData] = useState({
         client_id: "",
         title: "",
@@ -58,7 +60,7 @@ function QueriesFrom({mode}) {
         document.body.style.overflow = "auto";
     }, []);
 
-    const createOrderId =async () => {
+    const createOrderId = async () => {
         try {
             const res = await dispatch(createOrder(id));
             navigate('/queries');
@@ -75,43 +77,47 @@ function QueriesFrom({mode}) {
             } catch (error) {
                 console.error(error)
             }
-        }catch(error) {
+        } catch (error) {
             console.log(error);
         }
     }
 
+    useEffect(() => {
+        if (queriesId && mode === "edit") {
+            setFormData({
+                client_id: queriesId?.client_id || "",
+                title: queriesId?.title || "",
+                status_of_cargo: queriesId?.status_of_cargo || "",
+                degree_of_danger: queriesId?.degree_of_danger || "",
+                weight: queriesId?.weight || "",
+                transport_volume_id: queriesId?.transport_volume_id || "",
+                transport_type_id: queriesId?.transport_type_id || "",
+                mode: queriesId?.mode || "",
+                country_of_departure: queriesId?.from_address?.[0]?.country?.id || "",
+                region_of_departure: queriesId?.from_address?.[0]?.region?.id || "",
+                city_of_departure: queriesId?.from_address?.[0]?.city?.id || "",
+                country_of_destination: queriesId?.to_address?.[0]?.country?.id || "",
+                region_of_destination: queriesId?.to_address?.[0]?.region?.id || "",
+                city_of_destination: queriesId?.to_address?.[0]?.city?.id || "",
+                load_time_from: queriesId?.load_time_from || "",
+                client_enumeration_price: queriesId?.client_enumeration_price || "",
+                payment_method: queriesId?.payment_method || "",
+                client_enumeration_currency: queriesId?.client_enumeration_currency || ""
+            });
+        }
+    }, [queriesId]);
+
+
+    console.log(formData)
 
     const getQueriesId = async () => {
         try {
             const res = await dispatch(GetQueriesId(id)).unwrap()
-            console.log(res.query);
-            const obj = {
-                client_id: res?.query?.client_id || "",
-                title: res?.query?.title || "",
-                status_of_cargo: res?.query?.status_of_cargo,
-                degree_of_danger: res?.query?.degree_of_danger || "",
-                weight: res?.query?.weight || "",
-                transport_volume_id: res?.query?.transport_volume_id || "",
-                transport_type_id: res?.query?.transport_type_id || "",
-                mode: res?.query?.mode || "",
-                country_of_departure: res?.query?.from_address[0]?.country?.id || "",
-                region_of_departure: res?.query?.from_address[0]?.region?.id || "",
-                city_of_departure: res?.query?.from_address[0]?.city?.id || "",
-                country_of_destination: res?.query?.to_address[0]?.country?.id || "",
-                region_of_destination: res?.query?.to_address[0]?.region?.id || "",
-                city_of_destination: res?.query?.to_address[0]?.city?.id || "",
-                load_time_from: res?.query?.load_time_from || "",
-                client_enumeration_price: res?.query?.client_enumeration_price || "",
-                payment_method: res?.query?.payment_method || "",
-                client_enumeration_currency: res?.query?.client_enumeration_currency || ""
-            }
-
-            console.log(obj)
-
+            // console.log(res.query);
             try {
                 const res2 = await dispatch(getAllSelect(
                     {
-                        params: `?country_of_departure=${res?.query?.country_of_departure}&region_of_departure=${res?.query?.region_of_departure}&city_of_departure=${res?.query?.city_of_departure}&country_of_destination=${res?.query?.country_of_destination}&region_of_destination=${res?.query?.region_of_destination}&city_of_destination=${res?.query?.city_of_destination}`
+                        params: `?country_of_departure=${queriesId?.from_address[0]?.from_country}&region_of_departure=${queriesId?.from_address[0]?.from_region}&city_of_departure=${queriesId?.from_address[0]?.from_city}&country_of_destination=${queriesId?.to_address[0]?.to_country}&region_of_destination=${queriesId?.to_address[0]?.to_region}&city_of_destination=${queriesId?.to_address[0]?.to_city}`
                     }
                 )).unwrap()
                 console.log(res2)
@@ -119,27 +125,52 @@ function QueriesFrom({mode}) {
             } catch (error) {
                 console.error(error);
             }
-            setFormData(obj);
+
         } catch (error) {
             console.error(error);
         }
     }
     useEffect(() => {
-        if (mode === 'edit') {
+        if (mode === 'edit' && !queriesId?.id) {
             getQueriesId()
+            console.log('ishladi')
         }
     }, [])
 
 
     useEffect(() => {
-        getQueriesSelect()
-    }, [formData?.country_of_departure, formData?.region_of_departure, formData?.city_of_departure, formData?.country_of_destination, formData?.region_of_destination, formData?.city_of_destination])
+        if ( mode === 'edit' &&
+            (formData.country_of_departure ||
+            formData.region_of_departure ||
+            formData.city_of_departure ||
+            formData.country_of_destination ||
+            formData.region_of_destination ||
+            formData.city_of_destination)
+        ) {
+            getQueriesSelect()
+        }
+        if(mode === 'add'){
+            getQueriesSelect()
+        }
+    }, [
+        formData?.country_of_departure,
+        formData?.region_of_departure,
+        formData?.city_of_departure,
+        formData?.country_of_destination,
+        formData?.region_of_destination,
+        formData?.city_of_destination
+    ])
+    // useEffect(() => {
+    //         if (mode === 'edit') {
+    //             getQueriesSelect()
+    //         }
+    //     },[])
 
 
     const createQuerie = async () => {
         const obj = {
             ...formData,
-            load_time_from : new Date( formData.load_time_from).yyyymmdd(),
+            load_time_from: new Date(formData.load_time_from).yyyymmdd(),
             client_enumeration_currency: currency === '1' ? 'usd' : currency === '2' ? 'uzs' : currency === '3' ? 'rub' : currency === '4' ? 'eur' : '',
         }
         try {
@@ -169,7 +200,11 @@ function QueriesFrom({mode}) {
     const updateQuerie = async () => {
         console.log(formData)
         try {
-            const res = dispatch(updateQueries({id, formData : {...formData , load_time_from : new Date( formData.load_time_from).yyyymmdd()}})).unwrap()
+            const res = await dispatch(updateQueries({
+                id,
+                formData: {...formData, load_time_from: new Date(formData.load_time_from).yyyymmdd()}
+            })).unwrap()
+            navigate('/queries')
             try {
                 const res2 = await dispatch(getQueriesAll({
                     pageqq: 1, search: {
@@ -179,7 +214,6 @@ function QueriesFrom({mode}) {
                     }
                 })).unwrap()
                 // console.log(res2)
-                navigate('/queries')
 
             } catch (error) {
                 console.error(error)
@@ -224,15 +258,15 @@ function QueriesFrom({mode}) {
             <div className={'bg-bacWhite w-full min-h-[calc(100dvh-70px)] py-5 dark:bg-darkBg'}>
                 <div className={'w-[90%] bg-white px-4  mx-auto py-5 rounded-md shadow dark:bg-darkBgTwo'}>
                     <div className={'h-[40px] gap-4 relative text-center center  w-full   mb-10'}>
-                        <div className={'  absolute flex items-center justify-between w-full top-0 left-0'} >
+                        <div className={'  absolute flex items-center justify-between w-full top-0 left-0'}>
                             {/*<Button color={'dark:bg-btnBgDark'} icon={<i className="fa-solid fa-arrow-left"></i>}*/}
                             {/*        value={'Queries'}/>*/}
                             <Button
                                 onClick={() => navigate(`/queries`)}
                                 sx={{
-                                    background : '#1D2D5B',
-                                    '.dark &':{
-                                        background : '#2B4764',
+                                    background: '#1D2D5B',
+                                    '.dark &': {
+                                        background: '#2B4764',
                                     }
                                 }}
                                 color={'info'}
@@ -289,7 +323,7 @@ function QueriesFrom({mode}) {
                         <div className={"w-full "}>
                             <SelectMUI
                                 errorMassage={errors?.status_of_cargo}
-                                value={dangerous?.find((opt) => opt.id === formData?.status_of_cargo)}
+                                value={dangerous?.find((opt) => opt.id === Number(formData?.status_of_cargo))}
                                 onChange={(val) => {
                                     setFormData({
                                         ...formData,
@@ -592,7 +626,7 @@ function QueriesFrom({mode}) {
                             }}
                                     className="w-36 relative overflow-hidden rounded font-semibold bg-transparent border-2 text-blue border-blue transition-all duration-300 ease-in-out  hover:text-white hover:bg-blue py-2 px-3 dark:hover:bg-navBgHover dark:border-darkText dark:text-darkText"
                             >
-                                {mode === 'edit' ? t('queriesTranslation.edit'): t('queriesTranslation.add')}
+                                {mode === 'edit' ? t('queriesTranslation.edit') : t('queriesTranslation.add')}
                             </button>
                         </div>
                     </div>

@@ -35,7 +35,7 @@ const appReducer = combineReducers({
 // logout bo'lganda barcha state tozalansin
 const rootReducer = (state, action) => {
     if (action.type === 'auth/logout') {
-        state = undefined; // barcha redux state reset qilinadi
+        state = undefined;
     }
     return appReducer(state, action);
 };

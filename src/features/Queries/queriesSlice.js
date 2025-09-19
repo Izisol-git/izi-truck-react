@@ -1,8 +1,9 @@
 import {createSlice} from "@reduxjs/toolkit";
-import {CreateQueries, getAllSelect, getQueriesAll, updateQueries} from "./queriesThunks.js";
+import {GetQueriesId ,  getQueriesAll, updateQueries} from "./queriesThunks.js";
 
 const initialState = {
     queries: [],
+    queriesId: [],
     loading: false,
     error: null,
 };
@@ -10,7 +11,11 @@ const initialState = {
 const queriesSlice = createSlice({
     name: "queries",
     initialState,
-    reducers: {},
+    reducers: {
+        AddQueries (state, action){
+            state.queriesId = action.payload;
+        }
+    },
     extraReducers: (builder) => {
         // GET queries
         builder.addCase(getQueriesAll.pending, (state) => {
@@ -22,6 +27,19 @@ const queriesSlice = createSlice({
             state.queries = action.payload.data;
         });
         builder.addCase(getQueriesAll.rejected, (state, action) => {
+            state.loading = false;
+            state.error = action.payload;
+        });
+        // GET GetQueriesId
+        builder.addCase(GetQueriesId.pending, (state) => {
+            state.loading = true;
+            state.error = null;
+        });
+        builder.addCase(GetQueriesId.fulfilled, (state, action) => {
+            state.loading = false;
+            state.queriesId = action.payload.query;
+        });
+        builder.addCase(GetQueriesId.rejected, (state, action) => {
             state.loading = false;
             state.error = action.payload;
         });
@@ -69,5 +87,7 @@ const queriesSlice = createSlice({
         // });
     }
 });
+
+export const {AddQueries} = queriesSlice.actions;
 
 export default queriesSlice.reducer;

@@ -30,7 +30,10 @@
       "address": "Адрес",
       "status": "Статус",
       "inProgress": "В пути",
-      "closed": "Закрыт"
+      "closed": "Закрыт",
+      "cargo_name": "Название груза",
+      "tr_number": "Номер машины",
+      "date": "Дата"
     },
 
     "drivers": {

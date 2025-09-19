@@ -54,10 +54,10 @@ export default function OrderLogisticsCard({order}) {
             className="mx-auto rounded-xl"
         >
             {/* Header */}
-            <div className="bg-gradient-to-r bg-[#DBE3F5] text-white p-2 flex justify-between items-center rounded-br-lg rounded-bl-lg">
+            <div className="bg-gradient-to-r bg-[#DBE3F5] text-white p-2 flex justify-between items-center rounded-br-lg rounded-bl-lg dark:bg-navBgHover">
                 <div className="flex items-center gap-3">
-                    <PackageIcon className="text-blue" />
-                    <div className="text-blue">
+                    <PackageIcon className="text-blue dark:text-darkTextTwo" />
+                    <div className="text-blue dark:text-darkText">
                         <h6 className="font-bold text-lg">#{order?.order_id || "EXP00001"}</h6>
                     </div>
                 </div>
@@ -68,7 +68,7 @@ export default function OrderLogisticsCard({order}) {
                 <div className="grid grid-cols-1 md:grid-cols-2 xl:grid-cols-3 gap-4">
                     {/* Order Details */}
                     <div className="flex flex-col h-full">
-                        <div className="flex items-center gap-2 font-semibold text-blue pb-2 whitespace-nowrap">
+                        <div className="flex items-center gap-2 font-semibold text-blue pb-2 whitespace-nowrap dark:text-darkText">
                             <ClockIcon color="primary" fontSize="small" />
                             {t("ordersTranslation.ordersCard.order_info")}
                         </div>
@@ -76,23 +76,23 @@ export default function OrderLogisticsCard({order}) {
 
                         <div className="pt-2 flex flex-col justify-between flex-1">
                             <div>
-                                <p className="text-sm font-semibold text-blue">
+                                <p className="text-sm font-semibold text-blue dark:text-darkText">
                                     {t("ordersTranslation.ordersCard.cargo_name")}
                                     <span className="ml-2">{order?.nature_of_cargo || "-"}</span>
                                 </p>
-                                <p className="text-sm font-semibold text-blue mt-2">
+                                <p className="text-sm font-semibold text-blue mt-2 dark:text-darkText">
                                     {t("ordersTranslation.ordersCard.act_date")}
                                     <span className="ml-2">{order?.act_date || "-"}</span>
                                 </p>
-                                <p className="text-sm font-semibold text-blue mt-2">
+                                <p className="text-sm font-semibold text-blue mt-2 dark:text-darkText">
                                     {t("ordersTranslation.ordersCard.order_source")}
                                     <span className="ml-2">{order?.source || "-"}</span>
                                 </p>
-                                <div className="flex items-center gap-2 mt-2 text-sm font-semibold text-blue">
+                                <div className="flex items-center gap-2 mt-2 text-sm font-semibold text-blue dark:text-darkText">
                                     {t("ordersTranslation.ordersCard.status")}:
                                     <Chip size="small" label={status.label} color={status.color} />
                                 </div>
-                                <p className="text-sm font-semibold mt-2 text-blue">
+                                <p className="text-sm font-semibold mt-2 text-blue dark:text-darkText">
                                     {t("ordersTranslation.ordersCard.car_number")}
                                     <span className="ml-2">{order?.driver_number || "-"}</span>
                                 </p>
@@ -117,24 +117,24 @@ export default function OrderLogisticsCard({order}) {
 
                     {/* Route Information */}
                     <Grid item xs={12} xl={4}>
-                        <div className="flex items-center gap-2 font-semibold text-blue pb-2 whitespace-nowrap">
+                        <div className="flex items-center gap-2 font-semibold text-blue pb-2 whitespace-nowrap dark:text-darkText">
                             <MapPinIcon color="primary" fontSize="small" />
                             {t("ordersTranslation.ordersCard.route_info")}
                         </div>
                         <Divider className="my-2" />
                         <div className="pt-2">
-                            <div className="bg-gray-100 p-3 rounded-lg mb-2">
-                                <p className="font-medium">{t("ordersTranslation.ordersCard.loading")}</p>
-                                <p className="text-sm text-gray-500">
+                            <div className="bg-gray-100 p-3 rounded-lg mb-2 dark:bg-navBgHover">
+                                <p className="font-medium dark:text-darkText">{t("ordersTranslation.ordersCard.loading")}</p>
+                                <p className="text-sm text-gray-500 dark:text-darkText">
                                     {order?.point_of_departure + " - " + order?.country_of_departure || " - "}
                                 </p>
                             </div>
                             <div className="text-center my-2">
                                 <ArrowRightIcon color="primary" />
                             </div>
-                            <div className="bg-gray-100 p-3 rounded-lg">
-                                <p className="font-medium">{t("ordersTranslation.ordersCard.unloading")}</p>
-                                <p className="text-sm text-gray-500">
+                            <div className="bg-gray-100 p-3 rounded-lg dark:bg-navBgHover">
+                                <p className="font-medium dark:text-darkText">{t("ordersTranslation.ordersCard.unloading")}</p>
+                                <p className="text-sm text-gray-500 dark:text-darkText">
                                     {order?.point_of_destination + " - " + order?.country_of_destination || " - "}
                                 </p>
                             </div>
@@ -144,7 +144,7 @@ export default function OrderLogisticsCard({order}) {
                     {/* Timeline & Status */}
                     <div>
                         <div className="h-full">
-                            <div className="flex items-center gap-2 font-semibold text-blue pb-2 whitespace-nowrap">
+                            <div className="flex items-center gap-2 font-semibold text-blue pb-2 whitespace-nowrap dark:text-darkText">
                                 <TruckIcon color="primary" fontSize="small" />
                                 {t("ordersTranslation.ordersCard.timeline")}
                             </div>
@@ -165,7 +165,7 @@ export default function OrderLogisticsCard({order}) {
                                     <div className="flex items-start gap-4 mb-6">
                                         <div className="flex-1 pt-1">
                                             <div className="flex items-center gap-2 mb-1">
-                        <span className="font-semibold text-gray-900">
+                        <span className="font-semibold text-gray-900 dark:text-darkText">
                           {order?.created_at
                               ? new Date(order.created_at).toLocaleDateString("ru-RU")
                               : "----"}
@@ -176,7 +176,7 @@ export default function OrderLogisticsCard({order}) {
                                                     variant="outlined"
                                                 />
                                             </div>
-                                            <p className="text-sm text-gray-500">
+                                            <p className="text-sm text-gray-500 dark:text-darkText">
                                                 {t("ordersTranslation.ordersCard.loading_date")}
                                             </p>
                                         </div>
@@ -185,7 +185,7 @@ export default function OrderLogisticsCard({order}) {
                                     <div className="flex items-start gap-4">
                                         <div className="flex-1 pt-1">
                                             <div className="flex items-center gap-2 mb-1">
-                        <span className="font-semibold text-gray-900">
+                        <span className="font-semibold text-gray-900 dark:text-darkText">
                           {order?.updated_at
                               ? new Date(order.updated_at).toLocaleDateString("ru-RU")
                               : "----"}
@@ -196,7 +196,7 @@ export default function OrderLogisticsCard({order}) {
                                                     variant="outlined"
                                                 />
                                             </div>
-                                            <p className="text-sm text-gray-500">
+                                            <p className="text-sm text-gray-500 dark:text-darkText">
                                                 {t("ordersTranslation.ordersCard.unloading_date")}
                                             </p>
                                         </div>
@@ -208,12 +208,12 @@ export default function OrderLogisticsCard({order}) {
                 </div>
             </CardContent>
 
-            <div className="bg-[#DBE3F5] mt-4 rounded-tr-lg rounded-tl-lg overflow-hidden text-center flex items-center justify-between">
-                <div className="flex items-center gap-5 px-4 py-2">
-                    <p className="text-sm font-semibold text-blue">
+            <div className="bg-[#DBE3F5] mt-4 rounded-tr-lg rounded-tl-lg overflow-hidden text-center flex items-center justify-between dark:bg-navBgHover">
+                <div className="flex items-center gap-5 px-4 py-2 ">
+                    <p className="text-sm font-semibold text-blue dark:text-darkText">
                         {t("ordersTranslation.ordersCard.payment")}
                     </p>
-                    <p className="text-lg font-bold text-gray-900">
+                    <p className="text-lg font-bold text-gray-900 dark:text-darkText">
                         {Number(
                             order?.source === "mysql"
                                 ? order?.fraxt_price_transfer

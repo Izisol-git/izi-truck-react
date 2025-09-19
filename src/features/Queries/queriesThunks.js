@@ -61,6 +61,7 @@ export const createOrder = createAsyncThunk(
         }
     }
 );
+
 // update queries
 export const updateQueries = createAsyncThunk(
     "orders/updateQueries",
@@ -95,4 +96,17 @@ export const exportQueriesExcel = createAsyncThunk(
         }
     }
 );
+
+// createOrder
+export const deleteQueries = createAsyncThunk(
+    "orders/deleteOrder",
+    async (id, { rejectWithValue }) => {
+        try {
+            return await QueriesService.deleteQueries(id);
+        } catch (err) {
+            return rejectWithValue(err.response?.data || "Failed to fetch queries");
+        }
+    }
+);
+
 

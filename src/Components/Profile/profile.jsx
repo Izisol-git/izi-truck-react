@@ -82,7 +82,7 @@ const ProfileDropdown = ({ sunToggle }) => {
                 } overflow-hidden transition-all duration-300 ease-in-out dark:bg-darkBgTwo dark:border-0`}
             >
                 {/* Profile Header */}
-                <div onClick={toggleDropdown} className="flex items-center gap-4 px-4 py-2 border ">
+                <div onClick={toggleDropdown} className="flex items-center gap-4 px-4 py-2    ">
                     <div className="w-12 h-12 rounded-full overflow-hidden  ">
                         <img src="/profile.png" alt="Profile" className="w-full h-full object-cover" />
                     </div>

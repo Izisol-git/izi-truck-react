@@ -25,7 +25,7 @@ const StyledButton = styled(Button)({
     },
 });
 
-const InputFileUpload = () => {
+const InputFileUpload = ({errorMassage , onChange}) => {
     return (
         <StyledButton
             component="label"
@@ -38,7 +38,10 @@ const InputFileUpload = () => {
             Upload files
             <VisuallyHiddenInput
                 type="file"
-                onChange={(event) => console.log(event.target.files)}
+                onChange={(event) => {
+                    onChange(event.target.files)
+                    console.log(event.target.files)
+                }}
                 multiple
             />
         </StyledButton>

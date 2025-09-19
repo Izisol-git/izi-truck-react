@@ -20,6 +20,7 @@ import {isArray} from "chart.js/helpers";
 import {getQueriesAll} from "../../features/Queries/queriesThunks.js";
 import {Button} from "@mui/material";
 import {useTranslation} from "react-i18next";
+import FileButton from "../Buttons/fileButton.jsx";
 
 function OrdersFrom({mode}) {
     const navigate = useNavigate();
@@ -76,6 +77,8 @@ function OrdersFrom({mode}) {
         point_price: "",
         carrier_additional: "",
         tr_number: "",
+        degree_of_danger: "",
+        status_of_cargo_file: "",
     });
     const [rows, setRows] = useState([]);
     const [data, setData] = useState();
@@ -165,6 +168,8 @@ function OrdersFrom({mode}) {
                 carrier_additional: res?.order?.carrier_additional,
                 tr_number: res?.order?.tr_number,
                 driver_id: res?.order?.driver_id || '',
+                status_of_cargo_file: res?.order?.status_of_cargo_file || '',
+                degree_of_danger: res?.order?.degree_of_danger || '',
             }
             // console.log(obj.client_id);
             setFormData(obj)
@@ -190,7 +195,7 @@ function OrdersFrom({mode}) {
         // })
         setFormData({
             ...formData,
-            carrier_id: user?.user?.name ,
+            carrier_id: user?.user?.name,
         })
 
         try {
@@ -296,6 +301,8 @@ function OrdersFrom({mode}) {
             receiver_contact: formData.receiver_contact,
             tr_number: formData.tr_number,
             carrier_additional: formData.carrier_additional,
+            degree_of_danger: formData.degree_of_danger?.id,
+            status_of_cargo_file: formData.status_of_cargo_file[0],
         }
         rows.forEach((row, index) => {
             if (row.point && row.point.id) obj[`point[${index}]`] = row.point.id;
@@ -352,6 +359,18 @@ function OrdersFrom({mode}) {
         {id: 0, title: "Yo'q"},
         {id: 1, title: "Ha"},
     ];
+
+    const hazardLevel = [
+        {id: 1, title: "1"},
+        {id: 2, title: "2"},
+        {id: 3, title: "3"},
+        {id: 4, title: "4"},
+        {id: 5, title: "5"},
+        {id: 6, title: "5"},
+        {id: 7, title: "7"},
+        {id: 8, title: "8"},
+        {id: 9, title: "9"}
+    ]
 
     const typeService = [
         {id: 1, title: "LTL"},
@@ -419,7 +438,7 @@ function OrdersFrom({mode}) {
         <div>
             <div className={'bg-bacWhite w-full min-h-[calc(100dvh-70px)] py-5 dark:bg-darkBg'}>
                 <div className={'w-[90%] bg-white px-4  mx-auto py-5 rounded-md shadow dark:bg-darkBgTwo'}>
-                    <div className={'h-[40px] gap-4 relative text-center center  w-full   mb-10'}>
+                    <div className={'h-[40px] gap-4 relative text-center center  w-full   mb-5'}>
                         <div className={'w-max  absolute top-0 left-0'}>
                             <Button
                                 onClick={() => navigate(`/orders`)}
@@ -558,7 +577,7 @@ function OrdersFrom({mode}) {
                         (mode === 'show' && localStorage.getItem('dbOrders') === "mysql") ?
                             <div className={'col-span-2   flex items-center justify-end mt-5 '}>
                                 <Button
-                                    onClick={()=>{
+                                    onClick={() => {
                                         EditOrder(id, formData)
                                     }}
                                     sx={{
@@ -822,8 +841,41 @@ function OrdersFrom({mode}) {
                                            }) : setFormData({...formData, status_of_cargo: val})
                                        }}
                             />
-                        </div>
 
+                        </div>
+                        {
+                            formData?.status_of_cargo?.id === 1 || formData?.status_of_cargo === 1 ?
+
+                                <>
+                                    <div className={"  col-span-2"}>
+                                        <SelectMUI errorMassage={errors?.degree_of_danger} options={hazardLevel}
+                                                   variant={'outlined'}
+                                                   label={t('Степень опасности')}
+                                                   placeholder={t('Степень опасности')}
+                                                   {...{
+                                                       value:
+                                                           mode !== "add"
+                                                               ? hazardLevel.find((opt) => opt.id === formData?.degree_of_danger) || null
+                                                               : formData?.degree_of_danger,
+                                                   }}
+                                                   onChange={(val) => {
+                                                       mode !== "add" ? setFormData({
+                                                           ...formData,
+                                                           degree_of_danger: val.id
+                                                       }) : setFormData({...formData, degree_of_danger: val})
+                                                   }}
+                                        />
+
+
+                                    </div>
+                                    <div className={"  col-span-2"}>
+                                        <FileButton onChange={(event)=>setFormData({...formData, status_of_cargo_file: event})} errorMassage={errors?.status_of_cargo_file} />
+                                    </div>
+                                </>
+
+                                :
+                                ' '
+                        }
                         <div className={"w-full "}>
                             <div className={'relative'}>
                                 <MyCalendar
@@ -959,7 +1011,8 @@ function OrdersFrom({mode}) {
 
             </div>
         </div>
-    );
+    )
+        ;
 }
 
 export default OrdersFrom;

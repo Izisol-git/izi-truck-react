@@ -1,4 +1,3 @@
-import OrdersService from "../orders/ordersService.js";
 import axios from "../api.js";
 import api from "../api.js";
 
@@ -42,6 +41,10 @@ const QueriesService = {
         const res = await api.get(`/queries/export_excel?${newQuery}&${query}`, {
             responseType: "blob", // excel fayl blob bo'ladi
         });
+        return res.data;
+    },
+    async deleteQueries(id) {
+        const res = await axios.delete(`/queries/${id}`);
         return res.data;
     }
 }

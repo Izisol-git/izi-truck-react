@@ -17,7 +17,11 @@ class OrdersService  {
         return res.data;
     }
     static async add(data) {
-        const res = await api.post(`/orders` , data);
+        const res = await api.post(`/orders`, data, {
+            headers: {
+                "Content-Type": "multipart/form-data",
+            },
+        });
         return res.data;
     }
     static async orderId(id ) {

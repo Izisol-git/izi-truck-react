@@ -95,7 +95,7 @@
     "has_act": "Акт бор",
     "no_act": "Акт йўқ",
     "ordersCard": {
-      "cargo_name": "Юк номи",
+      "cargo_name": "Ю  к номи",
       "order_info": "Буюртма маълумотлари",
       "act_date": "Акт санаси:",
       "order_source": "Буюртма манбаи:",
@@ -232,7 +232,7 @@
       "date": "сана",
       "active": "Фаол",
       "inactive": "Фаол эмас",
-      "status": "Статус",
+      "status": "Ҳолати",
       "payment_cash": "Пул ўтказмалари",
       "payment_enumeration": "Нақд",
       "payment_combined": "Қисман ўтказма",
@@ -246,7 +246,8 @@
       "show": "Кўриш",
       "edit": "Таҳрирлаш",
       "cancel": "Бекор қилинган",
-      "cancel_reason": "Бекор қилиш сабаби:"
+      "cancel_reason": "Бекор қилиш сабаби:",
+      "delete": "Ўчириш"
     },
 
     "logisticsInterface": {

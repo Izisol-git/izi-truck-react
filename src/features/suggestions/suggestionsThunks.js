@@ -66,3 +66,14 @@ export const getSuggestionsAdmin = createAsyncThunk(
         }
     }
 )
+
+export const deleteSuggestions = createAsyncThunk(
+    'suggestions/deleteSuggestions',
+    async (id, { rejectWithValue }) => {
+        try {
+            return await suggestionsService.delete(id);
+        } catch (err) {
+            return rejectWithValue(err.response?.data || "Failed to fetch suggestions");
+        }
+    }
+)

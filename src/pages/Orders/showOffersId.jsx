@@ -29,7 +29,9 @@ function ShowOffersId() {
     }
 
     useEffect(() => {
-        getSuggestionId(id)
+        if(suggestionsId?.length === 0){
+            getSuggestionId(id)
+        }
     } , [])
 
 

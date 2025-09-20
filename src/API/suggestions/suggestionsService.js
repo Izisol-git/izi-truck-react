@@ -25,6 +25,10 @@ class suggestionsService {
         const res = await api.get(`/admin/suggestions?page=${pageqq}`);
         return res.data;
     }
+    static async delete(id) {
+        const res = await api.delete(`/suggestions/${id}`);
+        return res.data;
+    }
 }
 
 

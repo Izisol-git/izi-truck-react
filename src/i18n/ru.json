@@ -248,7 +248,8 @@
       "show": "Показать",
       "edit": "Редактировать",
       "cancel": "Отмена",
-      "cancel_reason": "Причина отмены:"
+      "cancel_reason": "Причина отмены:",
+      "delete": "Удалить"
     },
     "logisticsInterface": {
       "status": {

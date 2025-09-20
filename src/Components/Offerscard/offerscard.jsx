@@ -30,9 +30,15 @@ import {
 import {useDispatch, useSelector} from "react-redux";
 import React from "react";
 import {useTranslation} from "react-i18next";
-import {getSuggestionsId} from "../../features/suggestions/suggestionsThunks.js";
+import {
+    deleteSuggestions,
+    getSuggestionsAdmin,
+    getSuggestionsId
+} from "../../features/suggestions/suggestionsThunks.js";
+import {AddSuggestionsId} from "../../features/suggestions/suggestionsSlice.js";
+import PauseIcon from '@mui/icons-material/Pause';
 
-export default function OffersCard({data , role }) {
+export default function OffersCard({data, role}) {
     const dispatch = useDispatch();
     const navigate = useNavigate();
     const {t} = useTranslation();
@@ -44,15 +50,28 @@ export default function OffersCard({data , role }) {
         try {
             const res = await dispatch(getSuggestionsId(offersId)).unwrap()
             console.log(res);
-        }catch (error) {
+        } catch (error) {
+            console.log(error);
+        }
+    }
+    const  deleteSuggestion = async (id) => {
+        try {
+            const res = await dispatch(deleteSuggestions(id)).unwrap()
+            console.log(res);
+            try {
+                const res2 = await dispatch(getSuggestionsAdmin({pageqq:1})).unwrap()
+                console.log(res2)
+            } catch (err) {
+                console.log(err);
+            }
+        } catch (error) {
             console.log(error);
         }
     }
 
 
-
     const getStatusStyle = (statusId) => {
-        if (statusId === '1'){
+        if (statusId === '1') {
             return {label: t('queriesTranslation.queriesCard.active'), color: "success"};
 
         }
@@ -89,7 +108,7 @@ export default function OffersCard({data , role }) {
                 title={
                     <Box display="flex" alignItems="center" gap={1}>
                         <Typography color="text.secondary" variant="subtitle1" fontWeight={600}>
-                            {data?.route }
+                            {data?.route}
                         </Typography>
 
                     </Box>
@@ -212,6 +231,31 @@ export default function OffersCard({data , role }) {
                                 {data?.cargo_weight}
                             </Typography>
                         </Box>
+                        <Box display="flex" justifyContent="space-between" alignItems="center">
+                            <Typography
+                                variant="caption"
+                                color="text.secondary"
+                                display="flex"
+                                alignItems="center"
+                                gap={0.5}
+                                fontSize={14}
+                                fontWeight={600}
+                            >
+                                <PauseIcon color="success" fontSize="small"/>
+                                {t("queriesTranslation.queriesCard.status")}
+                            </Typography>
+                            <Chip
+                                label={status.label}
+                                color={status.color}
+                                size={'small'}
+                                variant="soft"
+                                sx={{
+                                    fontWeight: 600,
+                                    textTransform: "uppercase",
+                                    letterSpacing: 0.5,
+                                }}
+                            />
+                        </Box>
                     </Box>
 
                     <Divider/>
@@ -219,27 +263,37 @@ export default function OffersCard({data , role }) {
                     {/* Status */}
 
 
-
                 </Stack>
 
                 <Box display="flex" marginTop={2} justifyContent="space-between" alignItems="center">
-                    <Chip
-                        label={status.label}
-                        color={status.color}
-                        variant="soft"
-                        sx={{
-                            fontWeight: 600,
-                            textTransform: "uppercase",
-                            letterSpacing: 0.5,
-                            fontSize : 12
-                        }}
-                    />
+                    {
+                        user?.user?.roles[0]?.name === "super-admin"
+                        ?
+                            <Button
+                                color={'error'}
+                                variant="contained"
+                                onClick={()=>{
+                                    deleteSuggestion(data?.id)
+                                }}
+                                sx={{
+                                    fontSize: '12px',
+                                    fontWeight: 600,
+                                }}
+                            >
+                                <i className="fa-solid fa-trash mr-2"></i>
+                                {t("queriesTranslation.queriesCard.delete")}
+                            </Button>
+                            :
+                            null
+                    }
 
-                    <Box display="flex" gap={1}>
+                    <Box width={'100%'}  gap={1} display="flex" justifyContent="end" alignItems="center">
+
                         <Button
                             onClick={() => {
                                 // if(user?.user?.roles[0]?.name === "super-admin") {
-                                    navigate(`/orders/replies/${data?.id}`)
+                                navigate(`/orders/replies/${data?.id}`)
+                                dispatch(AddSuggestionsId(data))
                                 // }
                                 // dispatch(AddQueriesId(data?.id));
                                 // dispatch(openQueriesShow());
@@ -247,7 +301,7 @@ export default function OffersCard({data , role }) {
                             variant="contained"
                             color="info"
                             sx={{
-                                fontSize:'12px',
+                                fontSize: '12px',
                                 fontWeight: 600,
                             }}
                         >
@@ -260,17 +314,18 @@ export default function OffersCard({data , role }) {
                                 dispatch(EditToggleOffers())
                                 dispatch(openOffersModal())
                                 dispatch(AddOffersId(data?.id))
-                                getSuggestionId(data?.id)
+                                dispatch(AddSuggestionsId(data))
+                                // getSuggestionId(data?.id)
                             }}
                             variant="contained"
                             color="warning"
                             sx={{
-                                fontSize:'12px',
+                                fontSize: '12px',
                                 fontWeight: 600,
                             }}
                         >
                             <i className="fa-solid fa-pen-to-square mr-2"></i>
-                            {role === 'super-admin' ? t("queriesTranslation.queriesCard.edit") : t("offersOrdersCarrier.reply") }
+                            {role === 'super-admin' ? t("queriesTranslation.queriesCard.edit") : t("offersOrdersCarrier.reply")}
                         </Button>
                     </Box>
 

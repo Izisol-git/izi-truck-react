@@ -10,7 +10,11 @@ const suggestionsSlice = createSlice({
         addLoadingSuggestionsId: false,
         error: null,
     },
-    reducers: {},
+    reducers: {
+        AddSuggestionsId(state, action) {
+            state.suggestionsId = action.payload;
+        }
+    },
     extraReducers: (builder) => {
         builder
             .addCase(addSuggestions.pending, (state) => {
@@ -74,5 +78,7 @@ const suggestionsSlice = createSlice({
             })
     }
 })
+
+export const {AddSuggestionsId} = suggestionsSlice.actions;
 
 export default suggestionsSlice.reducer;

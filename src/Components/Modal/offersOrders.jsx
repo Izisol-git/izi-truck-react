@@ -7,7 +7,7 @@ import {Button, Checkbox, FormControlLabel} from "@mui/material";
 import {
     addSuggestions,
     editSuggestions,
-    getSuggestionsAdmin, getSuggestionsId,
+    getSuggestionsAdmin,
     getSuggestionsUser
 } from "../../features/suggestions/suggestionsThunks.js";
 import {useTranslation} from "react-i18next";

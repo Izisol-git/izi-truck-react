@@ -228,7 +228,7 @@
       "date": "sana",
       "active": "Faol",
       "inactive": "Faol emas",
-      "status": "Status",
+      "status": "Holati",
       "payment_cash": "Pul o‘tkazmalari",
       "payment_enumeration": "Naqd",
       "payment_combined": "Qisman o‘tkazma",
@@ -242,7 +242,8 @@
       "show": "Ko‘rish",
       "edit": "Tahrirlash",
       "cancel": "Bekor qilingan",
-      "cancel_reason": "Bekor qilish sababi:"
+      "cancel_reason": "Bekor qilish sababi:",
+      "delete": "O‘chirish"
     },
 
     "logisticsInterface": {

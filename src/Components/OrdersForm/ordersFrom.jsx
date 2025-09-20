@@ -3,7 +3,7 @@ import {CurrencyInput, InputMUI, LocationInput, MyCalendar, SelectMUI, SwitchMUI
 import {useNavigate, useParams} from "react-router-dom";
 import {useDispatch, useSelector} from "react-redux";
 import {
-    addOrder,
+    addOrder, appointDriver, deleteOrder,
     editOrder, getFilteredOrders,
     getOrdersId, getShowOrders,
     getState,
@@ -21,6 +21,7 @@ import {getQueriesAll} from "../../features/Queries/queriesThunks.js";
 import {Button} from "@mui/material";
 import {useTranslation} from "react-i18next";
 import FileButton from "../Buttons/fileButton.jsx";
+import api from "../../API/api.js";
 
 function OrdersFrom({mode}) {
     const navigate = useNavigate();
@@ -29,7 +30,6 @@ function OrdersFrom({mode}) {
     const [fraxtCurrency, setFraxtCurrency] = useState(1);
     const [marginCurrency, setMarginCurrency] = useState(1);
     const [itemsPriceCurrency, setItemsPriceCurrency] = useState(1);
-    const [ItemsPointPrice, setItemsPointPrice] = useState(1);
     const {loading} = useSelector((state) => state.orders);
     const {id} = useParams();
     const {t} = useTranslation();
@@ -46,13 +46,13 @@ function OrdersFrom({mode}) {
         shipment_type: {},
         transport_value: {},
         transport_type: {},
-        location_of_departure: "",
-        location_of_destination: "",
-        country_of_departure: {},
+        location_of_departure: '',
+        location_of_destination: '',
+        country_of_departure: '',
         payment_condition: {},
-        point_of_departure: {},
-        country_of_destination: {},
-        point_of_destination: {},
+        point_of_departure: '',
+        country_of_destination: '',
+        point_of_destination: '',
         customs_clearance1: "",
         mode: "",
         customs_clearance2: "",
@@ -67,7 +67,7 @@ function OrdersFrom({mode}) {
         palets: "",
         special_conditions: "",
         // points: {},
-        point: {},
+        // point: {},
         sender_contact: "",
         receiver_contact: "",
         carrier_currency_transfer: "",
@@ -81,125 +81,111 @@ function OrdersFrom({mode}) {
         status_of_cargo_file: "",
     });
     const [rows, setRows] = useState([]);
-    const [data, setData] = useState();
-    const [stateDataOne, setStateDataOne] = useState();
-    const [stateDataTwo, setStateDataTwo] = useState();
-    const {dbOrders} = useSelector((state) => state.employesModal);
-    const [driversName, setDriversName] = useState();
+    const {ordersId} = useSelector((state) => state.orders);
+    const allSelect = useSelector((state) => state.orders.ordersSelect);
     const {user} = useSelector((state) => state.auth);
     const [errors, setErrors] = useState({});
+    // const [formApPoint, setFormApPoint] = useState({
+    //     status_of_cargo_file:  '',
+    //     degree_of_danger:  '',
+    // });
 
-    const getSelectAll = async () => {
+    const getSelectAll = async (params) => {
         // if(mode !== "show"){
-        const res = await dispatch(ordersSelect())
-        setData(res.payload)
-        console.log(res.payload)
-        // }
-    }
-    const StateDataOne = async (id) => {
-        // if(mode !== "show"){
-        const res = await dispatch(getState(id))
-        setStateDataOne(res.payload)
-        // }
-    }
-    const StateDataTwo = async (id) => {
-        // if (mode !== "show") {
-        const res = await dispatch(getStateTwo(id))
-        setStateDataTwo(res.payload)
-        // }
+        try {
+            const res = await dispatch(ordersSelect(
+                {params}
+            )).unwrap()
+        } catch (error) {
+            console.log(error);
+        }
     }
 
-    const [priceData, setPriceData] = useState();
+
+    useEffect(() => {
+        if (mode === 'show' || mode === 'edit') {
+            setCarrierCurrency(ordersId?.carrier_currency_transfer)
+            setMarginCurrency(ordersId?.margin_currency_transfer)
+            setItemsPriceCurrency(ordersId?.items_price_currency)
+            setFraxtCurrency(ordersId?.fraxt_currency_transfer)
+            const obj = {
+                trailer_floor_volume: ordersId?.trailer_floor_volume,
+                cargo_volume: ordersId?.cargo_volume,
+                mode: ordersId?.mode,
+                carrier_currency_transfer: ordersId?.carrier_currency_transfer,
+                fraxt_currency_transfer: ordersId?.fraxt_currency_transfer,
+                margin_currency_transfer: ordersId?.margin_currency_transfer,
+                items_price_currency: ordersId?.items_price_currency,
+                country_of_departure: ordersId?.country_of_departure,
+                country_of_destination: ordersId?.country_of_destination,
+                nds: ordersId?.nds,
+                client_id: ordersId?.client_id,
+                payment_condition: ordersId?.payment_condition,
+                point_of_departure: ordersId?.point_of_departure,
+                point_of_destination: ordersId?.point_of_destination,
+                service_type: ordersId?.service_type,
+                shipment_type: ordersId?.shipment_type,
+                status_of_cargo: ordersId?.status_of_cargo,
+                transport_type: ordersId?.transport_type,
+                transport_value: ordersId?.transport_value,
+                type_of_loading: ordersId?.type_of_loading,
+                // point: Number(ordersId?.customs),
+                point_price: Number(ordersId?.customs_price),
+                carrier_price_transfer: ordersId?.carrier_price_transfer,
+                fraxt_price_transfer: ordersId?.fraxt_price_transfer,
+                margin_transfer: ordersId?.margin_transfer,
+                items_price: Number(ordersId?.items_price),
+                // location_of_destination: (String(res?.order?.location_of_destination[0]) + ' , ' + String(res?.order?.location_of_destination[1])),
+                // location_of_departure: (String(res?.order?.location_of_departure[0] + " , " + res?.order?.location_of_departure[1])),
+                location_of_destination: ordersId?.location_of_destination,
+                location_of_departure: ordersId?.location_of_departure,
+                // location_of_departure: res?.order?.location_of_departure?.split(",").map(n => parseFloat(n.trim())),
+                customs_clearance1: ordersId?.customs_clearance1,
+                customs_clearance2: ordersId?.customs_clearance2,
+                weight_of_cargo: ordersId?.weight_of_cargo,
+                act_date: ordersId?.act_date,
+                shipment_date: ordersId?.shipment_date,
+                unload_date: ordersId?.unload_date,
+                transportation_time: ordersId?.transportation_time,
+                nature_of_cargo: ordersId?.nature_of_cargo,
+                palets: ordersId?.palets,
+                special_conditions: ordersId?.special_conditions,
+                sender_contact: ordersId?.sender_contact,
+                receiver_contact: ordersId?.receiver_contact,
+                carrier_additional: ordersId?.carrier_additional,
+                tr_number: ordersId?.tr_number,
+                driver_id: ordersId?.driver_id || '',
+                status_of_cargo_file: ordersId?.status_of_cargo_file || '',
+                degree_of_danger: ordersId?.degree_of_danger || '',
+            }
+            setFormData(obj)
+        }
+    }, [ordersId])
 
     const OrdersId = async (id) => {
         try {
             const res = await dispatch(getOrdersId(id)).unwrap();
-            setPriceData(res.prices)
-            console.log(res.order);
-            console.log(res);
-            setCarrierCurrency(res?.order?.carrier_currency_transfer)
-            setMarginCurrency(res?.order?.margin_currency_transfer)
-            setItemsPriceCurrency(res?.order?.items_price_currency)
-            setFraxtCurrency(res?.order?.fraxt_currency_transfer)
-            const obj = {
-                trailer_floor_volume: res?.order?.trailer_floor_volume,
-                cargo_volume: res?.order?.cargo_volume,
-                mode: res?.order?.mode,
-                carrier_currency_transfer: res?.order?.carrier_currency_transfer,
-                fraxt_currency_transfer: res?.order?.fraxt_currency_transfer,
-                margin_currency_transfer: res?.order?.margin_currency_transfer,
-                items_price_currency: res?.order?.items_price_currency,
-                country_of_departure: res?.order?.country_of_departure,
-                country_of_destination: res?.order?.country_of_destination,
-                nds: res?.order?.nds,
-                client_id: res?.order?.client_id,
-                payment_condition: res?.order?.payment_condition,
-                point_of_departure: res?.order?.point_of_departure,
-                point_of_destination: res?.order?.point_of_destination,
-                service_type: res?.order?.service_type,
-                shipment_type: res?.order?.shipment_type,
-                status_of_cargo: res?.order?.status_of_cargo,
-                transport_type: res?.order?.transport_type,
-                transport_value: res?.order?.transport_value,
-                type_of_loading: res?.order?.type_of_loading,
-                point: Number(res?.order?.customs),
-                point_price: Number(res?.order?.customs_price),
-                carrier_price_transfer: res?.order?.carrier_price_transfer,
-                fraxt_price_transfer: res?.order?.fraxt_price_transfer,
-                margin_transfer: res?.order?.margin_transfer,
-                items_price: Number(res?.order?.items_price),
-                // location_of_destination: (String(res?.order?.location_of_destination[0]) + ' , ' + String(res?.order?.location_of_destination[1])),
-                // location_of_departure: (String(res?.order?.location_of_departure[0] + " , " + res?.order?.location_of_departure[1])),
-                location_of_destination: res?.order?.location_of_destination,
-                location_of_departure: res?.order?.location_of_departure,
-                // location_of_departure: res?.order?.location_of_departure?.split(",").map(n => parseFloat(n.trim())),
-                customs_clearance1: res?.order?.customs_clearance1,
-                customs_clearance2: res?.order?.customs_clearance2,
-                weight_of_cargo: res?.order?.weight_of_cargo,
-                act_date: res?.order?.act_date,
-                shipment_date: res?.order?.shipment_date,
-                unload_date: res?.order?.unload_date,
-                transportation_time: res?.order?.transportation_time,
-                nature_of_cargo: res?.order?.nature_of_cargo,
-                palets: res?.order?.palets,
-                special_conditions: res?.order?.special_conditions,
-                sender_contact: res?.order?.sender_contact,
-                receiver_contact: res?.order?.receiver_contact,
-                carrier_additional: res?.order?.carrier_additional,
-                tr_number: res?.order?.tr_number,
-                driver_id: res?.order?.driver_id || '',
-                status_of_cargo_file: res?.order?.status_of_cargo_file || '',
-                degree_of_danger: res?.order?.degree_of_danger || '',
-            }
-            // console.log(obj.client_id);
-            setFormData(obj)
-            console.log(obj)
-            // console.log(res?.order?.act_date)
-            // console.log(res?.order)
         } catch (error) {
             console.log(error);
         }
     };
 
     const EditOrder = async (id, formData) => {
-        // console.log(rows);
-        rows.forEach((row, index) => {
-            if (row.point && row.point.id) formData[`point[${index}]`] = row.point.id;
-            if (row.point_price) formData[`point_price[${index}]`] = row.point_price;
-        });
-        // console.log(formData);
-        setFormData({...rows})
-        // setFormData({
-        //     location_of_destination: '',
-        //     location_of_departure: '' ,
-        // })
-        setFormData({
+        // rows.forEach((row, index) => {
+        //     if (row.point && row.point.id) formData[`point[${index}]`] = row.point.id;
+        //     if (row.point_price) formData[`point_price[${index}]`] = row.point_price;
+        // });
+        // setFormData({...rows})
+
+        const obj = {
             ...formData,
-            carrier_id: user?.user?.name,
-        })
+            carrier_id: user?.user?.id,
+            location_of_destination: isArray(formData.location_of_destination) ? formData.location_of_destination?.join(",") : formData.location_of_destination ||  "41.3111,69.2797",
+            location_of_departure: isArray(formData.location_of_departure) ? formData.location_of_departure?.join(",") : formData.location_of_departure  || "41.3111,69.2797",
+        }
 
         try {
-            const res = await dispatch(editOrder({id: id, editData: formData})).unwrap();
+            const res = await dispatch(editOrder({id: id, editData: obj})).unwrap();
             navigate("/orders")
             try {
                 const res2 = await dispatch(getFilteredOrders({
@@ -211,31 +197,38 @@ function OrdersFrom({mode}) {
                         to_date: "",
                     }
                 })).unwrap()
-                // console.log(res2)
             } catch (error) {
                 console.error(error)
             }
-            // console.log(res)
         } catch (error) {
             console.log(error);
             setErrors(error.errors);
         }
     }
-    const runCount = useRef(0);
+
     useEffect(() => {
-        if (
-            runCount.current < 3
+        if (mode === 'edit' &&
+            formData.country_of_departure ||
+            formData.country_of_destination ||
+            formData.point_of_destination ||
+            formData.point_of_departure
         ) {
-            StateDataOne(Number(formData.country_of_departure));
-            StateDataTwo(Number(formData.country_of_destination));
-            runCount.current += 1;         // har ishlaganda +1
+            getSelectAll(`?country_of_departure=${formData?.country_of_departure}&country_of_destination=${formData?.country_of_destination}`)
         }
-    }, [formData, mode]);
+        if (mode === 'add') {
+            getSelectAll(`?country_of_departure=${formData?.country_of_departure?.id}&country_of_destination=${formData?.country_of_destination?.id}`)
+        }
+    }, [
+        formData?.country_of_departure,
+        formData?.country_of_destination,
+        formData.point_of_destination,
+        formData.point_of_departure
+    ])
 
 
     useEffect(() => {
-        getSelectAll()
-        if ((mode === 'edit' || mode === "show") && formData.nds) {
+
+        if ((mode === 'edit' || mode === "show") && formData.nds && ordersId?.length === 0) {
             OrdersId(id)
         }
         if (mode === 'show') {
@@ -244,10 +237,10 @@ function OrdersFrom({mode}) {
 
     }, [])
 
-    const newRows = rows.map((row, i) => ({
-        [`point[${i + 1}]`]: row.point.id,
-        [`point_price[${i + 1}]`]: row.point_price
-    }));
+    // const newRows = rows.map((row, i) => ({
+    //     [`point[${i + 1}]`]: row.point.id,
+    //     [`point_price[${i + 1}]`]: row.point_price
+    // }));
 
 
     const addOrders = async () => {
@@ -275,16 +268,16 @@ function OrdersFrom({mode}) {
             transport_type: formData.transport_type.id,
             transport_value: formData.transport_value.title,
             type_of_loading: formData.type_of_loading.title,
-            point: formData.point.id,
+            // point: formData.point.id,
             point_price: Number(formData.point_price),
             carrier_price_transfer: formData.carrier_price_transfer,
             fraxt_price_transfer: formData.fraxt_price_transfer,
             margin_transfer: formData.margin_transfer,
             items_price: Number(formData.items_price),
-            location_of_destination: formData.location_of_destination,
+            location_of_destination: isArray(formData.location_of_destination) ? formData.location_of_destination?.join(",") :  "41.3111,69.2797",
             // ? String(formData.location_of_destination[0]) + "," + String(formData.location_of_destination[1])
             // : null,
-            location_of_departure: formData.location_of_departure,
+            location_of_departure: isArray(formData.location_of_departur) ? formData.location_of_departure?.join(",") :  "41.3111,69.2797",
             // ? String(formData.location_of_departure[0]) + "," + String(formData.location_of_departure[1])
             // : null,
             customs_clearance1: formData.customs_clearance1,
@@ -304,12 +297,10 @@ function OrdersFrom({mode}) {
             degree_of_danger: formData.degree_of_danger?.id,
             status_of_cargo_file: formData.status_of_cargo_file[0],
         }
-        rows.forEach((row, index) => {
-            if (row.point && row.point.id) obj[`point[${index}]`] = row.point.id;
-            if (row.point_price) obj[`point_price[${index}]`] = row.point_price;
-        });
-        // setFormData({...rows})
-        // console.log(formData)
+        // rows.forEach((row, index) => {
+        //     if (row.point && row.point.id) obj[`point[${index}]`] = row.point.id;
+        //     if (row.point_price) obj[`point_price[${index}]`] = row.point_price;
+        // });
 
         try {
             const res = await dispatch(addOrder(obj)).unwrap()
@@ -324,7 +315,6 @@ function OrdersFrom({mode}) {
                         to_date: "",
                     }
                 })).unwrap()
-                // console.log(res2)
             } catch (error) {
                 console.error(error)
             }
@@ -334,21 +324,61 @@ function OrdersFrom({mode}) {
             setErrors({...err.errors});
         }
     }
-    // console.log(errors)
-
 
     const getShowOrdersId = async () => {
         try {
             const res = await dispatch(getShowOrders({id: id, db: localStorage.getItem('dbOrders')})).unwrap();
-            console.log(res)
-            setFormData(res.order)
-            setDriversName(res.driver.fio)
         } catch (error) {
             console.log(error);
         }
     }
 
-    // console.log(formData)
+    const apPointDriver = async () => {
+        try {
+            const res = await dispatch(appointDriver({id , data:{driver_id: formData?.driver_id , carrier_id :user?.user?.id}})).unwrap()
+            navigate("/orders")
+            try {
+                const res2 = await dispatch(getFilteredOrders({
+                    pageqq: 1, search: {
+                        search: "",
+                        search_status: 2,
+                        db: "",
+                        from_date: "",
+                        to_date: "",
+                    }
+                })).unwrap()
+            } catch (error) {
+                console.error(error)
+            }
+        }
+        catch (e) {
+            console.error(e);
+        }
+    }
+
+    const orderDelete = async (id) => {
+        try {
+            const res = await dispatch(deleteOrder(id)).unwrap()
+            navigate('/orders')
+            try {
+                const res2 = await dispatch(getFilteredOrders({
+                    pageqq: 1,
+                    search: {
+                        search: "",
+                        search_status: 2,
+                        db: "",
+                        from_date: "",
+                        to_date: "",
+                    }
+                })).unwrap()
+            } catch (error) {
+                console.error(error)
+            }
+        } catch (error) {
+            console.log(error);
+        }
+    }
+console.log(formData)
 
     const nds = [
         {title: "без ндс", value: 'without_nds'},
@@ -397,13 +427,13 @@ function OrdersFrom({mode}) {
         {value: 3, title: "Ярим перечисления"},
     ];
 
-    const handleAdd = () => {
-        setRows([...rows, {id: Date.now(), point: '', point_price: "", value: ''}]);
-    };
+    // const handleAdd = () => {
+    //     setRows([...rows, {id: Date.now(), point: '', point_price: "", value: ''}]);
+    // };
 
-    const handleRemove = (id) => {
-        setRows(rows.filter(row => row.id !== id));
-    };
+    // const handleRemove = (id) => {
+    //     setRows(rows.filter(row => row.id !== id));
+    // };
 
     // Har bir button uchun alohida ref
     const rippleRefs = {
@@ -458,7 +488,9 @@ function OrdersFrom({mode}) {
                         {
                             mode === 'show' ?
                                 <div className={'absolute top-0 right-0 flex items-center gap-3'}>
-                                    <button
+                                    <Button
+                                        color={'success'}
+                                        variant={'contained'}
                                         onClick={(e) => {
                                             handleClick(e, rippleRefs.add)
                                             navigate(`/orders/${id}/didox`)
@@ -466,18 +498,19 @@ function OrdersFrom({mode}) {
                                         className="relative overflow-hidden rounded bg-[#A855F7] text-white py-2 px-3"
                                     >
                                         <i className="fas fa-plus mr-2"></i>DIDOX
-                                        <TouchRipple ref={rippleRefs.add} center={false}/>
-                                    </button>
+                                    </Button>
 
-                                    <button
-                                        onClick={(e) => {
-                                            handleClick(e, rippleRefs.suggest)
+                                    <Button
+                                        color={'error'}
+                                        variant={'contained'}
+                                        onClick={() => {
+                                            orderDelete(id)
                                         }}
                                         className="relative overflow-hidden rounded bg-red-500 text-white py-2 px-3"
                                     >
                                         <i className="fa-solid fa-ban mr-2"></i>{t("ordersTranslation.cancel")}
-                                        <TouchRipple ref={rippleRefs.suggest} center={false}/>
-                                    </button>
+
+                                    </Button>
                                 </div>
                                 :
                                 ""
@@ -537,11 +570,12 @@ function OrdersFrom({mode}) {
                                 <div className={'  grid grid-cols-2 gap-4'}>
                                     <div className={"w-full"}>
                                         <SelectMUI
+
                                             errorMassage={errors?.driver_id}
                                             {...{
                                                 value:
                                                     mode !== "add"
-                                                        ? data?.drivers?.find((opt) => opt.id === formData?.driver_id) || null
+                                                        ? allSelect?.drivers?.find((opt) => opt.id === formData?.driver_id) || null
                                                         : formData?.driver_id,
                                             }}
                                             onChange={(val) => {
@@ -550,7 +584,7 @@ function OrdersFrom({mode}) {
                                                     driver_id: val.id
                                                 }) : setFormData({...formData, driver_id: val})
                                             }}
-                                            options={data?.drivers || []}
+                                            options={allSelect?.drivers || []}
                                             variant={'outlined'}
                                             label={t('ordersTranslation.driver')}
                                             placeholder={t('ordersTranslation.driver')}
@@ -561,9 +595,9 @@ function OrdersFrom({mode}) {
                                     <div className={''}>
                                         <InputMUI errorMassage={errors?.carrier_id}
                                                   value={user?.user?.name ?? ''}
-                                                  onChange={(e) =>
-                                                      setFormData({...formData, carrier_id: e.target.value})
-                                                  }
+                                                  // onChange={(e) =>
+                                                  //     setFormData({...formData, carrier_id: e.target.value})
+                                                  // }
                                                   variant={'outlined'} label={t('ordersTranslation.carrier')}
                                         />
                                     </div>
@@ -578,7 +612,7 @@ function OrdersFrom({mode}) {
                             <div className={'col-span-2   flex items-center justify-end mt-5 '}>
                                 <Button
                                     onClick={() => {
-                                        EditOrder(id, formData)
+                                        apPointDriver()
                                     }}
                                     sx={{
                                         backgroundColor: '#1D2D5B',
@@ -598,12 +632,12 @@ function OrdersFrom({mode}) {
                     <div className={'  grid grid-cols-2 gap-4'}>
                         <div className={"w-full "}>
                             <SelectMUI
-
+                                disabled={mode === 'show'}
                                 errorMassage={errors?.client_id}
                                 {...{
                                     value:
                                         mode !== "add"
-                                            ? data?.clients?.find((opt) => opt.id === formData?.client_id) || null
+                                            ? allSelect?.clients?.find((opt) => opt.id === formData?.client_id) || null
                                             : formData?.client_id,
                                 }}
                                 onChange={(val) => {
@@ -612,7 +646,7 @@ function OrdersFrom({mode}) {
                                         client_id: val.id
                                     }) : setFormData({...formData, client_id: val})
                                 }}
-                                options={data?.clients || []}
+                                options={allSelect?.clients || []}
                                 variant={'outlined'}
                                 label={t('queriesTranslation.client')}
                                 placeholder={t('queriesTranslation.client')}
@@ -620,6 +654,7 @@ function OrdersFrom({mode}) {
                         </div>
                         <div className={"w-full "}>
                             <SelectMUI
+                                disabled={mode === 'show'}
                                 errorMassage={errors?.nds}
                                 {...{
                                     value:
@@ -641,33 +676,37 @@ function OrdersFrom({mode}) {
                         </div>
                         <div className={" w-full "}>
 
-                            <CurrencyInput errorMassage={errors?.fraxt_price_transfer}
-                                           value={formData.fraxt_price_transfer ?? ''}
-                                           setCarrierCurrency={setFraxtCurrency}
-                                           carrierCurrency={fraxtCurrency}
-                                           onChange={(e) => setFormData({
-                                               ...formData,
-                                               fraxt_price_transfer: e.target.value
-                                           })} label={t('queriesTranslation.client_price')}/>
+                            <CurrencyInput
+                                disabled={mode === 'show'}
+                                errorMassage={errors?.fraxt_price_transfer}
+                                value={formData.fraxt_price_transfer ?? ''}
+                                setCarrierCurrency={setFraxtCurrency}
+                                carrierCurrency={fraxtCurrency}
+                                onChange={(e) => setFormData({
+                                    ...formData,
+                                    fraxt_price_transfer: e.target.value
+                                })} label={t('queriesTranslation.client_price')}/>
                         </div>
                         <div className={"w-full  "}>
-                            <SelectMUI errorMassage={errors?.transport_type} options={data?.transport_types || []}
-                                       variant={'outlined'}
-                                       label={t('queriesTranslation.transport_type')}
-                                       placeholder={t('queriesTranslation.transport_type')}
+                            <SelectMUI
+                                disabled={mode === 'show'}
+                                errorMassage={errors?.transport_type} options={allSelect?.transport_types || []}
+                                variant={'outlined'}
+                                label={t('queriesTranslation.transport_type')}
+                                placeholder={t('queriesTranslation.transport_type')}
 
-                                       {...{
-                                           value:
-                                               mode !== "add"
-                                                   ? data?.transport_types?.find((opt) => opt.id === formData?.transport_type) || null
-                                                   : formData?.transport_type,
-                                       }}
-                                       onChange={(val) => {
-                                           mode !== "add" ? setFormData({
-                                               ...formData,
-                                               transport_type: val.id
-                                           }) : setFormData({...formData, transport_type: val})
-                                       }}
+                                {...{
+                                    value:
+                                        mode !== "add"
+                                            ? allSelect?.transport_types?.find((opt) => opt.id === formData?.transport_type) || null
+                                            : formData?.transport_type,
+                                }}
+                                onChange={(val) => {
+                                    mode !== "add" ? setFormData({
+                                        ...formData,
+                                        transport_type: val.id
+                                    }) : setFormData({...formData, transport_type: val})
+                                }}
                             />
 
 
@@ -675,12 +714,14 @@ function OrdersFrom({mode}) {
                         <div className={''}>
                             {
                                 String(formData?.transport_type?.id) === '3' || String(formData?.transport_type) === '3' ? <>
-                                    <InputMUI errorMassage={errors?.mode}
-                                              value={formData?.mode ?? ''}
-                                              onChange={(e) =>
-                                                  setFormData({...formData, mode: e.target.value})
-                                              }
-                                              variant={'outlined'} label={t('queriesTranslation.mode')}
+                                    <InputMUI
+                                        disabled={mode === 'show'}
+                                        errorMassage={errors?.mode}
+                                        value={formData?.mode ?? ''}
+                                        onChange={(e) =>
+                                            setFormData({...formData, mode: e.target.value})
+                                        }
+                                        variant={'outlined'} label={t('queriesTranslation.mode')}
                                     /></> : ''
                             }
                         </div>
@@ -691,123 +732,130 @@ function OrdersFrom({mode}) {
                     <div className={'grid grid-cols-4 gap-4'}>
                         <div className={" col-span-2"}>
                             <LocationInput
-                                value={formData?.location_of_departure || null}
-                                onChange={(pos) => setFormData({...formData, location_of_departure: pos.join(',')})}
+                                disabled={mode === 'show'}
+                                value={formData?.location_of_departure || [41.3111, 69.2797]}
+                                onChange={(pos) => setFormData({...formData, location_of_departure: pos})}
                                 label={t('queriesTranslation.location_of_departure')}/>
                         </div>
                         <div className={"  col-span-2"}>
                             <LocationInput
-                                value={formData?.location_of_destination || null}
+                                disabled={mode === 'show'}
+                                value={formData?.location_of_destination || [41.3111, 69.2797]}
 
-                                onChange={(pos) => setFormData({...formData, location_of_destination: pos.join(',')})}
+                                onChange={(pos) => setFormData({...formData, location_of_destination: pos})}
                                 label={t('queriesTranslation.location_of_destination')}/>
                         </div>
                         <div className={"w-full "}>
-                            <SelectMUI errorMassage={errors?.country_of_departure} options={data?.countries || []}
-                                       variant={'outlined'} label={t('queriesTranslation.country_of_departure')}
-                                       placeholder={t('queriesTranslation.country_of_departure')}
-                                       {...{
-                                           value:
-                                               mode !== "add"
-                                                   ? data?.countries?.find((opt) => String(opt.id) === formData?.country_of_departure) || null
-                                                   : formData?.country_of_departure,
-                                       }}
-                                       onChange={(val) => {
-                                           if (mode !== "add") {
-                                               setFormData({
-                                                   ...formData,
-                                                   country_of_departure: val?.id,
-                                               });
-                                           } else {
-                                               setFormData({
-                                                   ...formData,
-                                                   country_of_departure: val,
-                                               });
-                                           }
-                                           StateDataOne(val?.id);
-
-                                       }}
+                            <SelectMUI
+                                disabled={mode === 'show'}
+                                errorMassage={errors?.country_of_departure} options={allSelect?.countries || []}
+                                variant={'outlined'} label={t('queriesTranslation.country_of_departure')}
+                                placeholder={t('queriesTranslation.country_of_departure')}
+                                {...{
+                                    value:
+                                        mode !== "add"
+                                            ? allSelect?.countries?.find((opt) => String(opt.id) === String(formData?.country_of_departure)) || null
+                                            : formData?.country_of_departure,
+                                }}
+                                onChange={(val) => {
+                                    if (mode !== "add") {
+                                        setFormData({
+                                            ...formData,
+                                            country_of_departure: val?.id,
+                                        });
+                                    } else {
+                                        setFormData({
+                                            ...formData,
+                                            country_of_departure: val,
+                                        });
+                                    }
+                                }}
                             />
                         </div>
                         <div className={"w-full "}>
-                            <SelectMUI errorMassage={errors?.point_of_departure}
-                                       options={stateDataOne?.cities_from || []} variant={'outlined'}
-                                       label={t('queriesTranslation.point_of_departure')}
-                                       placeholder={t('queriesTranslation.point_of_departure')}
-                                       {...{
-                                           value:
-                                               mode !== "add"
-                                                   ? stateDataOne?.cities_from?.find((opt) => String(opt.id) === formData?.point_of_departure) || null
-                                                   : formData?.point_of_departure,
-                                       }}
-                                       onChange={(val) => {
-                                           if (mode !== "add") {
-                                               setFormData({
-                                                   ...formData,
-                                                   point_of_departure: val?.id,
-                                               });
-                                           } else {
-                                               setFormData({
-                                                   ...formData,
-                                                   point_of_departure: val,
-                                               });
-                                           }
-                                       }}
+                            <SelectMUI
+                                disabled={mode === 'show'}
+                                errorMassage={errors?.point_of_departure}
+                                options={allSelect?.cities_from || []} variant={'outlined'}
+                                label={t('queriesTranslation.point_of_departure')}
+                                placeholder={t('queriesTranslation.point_of_departure')}
+                                {...{
+                                    value:
+                                        mode !== "add"
+                                            ? allSelect?.cities_from?.find((opt) => String(opt.id) === String(formData?.point_of_departure)) || null
+                                            : formData?.point_of_departure,
+                                }}
+                                onChange={(val) => {
+                                    if (mode !== "add") {
+                                        setFormData({
+                                            ...formData,
+                                            point_of_departure: val?.id,
+                                        });
+                                    } else {
+                                        setFormData({
+                                            ...formData,
+                                            point_of_departure: val,
+                                        });
+                                    }
+                                }}
                             />
                         </div>
                         <div className={"w-full "}>
-                            <SelectMUI errorMassage={errors?.country_of_destination} options={data?.countries || []}
-                                       variant={'outlined'} label={t('queriesTranslation.country_of_destination')}
-                                       placeholder={t('queriesTranslation.country_of_destination')}
+                            <SelectMUI
+                                disabled={mode === 'show'}
+                                errorMassage={errors?.country_of_destination}
+                                options={allSelect?.countries || []}
+                                variant={'outlined'} label={t('queriesTranslation.country_of_destination')}
+                                placeholder={t('queriesTranslation.country_of_destination')}
 
-                                       {...{
-                                           value:
-                                               mode !== "add"
-                                                   ? data?.countries?.find((opt) => String(opt.id) === formData?.country_of_destination) || null
-                                                   : formData?.country_of_destination,
-                                       }}
-                                       onChange={(val) => {
-                                           if (mode !== "add") {
-                                               setFormData({
-                                                   ...formData,
-                                                   country_of_destination: val?.id,
-                                               });
-                                           } else {
-                                               setFormData({
-                                                   ...formData,
-                                                   country_of_destination: val,
-                                               });
-                                           }
-                                           StateDataTwo(val?.id)
-
-                                       }}
+                                {...{
+                                    value:
+                                        mode !== "add"
+                                            ? allSelect?.countries?.find((opt) => String(opt.id) === String(formData?.country_of_destination)) || null
+                                            : formData?.country_of_destination,
+                                }}
+                                onChange={(val) => {
+                                    if (mode !== "add") {
+                                        setFormData({
+                                            ...formData,
+                                            country_of_destination: val?.id,
+                                        });
+                                    } else {
+                                        setFormData({
+                                            ...formData,
+                                            country_of_destination: val,
+                                        });
+                                    }
+                                }}
                             />
                         </div>
                         <div className={"w-full "}>
-                            <SelectMUI errorMassage={errors?.point_of_destination}
-                                       options={stateDataTwo?.cities_to || []} variant={'outlined'}
-                                       label={t('queriesTranslation.point_of_destination')}
-                                       placeholder={t('queriesTranslation.point_of_destination')}
-                                       {...{
-                                           value:
-                                               mode !== "add"
-                                                   ? stateDataTwo?.cities_to?.find((opt) => String(opt.id) === formData?.point_of_destination) || null
-                                                   : formData?.point_of_destination,
-                                       }}
-                                       onChange={(val) => {
-                                           if (mode !== "add") {
-                                               setFormData({
-                                                   ...formData,
-                                                   point_of_destination: val?.id,
-                                               });
-                                           } else {
-                                               setFormData({
-                                                   ...formData,
-                                                   point_of_destination: val,
-                                               });
-                                           }
+                            <SelectMUI
+                                disabled={mode === 'show'}
+                                errorMassage={errors?.point_of_destination}
+                                options={allSelect?.cities_to || []} variant={'outlined'}
+                                label={t('queriesTranslation.point_of_destination')}
+                                placeholder={t('queriesTranslation.point_of_destination')}
+                                {...{
+                                    value:
+                                        mode !== "add"
+                                            ? allSelect?.cities_to?.find((opt) => String(opt.id) === String(formData?.point_of_destination)) || null
+                                            : formData?.point_of_destination,
+                                }}
+                                onChange={(val) => {
+                                    if (mode !== "add") {
+                                        setFormData({
+                                            ...formData,
+                                            point_of_destination: val?.id,
+                                        });
+                                    } else {
+                                        setFormData({
+                                            ...formData,
+                                            point_of_destination: val,
+                                        });
+                                    }
 
-                                       }}
+                                }}
                             />
                         </div>
                     </div>
@@ -815,31 +863,35 @@ function OrdersFrom({mode}) {
                 <div className={'w-[90%] bg-white px-4  mx-auto py-5 rounded-md shadow mt-5 dark:bg-darkBgTwo'}>
                     <div className={'grid grid-cols-4 gap-4'}>
                         <div className={" col-span-2"}>
-                            <InputMUI type={'number'} errorMassage={errors?.weight_of_cargo}
-                                      value={formData?.weight_of_cargo ?? ''}
+                            <InputMUI
+                                disabled={mode === 'show'}
+                                type={'number'} errorMassage={errors?.weight_of_cargo}
+                                value={formData?.weight_of_cargo ?? ''}
 
-                                      onChange={(e) =>
-                                          setFormData({...formData, weight_of_cargo: e.target.value})
-                                      }
-                                      variant={'outlined'} label={t('queriesTranslation.weight_of_cargo')}
+                                onChange={(e) =>
+                                    setFormData({...formData, weight_of_cargo: e.target.value})
+                                }
+                                variant={'outlined'} label={t('queriesTranslation.weight_of_cargo')}
                             />
                         </div>
                         <div className={"  col-span-2"}>
-                            <SelectMUI errorMassage={errors?.status_of_cargo} options={dangerous} variant={'outlined'}
-                                       label={t('queriesTranslation.status_of_cargo')}
-                                       placeholder={t('queriesTranslation.status_of_cargo')}
-                                       {...{
-                                           value:
-                                               mode !== "add"
-                                                   ? dangerous.find((opt) => opt.id === formData?.status_of_cargo) || null
-                                                   : formData?.status_of_cargo,
-                                       }}
-                                       onChange={(val) => {
-                                           mode !== "add" ? setFormData({
-                                               ...formData,
-                                               status_of_cargo: val.id
-                                           }) : setFormData({...formData, status_of_cargo: val})
-                                       }}
+                            <SelectMUI
+                                disabled={mode === 'show'}
+                                errorMassage={errors?.status_of_cargo} options={dangerous} variant={'outlined'}
+                                label={t('queriesTranslation.status_of_cargo')}
+                                placeholder={t('queriesTranslation.status_of_cargo')}
+                                {...{
+                                    value:
+                                        mode !== "add"
+                                            ? dangerous.find((opt) => opt.id === formData?.status_of_cargo) || null
+                                            : formData?.status_of_cargo,
+                                }}
+                                onChange={(val) => {
+                                    mode !== "add" ? setFormData({
+                                        ...formData,
+                                        status_of_cargo: val.id
+                                    }) : setFormData({...formData, status_of_cargo: val})
+                                }}
                             />
                         </div>
                         {
@@ -847,28 +899,35 @@ function OrdersFrom({mode}) {
 
                                 <>
                                     <div className={"  col-span-2"}>
-                                        <SelectMUI errorMassage={errors?.degree_of_danger} options={hazardLevel}
-                                                   variant={'outlined'}
-                                                   label={t('Степень опасности')}
-                                                   placeholder={t('Степень опасности')}
-                                                   {...{
-                                                       value:
-                                                           mode !== "add"
-                                                               ? hazardLevel.find((opt) => opt.id === formData?.degree_of_danger) || null
-                                                               : formData?.degree_of_danger,
-                                                   }}
-                                                   onChange={(val) => {
-                                                       mode !== "add" ? setFormData({
-                                                           ...formData,
-                                                           degree_of_danger: val.id
-                                                       }) : setFormData({...formData, degree_of_danger: val})
-                                                   }}
+                                        <SelectMUI
+                                            disabled={mode === 'show'}
+                                            errorMassage={errors?.degree_of_danger} options={hazardLevel}
+                                            variant={'outlined'}
+                                            label={t('Степень опасности')}
+                                            placeholder={t('Степень опасности')}
+                                            {...{
+                                                value:
+                                                    mode !== "add"
+                                                        ? hazardLevel.find((opt) => opt.id === formData?.degree_of_danger) || null
+                                                        : formData?.degree_of_danger,
+                                            }}
+                                            onChange={(val) => {
+                                                mode !== "add" ? setFormData({
+                                                    ...formData,
+                                                    degree_of_danger: val.id
+                                                }) : setFormData({...formData, degree_of_danger: val})
+                                            }}
                                         />
 
 
                                     </div>
                                     <div className={"  col-span-2"}>
-                                        <FileButton onChange={(event)=>setFormData({...formData, status_of_cargo_file: event})} errorMassage={errors?.status_of_cargo_file} />
+                                        <FileButton
+                                            disabled={mode === 'show'}
+                                            onChange={(event) => setFormData({
+                                                ...formData,
+                                                status_of_cargo_file: event
+                                            })} errorMassage={errors?.status_of_cargo_file}/>
                                     </div>
                                 </>
 
@@ -878,6 +937,7 @@ function OrdersFrom({mode}) {
                         <div className={"w-full "}>
                             <div className={'relative'}>
                                 <MyCalendar
+                                    disabled={mode === 'show'}
                                     label={t('queriesTranslation.shipment_date')}
                                     errorMassage={errors?.shipment_date}
                                     value={formData?.shipment_date ?? ''} // misol uchun yangi property
@@ -894,6 +954,7 @@ function OrdersFrom({mode}) {
                         <div className={"w-full "}>
                             <div className={'relative'}>
                                 <MyCalendar
+                                    disabled={mode === 'show'}
                                     label={t('queriesTranslation.unload_date')}
 
                                     errorMassage={errors?.unload_date}
@@ -911,11 +972,13 @@ function OrdersFrom({mode}) {
 
                         </div>
                         <div className={"col-span-2"}>
-                            <InputMUI errorMassage={errors?.nature_of_cargo} value={formData?.nature_of_cargo ?? ''}
-                                      onChange={(e) =>
-                                          setFormData({...formData, nature_of_cargo: e.target.value})
-                                      }
-                                      variant={'outlined'} label={t('queriesTranslation.nature_of_cargo')}
+                            <InputMUI
+                                disabled={mode === 'show'}
+                                errorMassage={errors?.nature_of_cargo} value={formData?.nature_of_cargo ?? ''}
+                                onChange={(e) =>
+                                    setFormData({...formData, nature_of_cargo: e.target.value})
+                                }
+                                variant={'outlined'} label={t('queriesTranslation.nature_of_cargo')}
                             />
                         </div>
 
@@ -924,58 +987,68 @@ function OrdersFrom({mode}) {
                 <div className={'w-[90%] bg-white px-4  mx-auto py-5 rounded-md shadow mt-5 dark:bg-darkBgTwo'}>
                     <div className={'grid grid-cols-3 gap-4'}>
                         <div className={" "}>
-                            <SelectMUI errorMassage={errors?.payment_condition} options={typePayment}
-                                       variant={'outlined'} label={t('queriesTranslation.payment_condition')}
-                                       placeholder={t('queriesTranslation.payment_condition')}
+                            <SelectMUI
+                                disabled={mode === 'show'}
+                                errorMassage={errors?.payment_condition} options={typePayment}
+                                variant={'outlined'} label={t('queriesTranslation.payment_condition')}
+                                placeholder={t('queriesTranslation.payment_condition')}
 
-                                       {...{
-                                           value:
-                                               mode !== "add"
-                                                   ? typePayment.find((opt) => opt.value === Number(formData?.payment_condition)) || null
-                                                   : formData?.payment_condition,
-                                       }}
-                                       onChange={(val) => {
-                                           mode !== "add" ? setFormData({
-                                               ...formData,
-                                               payment_condition: val.value
-                                           }) : setFormData({...formData, payment_condition: val})
-                                       }}
+                                {...{
+                                    value:
+                                        mode !== "add"
+                                            ? typePayment.find((opt) => opt.value === Number(formData?.payment_condition)) || null
+                                            : formData?.payment_condition,
+                                }}
+                                onChange={(val) => {
+                                    mode !== "add" ? setFormData({
+                                        ...formData,
+                                        payment_condition: val.value
+                                    }) : setFormData({...formData, payment_condition: val})
+                                }}
                             />
 
 
                         </div>
                         <div className={""}>
-                            <InputMUI errorMassage={errors?.sender_contact} value={formData?.sender_contact ?? ''}
-                                      onChange={(e) =>
-                                          setFormData({...formData, sender_contact: e.target.value})
-                                      }
-                                      variant={'outlined'} label={t('queriesTranslation.sender_contact')}
+                            <InputMUI
+                                disabled={mode === 'show'}
+                                errorMassage={errors?.sender_contact} value={formData?.sender_contact ?? ''}
+                                onChange={(e) =>
+                                    setFormData({...formData, sender_contact: e.target.value})
+                                }
+                                variant={'outlined'} label={t('queriesTranslation.sender_contact')}
                             />
                         </div>
                         <div className={""}>
-                            <InputMUI errorMassage={errors?.receiver_contact} value={formData?.receiver_contact ?? ''}
-                                      onChange={(e) =>
-                                          setFormData({...formData, receiver_contact: e.target.value})
-                                      } variant={'outlined'} label={t('queriesTranslation.receiver_contact')}
+                            <InputMUI
+                                disabled={mode === 'show'}
+                                errorMassage={errors?.receiver_contact} value={formData?.receiver_contact ?? ''}
+                                onChange={(e) =>
+                                    setFormData({...formData, receiver_contact: e.target.value})
+                                } variant={'outlined'} label={t('queriesTranslation.receiver_contact')}
                             />
                         </div>
                     </div>
                     <div className={'grid grid-cols-3 gap-4 mt-5'}>
 
                         <div className={""}>
-                            <InputMUI type={'number'} errorMassage={errors?.tr_number} value={formData?.tr_number ?? ''}
-                                      onChange={(e) =>
-                                          setFormData({...formData, tr_number: e.target.value})
-                                      } variant={'outlined'} label={t('queriesTranslation.tr_number')}
+                            <InputMUI
+                                disabled={mode === 'show'}
+                                type={'number'} errorMassage={errors?.tr_number} value={formData?.tr_number ?? ''}
+                                onChange={(e) =>
+                                    setFormData({...formData, tr_number: e.target.value})
+                                } variant={'outlined'} label={t('queriesTranslation.tr_number')}
                             />
                         </div>
                         <div className={""}>
-                            <InputMUI errorMassage={errors?.carrier_additional}
-                                      value={formData?.carrier_additional ?? ''}
-                                      onChange={(e) =>
-                                          setFormData({...formData, carrier_additional: e.target.value})
-                                      }
-                                      variant={'outlined'} label={t('queriesTranslation.carrier_additional')}
+                            <InputMUI
+                                disabled={mode === 'show'}
+                                errorMassage={errors?.carrier_additional}
+                                value={formData?.carrier_additional ?? ''}
+                                onChange={(e) =>
+                                    setFormData({...formData, carrier_additional: e.target.value})
+                                }
+                                variant={'outlined'} label={t('queriesTranslation.carrier_additional')}
                             />
                         </div>
                         <div className={" "}>

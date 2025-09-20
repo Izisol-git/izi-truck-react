@@ -4,13 +4,13 @@ import Autocomplete from '@mui/material/Autocomplete';
 import Stack from '@mui/material/Stack';
 import Paper from "@mui/material/Paper";
 
-export default function SelectMUI({ label, placeholder, variant,  value, onChange, options , errorMassage   }) {
+export default function SelectMUI({label, placeholder, variant, value, onChange, options, errorMassage , disabled}) {
 
     return (
-        <Stack spacing={1} sx={{ width: "100%" }}>
+        <Stack spacing={1} sx={{width: "100%"}}>
             <Autocomplete
                 // key={options}
-
+                disabled={disabled}
                 size="small"
                 options={options}
                 value={value || null}
@@ -29,7 +29,7 @@ export default function SelectMUI({ label, placeholder, variant,  value, onChang
                 isOptionEqualToValue={(option, value) => option.id === value.id}
 
                 // 🔑 Har doim ID unikal bo‘lishi kerak
-                renderOption={(props, option ) => (
+                renderOption={(props, option) => (
                     <li {...props} key={option.id ?? `${option.title}`}>
                         {
                             option?.title ||

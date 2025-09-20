@@ -36,7 +36,7 @@ function LocationPicker({ position, setPosition }) {
     return position ? <Marker position={position} /> : null;
 }
 
-const LocationInput = ({ label, value, onChange }) => {
+const LocationInput = ({ label, value, onChange ,disabled}) => {
     const [open, setOpen] = useState(false);
     const {t} = useTranslation();
 
@@ -48,6 +48,9 @@ const LocationInput = ({ label, value, onChange }) => {
         if (typeof value === 'string') {
             setPosition(value.split(",").map(num => parseFloat(num.trim())));
         }
+        else {
+            setPosition(value)
+        }
     }, [value]);
 
     const handlePositionChange = (pos) => {
@@ -58,6 +61,7 @@ const LocationInput = ({ label, value, onChange }) => {
     return (
         <Box sx={{ display: "flex", alignItems: "center", mb: 2 }}>
             <TextField
+                disabled={disabled}
                 label={label}
                 value={position ? `${position[0]}, ${position[1]}` : ""}
                 fullWidth
@@ -94,6 +98,7 @@ const LocationInput = ({ label, value, onChange }) => {
             />
 
             <Button
+                disabled={disabled}
                 width={'w-max'}
                 variant="contained"
                 rounded={'rounded-r'}

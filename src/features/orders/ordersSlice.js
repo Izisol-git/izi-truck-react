@@ -2,15 +2,17 @@ import {createSlice} from "@reduxjs/toolkit";
 import {
     addOrder,
     editOrder,
-    deleteOrder,
+    appointDriver,
     getFilteredOrders,
     exportOrdersExcel,
     actDataAdd,
-    addDidoxId
+    addDidoxId, getOrdersId, ordersSelect, getShowOrders
 } from "./ordersThunks.js";
 
 const initialState = {
     orders: [],
+    ordersId: [],
+    ordersSelect: [],
     loading: false,
     exporting: false,
     actLoading: false,
@@ -21,7 +23,11 @@ const initialState = {
 const ordersSlice = createSlice({
     name: "orders",
     initialState,
-    reducers: {},
+    reducers: {
+        AddOrderId(state, action)  {
+            state.ordersId = action.payload
+        }
+    },
     extraReducers: (builder) => {
         // GET orders
         builder.addCase(getFilteredOrders.pending, (state) => {
@@ -34,7 +40,46 @@ const ordersSlice = createSlice({
         });
         builder.addCase(getFilteredOrders.rejected, (state, action) => {
             state.loading = false;
-            state.error = action.payload.orders;
+            state.error = action.payload;
+        });
+        // GET orders
+        builder.addCase(getOrdersId.pending, (state) => {
+            // state.loading = true;
+            state.error = null;
+        });
+        builder.addCase(getOrdersId.fulfilled, (state, action) => {
+            // state.loading = false;
+            state.ordersId = action.payload.order;
+        });
+        builder.addCase(getOrdersId.rejected, (state, action) => {
+            // state.loading = false;
+            state.error = action.payload;
+        });
+        // GET orders
+        builder.addCase(getShowOrders.pending, (state) => {
+            // state.loading = true;
+            state.error = null;
+        });
+        builder.addCase(getShowOrders.fulfilled, (state, action) => {
+            // state.loading = false;
+            state.ordersId = action.payload.order;
+        });
+        builder.addCase(getShowOrders.rejected, (state, action) => {
+            // state.loading = false;
+            state.error = action.payload;
+        });
+        // GET ordersSelect
+        builder.addCase(ordersSelect.pending, (state) => {
+            // state.loading = true;
+            state.error = null;
+        });
+        builder.addCase(ordersSelect.fulfilled, (state, action) => {
+            // state.loading = false;
+            state.ordersSelect = action.payload;
+        });
+        builder.addCase(ordersSelect.rejected, (state, action) => {
+            // state.loading = false;
+            state.error = action.payload;
         });
         // act data
         builder.addCase(actDataAdd.pending, (state) => {
@@ -90,19 +135,32 @@ const ordersSlice = createSlice({
             state.loading = false;
         });
 
-        // DELETE order
-        builder.addCase(deleteOrder.pending, (state) => {
+        //  appointDriver
+        builder.addCase(appointDriver.pending, (state) => {
             state.loading = true;
-            state.error = null;
+            // state.error = null;
         });
-        builder.addCase(deleteOrder.fulfilled, (state, action) => {
+        builder.addCase(appointDriver.fulfilled, (state, action) => {
             state.loading = false;
-            state.orders = state.orders.filter(order => order.id !== action.payload.id);
         });
-        builder.addCase(deleteOrder.rejected, (state, action) => {
+        builder.addCase(appointDriver.rejected, (state, action) => {
             state.loading = false;
-            state.error = action.payload;
         });
+
+
+
+        // DELETE order
+        // builder.addCase(deleteOrder.pending, (state) => {
+        //     state.loading = true;
+        //     state.error = null;
+        // });
+        // builder.addCase(deleteOrder.fulfilled, (state, action) => {
+        //     state.loading = false;
+        // });
+        // builder.addCase(deleteOrder.rejected, (state, action) => {
+        //     state.loading = false;
+        //     state.error = action.payload;
+        // });
         // Excel export
         builder.addCase(exportOrdersExcel.pending, (state) => {
             state.exporting = true;
@@ -117,5 +175,8 @@ const ordersSlice = createSlice({
             });
     }
 });
+
+
+export const {AddOrderId} = ordersSlice.actions;
 
 export default ordersSlice.reducer;

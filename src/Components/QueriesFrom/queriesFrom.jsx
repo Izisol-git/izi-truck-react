@@ -83,11 +83,13 @@ function QueriesFrom({mode}) {
     }
 
     useEffect(() => {
+
         if (queriesId && mode === "edit") {
+            console.log(queriesId);
             setFormData({
                 client_id: queriesId?.client_id || "",
                 title: queriesId?.title || "",
-                status_of_cargo: queriesId?.status_of_cargo || "",
+                status_of_cargo: queriesId?.status_of_cargo || 0,
                 degree_of_danger: queriesId?.degree_of_danger || "",
                 weight: queriesId?.weight || "",
                 transport_volume_id: queriesId?.transport_volume_id || "",
@@ -323,7 +325,7 @@ function QueriesFrom({mode}) {
                         <div className={"w-full "}>
                             <SelectMUI
                                 errorMassage={errors?.status_of_cargo}
-                                value={dangerous?.find((opt) => opt.id === Number(formData?.status_of_cargo))}
+                                value={dangerous?.find((opt) => opt.id === formData?.status_of_cargo)}
                                 onChange={(val) => {
                                     setFormData({
                                         ...formData,

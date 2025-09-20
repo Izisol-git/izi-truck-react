@@ -20,6 +20,7 @@ import {useNavigate} from "react-router-dom";
 import {useDispatch} from "react-redux";
 import {changeDbOrders} from "../../features/EmployeSModalToggle/employesModalToggle.js";
 import {useTranslation} from "react-i18next";
+import {AddOrderId} from "../../features/orders/ordersSlice.js";
 dayjs.extend(relativeTime);
 
 
@@ -107,6 +108,7 @@ export default function OrderLogisticsCard({order}) {
                                     navigate(`/orders/${order?.id}`)
                                     dispatch(changeDbOrders(order?.source))
                                     localStorage.setItem("dbOrders", order?.source)
+                                    dispatch(AddOrderId(order))
                                 }}
                             >
                                 <i className="fa-solid fa-eye mr-2"></i>
@@ -126,7 +128,7 @@ export default function OrderLogisticsCard({order}) {
                             <div className="bg-gray-100 p-3 rounded-lg mb-2 dark:bg-navBgHover">
                                 <p className="font-medium dark:text-darkText">{t("ordersTranslation.ordersCard.loading")}</p>
                                 <p className="text-sm text-gray-500 dark:text-darkText">
-                                    {order?.point_of_departure + " - " + order?.country_of_departure || " - "}
+                                    {order?.point_of_departure1 + " - " + order?.country_of_departure1 || " - "}
                                 </p>
                             </div>
                             <div className="text-center my-2">
@@ -135,7 +137,7 @@ export default function OrderLogisticsCard({order}) {
                             <div className="bg-gray-100 p-3 rounded-lg dark:bg-navBgHover">
                                 <p className="font-medium dark:text-darkText">{t("ordersTranslation.ordersCard.unloading")}</p>
                                 <p className="text-sm text-gray-500 dark:text-darkText">
-                                    {order?.point_of_destination + " - " + order?.country_of_destination || " - "}
+                                    {order?.point_of_destination1 + " - " + order?.country_of_destination1 || " - "}
                                 </p>
                             </div>
                         </div>
@@ -232,6 +234,7 @@ export default function OrderLogisticsCard({order}) {
                             variant="contained"
                             color="warning"
                             onClick={() => {
+                                dispatch(AddOrderId(order))
                                 navigate(`/orders/edit/${order.id}`)
                             }}
                         >

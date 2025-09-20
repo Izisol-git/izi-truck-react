@@ -67,9 +67,9 @@ export const getStateTwo = createAsyncThunk(
 
 export const ordersSelect = createAsyncThunk(
     "orders/ordersSelect",
-    async (_, { rejectWithValue }) => {
+    async ({params}, { rejectWithValue }) => {
         try {
-            return await OrdersService.getSelect();
+            return await OrdersService.getSelect(params);
         } catch (err) {
             return rejectWithValue(err.response?.data || "Failed to fetch orders");
         }
@@ -124,6 +124,18 @@ export const getFilteredOrders = createAsyncThunk(
 );
 
 
+
+// appoint_driver
+export const appointDriver = createAsyncThunk(
+    "orders/deleteOrder",
+    async ({id ,data}, { rejectWithValue }) => {
+        try {
+            return await OrdersService.appoint(id , data);
+        } catch (err) {
+            return rejectWithValue(err.response?.data || "Failed to delete order");
+        }
+    }
+);
 
 // DELETE – orderni o‘chirish
 export const deleteOrder = createAsyncThunk(

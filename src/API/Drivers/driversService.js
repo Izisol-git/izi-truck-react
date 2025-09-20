@@ -19,6 +19,10 @@ const DriversService = {
         const res = await axios.put(`/drivers/${id}`, data);
         return res.data
     },
+    async delete(id) {
+        const res = await axios.delete(`/drivers/${id}`);
+        return res.data
+    },
     async exportDriverExcel(  search ,selectedKeys) {
         const query = selectedKeys.map((k) => `export_keys[]=${k}`).join("&");
         const res = await api.get(`/drivers/export_excel?search=${search}&${query}`, {

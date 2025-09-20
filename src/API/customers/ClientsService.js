@@ -24,6 +24,10 @@ class ClientsService {
         const res = await api.get(`/clients/${id}`);
         return res.data;
     }
+    static async deleteClients(id) {
+        const res = await api.delete(`/clients/${id}`);
+        return res.data;
+    }
 
     static async exportClientExcel(  search ,selectedKeys) {
         const query = selectedKeys.map((k) => `export_keys[]=${k}`).join("&");

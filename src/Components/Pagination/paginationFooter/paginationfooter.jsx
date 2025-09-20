@@ -2,7 +2,7 @@ import { useSearchParams } from "react-router-dom";
 import Pagination from "@mui/material/Pagination";
 import Stack from "@mui/material/Stack";
 
-const PaginationFooter =({total , onClick , filters})=> {
+const PaginationFooter =({total , onClick , filters , search})=> {
     const [searchParams, setSearchParams] = useSearchParams();
 
 
@@ -11,8 +11,8 @@ const PaginationFooter =({total , onClick , filters})=> {
 
     const handleChange = (event, value) => {
         setSearchParams({ page: value }); // URL yangilanadi (?page=2)
-        localStorage.setItem('EmployeesPge' , value);
-        onClick({ ...filters, search_status: 2 }, value);
+        // localStorage.setItem('EmployeesPge' , value);
+        onClick(value , search);
     };
     return (
         <Stack spacing={2}>

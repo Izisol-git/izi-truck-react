@@ -26,17 +26,21 @@ import {searchContracts} from "../../features/Contracts/contractThunks.js";
 import {openExcelModal} from "../../features/EmployeSModalToggle/employesModalToggle.js";
 import {current} from "@reduxjs/toolkit";
 import {useTranslation} from "react-i18next";
+import {useSearchParams} from "react-router-dom";
 
-const UserPagination = ({arry, navigateURL, data, total, setEmployeesId, employeesId, setSearch, dataIndex}) => {
+const UserPagination = ({arry, navigateURL, data, total,onClick,  search, setEmployeesId, employeesId, setSearch, dataIndex}) => {
 
 
     const dispatch = useDispatch();
+    // const [searchParams] = useSearchParams();
+    // const pageqq = searchParams.get("page") || '1';
+
     // const [searchData, setSearchData] = useState();
     // console.log(searchData);
     const loadingContracts = useSelector((state) => state.contracts.loading)
     const loadingCustomers = useSelector((state) => state.customers.loading)
     const loadingDrivers = useSelector((state) => state.drivers.loading)
-    const loadingEmployees = useSelector((state) => state.drivers.loading)
+    const loadingEmployees = useSelector((state) => state.employees.loading)
     const {i18n, t} = useTranslation();
     const currentLang = i18n.language;
 
@@ -73,7 +77,10 @@ const UserPagination = ({arry, navigateURL, data, total, setEmployeesId, employe
                     <TextField
                         label={t('clients.search')}
                         variant="outlined"
-                        onChange={(event) => setSearch(event.target.value)}
+                        onChange={(event) => {
+                            onClick(1, event.target.value );
+                            setSearch(event.target.value)
+                        }}
                         fullWidth
                         size={"small"}
                         margin="normal"
@@ -198,6 +205,7 @@ const UserPagination = ({arry, navigateURL, data, total, setEmployeesId, employe
                                                 key={index}
                                                 navigateURL={navigateURL}
                                                 arry={arry}
+                                                search={search}
                                                 row={row}
                                                 index={index}
                                                 data={data}
@@ -207,6 +215,7 @@ const UserPagination = ({arry, navigateURL, data, total, setEmployeesId, employe
                                             />
                                         ) : navigateURL === "drivers" ? (
                                             <DriversPagination
+                                                search={search}
                                                 dataIndex={dataIndex}
                                                 key={index}
                                                 navigateURL={navigateURL}
@@ -220,7 +229,7 @@ const UserPagination = ({arry, navigateURL, data, total, setEmployeesId, employe
                                             />
                                         ) : navigateURL === "customers" ? (
                                             <CustomersPagination
-
+                                                search={search}
                                                 key={index}
                                                 navigateURL={navigateURL}
                                                 arry={arry}
@@ -287,7 +296,7 @@ const UserPagination = ({arry, navigateURL, data, total, setEmployeesId, employe
                 </TableContainer>
 
                 <div className={'py-4 flex items-center justify-end px-4'}>
-                    <PaginationFooter total={data}/>
+                    <PaginationFooter onClick={onClick} search={search} total={data}/>
                 </div>
 
 

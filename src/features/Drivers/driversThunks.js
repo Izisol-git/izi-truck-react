@@ -77,3 +77,15 @@ export const exportDriverExcel = createAsyncThunk(
     }
 );
 
+
+// Yangi xodim (haydovchi) qo'shish
+export const deleteDrivers = createAsyncThunk(
+    "employees/deleteDrivers",
+    async (id, { rejectWithValue }) => {
+        try {
+            return await DriversService.delete(id);
+        } catch (err) {
+            return rejectWithValue(err.response?.data || "Failed to add driver");
+        }
+    }
+);

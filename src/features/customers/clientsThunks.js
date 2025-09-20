@@ -86,3 +86,14 @@ export const exportClientsExcel = createAsyncThunk(
     }
 );
 
+
+export const deleteClients = createAsyncThunk(
+    "clients/ClientId",
+    async (id, { rejectWithValue }) => {
+        try {
+            return await ClientsService.deleteClients(id);
+        } catch (err) {
+            return rejectWithValue(err.response?.data || "Failed to delete client");
+        }
+    }
+);

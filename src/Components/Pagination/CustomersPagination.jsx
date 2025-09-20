@@ -11,8 +11,9 @@ import {
 } from "../../features/EmployeSModalToggle/employesModalToggle.js";
 import {ProfileInfoCardDrivers, ProfileInfoClients} from "../index.js";
 import {AddClientId} from "../../features/customers/clientsSlice.js";
+import {deleteClients, getClients} from "../../features/customers/clientsThunks.js";
 
-function CustomersPagination({row, index, data, setEmployeesId, arry, navigateURL, employeesId }) {
+function CustomersPagination({row, index, data, setEmployeesId, arry, navigateURL, employeesId , search }) {
     const {clients} = useSelector((state) => state.customers);
 
     const dispatch = useDispatch();
@@ -25,6 +26,24 @@ function CustomersPagination({row, index, data, setEmployeesId, arry, navigateUR
         const newData = data.find((employee) => employee.id === id);
         setEmployeesId(newData)
         console.log(newData)
+    }
+
+    const deleteClient = async (id) => {
+        try {
+            const result = await dispatch(deleteClients(id));
+
+            try {
+                try {
+                    const result = await dispatch(getClients({page: 1, search})).unwrap()
+                } catch (error) {
+                    console.log(error);
+                }
+            }catch (e) {
+                console.error(e);
+            }
+        }catch (error) {
+            console.log(error);
+        }
     }
 
     console.log(row)
@@ -67,20 +86,20 @@ function CustomersPagination({row, index, data, setEmployeesId, arry, navigateUR
                         color: "white",
                     },
                 }}>{row.company_name}</TableCell>}
-                {/*{arry[1].active && <TableCell sx={{*/}
-                {/*    color: "black",*/}
-                {/*    ".dark &": {*/}
-                {/*        color: "white",*/}
-                {/*    },*/}
-                {/*}}>{row.fio}</TableCell>}*/}
-                {/*{arry[].active && <TableCell>{row.phone_number}</TableCell>}*/}
-                {/*{arry[2].active && <TableCell sx={{*/}
-                {/*    color: "black",*/}
-                {/*    ".dark &": {*/}
-                {/*        color: "white",*/}
-                {/*    },*/}
-                {/*}}>{'<--->'}</TableCell>}*/}
                 {arry[1].active && <TableCell sx={{
+                    color: "black",
+                    ".dark &": {
+                        color: "white",
+                    },
+                }}>{row.fio}</TableCell>}
+                {/*{arry[].active && <TableCell>{row.phone_number}</TableCell>}*/}
+                {arry[2].active && <TableCell sx={{
+                    color: "black",
+                    ".dark &": {
+                        color: "white",
+                    },
+                }}>{new Date(row.created_at).ddmmyyyy()}</TableCell>}
+                {arry[3].active && <TableCell sx={{
                     color: "black",
                     ".dark &": {
                         color: "white",
@@ -102,7 +121,7 @@ function CustomersPagination({row, index, data, setEmployeesId, arry, navigateUR
                 {/*        color: "white",*/}
                 {/*    },*/}
                 {/*}}>{'<--->'}</TableCell>}*/}
-                {arry[2].active && <TableCell sx={{
+                {arry[4].active && <TableCell sx={{
                     color: "black",
                     ".dark &": {
                         color: "white",
@@ -151,6 +170,7 @@ function CustomersPagination({row, index, data, setEmployeesId, arry, navigateUR
 
                         <div onClick={(e) => {
                             e.stopPropagation();
+                            deleteClient(row?.id)
                         }}
                              className="bg-red-500 w-[30px] h-[30px] rounded center text-[14px] group  ">
                             <i className="fa-solid fa-trash  text-white group-hover:scale-125 transition-all duration-300 ease-in-out"></i>

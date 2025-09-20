@@ -72,12 +72,11 @@ function Drivers() {
     }, [id])
 
 
-    const driverData = async () => {
+    const driverData = async (pageqq , searchDriver) => {
         try {
             const res = await dispatch(getDrivers({
                 page: pageqq,
                 search: searchDriver,
-                selectedKeys: selectedKeys
             })).unwrap()
             console.log(res);
         } catch (error) {
@@ -87,7 +86,7 @@ function Drivers() {
 
     useEffect(() => {
         if(drivers?.length === 0) {
-            driverData();
+            driverData(pageqq , searchDriver);
         }
     }, [pageqq, dispatch, searchDriver]);
 
@@ -97,7 +96,7 @@ function Drivers() {
                 <div className="w-[90%] mx-auto">
                     <UserNavbar value={'Drivers'} columnsArry={columnsArry}
                                 setColumnsArry={setColumnsArry}/>
-                    <UserPagination setSearch={setSearchDriver}
+                    <UserPagination search={searchDriver} setSearch={setSearchDriver} onClick={driverData}
                                     data={drivers} arry={columnsArry} setColumnsArry={setColumnsArry}
                                     navigateURL={'drivers'}/>
                     <Timeline data={driversId}/>

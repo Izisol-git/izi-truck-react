@@ -9,7 +9,7 @@ import {addClient, ClientId, editClient, getClients, getClientsSelect} from "../
 import {useParams} from "react-router-dom";
 import {useTranslation} from "react-i18next";
 
-function AddEmployesModal({h1, inputModalArray = [], setEmployeesId, id}) {
+function AddEmployesModal({h1, inputModalArray = [], setEmployeesId, id , search}) {
     const [inputVariant, setInputVariant] = useState("outlined");
     const {loadingAddEmployee} = useSelector((state) => state.employees);
     const {loadingClient} = useSelector((state) => state.customers);
@@ -235,7 +235,7 @@ function AddEmployesModal({h1, inputModalArray = [], setEmployeesId, id}) {
                 dispatch(closeModal());
                 try {
                     try {
-                        const result = await dispatch(getClients({page: 1, search: ''})).unwrap()
+                        const result = await dispatch(getClients({page: 1, search})).unwrap()
                     } catch (error) {
                         console.log(error);
                     }
@@ -255,6 +255,12 @@ function AddEmployesModal({h1, inputModalArray = [], setEmployeesId, id}) {
                 await dispatch(addEmployee(inputModal)).unwrap();
                 clearEmployeesModal();
                 dispatch(closeModal());
+                try {
+                    const result = await dispatch(getEmployees({page: 1, search})).unwrap()
+                    console.log(result.data)
+                } catch (err) {
+                    console.log(err)
+                }
             } catch (error) {
                 console.error("Xatolik:", error);
                 setErrors(error.errors);
@@ -272,7 +278,7 @@ function AddEmployesModal({h1, inputModalArray = [], setEmployeesId, id}) {
                 // setEmployeesId(Object.fromEntries(Object.keys(employeesId).map(key => [key, ""])));
                 console.log(inputModal)
                 try {
-                    const result = await dispatch(getEmployees({page: 1, search: ''})).unwrap()
+                    const result = await dispatch(getEmployees({page: 1, search})).unwrap()
                     console.log(result.data)
                 } catch (err) {
                     console.log(err)
@@ -293,7 +299,7 @@ function AddEmployesModal({h1, inputModalArray = [], setEmployeesId, id}) {
                 // setEmployeesId(Object.fromEntries(Object.keys(employeesId).map(key => [key, ""])));
                 try {
                     try {
-                        const result = await dispatch(getClients({page: 1, search: ''})).unwrap()
+                        const result = await dispatch(getClients({page: 1, search})).unwrap()
                     } catch (error) {
                         console.log(error);
                     }

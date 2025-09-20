@@ -313,14 +313,18 @@
     "search": "Қидириш",
     "columnsArry" : {
       "title" : "Компания номи",
-      "phone" : "Телефон"
+      "phone" : "Телефон",
+      "name": "Исм",
+      "create_at": "Яратилган сана"
     },
     "profile": {
       "client_name": "Мижоз исми:",
       "create_date": "Яратилган сана:",
       "contract": "Шартнома:",
       "added_by": "Қўшган:",
-      "phone_number": "Телефон рақами:"
+      "phone_number": "Телефон рақами:",
+      "company_name": "Компания номи",
+      "fio": "Ф.И.Ш"
     },
     "table": {
       "id": "ID",

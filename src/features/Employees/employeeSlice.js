@@ -1,5 +1,5 @@
 import {createAsyncThunk, createSlice} from "@reduxjs/toolkit";
-import {getEmployees, addEmployee, deleteEmployee, updateEmployee, EmployeesId, getContractId} from "./employeeThunks";
+import {getEmployees, addEmployee,  updateEmployee, EmployeesId, getContractId} from "./employeeThunks";
 
 const employeeSlice = createSlice({
     name: "employees",
@@ -83,11 +83,6 @@ const employeeSlice = createSlice({
                 state.loadingAddEmployee = false;
             })
 
-
-            // Delete
-            .addCase(deleteEmployee.fulfilled, (state, action) => {
-                state.items = state.items.filter((emp) => emp.id !== action.payload);
-            });
     },
 });
 

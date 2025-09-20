@@ -313,14 +313,18 @@
     "search": "Поиск",
     "columnsArry" : {
       "title" : "Название компании",
-      "phone" : "Телефон"
+      "phone" : "Телефон",
+      "name": "Имя",
+      "create_at": "Дата создания"
     },
     "profile": {
       "client_name": "Имя клиента:",
       "create_date": "Дата создания:",
       "contract": "Договор:",
       "added_by": "Добавил:",
-      "phone_number": "Номер телефона:"
+      "phone_number": "Номер телефона:",
+      "company_name": "Название компании",
+      "fio": "ФИО"
     },
 
     "table": {

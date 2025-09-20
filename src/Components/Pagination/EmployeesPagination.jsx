@@ -14,8 +14,9 @@ import {
 } from "../../features/EmployeSModalToggle/employesModalToggle.js";
 import {useNavigate} from "react-router-dom";
 import {AddEmployeeId} from "../../features/Employees/employeeSlice.js";
+import {deleteEmployee, getEmployees} from "../../features/Employees/employeeThunks.js";
 
-const EmployeesPagination = ({row , index , data , setEmployeesId , arry , navigateURL , dataIndex}) => {
+const EmployeesPagination = ({row , index , data , setEmployeesId , arry , navigateURL , dataIndex , search}) => {
 
 
     const dispatch = useDispatch();
@@ -23,6 +24,22 @@ const EmployeesPagination = ({row , index , data , setEmployeesId , arry , navig
     const {employees} = useSelector((state) => state.employees);
     const [isOpen, setIsOpen] = useState(-1);
     const navigate = useNavigate();
+
+
+    const deleteEmployees = async (id) => {
+        try {
+            const res = await dispatch(deleteEmployee(id))
+            try {
+                const result = await dispatch(getEmployees({page: 1, search: search})).unwrap()
+                console.log(result.data)
+            } catch (err) {
+                console.log(err)
+            }
+        }
+        catch (error) {
+            console.log(error);
+        }
+    }
 
 
     return (
@@ -147,6 +164,7 @@ const EmployeesPagination = ({row , index , data , setEmployeesId , arry , navig
                         }
                         <div onClick={(e) => {
                             e.stopPropagation();
+                            deleteEmployees(row?.id)
                         }}
                              className="bg-red-500 w-[30px] h-[30px] rounded center text-[14px] group  ">
                             <i className="fa-solid fa-trash  text-white group-hover:scale-125 transition-all duration-300 ease-in-out"></i>

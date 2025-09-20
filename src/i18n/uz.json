@@ -308,14 +308,18 @@
     "search": "Qidirish",
     "columnsArry" : {
       "title" : "Kompaniya nomi",
-      "phone" : "Telefon"
+      "phone" : "Telefon",
+      "name": "Ism",
+      "create_at": "Yaratilgan sana"
     },
     "profile": {
       "client_name": "Mijoz ismi:",
       "create_date": "Yaratilgan sana:",
       "contract": "Shartnoma:",
       "added_by": "Qo‘shgan:",
-      "phone_number": "Telefon raqami:"
+      "phone_number": "Telefon raqami:",
+      "company_name": "Kompaniya nomi",
+      "fio": "F.I.Sh"
     },
     "table": {
       "id": "ID",

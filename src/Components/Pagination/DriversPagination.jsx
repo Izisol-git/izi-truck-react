@@ -10,13 +10,12 @@ import {ProfileInfoCardDrivers} from "../index.js";
 import {useDispatch, useSelector} from "react-redux";
 import {useNavigate} from "react-router-dom";
 import {AddDriversId} from "../../features/Drivers/driversSlice.js";
+import {deleteDrivers, getDrivers} from "../../features/Drivers/driversThunks.js";
 
-function DriversPagination({row , index , data , setEmployeesId , arry , navigateURL , dataIndex }) {
-
+function DriversPagination({row , index , data , setEmployeesId , arry , navigateURL , dataIndex , search}) {
 
     const dispatch = useDispatch();
     const {drivers} = useSelector((state) => state.drivers);
-
     const [isOpen, setIsOpen] = useState(-1);
     const navigate = useNavigate();
     // const findId = (id) => {
@@ -24,6 +23,24 @@ function DriversPagination({row , index , data , setEmployeesId , arry , navigat
     //     // setEmployeesId(newData)
     //     console.log(newData)
     // }
+
+    const deleteDriver = async (id) => {
+        try {
+            const response = await dispatch(deleteDrivers(id)).unwrap()
+            try {
+                const res = await dispatch(getDrivers({
+                    page: 1,
+                    search: search,
+                })).unwrap()
+                console.log(res);
+            } catch (error) {
+                console.log(error)
+            }
+        }
+        catch(err) {
+            console.error(err);
+        }
+    }
 
     return (
         <>
@@ -150,6 +167,8 @@ function DriversPagination({row , index , data , setEmployeesId , arry , navigat
                         }
                         <div onClick={(e) => {
                             e.stopPropagation();
+
+                            deleteDriver(row?.id)
                         }}
                              className="bg-red-500 w-[30px] h-[30px] rounded center text-[14px] group  ">
                             <i className="fa-solid fa-trash  text-white group-hover:scale-125 transition-all duration-300 ease-in-out"></i>

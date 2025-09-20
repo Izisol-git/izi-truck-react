@@ -19,7 +19,7 @@ import {useTranslation} from "react-i18next";
 function Employees() {
     const dispatch = useDispatch();
     const [searchParams] = useSearchParams();
-    const pageqq = searchParams.get("page") || 1;
+    const pageqq = searchParams.get("page") || '1';
     const [searchEmployees, setSearchEmployees] = useState('');
     const addEditToggle = useSelector((state) => state.employesModal.addEditToggle);
     const [selectedKeys, setSelectedKeys] = useState([]);
@@ -56,7 +56,7 @@ function Employees() {
         }
     }, [id])
 
-    const employeeData = async () => {
+    const employeeData = async (pageqq , searchEmployees ) => {
         try {
             const result = await dispatch(getEmployees({page: pageqq, search: searchEmployees})).unwrap()
             console.log(result.data)
@@ -65,15 +65,14 @@ function Employees() {
         }
     };
 
+
     useEffect(() => {
-
-        if(employees?.length === 0) {
-            employeeData();
+        if (employees?.length === 0) {
+            employeeData(pageqq , searchEmployees );
         }
+    }, [ pageqq, dispatch, searchEmployees]);
 
 
-
-    }, [pageqq, dispatch, searchEmployees]);
 
 
     const exportValues = [
@@ -98,12 +97,12 @@ function Employees() {
                 <div className="w-[90%] mx-auto">
                     <UserNavbar openModal={() => dispatch(openModal())} value={'Employees'} columnsArry={columnsArry}
                                 setColumnsArry={setColumnsArry}/>
-                    <UserPagination   setSearch={setSearchEmployees}
+                    <UserPagination onClick={employeeData} search={searchEmployees}  setSearch={setSearchEmployees}
                                      data={employees} arry={columnsArry}
                                     setColumnsArry={setColumnsArry}
                                     navigateURL={'employees'}/>
 
-                    <AddEmployesModal   employeesId={employeesId} data={employees}
+                    <AddEmployesModal search={searchEmployees}   employeesId={employeesId} data={employees}
                                       h1={"Employees"} inputModalArray={inputModalArray}/>
                     <Timeline data={employeesId}/>
 

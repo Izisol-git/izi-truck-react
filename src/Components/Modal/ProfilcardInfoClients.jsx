@@ -88,6 +88,22 @@ const ProfileInfoClients = ({ width, shadow, data }) => {
                         {data?.phone_number}
                     </p>
                 </div>
+                <div>
+                    <p className="text-sm text-gray-500 dark:text-darkTextTwo">
+                        {t("clients.profile.company_name")}
+                    </p>
+                    <p className="text-base font-semibold text-gray-700 dark:text-darkText">
+                        {data?.fio}
+                    </p>
+                </div>
+                <div>
+                    <p className="text-sm text-gray-500 dark:text-darkTextTwo">
+                        {t("clients.profile.fio")}
+                    </p>
+                    <p className="text-base font-semibold text-gray-700 dark:text-darkText">
+                        {data?.fio}
+                    </p>
+                </div>
             </div>
         </div>
     );

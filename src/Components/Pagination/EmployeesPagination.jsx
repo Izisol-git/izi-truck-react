@@ -15,6 +15,8 @@ import {
 import {useNavigate} from "react-router-dom";
 import {AddEmployeeId} from "../../features/Employees/employeeSlice.js";
 import {deleteEmployee, getEmployees} from "../../features/Employees/employeeThunks.js";
+import {useTranslation} from "react-i18next";
+import useNotify from "../../hooks/UseNotify/useNotify.jsx";
 
 const EmployeesPagination = ({row , index , data , setEmployeesId , arry , navigateURL , dataIndex , search}) => {
 
@@ -24,11 +26,14 @@ const EmployeesPagination = ({row , index , data , setEmployeesId , arry , navig
     const {employees} = useSelector((state) => state.employees);
     const [isOpen, setIsOpen] = useState(-1);
     const navigate = useNavigate();
+    const {t} = useTranslation();
+    const {showMessage} = useNotify()
 
 
     const deleteEmployees = async (id) => {
         try {
-            const res = await dispatch(deleteEmployee(id))
+            const res = await dispatch(deleteEmployee(id)).unwrap()
+            showMessage(t('EmployeesSnackbar.success.delete'));
             try {
                 const result = await dispatch(getEmployees({page: 1, search: search})).unwrap()
                 console.log(result.data)
@@ -38,6 +43,7 @@ const EmployeesPagination = ({row , index , data , setEmployeesId , arry , navig
         }
         catch (error) {
             console.log(error);
+            showMessage(t('EmployeesSnackbar.error.delete') , 'error');
         }
     }
 

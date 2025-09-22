@@ -1,11 +1,12 @@
 import React, {useEffect, useRef, useState} from 'react';
-import {SelectMUI, InputMUI, ButtonMUI, RadioGroup, MyCalendar} from "../index.js";
+import {SelectMUI, InputMUI, ButtonMUI, RadioGroup, MyCalendar, LoadingCircular} from "../index.js";
 import {Button} from "@mui/material";
 import {useDispatch, useSelector} from "react-redux";
 import {closeModal} from "../../features/EmployeSModalToggle/employesModalToggle.js";
 import {addEmployee, getEmployees, updateEmployee} from "../../features/Employees/employeeThunks.js";
 import {addClient, editClient, getClients, getClientsSelect} from "../../features/customers/clientsThunks.js";
 import {useTranslation} from "react-i18next";
+import useNotify from "../../hooks/UseNotify/useNotify.jsx";
 
 function AddEmployesModal({h1, inputModalArray = [], id , search=''}) {
     const [inputVariant, setInputVariant] = useState("outlined");
@@ -21,6 +22,7 @@ function AddEmployesModal({h1, inputModalArray = [], id , search=''}) {
     const [errors, setErrors] = useState();
     const {employeesId} = useSelector((state) => state.employees);
     const {clientsId} = useSelector((state) => state.customers);
+    const {showMessage} = useNotify()
     const {t} = useTranslation();
     const [inputModal, setInputModal] = useState(
         inputModalArray.reduce((acc, item) => {
@@ -105,17 +107,7 @@ function AddEmployesModal({h1, inputModalArray = [], id , search=''}) {
         }
     }, [])
 
-    // const [addEmployees, setAddEmployees] = useState({
-    //     name: "",
-    //     email: "",
-    //     password: "",
-    //     tin: "",
-    //     phone_number: "",
-    //     tg_user_id: "",
-    //     tg_nick_name: "",
-    //     code: "",
-    //     avatar: ""
-    // });
+
 
     useEffect(() => {
         // clearEmployeesModal();
@@ -133,8 +125,10 @@ function AddEmployesModal({h1, inputModalArray = [], id , search=''}) {
             }
             try {
                 const res = await dispatch(addClient(obj)).unwrap();
+                showMessage(t('CustomersSnackbar.success.create'))
                 clearEmployeesModal();
                 dispatch(closeModal());
+
                 try {
                     try {
                         const result = await dispatch(getClients({page: 1, search})).unwrap()
@@ -148,12 +142,14 @@ function AddEmployesModal({h1, inputModalArray = [], id , search=''}) {
             } catch (error) {
                 console.error("Xatolik:", error);
                 setErrors(error.errors);
+                showMessage(t('CustomersSnackbar.error.create') , 'error')
             }
         }
 
         if (h1 === 'Employees') {
             try {
                 await dispatch(addEmployee(inputModal)).unwrap();
+                showMessage(t('EmployeesSnackbar.success.create'))
                 clearEmployeesModal();
                 dispatch(closeModal());
                 try {
@@ -165,6 +161,7 @@ function AddEmployesModal({h1, inputModalArray = [], id , search=''}) {
             } catch (error) {
                 console.error("Xatolik:", error);
                 setErrors(error.errors);
+                showMessage(t('EmployeesSnackbar.error.create') , 'error')
             }
         }
     };
@@ -174,9 +171,9 @@ function AddEmployesModal({h1, inputModalArray = [], id , search=''}) {
         if (h1 === 'Employees') {
             try {
                 await dispatch(updateEmployee({id: id ? id : employeesId?.id, employeeData: inputModal})).unwrap();
+                showMessage(t('CustomersSnackbar.success.edit'))
                 clearEmployeesModal();
                 dispatch(closeModal());
-                console.log(inputModal)
                 try {
                     const result = await dispatch(getEmployees({page: 1, search})).unwrap()
                     console.log(result.data)
@@ -186,6 +183,7 @@ function AddEmployesModal({h1, inputModalArray = [], id , search=''}) {
             } catch (error) {
                 console.error("Xatolik:", error);
                 setErrors(error.errors);
+                showMessage(t('CustomersSnackbar.error.edit') , 'error')
             }
         }
 
@@ -193,6 +191,7 @@ function AddEmployesModal({h1, inputModalArray = [], id , search=''}) {
             console.log(inputModal)
             try {
                 await dispatch(editClient({id: id ? id : clientsId?.id, clientData: inputModal})).unwrap();
+                showMessage(t('CustomersSnackbar.success.edit'))
                 clearEmployeesModal();
                 dispatch(closeModal());
                 try {
@@ -207,6 +206,7 @@ function AddEmployesModal({h1, inputModalArray = [], id , search=''}) {
             } catch (error) {
                 console.error("Xatolik:", error);
                 setErrors(error.errors);
+                showMessage(t('CustomersSnackbar.error.edit') , 'error')
             }
         }
     };
@@ -391,7 +391,7 @@ function AddEmployesModal({h1, inputModalArray = [], id , search=''}) {
                                     PutEmployees()
                                 }}
                             variant="outlined" color="primary">
-                        {loadingClient || loadingAddEmployee || loadingAddDrivers ? `${t('clients.send')}...` : `${t('clients.send')}`}
+                        {(loadingClient || loadingAddEmployee)  ?   <LoadingCircular/> : t('clients.send')}
                     </Button>
                     <Button sx={{
                         width: "50%",

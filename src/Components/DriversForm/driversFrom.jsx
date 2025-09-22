@@ -3,10 +3,11 @@ import {useNavigate} from "react-router-dom";
 import {useDispatch, useSelector} from "react-redux";
 import axios from "axios";
 import {addDriver, editDriver, getDrivers} from "../../features/Drivers/driversThunks.js";
-import {InputMUI, SelectMUI} from "../index.js";
+import {InputMUI, LoadingCircular, SelectMUI} from "../index.js";
 import FileButton from "../Buttons/fileButton.jsx";
 import {useTranslation} from "react-i18next";
 import {Button} from "@mui/material";
+import useNotify from "../../hooks/UseNotify/useNotify.jsx";
 
 function DriversFrom({mode}) {
     const navigate = useNavigate();
@@ -29,7 +30,7 @@ function DriversFrom({mode}) {
     const [driversAddFile, setDriversAddFile] = useState([]);
     const loading = useSelector((state) => state.drivers.loadingAddDrivers);
     const {driversId} = useSelector((state) => state.drivers);
-
+    const {showMessage} = useNotify()
 
     useEffect(() => {
         if (mode === "edit") {
@@ -148,6 +149,7 @@ function DriversFrom({mode}) {
         try {
             const res = await dispatch(addDriver(driverData)).unwrap()
             navigate("/users/drivers");
+            showMessage(t('DriverSnackbar.success.create') );
             resetForm();
             try {
                 const res2 = await dispatch(getDrivers({
@@ -161,6 +163,7 @@ function DriversFrom({mode}) {
         } catch (error) {
             console.log(error);
             setError(error?.errors);
+            showMessage(t('DriverSnackbar.error.create') , 'error' );
         }
     };
 
@@ -184,6 +187,7 @@ function DriversFrom({mode}) {
                 id: localStorage.getItem('driversId'),
                 driverData: driverData
             })).unwrap()
+            showMessage(t('DriverSnackbar.success.edit') );
             resetForm();
             navigate("/users/drivers");
             try {
@@ -196,6 +200,7 @@ function DriversFrom({mode}) {
             }
         } catch (err) {
             console.error(err);
+            showMessage(t('DriverSnackbar.error.edit')  , 'error' );
         }
     };
 
@@ -363,7 +368,7 @@ function DriversFrom({mode}) {
                         mode === 'add' ? AddhandleSubmit() : EdithandleSubmit();
                     }}
                     >
-                        {!loading ? t("drivers.driversForm.addBtn") : t("drivers.driversForm.adding")}
+                        {loading ? <LoadingCircular /> : t("drivers.driversForm.addBtn")}
                     </Button>
                 </div>
             </div>

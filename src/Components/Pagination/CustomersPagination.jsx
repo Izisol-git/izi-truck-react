@@ -10,17 +10,22 @@ import {
 import {ProfileInfoClients} from "../index.js";
 import {AddClientId} from "../../features/customers/clientsSlice.js";
 import {deleteClients, getClients} from "../../features/customers/clientsThunks.js";
+import {useTranslation} from "react-i18next";
+import useNotify from "../../hooks/UseNotify/useNotify.jsx";
 
 function CustomersPagination({row, index, arry, navigateURL, search}) {
     const {clients} = useSelector((state) => state.customers);
     const dispatch = useDispatch();
     const [isOpen, setIsOpen] = useState(-1);
     const navigate = useNavigate();
+    const {t} = useTranslation();
+    const {showMessage} = useNotify()
 
 
     const deleteClient = async (id) => {
         try {
-            const result = await dispatch(deleteClients(id));
+            const result = await dispatch(deleteClients(id)).unwrap()
+            showMessage(t('CustomersSnackbar.success.delete'));
             try {
                 const result1 = await dispatch(getClients({page: 1, search})).unwrap()
             } catch (e) {
@@ -28,6 +33,7 @@ function CustomersPagination({row, index, arry, navigateURL, search}) {
             }
         } catch (error) {
             console.log(error);
+            showMessage(t('CustomersSnackbar.error.delete') , 'error');
         }
     }
 

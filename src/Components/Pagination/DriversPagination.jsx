@@ -10,6 +10,8 @@ import {useDispatch, useSelector} from "react-redux";
 import {useNavigate} from "react-router-dom";
 import {AddDriversId} from "../../features/Drivers/driversSlice.js";
 import {deleteDrivers, getDrivers} from "../../features/Drivers/driversThunks.js";
+import useNotify from "../../hooks/UseNotify/useNotify.jsx";
+import {useTranslation} from "react-i18next";
 
 function DriversPagination({row , index , arry , navigateURL  , search}) {
 
@@ -17,9 +19,13 @@ function DriversPagination({row , index , arry , navigateURL  , search}) {
     const {drivers} = useSelector((state) => state.drivers);
     const [isOpen, setIsOpen] = useState(-1);
     const navigate = useNavigate();
+    const {showMessage} = useNotify()
+    const {t} = useTranslation();
+
     const deleteDriver = async (id) => {
         try {
             const response = await dispatch(deleteDrivers(id)).unwrap()
+            showMessage(t('DriverSnackbar.success.delete') );
             try {
                 const res = await dispatch(getDrivers({
                     page: 1,
@@ -31,6 +37,8 @@ function DriversPagination({row , index , arry , navigateURL  , search}) {
         }
         catch(err) {
             console.error(err);
+            showMessage(t('DriverSnackbar.error.delete') , 'error' );
+
         }
     }
     return (

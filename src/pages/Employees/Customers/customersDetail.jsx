@@ -28,11 +28,6 @@ function CustomersDetail() {
         }
     } , [])
 
-
-    // const Contracts = [
-    //     {contractNumber: '7/1' , contractDate : '2022-01-07' , company:'EGS' , status: false}
-    // ]
-
     return (
          <Details id={id} data={data}   inputModalArray={inputModalArray} btnValue={'Customers'}  />
     );

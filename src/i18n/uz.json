@@ -646,7 +646,45 @@
       "edit": "Taklifni tahrirlashda xatolik yuz berdi!",
       "delete": "Taklifni o‘chirishda xatolik yuz berdi!"
     }
+  },
+  "DriverSnackbar": {
+    "success": {
+      "create": "Haydovchi muvaffaqiyatli qo‘shildi!",
+      "edit": "Haydovchi muvaffaqiyatli tahrirlandi!",
+      "delete": "Haydovchi muvaffaqiyatli o‘chirildi!"
+    },
+    "error": {
+      "create": "Haydovchini qo‘shishda xatolik yuz berdi!",
+      "edit": "Haydovchini tahrirlashda xatolik yuz berdi!",
+      "delete": "Haydovchini o‘chirishda xatolik yuz berdi!"
+    }
+  },
+  "CustomersSnackbar": {
+    "success": {
+      "create": "Mijoz muvaffaqiyatli yaratildi!",
+      "edit": "Mijoz muvaffaqiyatli tahrirlandi!",
+      "delete": "Mijoz muvaffaqiyatli o‘chirildi!"
+    },
+    "error": {
+      "create": "Mijoz yaratishda xatolik yuz berdi!",
+      "edit": "Mijozni tahrirlashda xatolik yuz berdi!",
+      "delete": "Mijozni o‘chirishda xatolik yuz berdi!"
+    }
+  },
+  "EmployeesSnackbar": {
+    "success": {
+      "create": "Xodim muvaffaqiyatli yaratildi!",
+      "edit": "Xodim muvaffaqiyatli tahrirlandi!",
+      "delete": "Xodim muvaffaqiyatli o‘chirildi!"
+    },
+    "error": {
+      "create": "Xodim yaratishda xatolik yuz berdi!",
+      "edit": "Xodimni tahrirlashda xatolik yuz berdi!",
+      "delete": "Xodimni o‘chirishda xatolik yuz berdi!"
+    }
   }
+
+
 
 }
 

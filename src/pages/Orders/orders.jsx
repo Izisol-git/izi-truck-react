@@ -29,7 +29,7 @@ function Orders() {
     const [searchParams] = useSearchParams();
     const pageqq = searchParams.get("page") || 1;
     // const [ordersData, setOrdersData] = useState();
-    const {orders} = useSelector((state) => state.orders);
+    const {orders , addOrdersDate} = useSelector((state) => state.orders);
     const {loading} = useSelector((state) => state.orders);
     const [selectedKeys, setSelectedKeys] = useState([]);
     const company = [
@@ -49,15 +49,17 @@ function Orders() {
     const findOrders = async (filters, pageqq) => {
        try {
            const res = await dispatch(getFilteredOrders({filters: filters, pageqq: pageqq})).unwrap()
-           // setOrdersData(res.orders.data)
-           console.log(res)
        }
        catch (error) {
            console.log(error);
        }
     }
     useEffect(() => {
-        if(orders.length === 0) {
+        const now = Date.now()
+        const lastFetch = addOrdersDate ? new Date(addOrdersDate).getTime() : Number(localStorage.getItem("refreshValue"));
+        const diff = now - lastFetch;
+
+        if(orders.length === 0 || diff >= Number(localStorage.getItem("refreshValue"))) {
           findOrders(filters, pageqq)
         }
     }, [pageqq]);
@@ -283,7 +285,7 @@ function Orders() {
 
 
                 {
-                    // loading ? <Loading/> :
+                    loading ? <Loading/> :
                     orders?.orders?.data?.map((order) => (
                         <div>
                             <OrdersCard key={order.id} order={order}/>

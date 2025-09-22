@@ -1,4 +1,4 @@
-import React, { useEffect, useRef } from "react";
+import React, {  useRef } from "react";
 import { useSelector } from "react-redux";
 import { SkeletonMUI } from "../index.js";
 import { useTranslation } from "react-i18next";

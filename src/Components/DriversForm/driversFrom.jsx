@@ -2,7 +2,7 @@ import React, {useEffect, useState} from 'react';
 import {useNavigate} from "react-router-dom";
 import {useDispatch, useSelector} from "react-redux";
 import axios from "axios";
-import {addDriver, driversGetId, editDriver, getDrivers} from "../../features/Drivers/driversThunks.js";
+import {addDriver, editDriver, getDrivers} from "../../features/Drivers/driversThunks.js";
 import {InputMUI, SelectMUI} from "../index.js";
 import FileButton from "../Buttons/fileButton.jsx";
 import {useTranslation} from "react-i18next";
@@ -12,8 +12,6 @@ function DriversFrom({mode}) {
     const navigate = useNavigate();
     const dispatch = useDispatch();
     const {t} = useTranslation();
-
-    // oddiy inputlar uchun state
     const [fullName, setFullName] = useState("");
     const [carBrand, setCarBrand] = useState("");
     const [carWidth, setCarWidth] = useState("");
@@ -27,28 +25,14 @@ function DriversFrom({mode}) {
     const [carType, setCarType] = useState();
     const [carTypeArray, setCarTypeArray] = useState();
     const [error, setError] = useState();
-    const [EditDriversArry, setEditDriversArry] = useState();
     const [driversPhone, setDriversPhone] = useState([{id: Date.now(), phone: ""}]);
     const [driversAddFile, setDriversAddFile] = useState([]);
     const loading = useSelector((state) => state.drivers.loadingAddDrivers);
-    const {drivers} = useSelector((state) => state.drivers);
     const {driversId} = useSelector((state) => state.drivers);
 
-    // edit uchun id olish
-    const DriversId = async () => {
-        // const res = await dispatch(driversGetId(id));
-        setEditDriversArry(driversId);
-    };
-    useEffect(() => {
-        if (mode === "edit") {
-            DriversId();
-        }
-    }, []);
 
-    // Edit inputlarni to‘ldirish
     useEffect(() => {
         if (mode === "edit") {
-            console.log("EditDriversArry", driversId);
             setFullName(driversId?.fio || "");
             setCarBrand(driversId?.brand || "");
             setCarNumber(driversId?.number || "");
@@ -61,11 +45,6 @@ function DriversFrom({mode}) {
             setCarCondition(
                 top100Films.find((opt) => String(opt.id) === String(driversId?.condition)) || null
             );
-            // setCarType(EditDriversArry?.type)
-
-            // setCarType(
-            //     carTypeArray?.find((opt) => opt.id === driversId?.type) || null
-            // );
             if (Array.isArray(driversId?.phone_number)) {
                 setDriversPhone(
                     driversId?.phone_number.map((p, index) => ({
@@ -78,6 +57,7 @@ function DriversFrom({mode}) {
             }
         }
     }, []);
+
     const fetchData = async () => {
         try {
             const res = await axios.get(
@@ -90,20 +70,16 @@ function DriversFrom({mode}) {
                     },
                 }
             );
-
             setCarTypeArray(res.data.transport_types);
             if (mode === "edit") {
                 setCarType(
                     res?.data?.transport_types?.find((opt) => opt.id === driversId?.type) || null
                 );
             }
-
-
         } catch (error) {
             console.error(error);
         }
     };
-
     // transport types olish
     useEffect(() => {
         fetchData();
@@ -178,7 +154,6 @@ function DriversFrom({mode}) {
                     page: 1,
                     search: ''
                 })).unwrap()
-                console.log(res2);
             } catch (error) {
                 console.log(error)
             }
@@ -187,9 +162,6 @@ function DriversFrom({mode}) {
             console.log(error);
             setError(error?.errors);
         }
-
-
-
     };
 
     const EdithandleSubmit = async () => {
@@ -208,12 +180,10 @@ function DriversFrom({mode}) {
             type: carType?.id,
         };
         try {
-
             const res = await dispatch(editDriver({
                 id: localStorage.getItem('driversId'),
                 driverData: driverData
             })).unwrap()
-
             resetForm();
             navigate("/users/drivers");
             try {
@@ -221,15 +191,12 @@ function DriversFrom({mode}) {
                     page: 1,
                     search: ''
                 })).unwrap()
-                console.log(res2);
             } catch (error) {
                 console.log(error)
             }
-
         } catch (err) {
             console.error(err);
         }
-
     };
 
     return (

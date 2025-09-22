@@ -18,7 +18,7 @@ function Queries() {
     const dispatch = useDispatch();
     const [searchParams] = useSearchParams();
     const pageqq = searchParams.get("page") || 1;
-    const {queries} = useSelector((state) => state.queries);
+    const {queries, addQueriesDate} = useSelector((state) => state.queries);
     const {loading} = useSelector((state) => state.queries);
     const [filters, setFilters] = useState({
         search: "",
@@ -30,7 +30,7 @@ function Queries() {
 
     // console.log(filters);
 
-    const getQueries = async () => {
+    const getQueries = async (pageqq, filters) => {
         try {
             const res = await dispatch(getQueriesAll({
                 pageqq: pageqq, search: {
@@ -48,39 +48,42 @@ function Queries() {
     // console.log(queries?.data)
 
     useEffect(() => {
-        if (queries.length === 0) {
-            getQueries()
+        const now = Date.now()
+        const lastFetch = addQueriesDate ? new Date(addQueriesDate).getTime() : Number(localStorage.getItem("refreshValue"));
+        const diff = now - lastFetch;
+
+        if (queries.length === 0 || diff >= Number(localStorage.getItem("refreshValue"))) {
+            getQueries(pageqq, filters)
         }
     }, [pageqq, dispatch, filters])
 
 
     const exportValues = [
-        { id: "id", value: "queriesTranslation.id" },
-        { id: "title", value: "queriesTranslation.title" },
-        { id: "client", value: "queriesTranslation.client" },
-        { id: "client_inn", value: "queriesTranslation.client_inn" },
-        { id: "transport_type", value: "queriesTranslation.transport_type" },
-        { id: "transport_volume", value: "queriesTranslation.transport_volume" },
-        { id: "count_of_cars", value: "queriesTranslation.count_of_cars" },
-        { id: "weight", value: "queriesTranslation.weight" },
-        { id: "payment_method", value: "queriesTranslation.payment_method" },
-        { id: "client_enumeration_price", value: "queriesTranslation.client_enumeration_price" },
-        { id: "client_enumeration_currency", value: "queriesTranslation.client_enumeration_currency" },
-        { id: "mode", value: "queriesTranslation.mode" },
-        { id: "degree_of_danger", value: "queriesTranslation.degree_of_danger" },
-        { id: "load_time_from", value: "queriesTranslation.load_time_from" },
-        { id: "notes", value: "queriesTranslation.notes" },
-        { id: "status_of_cargo", value: "queriesTranslation.status_of_cargo" },
-        { id: "created_at", value: "queriesTranslation.created_at" },
-        { id: "updated_at", value: "queriesTranslation.updated_at" },
-        { id: "from_country", value: "queriesTranslation.from_country" },
-        { id: "from_region", value: "queriesTranslation.from_region" },
-        { id: "from_city", value: "queriesTranslation.from_city" },
-        { id: "to_country", value: "queriesTranslation.to_country" },
-        { id: "to_region", value: "queriesTranslation.to_region" },
-        { id: "to_city", value: "queriesTranslation.to_city" },
+        {id: "id", value: "queriesTranslation.id"},
+        {id: "title", value: "queriesTranslation.title"},
+        {id: "client", value: "queriesTranslation.client"},
+        {id: "client_inn", value: "queriesTranslation.client_inn"},
+        {id: "transport_type", value: "queriesTranslation.transport_type"},
+        {id: "transport_volume", value: "queriesTranslation.transport_volume"},
+        {id: "count_of_cars", value: "queriesTranslation.count_of_cars"},
+        {id: "weight", value: "queriesTranslation.weight"},
+        {id: "payment_method", value: "queriesTranslation.payment_method"},
+        {id: "client_enumeration_price", value: "queriesTranslation.client_enumeration_price"},
+        {id: "client_enumeration_currency", value: "queriesTranslation.client_enumeration_currency"},
+        {id: "mode", value: "queriesTranslation.mode"},
+        {id: "degree_of_danger", value: "queriesTranslation.degree_of_danger"},
+        {id: "load_time_from", value: "queriesTranslation.load_time_from"},
+        {id: "notes", value: "queriesTranslation.notes"},
+        {id: "status_of_cargo", value: "queriesTranslation.status_of_cargo"},
+        {id: "created_at", value: "queriesTranslation.created_at"},
+        {id: "updated_at", value: "queriesTranslation.updated_at"},
+        {id: "from_country", value: "queriesTranslation.from_country"},
+        {id: "from_region", value: "queriesTranslation.from_region"},
+        {id: "from_city", value: "queriesTranslation.from_city"},
+        {id: "to_country", value: "queriesTranslation.to_country"},
+        {id: "to_region", value: "queriesTranslation.to_region"},
+        {id: "to_city", value: "queriesTranslation.to_city"},
     ];
-
 
 
     return (
@@ -96,7 +99,7 @@ function Queries() {
                             <InputMUI
                                 value={filters?.search}
                                 onChange={(e) => setFilters({...filters, search: e.target.value})}
-                                variant={'outlined'}   label={t("queriesTranslation.filters.search")}/>
+                                variant={'outlined'} label={t("queriesTranslation.filters.search")}/>
                         </div>
 
                         <div className={'relative w-[20%]'}>
@@ -123,12 +126,12 @@ function Queries() {
                                         search: "",
                                         from_date: "",
                                     })
-                                    getQueries({
-                                        pageqq: pageqq, filters: {
+                                    getQueries(
+                                        1, {
                                             search: "",
                                             from_date: "",
                                         }
-                                    })
+                                    )
                                 }}
                                 className="relative overflow-hidden rounded font-semibold bg-transparent border-2 text-blue border-blue   transition-all duration-300 ease-in-out  hover:text-white hover:bg-blue py-[6px] px-3 dark:hover:bg-navBgHover dark:border-darkText dark:text-darkText"
                             >
@@ -136,7 +139,7 @@ function Queries() {
 
                             </button>
                             <button
-                                onClick={() => getQueries(filters, pageqq)}
+                                onClick={() => getQueries(pageqq, filters)}
 
                                 className="  relative overflow-hidden rounded font-semibold bg-transparent border-2 text-blue border-blue transition-all duration-300 ease-in-out  hover:text-white hover:bg-blue py-[6px] px-3 dark:hover:bg-navBgHover dark:border-darkText dark:text-darkText"
                             >
@@ -155,7 +158,7 @@ function Queries() {
                             onClick={() => {
                                 dispatch(openExcelModal())
                             }}
-                         >
+                        >
                             <i className="fa-solid fa-table mr-2"></i> excel
 
                         </Button>
@@ -164,10 +167,10 @@ function Queries() {
                             size="large"
                             color={'success'}
                             sx={{
-                                background:"#1D2D5B"
+                                background: "#1D2D5B"
                             }}
                             onClick={() => navigate("/queries/create")}
-                            >
+                        >
                             <i className={'fas fa-plus mr-2'}></i>{t('queriesTranslation.add')}
                         </Button>
                     </div>
@@ -190,7 +193,7 @@ function Queries() {
                 <PaginationFooter total={queries}/>
             </div>
 
-            <LogisticsInterface />
+            <LogisticsInterface/>
             <ExcelModal search={filters} selectedKeys={selectedKeys} setSelectedKeys={setSelectedKeys}
                         data={exportValues} mode={'queries'}/>
         </div>

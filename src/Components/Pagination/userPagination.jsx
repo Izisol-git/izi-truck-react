@@ -1,6 +1,4 @@
 import React, {useEffect, useState} from "react";
-
-
 import {
     Table,
     TableBody,
@@ -14,57 +12,24 @@ import {
     TextField,
 } from "@mui/material";
 import {
-    AddEmployesModal, ChatsPagination, ContractsPagination,
+     ChatsPagination, ContractsPagination,
     CustomersPagination,
     DriversPagination,
     EmployeesPagination, InvoicesPagination, Loading, NotificationsPagination,
     PaginationFooter,
-    ProfileInfoCard
+
 } from "../index.js";
 import {useDispatch, useSelector} from "react-redux";
-import {searchContracts} from "../../features/Contracts/contractThunks.js";
 import {openExcelModal} from "../../features/EmployeSModalToggle/employesModalToggle.js";
-import {current} from "@reduxjs/toolkit";
 import {useTranslation} from "react-i18next";
-import {useSearchParams} from "react-router-dom";
-
-const UserPagination = ({arry, navigateURL, data, total,onClick,  search, setEmployeesId, employeesId, setSearch, dataIndex}) => {
-
+const UserPagination = ({arry, navigateURL, data,onClick,  search, setEmployeesId, employeesId, setSearch, dataIndex}) => {
 
     const dispatch = useDispatch();
-    // const [searchParams] = useSearchParams();
-    // const pageqq = searchParams.get("page") || '1';
-
-    // const [searchData, setSearchData] = useState();
-    // console.log(searchData);
     const loadingContracts = useSelector((state) => state.contracts.loading)
     const loadingCustomers = useSelector((state) => state.customers.loading)
     const loadingDrivers = useSelector((state) => state.drivers.loading)
     const loadingEmployees = useSelector((state) => state.employees.loading)
     const {i18n, t} = useTranslation();
-    const currentLang = i18n.language;
-
-
-    // useEffect(() => {
-    //     if (navigateURL === 'clients') {
-    //         loading = loadingContracts
-    //     }
-    // })
-    // const search = async () => {
-    //     try {
-    //         const res = await dispatch(searchContracts(searchData));
-    //         console.log(res.payload.data);
-    //         setData(res.payload.data)
-    //     } catch (error) {
-    //         console.log(error);
-    //     }
-    // }
-    //
-    // useEffect(()=> {
-    //     search()
-    // } , [searchData])
-    // console.log(data)
-
     return (
         <>
             <Paper sx={{
@@ -91,7 +56,6 @@ const UserPagination = ({arry, navigateURL, data, total,onClick,  search, setEmp
                                 "& fieldset": {
                                     borderColor: "#1D2D5B",
                                     height: "110%",
-
                                 },
                                 "&:hover fieldset": {
                                     borderColor: "#1D2D5B",
@@ -132,11 +96,7 @@ const UserPagination = ({arry, navigateURL, data, total,onClick,  search, setEmp
                             :
                             ''
                     }
-
-
                 </div>
-
-
                 <TableContainer>
                     <Table>
                         <TableHead>
@@ -146,7 +106,6 @@ const UserPagination = ({arry, navigateURL, data, total,onClick,  search, setEmp
                                     backgroundColor: '#374151',
                                 },
                                 borderColor: '#374151',
-
                             }}>
                                 <TableCell sx={{
                                     color: "black",
@@ -155,16 +114,11 @@ const UserPagination = ({arry, navigateURL, data, total,onClick,  search, setEmp
                                     },
                                 }}>
                                     <TableSortLabel
-                                        // active={orderBy === "id"}
-                                        // direction={orderBy === "id" ? orderDirection : "asc"}
-                                        // onClick={() => handleSortRequest("id")}
                                     >
                                         ID
 
                                     </TableSortLabel>
                                 </TableCell>
-
-
                                 {
                                     arry.map((row, index) => (
                                         row.active && (
@@ -176,9 +130,6 @@ const UserPagination = ({arry, navigateURL, data, total,onClick,  search, setEmp
                                             }}>
 
                                                 <TableSortLabel
-                                                    // active={index === 0 ? orderBy === "id" : orderBy === row.title}
-                                                    // direction={orderBy === row.title ? orderDirection : "asc"}
-                                                    // onClick={() => handleSortRequest(row.title)}
                                                 >
                                                     {row?.key ? t(`${row.key}`) : row.title}
                                                 </TableSortLabel>
@@ -186,11 +137,8 @@ const UserPagination = ({arry, navigateURL, data, total,onClick,  search, setEmp
                                         )
                                     ))
                                 }
-
-
                             </TableRow>
                         </TableHead>
-
                         {
                             (navigateURL === 'clients' ? loadingContracts : navigateURL === 'customers' ? loadingCustomers : navigateURL === 'drivers' ? loadingDrivers : navigateURL === 'employees' ? loadingEmployees : '') ?
                                 <TableRow>
@@ -298,13 +246,7 @@ const UserPagination = ({arry, navigateURL, data, total,onClick,  search, setEmp
                 <div className={'py-4 flex items-center justify-end px-4'}>
                     <PaginationFooter onClick={onClick} search={search} total={data}/>
                 </div>
-
-
             </Paper>
-
-
-            {/*<AddEmployesModal />*/}
-
         </>
     );
 };

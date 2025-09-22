@@ -16,6 +16,9 @@ import {useNavigate} from "react-router-dom";
 import {useDispatch, useSelector} from "react-redux";
 import {useTranslation} from "react-i18next";
 import {Button} from "@mui/material";
+import {deleteClients, getClients} from "../../features/customers/clientsThunks.js";
+import {deleteDrivers, getDrivers} from "../../features/Drivers/driversThunks.js";
+import {deleteEmployee, getEmployees} from "../../features/Employees/employeeThunks.js";
 
 function Details({inputModalArray, btnValue, data, id, contract}) {
     const navigate = useNavigate();
@@ -24,9 +27,55 @@ function Details({inputModalArray, btnValue, data, id, contract}) {
     const {employeesId} = useSelector((state) => state.employees);
     const {contractID} = useSelector((state) => state.employees);
     const {driversId} = useSelector((state) => state.drivers);
-
     const {t } = useTranslation();
-    console.log(contract)
+
+    const deleteUser = async (id) => {
+       if(btnValue === 'Drivers'){
+           try {
+               const response = await dispatch(deleteDrivers(id)).unwrap()
+               navigate("/users/drivers");
+               try {
+                   const res = await dispatch(getDrivers({
+                       page: 1,
+                       search: '',
+                   })).unwrap()
+               } catch (error) {
+                   console.log(error)
+               }
+           }
+           catch(err) {
+               console.error(err);
+           }
+       }
+       if(btnValue === 'Customers'){
+           try {
+               const result = await dispatch(deleteClients(id));
+               navigate("/users/customers");
+               try {
+                   const result1 = await dispatch(getClients({page: 1, search:""})).unwrap()
+               } catch (e) {
+                   console.error(e);
+               }
+           } catch (error) {
+               console.log(error);
+           }
+       }
+       if(btnValue === 'Employees'){
+           try {
+               const res = await dispatch(deleteEmployee(id))
+               navigate("/users/employees");
+               try {
+                   const result = await dispatch(getEmployees({page: 1, search: ''})).unwrap()
+               } catch (err) {
+                   console.log(err)
+               }
+           }
+           catch (error) {
+               console.log(error);
+           }
+       }
+    }
+
     return (
         <div>
             <div className={'bg-bacWhite min-h-[calc(100dvh-70px)] dark:bg-darkBg  '}>
@@ -81,6 +130,7 @@ function Details({inputModalArray, btnValue, data, id, contract}) {
                         </div>
                         <div className={'w-max'}>
                             <Button
+                                onClick={()=>deleteUser(id)}
                                 color={'error'}
                                 variant={'contained'}>
                                 <i className="fa-solid fa-trash mr-2"></i>

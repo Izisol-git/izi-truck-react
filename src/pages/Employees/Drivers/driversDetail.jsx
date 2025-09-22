@@ -25,9 +25,6 @@ function DriversDetail() {
             DriversId(id)
         }
     } , [])
-    // const Contracts = [
-    //     {contractNumber: '7/1' , contractDate : '2022-01-07' , company:'EGS' , status: false}
-    // ]
     return (
         <Details data={data} id={id}   inputModalArray={inputModalArray} btnValue={'Drivers'} />
     );

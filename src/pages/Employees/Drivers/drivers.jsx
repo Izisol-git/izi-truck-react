@@ -1,11 +1,7 @@
 import React, {useEffect, useState} from 'react';
 import {
-    AddEmployesModal,
     Timeline,
-    EmployeesPagination,
     UserPagination,
-    CommentModal,
-    Loading
 } from "../../../Components/index.js";
 import {UserNavbar} from "../../index.js";
 import {useDispatch, useSelector} from "react-redux";
@@ -20,12 +16,9 @@ function Drivers() {
     const pageqq = searchParams.get("page") || 1;
 
     const {t} = useTranslation();
-
-    // const [driversId, setDrversId] = useState();
     const [searchDriver, setSearchDriver] = useState('');
-    const [data, setData] = useState();
     const id = useSelector((state) => state.employesModal.driversId);
-    const {drivers} = useSelector((state) => state.drivers);
+    const {drivers , addDriversDate} = useSelector((state) => state.drivers);
     const {driversId} = useSelector((state) => state.drivers);
     const [selectedKeys, setSelectedKeys] = useState([]);
 
@@ -36,7 +29,6 @@ function Drivers() {
         {key: "notifications.notificationsTable.created_at", title: "Created at", active: true},
         {key: "notifications.notificationsTable.action", title: "Action", active: true}
     ]);
-
 
     const exportValues = [
         {id: "fio", value: t("drivers.exportValues.fio")},
@@ -59,8 +51,6 @@ function Drivers() {
     const DriversId = async () => {
         try {
             const res = await dispatch(driversGetId(id)).unwrap()
-            setData(res.driver)
-            console.log(res)
         } catch (err) {
             console.log(err)
         }
@@ -72,21 +62,24 @@ function Drivers() {
     }, [id])
 
 
-    const driverData = async (pageqq , searchDriver) => {
+    const driverData = async (pageqq, searchDriver) => {
         try {
             const res = await dispatch(getDrivers({
                 page: pageqq,
                 search: searchDriver,
             })).unwrap()
-            console.log(res);
         } catch (error) {
             console.log(error)
         }
     };
 
     useEffect(() => {
-        if(drivers?.length === 0) {
-            driverData(pageqq , searchDriver);
+        const now = Date.now()
+        const lastFetch = addDriversDate ? new Date(addDriversDate).getTime() : Number(localStorage.getItem("refreshValue"));
+        const diff = now - lastFetch;
+
+        if (drivers?.length === 0 || diff >= Number(localStorage.getItem("refreshValue"))) {
+            driverData(pageqq, searchDriver);
         }
     }, [pageqq, dispatch, searchDriver]);
 

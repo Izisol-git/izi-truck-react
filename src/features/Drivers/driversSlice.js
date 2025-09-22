@@ -5,6 +5,7 @@ const driversSlice = createSlice({
     name: "drivers",
     initialState: {
         drivers: [],
+        addDriversDate: [],
         driversId: [],
         loading: false,
         loadingAddDrivers: false,
@@ -25,6 +26,7 @@ const driversSlice = createSlice({
             .addCase(getDrivers.fulfilled, (state, action) => {
                 state.loading = false;
                 state.drivers = action.payload.data;
+                state.addDriversDate = new Date()
             })
             .addCase(getDrivers.rejected, (state, action) => {
                 state.loading = false;
@@ -65,25 +67,7 @@ const driversSlice = createSlice({
             .addCase(editDriver.rejected, (state, action) => {
                 state.loadingAddDrivers = false;
             })
-        //
-        // .addCase(updateEmployee.pending, (state) => {
-        //     state.loadingAddEmployee = true;
-        //
-        // })
-        //
-        // .addCase(updateEmployee.fulfilled, (state, action) => {
-        //     // state.items.push(action.payload);
-        //     state.loadingAddEmployee = false;
-        // })
-        // .addCase(updateEmployee.rejected, (state, action) => {
-        //     state.loadingAddEmployee = false;
-        // })
-        //
-        //
-        // // Delete
-        // .addCase(deleteEmployee.fulfilled, (state, action) => {
-        //     state.items = state.items.filter((emp) => emp.id !== action.payload);
-        // });
+
     },
 });
 

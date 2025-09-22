@@ -1,4 +1,3 @@
-// src/app/store.js
 import { configureStore, combineReducers } from '@reduxjs/toolkit';
 import counterReducer from '../features/counter/counterSlice';
 import employesModalReducer from "../features/EmployeSModalToggle/employesModalToggle.js";
@@ -15,7 +14,6 @@ import notificationReducer from "../features/Notification/notificationSlice.js";
 import statisticsReducer from "../features/Statistics/statisticsSlice.js";
 import queriesReducer from "../features/Queries/queriesSlice.js";
 
-// combineReducers orqali root reducer yaratamiz
 const appReducer = combineReducers({
     counter: counterReducer,
     employesModal: employesModalReducer,
@@ -32,7 +30,6 @@ const appReducer = combineReducers({
     queries : queriesReducer,
 });
 
-// logout bo'lganda barcha state tozalansin
 const rootReducer = (state, action) => {
     if (action.type === 'auth/logout') {
         state = undefined;

@@ -3,6 +3,7 @@ import {GetQueriesId ,  getQueriesAll, updateQueries} from "./queriesThunks.js";
 
 const initialState = {
     queries: [],
+    addQueriesDate: [],
     queriesId: [],
     loading: false,
     error: null,
@@ -25,6 +26,7 @@ const queriesSlice = createSlice({
         builder.addCase(getQueriesAll.fulfilled, (state, action) => {
             state.loading = false;
             state.queries = action.payload.data;
+            state.addQueriesDate = new Date();
         });
         builder.addCase(getQueriesAll.rejected, (state, action) => {
             state.loading = false;

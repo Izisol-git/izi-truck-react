@@ -11,6 +11,7 @@ import {
 
 const initialState = {
     orders: [],
+    addOrdersDate: [],
     ordersId: [],
     ordersSelect: [],
     loading: false,
@@ -37,6 +38,7 @@ const ordersSlice = createSlice({
         builder.addCase(getFilteredOrders.fulfilled, (state, action) => {
             state.loading = false;
             state.orders = action.payload;
+            state.addOrdersDate = new Date();
         });
         builder.addCase(getFilteredOrders.rejected, (state, action) => {
             state.loading = false;

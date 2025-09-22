@@ -5,6 +5,7 @@ const employeeSlice = createSlice({
     name: "employees",
     initialState: {
         employees: [],
+        addEmployeesDate: [],
         employeesId: [],
         contractID : [],
         loading: false,
@@ -26,6 +27,7 @@ const employeeSlice = createSlice({
             .addCase(getEmployees.fulfilled, (state, action) => {
                 state.loading = false;
                 state.employees = action.payload.data;
+                state.addEmployeesDate = new Date()
             })
             .addCase(getEmployees.rejected, (state, action) => {
                 state.loading = false;

@@ -5,6 +5,7 @@ const clientsSlice = createSlice({
     name: "clients",
     initialState: {
         clients: [],
+        addClientsDate: [],
         clientsId: [],
         loading: false,
         loadingClient : false,
@@ -24,6 +25,7 @@ const clientsSlice = createSlice({
             .addCase(getClients.fulfilled, (state, action) => {
                 state.loading = false;
                 state.clients = action.payload.clients;
+                state.addClientsDate = new Date()
             })
             .addCase(getClients.rejected, (state, action) => {
                 state.loading = false;

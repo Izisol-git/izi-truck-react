@@ -4,44 +4,38 @@ import {
     CommentModal,
     Timeline, UserPagination
 } from '../../../Components/index.js'
-import { openModal} from "../../../features/EmployeSModalToggle/employesModalToggle.js";
+import {openModal} from "../../../features/EmployeSModalToggle/employesModalToggle.js";
 import {useDispatch, useSelector} from "react-redux";
 import {UserNavbar} from "../../index.js";
 import {inputModalArray} from '../../../Data/customersData.js'
 import {useSearchParams} from "react-router-dom";
-import { ClientId, getClients} from "../../../features/customers/clientsThunks.js";
+import {ClientId, getClients} from "../../../features/customers/clientsThunks.js";
 import ExcelModal from "../../../Components/Modal/excelModal.jsx";
 import {useTranslation} from "react-i18next";
 
 function Customers() {
     const dispatch = useDispatch();
-    const [data, setData] = useState();
     const id = useSelector((state) => state.employesModal.customersId);
     const [searchParams] = useSearchParams();
     const pageqq = searchParams.get("page") || '1';
-    // const [total, setTotal] = useState();
     const [searchCustomers, setSearchCustomers] = useState('');
     const [customersId, setCustomersId] = useState();
-    // const [customersData, setCustomersData] = useState();
-    const {clients} = useSelector((state) => state.customers);
+    const {clients , addClientsDate} = useSelector((state) => state.customers);
     const {clientsId} = useSelector((state) => state.customers);
-    // const [dataIndex, setDataIndex] = useState(0);
     const {t} = useTranslation();
     const [selectedKeys, setSelectedKeys] = useState([]);
     const [columnsArry, setColumnsArry] = useState([
         {title: "Название компании", key: 'clients.columnsArry.title', active: true},
-        {title: "Телефон",key: 'clients.columnsArry.name', active: true},
-        {title: "Телефон",key: 'clients.columnsArry.create_at', active: true},
-        {title: "Телефон",key: 'clients.columnsArry.phone', active: true},
-        {title: "Action" , active: true},
+        {title: "Телефон", key: 'clients.columnsArry.name', active: true},
+        {title: "Телефон", key: 'clients.columnsArry.create_at', active: true},
+        {title: "Телефон", key: 'clients.columnsArry.phone', active: true},
+        {title: "Action", active: true},
 
     ])
 
     const ClientSId = async () => {
         try {
             const res = await dispatch(ClientId(id)).unwrap()
-            setData(res.data)
-            console.log(res)
         } catch (error) {
             console.log(error);
         }
@@ -54,24 +48,23 @@ function Customers() {
     }, [id])
 
 
-    const customerData = async (pageqq , searchCustomers) => {
+    const customerData = async (pageqq, searchCustomers) => {
         try {
             const result = await dispatch(getClients({page: pageqq, search: searchCustomers})).unwrap()
-            console.log(result);
         } catch (error) {
             console.log(error);
         }
     };
 
-
     useEffect(() => {
-       if(clients?.length === 0) {
-           customerData(pageqq , searchCustomers);
-       }
+        const now = Date.now()
+        const lastFetch = addClientsDate ? new Date(addClientsDate).getTime() : Number(localStorage.getItem("refreshValue"));
+        const diff = now - lastFetch;
+
+        if (clients?.length === 0 || diff >= Number(localStorage.getItem("refreshValue"))) {
+            customerData(pageqq, searchCustomers);
+        }
     }, [pageqq, dispatch, searchCustomers]);
-
-
-
 
     const exportValues = [
         {id: "id", value: t('clients.exportValues.id')},
@@ -96,19 +89,20 @@ function Customers() {
         {id: "updated_at", value: t('clients.exportValues.updated_at')}
     ];
 
-
     return (
         <div className={''}>
             <div className={'bg-bacWhite flex dark:bg-darkBg min-h-[calc(100dvh-70px)]'}>
                 <div className="w-[90%] mx-auto">
                     <UserNavbar openModal={() => dispatch(openModal())} value={'Customers'} columnsArry={columnsArry}
                                 setColumnsArry={setColumnsArry}/>
-                    <UserPagination search={searchCustomers} onClick={customerData}  setSearch={setSearchCustomers} employeesId={customersId}
-                                    setEmployeesId={setCustomersId}  data={clients}
+                    <UserPagination search={searchCustomers} onClick={customerData} setSearch={setSearchCustomers}
+                                    employeesId={customersId}
+                                    setEmployeesId={setCustomersId} data={clients}
                                     arry={columnsArry} setColumnsArry={setColumnsArry}
                                     navigateURL={'customers'}/>
                 </div>
-                <AddEmployesModal search={searchCustomers} setEmployeesId={setCustomersId} employeesId={customersId} h1={"Customers"}
+                <AddEmployesModal search={searchCustomers} setEmployeesId={setCustomersId} employeesId={customersId}
+                                  h1={"Customers"}
                                   inputModalArray={inputModalArray}/>
                 <Timeline data={clientsId} mode={'Customers'}/>
                 <CommentModal/>

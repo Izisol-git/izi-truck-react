@@ -2,16 +2,13 @@ import React, {useEffect, useState} from 'react';
 import {
     AddEmployesModal,
     Timeline,
-    EmployeesPagination,
-    CommentModal,
-    Loading,
     UserPagination
 } from "../../../Components/index.js";
 import {inputModalArray} from '../../../Data/employeesData.js'
 import {UserNavbar} from "../../index.js";
-import {closeModal, openModal} from "../../../features/EmployeSModalToggle/employesModalToggle.js";
+import {openModal} from "../../../features/EmployeSModalToggle/employesModalToggle.js";
 import {useDispatch, useSelector} from "react-redux";
-import {addEmployee, EmployeesId, getEmployees} from "../../../features/Employees/employeeThunks.js";
+import {EmployeesId, getEmployees} from "../../../features/Employees/employeeThunks.js";
 import {useSearchParams} from "react-router-dom";
 import ExcelModal from "../../../Components/Modal/excelModal.jsx";
 import {useTranslation} from "react-i18next";
@@ -21,14 +18,11 @@ function Employees() {
     const [searchParams] = useSearchParams();
     const pageqq = searchParams.get("page") || '1';
     const [searchEmployees, setSearchEmployees] = useState('');
-    const addEditToggle = useSelector((state) => state.employesModal.addEditToggle);
     const [selectedKeys, setSelectedKeys] = useState([]);
     const id = useSelector((state) => state.employesModal.employeesId);
-    const {employees} = useSelector((state) => state.employees);
+    const {employees , addEmployeesDate} = useSelector((state) => state.employees);
     const {employeesId} = useSelector((state) => state.employees);
-    const [data, setData] = useState();
     const {t} = useTranslation();
-
 
     const [columnsArry, setColumnsArry] = useState([
         // { title: "Аватар", key: "employees.table.avatar", active: true },
@@ -40,12 +34,9 @@ function Employees() {
         {title: "Action", key: "employees.table.action", active: true},
     ]);
 
-
     const EmployeesGetId = async (id) => {
         try {
             const res = await dispatch(EmployeesId(id)).unwrap()
-            setData(res.data)
-            console.log(res)
         } catch (err) {
             console.log(err)
         }
@@ -56,24 +47,22 @@ function Employees() {
         }
     }, [id])
 
-    const employeeData = async (pageqq , searchEmployees ) => {
+    const employeeData = async (pageqq, searchEmployees) => {
         try {
             const result = await dispatch(getEmployees({page: pageqq, search: searchEmployees})).unwrap()
-            console.log(result.data)
         } catch (err) {
             console.log(err)
         }
     };
-
-
     useEffect(() => {
-        if (employees?.length === 0) {
-            employeeData(pageqq , searchEmployees );
+        const now = Date.now()
+        const lastFetch = addEmployeesDate ? new Date(addEmployeesDate).getTime() : Number(localStorage.getItem("refreshValue"));
+        const diff = now - lastFetch;
+
+        if (employees?.length === 0 || diff >= Number(localStorage.getItem("refreshValue"))) {
+            employeeData(pageqq, searchEmployees);
         }
-    }, [ pageqq, dispatch, searchEmployees]);
-
-
-
+    }, [pageqq, dispatch, searchEmployees]);
 
     const exportValues = [
         {id: "id", value: t("employees.exportValues.id")},
@@ -90,19 +79,18 @@ function Employees() {
         {id: "created_at", value: t("employees.exportValues.created_at")},
     ];
 
-
     return (
         <div>
             <div className={'bg-bacWhite flex min-h-[calc(100dvh-70px)] dark:bg-darkBg '}>
                 <div className="w-[90%] mx-auto">
                     <UserNavbar openModal={() => dispatch(openModal())} value={'Employees'} columnsArry={columnsArry}
                                 setColumnsArry={setColumnsArry}/>
-                    <UserPagination onClick={employeeData} search={searchEmployees}  setSearch={setSearchEmployees}
-                                     data={employees} arry={columnsArry}
+                    <UserPagination onClick={employeeData} search={searchEmployees} setSearch={setSearchEmployees}
+                                    data={employees} arry={columnsArry}
                                     setColumnsArry={setColumnsArry}
                                     navigateURL={'employees'}/>
 
-                    <AddEmployesModal search={searchEmployees}   employeesId={employeesId} data={employees}
+                    <AddEmployesModal search={searchEmployees} employeesId={employeesId} data={employees}
                                       h1={"Employees"} inputModalArray={inputModalArray}/>
                     <Timeline data={employeesId}/>
 

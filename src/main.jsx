@@ -6,8 +6,6 @@ import { Provider } from "react-redux";
 import { store } from "./App/store.js";
 import "@fortawesome/fontawesome-free/css/all.min.css";
 import "./i18n";
-
-// MUI importlari
 import { createTheme, ThemeProvider } from "@mui/material/styles";
 import CssBaseline from "@mui/material/CssBaseline";
 
@@ -16,8 +14,13 @@ function Root() {
         localStorage.getItem("dark") === "true" ? "dark" : "light"
     );
 
+
     // ⬇️ Tailwind dark mode o‘zgarsa, MUI ham yangilanishi uchun kuzatamiz
     useEffect(() => {
+        if(!localStorage.getItem("refreshValue")) {
+            localStorage.setItem("refreshValue", 300000);
+        }
+
         const observer = new MutationObserver(() => {
             const isDark = document.documentElement.classList.contains("dark");
             setMode(isDark ? "dark" : "light");

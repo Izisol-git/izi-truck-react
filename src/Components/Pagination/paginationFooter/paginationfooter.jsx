@@ -2,16 +2,11 @@ import { useSearchParams } from "react-router-dom";
 import Pagination from "@mui/material/Pagination";
 import Stack from "@mui/material/Stack";
 
-const PaginationFooter =({total , onClick , filters , search})=> {
+const PaginationFooter =({total , onClick  , search})=> {
     const [searchParams, setSearchParams] = useSearchParams();
-
-
-    // URL ichidan page ni o‘qish, default = 1
     const page = parseInt(searchParams.get("page") || "1", 10);
-
     const handleChange = (event, value) => {
-        setSearchParams({ page: value }); // URL yangilanadi (?page=2)
-        // localStorage.setItem('EmployeesPge' , value);
+        setSearchParams({ page: value });
         onClick(value , search);
     };
     return (

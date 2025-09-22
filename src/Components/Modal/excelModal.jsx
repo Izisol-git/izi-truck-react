@@ -12,13 +12,16 @@ import {exportEmployeeExcel} from "../../features/Employees/employeeThunks.js";
 import {exportClientsExcel} from "../../features/customers/clientsThunks.js";
 import {exportQueriesExcel} from "../../features/Queries/queriesThunks.js";
 import {useTranslation} from "react-i18next";
+import {LoadingCircular} from "../index.js";
 
 const  ExcelModal =({data , mode , selectedKeys , setSelectedKeys , page , search })=> {
 
     const dispatch = useDispatch();
     const {isOpenExcelModal} = useSelector((state) => state.employesModal);
     const {exporting} = useSelector((state)=>state.orders)
+    const {queriesExporting} = useSelector((state)=>state.queries)
     const {t} = useTranslation();
+
 
     const handleCheckboxChange = (id, checked) => {
         if (checked) {
@@ -159,14 +162,8 @@ const  ExcelModal =({data , mode , selectedKeys , setSelectedKeys , page , searc
                      bg-blue dark:bg-btnBgDark
                      text-white py-2 px-3 w-2/3"
                         >
-                            {exporting ? (
-                                <Box sx={{ display: "flex", width: "100%" }}>
-                                    <CircularProgress
-                                        sx={{ marginX: "auto" }}
-                                        size={25}
-                                        color={"inherit"}
-                                    />
-                                </Box>
+                            {(mode === 'queries' ? queriesExporting : mode === 'order' ? exporting : false)   ? (
+                                <LoadingCircular/>
                             ) : (
                                 <>
                                     <i className="fa-solid fa-cloud-arrow-down text-white mr-2"></i>

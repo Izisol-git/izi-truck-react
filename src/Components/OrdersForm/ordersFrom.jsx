@@ -1,5 +1,5 @@
 import React, {useEffect, useRef, useState} from 'react';
-import {CurrencyInput, InputMUI, LocationInput, MyCalendar, SelectMUI, SwitchMUI} from "../index.js";
+import {CurrencyInput, InputMUI, LoadingCircular, LocationInput, MyCalendar, SelectMUI, SwitchMUI} from "../index.js";
 import {useNavigate, useParams} from "react-router-dom";
 import {useDispatch, useSelector} from "react-redux";
 import {
@@ -22,6 +22,7 @@ import {Button} from "@mui/material";
 import {useTranslation} from "react-i18next";
 import FileButton from "../Buttons/fileButton.jsx";
 import api from "../../API/api.js";
+import useNotify from "../../hooks/UseNotify/useNotify.jsx";
 
 function OrdersFrom({mode}) {
     const navigate = useNavigate();
@@ -33,6 +34,7 @@ function OrdersFrom({mode}) {
     const {loading} = useSelector((state) => state.orders);
     const {id} = useParams();
     const {t} = useTranslation();
+    const {showMessage} = useNotify()
     const [formData, setFormData] = useState({
         trailer_floor_volume: '',
         cargo_volume: '',
@@ -171,11 +173,7 @@ function OrdersFrom({mode}) {
     };
 
     const EditOrder = async (id, formData) => {
-        // rows.forEach((row, index) => {
-        //     if (row.point && row.point.id) formData[`point[${index}]`] = row.point.id;
-        //     if (row.point_price) formData[`point_price[${index}]`] = row.point_price;
-        // });
-        // setFormData({...rows})
+
 
         const obj = {
             ...formData,
@@ -187,6 +185,7 @@ function OrdersFrom({mode}) {
         try {
             const res = await dispatch(editOrder({id: id, editData: obj})).unwrap();
             navigate("/orders")
+            showMessage(t('OrdersSnackbar.success.edit'))
             try {
                 const res2 = await dispatch(getFilteredOrders({
                     pageqq: 1, search: {
@@ -203,6 +202,7 @@ function OrdersFrom({mode}) {
         } catch (error) {
             console.log(error);
             setErrors(error.errors);
+            showMessage(t('OrdersSnackbar.error.edit') , "error")
         }
     }
 
@@ -237,10 +237,7 @@ function OrdersFrom({mode}) {
 
     }, [])
 
-    // const newRows = rows.map((row, i) => ({
-    //     [`point[${i + 1}]`]: row.point.id,
-    //     [`point_price[${i + 1}]`]: row.point_price
-    // }));
+
 
 
     const addOrders = async () => {
@@ -305,6 +302,7 @@ function OrdersFrom({mode}) {
         try {
             const res = await dispatch(addOrder(obj)).unwrap()
             navigate("/orders")
+            showMessage(t('OrdersSnackbar.success.create'))
             try {
                 const res2 = await dispatch(getFilteredOrders({
                     pageqq: 1, search: {
@@ -322,6 +320,7 @@ function OrdersFrom({mode}) {
         } catch (err) {
             console.log(err.errors);
             setErrors({...err.errors});
+            showMessage(t('OrdersSnackbar.error.create') , "error")
         }
     }
 
@@ -337,6 +336,7 @@ function OrdersFrom({mode}) {
         try {
             const res = await dispatch(appointDriver({id , data:{driver_id: formData?.driver_id , carrier_id :user?.user?.id}})).unwrap()
             navigate("/orders")
+            showMessage(t('OrdersSnackbar.success.appointDriverSuccess'))
             try {
                 const res2 = await dispatch(getFilteredOrders({
                     pageqq: 1, search: {
@@ -353,6 +353,7 @@ function OrdersFrom({mode}) {
         }
         catch (e) {
             console.error(e);
+            showMessage(t('OrdersSnackbar.error.appointDriverError') , "error")
         }
     }
 
@@ -619,7 +620,7 @@ console.log(formData)
                                     }}
                                     variant={'contained'}
                                 >
-                                    {loading ? `${t('ordersTranslation.sending')}` : t('ordersTranslation.send')}
+                                    {loading ? <LoadingCircular/> : t('ordersTranslation.send')}
                                 </Button>
                             </div>
                             :
@@ -1072,7 +1073,7 @@ console.log(formData)
                                     }}
                                             className="w-36 relative overflow-hidden rounded font-semibold bg-transparent border-2 text-blue border-blue transition-all duration-300 ease-in-out  hover:text-white hover:bg-blue py-2 px-3 dark:hover:bg-navBgHover dark:border-darkText dark:text-darkText"
                                     >
-                                        {loading ? `${t('queriesTranslation.add')}...` : t('queriesTranslation.add')}
+                                        {loading ? <LoadingCircular/> : mode === 'edit' ? t('queriesTranslation.edit') : t('queriesTranslation.add') }
                                     </button>
                                 </div> : ""
                             }

@@ -9,9 +9,11 @@ import {
     GetQueriesId,
     updateQueries
 } from "../../features/Queries/queriesThunks.js";
-import {CurrencyInput, InputMUI, MyCalendar, SelectMUI} from "../index.js";
+import {CurrencyInput, InputMUI, LoadingCircular, MyCalendar, SelectMUI} from "../index.js";
 import {Button, TextareaAutosize} from "@mui/material";
 import {useTranslation} from "react-i18next";
+import useNotify from "../../hooks/UseNotify/useNotify.jsx";
+import {LoaderCircle} from "lucide-react";
 
 function QueriesFrom({mode}) {
     const {id} = useParams();
@@ -22,8 +24,7 @@ function QueriesFrom({mode}) {
     const {t} = useTranslation();
     const [currency, setCurrency] = useState('2');
     const [errors, setErrors] = useState({});
-
-    const [formData, setFormData] = useState({
+     const [formData, setFormData] = useState({
         client_id: "",
         title: "",
         status_of_cargo: "",
@@ -44,7 +45,7 @@ function QueriesFrom({mode}) {
         client_enumeration_currency: ""
     });
     const [allSelect, setAllSelect] = useState({});
-
+    const {showMessage} = useNotify()
     const getQueriesSelect = async () => {
         try {
             const res = await dispatch(getAllSelect(
@@ -109,9 +110,6 @@ function QueriesFrom({mode}) {
         }
     }, [queriesId]);
 
-
-    console.log(formData)
-
     const getQueriesId = async () => {
         try {
             const res = await dispatch(GetQueriesId(id)).unwrap()
@@ -122,8 +120,7 @@ function QueriesFrom({mode}) {
                         params: `?country_of_departure=${queriesId?.from_address[0]?.from_country}&region_of_departure=${queriesId?.from_address[0]?.from_region}&city_of_departure=${queriesId?.from_address[0]?.from_city}&country_of_destination=${queriesId?.to_address[0]?.to_country}&region_of_destination=${queriesId?.to_address[0]?.to_region}&city_of_destination=${queriesId?.to_address[0]?.to_city}`
                     }
                 )).unwrap()
-                console.log(res2)
-                setAllSelect(res2)
+                 setAllSelect(res2)
             } catch (error) {
                 console.error(error);
             }
@@ -177,35 +174,7 @@ function QueriesFrom({mode}) {
         }
         try {
             const res = await dispatch(CreateQueries({data: obj})).unwrap()
-            // console.log(res)
-            try {
-                const res2 = await dispatch(getQueriesAll({
-                    pageqq: 1, search: {
-                        search: "",
-                        from: '',
-                        to: ''
-                    }
-                })).unwrap()
-                // console.log(res2)
-                navigate('/queries')
-
-            } catch (error) {
-                console.error(error)
-            }
-        } catch (error) {
-            console.error(error);
-            setErrors(error.errors)
-        }
-    }
-
-
-    const updateQuerie = async () => {
-        console.log(formData)
-        try {
-            const res = await dispatch(updateQueries({
-                id,
-                formData: {...formData, load_time_from: new Date(formData.load_time_from).yyyymmdd()}
-            })).unwrap()
+            showMessage(t('QueriesSnackbar.success.create') )
             navigate('/queries')
             try {
                 const res2 = await dispatch(getQueriesAll({
@@ -217,12 +186,41 @@ function QueriesFrom({mode}) {
                 })).unwrap()
                 // console.log(res2)
 
+
             } catch (error) {
                 console.error(error)
             }
         } catch (error) {
             console.error(error);
             setErrors(error.errors)
+            showMessage(t('QueriesSnackbar.error.create') , "error" )
+        }
+    }
+    const updateQuerie = async () => {
+        try {
+            const res = await dispatch(updateQueries({
+                id,
+                formData: {...formData, load_time_from: new Date(formData.load_time_from).yyyymmdd()}
+            })).unwrap()
+            navigate('/queries')
+            showMessage(t('QueriesSnackbar.success.update') )
+            try {
+                const res2 = await dispatch(getQueriesAll({
+                    pageqq: 1, search: {
+                        search: "",
+                        from: '',
+                        to: ''
+                    }
+                })).unwrap()
+                // console.log(res2)
+
+            } catch (error) {
+                console.error(error)
+            }
+        } catch (error) {
+            console.error(error);
+            setErrors(error.errors)
+            showMessage(t('QueriesSnackbar.error.update') , "error" )
         }
     }
 
@@ -628,7 +626,7 @@ function QueriesFrom({mode}) {
                             }}
                                     className="w-36 relative overflow-hidden rounded font-semibold bg-transparent border-2 text-blue border-blue transition-all duration-300 ease-in-out  hover:text-white hover:bg-blue py-2 px-3 dark:hover:bg-navBgHover dark:border-darkText dark:text-darkText"
                             >
-                                {mode === 'edit' ? t('queriesTranslation.edit') : t('queriesTranslation.add')}
+                                {loading ? <LoadingCircular/> : mode === 'edit' ? t('queriesTranslation.edit') : t('queriesTranslation.add')}
                             </button>
                         </div>
                     </div>

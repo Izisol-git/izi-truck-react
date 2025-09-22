@@ -99,7 +99,7 @@ function NavbarY( ) {
 
 
     useEffect(() => {
-        const darkMode = localStorage.getItem("dark") === "true"; // string bilan solishtirish
+        const darkMode = localStorage.getItem("dark") === "true";
         setIsSun(darkMode);
          if (darkMode) {
             document.documentElement.classList.add("dark");
@@ -116,11 +116,11 @@ function NavbarY( ) {
          if (newMode) {
             document.documentElement.classList.add("dark");
             document.documentElement.classList.remove("light");
-            localStorage.setItem("dark", "true");   // string saqlash
+            localStorage.setItem("dark", "true");
         } else {
             document.documentElement.classList.add("light");
             document.documentElement.classList.remove("dark");
-            localStorage.setItem("dark", "false");  // string saqlash
+            localStorage.setItem("dark", "false");
         }
     };
 
@@ -136,7 +136,7 @@ function NavbarY( ) {
                 </div>
 
                 {/* Nav items */}
-                <div className="flex cursor-pointer h-full">
+                <div className="flex cursor-pointer h-full ">
                     {navabrArry.map((item, index) => (
                         <div
                             onClick={() => {
@@ -206,15 +206,7 @@ function NavbarY( ) {
                     {
                         user?.user?.roles[0]?.name === 'super-admin' ? <NotificationsModal count={count} notifications={notifications} /> :''
                     }
-
                     <LanguageDropdown/>
-                    {/*{isSun === false ? (*/}
-                    {/*    <i onClick={sunToggle}*/}
-                    {/*       className={'fas fa-moon font-bold cursor-pointer text-blue dark:text-white'}></i>*/}
-                    {/*) : (*/}
-                    {/*    <i onClick={sunToggle}*/}
-                    {/*       className={'fas fa-sun font-bold cursor-pointer text-blue dark:text-white'}></i>*/}
-                    {/*)}*/}
                     <ProfileDropdown    sunToggle={sunToggle}/>
                 </div>
             </div>

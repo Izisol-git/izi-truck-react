@@ -11,7 +11,10 @@ function Loading() {
             height='40vh'
         >
             <CircularProgress />
-            <Typography variant="h6" sx={{ mt: 2 }}>
+            <Typography
+                variant="h6"
+                sx={{ mt: 2, color: "text.primary" }}
+            >
                 Yuklanmoqda...
             </Typography>
         </Box>

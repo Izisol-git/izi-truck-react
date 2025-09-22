@@ -1,4 +1,6 @@
 {
+
+  "notFound": "Ma'lumot topilmadi",
   "navbar": {
     "home": "Bosh sahifa",
     "queries": "So'rovlar",
@@ -11,6 +13,7 @@
     "contracts": "Shartnomalar",
     "clientContracts": "Mijoz shartnomalari"
   },
+
   "dashboard": {
     "totalOrders": "Jami buyurtmalar",
     "totalDrivers": "Jami haydovchilar",
@@ -603,6 +606,48 @@
     "close": "Bekor qilish",
     "send": "Yuborish",
     "sending": "Yuborilmoqda..."
+  },
+  "QueriesSnackbar": {
+    "success": {
+      "create": "So‘rov muvaffaqiyatli yaratildi!",
+      "update": "So‘rov muvaffaqiyatli yangilandi!",
+      "delete": "So‘rov muvaffaqiyatli o'chirildi!"
+    },
+    "error": {
+      "create": "Yaratishda xatolik yuz berdi!",
+      "update": "Yangilashda xatolik yuz berdi!",
+      "delete": "O'chirishda xatolik yuz berdi!"
+    }
+  },
+  "OrdersSnackbar": {
+    "success": {
+      "appointDriverSuccess": "Haydovchi biriktirildi",
+      "create": "Buyurtma muvaffaqiyatli yaratildi!",
+      "edit": "Buyurtma muvaffaqiyatli yangilandi!",
+      "delete": "Buyurtma muvaffaqiyatli o'chirildi!"
+    },
+    "error": {
+      "appointDriverError": "Haydovchini biriktirib bo‘lmadi",
+      "create": "Buyurtma yaratishda xatolik yuz berdi!",
+      "edit": "Buyurtmani yangilashda xatolik yuz berdi!",
+      "delete": "Buyurtmani o'chirishda xatolik yuz berdi!"
+    }
+  },
+  "OffersSnackbar": {
+    "success": {
+      "send": "Taklif yuborildi!",
+      "create": "Taklif muvaffaqiyatli yaratildi!",
+      "edit": "Taklif muvaffaqiyatli tahrirlandi!",
+      "delete": "Taklif muvaffaqiyatli o'chirildi!"
+    },
+    "error": {
+      "send": "Taklif yuborishda xatolik yuz berdi!",
+      "create": "Taklif yaratishda xatolik yuz berdi!",
+      "edit": "Taklifni tahrirlashda xatolik yuz berdi!",
+      "delete": "Taklifni o‘chirishda xatolik yuz berdi!"
+    }
   }
 
 }
+
+

@@ -11,6 +11,7 @@ function SuperAdminLayouts( ) {
         <main >
             <Outlet/>
         </main>
+
     </div> : <Navigate to="/login"/>;
 
 }

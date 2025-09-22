@@ -1,6 +1,14 @@
 import React, {useEffect, useState} from "react";
 
-import {InputMUI, Loading, MyCalendar, PaginationFooter, QueriesCard, SelectMUI} from "../../Components/index.js";
+import {
+    InputMUI,
+    Loading,
+    MyCalendar,
+    NotFound,
+    PaginationFooter,
+    QueriesCard,
+    SelectMUI
+} from "../../Components/index.js";
 import {useNavigate, useSearchParams} from "react-router-dom";
 import {useDispatch, useSelector} from "react-redux";
 import {getQueriesAll} from "../../features/Queries/queriesThunks.js";
@@ -88,7 +96,7 @@ function Queries() {
 
     return (
         <div className="bg-bacWhite dark:bg-darkBg min-h-[calc(100dvh-70px)]">
-            <div className="w-[90%] mx-auto py-5">
+            <div className="w-[90%] mx-auto py-5 ">
 
 
                 <div
@@ -180,7 +188,7 @@ function Queries() {
 
                 <div className={'grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3  gap-4'}>
                     {loading ? <Loading/> :
-                        queries?.data?.map((item, index) => (
+                        queries?.data?.length === 0 ? <NotFound/> : queries?.data?.map((item, index) => (
                             <QueriesCard transaction={item} index={index}/>
                         ))
                     }

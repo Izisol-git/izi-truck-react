@@ -1,5 +1,6 @@
 import React, {useEffect, useState} from 'react';
 import {
+    Loading,
     OffersCard,
     OffersOrders, OffersOrdersCarrier,
     PaginationFooter,
@@ -18,7 +19,7 @@ function ShowOffers() {
     const dispatch = useDispatch();
     // const [suggestions, setSuggestions] = useState();
     const {user} = useSelector((state) => state.auth);
-    const {suggestions} = useSelector((state) => state.suggestions);
+    const {suggestions , addLoadingSuggestions , addSuggestionsDate} = useSelector((state) => state.suggestions);
     const [searchParams] = useSearchParams();
     const pageqq = searchParams.get("page") || 1;
     const [data, setData] = useState();
@@ -46,9 +47,11 @@ function ShowOffers() {
 
     }
 
-
     useEffect(() => {
-        if(user?.user?.roles[0]?.name) {
+        const now = Date.now()
+        const lastFetch = addSuggestionsDate ? new Date(addSuggestionsDate).getTime() : Number(localStorage.getItem("refreshValue"));
+        const diff = now - lastFetch;
+        if(user?.user?.roles[0]?.name && suggestions?.length === 0 || diff >= Number(localStorage.getItem("refreshValue"))) {
             getSuggestion()
         }
     }, [pageqq , user ])
@@ -98,7 +101,7 @@ function ShowOffers() {
             <div className={'w-[90%] mx-auto  mt-5'}>
                 <div className={'grid grid-cols-3 gap-3'}>
                     {
-                        suggestions?.data?.map((suggestion) => (
+                        addLoadingSuggestions ? <Loading/> :  suggestions?.data?.map((suggestion) => (
                             <OffersCard role={user?.user?.roles[0]?.name} data={suggestion} suggestionId={suggestion?.id} />
 
                         ))

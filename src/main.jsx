@@ -8,6 +8,7 @@ import "@fortawesome/fontawesome-free/css/all.min.css";
 import "./i18n";
 import { createTheme, ThemeProvider } from "@mui/material/styles";
 import CssBaseline from "@mui/material/CssBaseline";
+import {SnackbarProvider} from "notistack";
 
 function Root() {
     const [mode, setMode] = useState(
@@ -66,7 +67,9 @@ function Root() {
             <Provider store={store}>
                 <ThemeProvider theme={theme}>
                     <CssBaseline />
-                    <App />
+                    <SnackbarProvider maxSnack={3}>
+                        <App />
+                    </SnackbarProvider>
                 </ThemeProvider>
             </Provider>
         </StrictMode>

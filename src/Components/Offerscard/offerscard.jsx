@@ -37,6 +37,7 @@ import {
 } from "../../features/suggestions/suggestionsThunks.js";
 import {AddSuggestionsId} from "../../features/suggestions/suggestionsSlice.js";
 import PauseIcon from '@mui/icons-material/Pause';
+import useNotify from "../../hooks/UseNotify/useNotify.jsx";
 
 export default function OffersCard({data, role}) {
     const dispatch = useDispatch();
@@ -45,6 +46,7 @@ export default function OffersCard({data, role}) {
     const {i18n} = useTranslation();
     const {user} = useSelector((state) => state.auth);
     dayjs.locale(i18n.language)
+    const {showMessage} = useNotify()
 
     const getSuggestionId = async (offersId) => {
         try {
@@ -58,6 +60,7 @@ export default function OffersCard({data, role}) {
         try {
             const res = await dispatch(deleteSuggestions(id)).unwrap()
             console.log(res);
+            showMessage(t('OffersSnackbar.success.delete'));
             try {
                 const res2 = await dispatch(getSuggestionsAdmin({pageqq:1})).unwrap()
                 console.log(res2)
@@ -66,6 +69,7 @@ export default function OffersCard({data, role}) {
             }
         } catch (error) {
             console.log(error);
+            showMessage(t('OffersSnackbar.error.delete'), "error");
         }
     }
 

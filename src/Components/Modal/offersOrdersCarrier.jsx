@@ -1,6 +1,6 @@
 import React, {useEffect, useState} from 'react';
 import {closeOffersModal} from "../../features/EmployeSModalToggle/employesModalToggle.js";
-import {InputMUI, MyCalendar} from "../index.js";
+import {InputMUI, LoadingCircular, MyCalendar} from "../index.js";
 import InputFileUpload from "../Buttons/fileButton.jsx";
 import {Button, TextareaAutosize} from "@mui/material";
 import {useDispatch, useSelector} from "react-redux";
@@ -11,8 +11,9 @@ import {
     getSuggestionsUser
 } from "../../features/suggestions/suggestionsThunks.js";
 import {useTranslation} from "react-i18next";
+import useNotify from "../../hooks/UseNotify/useNotify.jsx";
 
-function OffersOrdersCarrier({mode , indexData}) {
+function OffersOrdersCarrier({mode, indexData}) {
     const {t} = useTranslation();
     const isOpenOffersModal = useSelector(state => state.employesModal.isOpenOffersModal);
     const dispatch = useDispatch();
@@ -20,7 +21,8 @@ function OffersOrdersCarrier({mode , indexData}) {
     const {suggestionsId} = useSelector(state => state.suggestions);
     // const { offers } = useSelector(state => state.employesModal);
     const {addLoadingSuggestionsId} = useSelector((state) => state.suggestions);
-
+    const [error, setError] = useState(null);
+    const {showMessage} = useNotify()
     const [suggestionsData, setSuggestionsData] = useState({
         suggestion_id: '',
         carrier_id: '',
@@ -30,6 +32,10 @@ function OffersOrdersCarrier({mode , indexData}) {
         responsible_phone: '',
         textura: '',
     });
+
+    useEffect(() => {
+
+    } , [isOpenOffersModal])
 
     const data = {
         direction: suggestionsId?.route,
@@ -62,7 +68,8 @@ function OffersOrdersCarrier({mode , indexData}) {
         };
         try {
             const res = await dispatch(addSuggestionsReply({id: suggestionsId?.id, data: obj})).unwrap()
-
+            showMessage(t('OffersSnackbar.success.send'))
+            dispatch(closeOffersModal());
             if (user?.user?.roles[0]?.name === "super-admin") {
                 try {
                     const res1 = await dispatch(getSuggestionsAdmin({})).unwrap()
@@ -76,16 +83,17 @@ function OffersOrdersCarrier({mode , indexData}) {
                     console.log(err);
                 }
             }
-            dispatch(closeOffersModal());
+
         } catch (err) {
             console.log(err);
+            setError(err?.errors)
+            showMessage(t('OffersSnackbar.error.send'), 'error')
         }
     };
 
     useEffect(() => {
 
         if (mode === 'show') {
-            console.log(indexData);
             setSuggestionsData((prev) => ({
                 ...prev,
                 responsible_phone: indexData?.responsible_phone,
@@ -97,21 +105,19 @@ function OffersOrdersCarrier({mode , indexData}) {
 
         }
 
-    }, [indexData , isOpenOffersModal])
-    console.log(suggestionsData)
-    // useEffect(() => {
-    //     setSuggestionsData({
-    //         suggestion_id: '',
-    //         carrier_id: '',
-    //         reply_price: '',
-    //         available_vehicles: '',
-    //         estimated_arrival: '',
-    //         responsible_phone: '',
-    //         textura: '',
-    //     });
-    // }, [isOpenOffersModal]);
+    }, [indexData, isOpenOffersModal])
 
     useEffect(() => {
+        setSuggestionsData({
+            suggestion_id: '',
+            carrier_id: '',
+            reply_price: '',
+            available_vehicles: '',
+            estimated_arrival: '',
+            responsible_phone: '',
+            textura: '',
+        })
+        setError(null);
         document.body.style.overflow = isOpenOffersModal ? "hidden" : "auto";
     }, [isOpenOffersModal]);
 
@@ -207,6 +213,7 @@ function OffersOrdersCarrier({mode , indexData}) {
 
                     <div className="px-4 py-2 flex items-center gap-4">
                         <InputMUI
+                            errorMassage={error?.reply_price}
                             disabled={mode === 'show'}
                             type={"number"}
                             value={suggestionsData?.reply_price || ""}
@@ -220,6 +227,7 @@ function OffersOrdersCarrier({mode , indexData}) {
                             label={t("offersOrdersCarrier.price")}
                         />
                         <InputMUI
+                            errorMassage={error?.available_vehicles}
                             disabled={mode === 'show'}
                             type={"number"}
                             value={suggestionsData.available_vehicles || ""}
@@ -237,6 +245,7 @@ function OffersOrdersCarrier({mode , indexData}) {
                     <div className="px-4 py-2 grid grid-cols-2 gap-4">
                         <div className="relative">
                             <MyCalendar
+                                errorMessage={error?.estimated_arrival}  // <-- errorMassage ni errorMessage ga o'zgartirdik
                                 disabled={mode === 'show'}
                                 value={suggestionsData.estimated_arrival}
                                 onChange={(val) =>
@@ -248,7 +257,9 @@ function OffersOrdersCarrier({mode , indexData}) {
                             </p>
                         </div>
 
+
                         <InputMUI
+                            errorMassage={error?.responsible_phone}
                             disabled={mode === 'show'}
                             value={suggestionsData.responsible_phone || ""}
                             onChange={(value) =>
@@ -264,6 +275,7 @@ function OffersOrdersCarrier({mode , indexData}) {
 
                     <div className="px-4 py-2">
                         <TextareaAutosize
+                            errorMassage={error?.textura}
                             aria-label="empty textarea"
                             placeholder={t("offersOrdersCarrier.notes")}
                             value={suggestionsData?.textura || ""}
@@ -322,7 +334,7 @@ function OffersOrdersCarrier({mode , indexData}) {
                                     color="primary"
                                     onClick={addSuggestionsId}
                                 >
-                                    {addLoadingSuggestionsId ? t("offersOrdersCarrier.sending") : t("offersOrdersCarrier.send")}
+                                    {addLoadingSuggestionsId ? <LoadingCircular/> : t("offersOrdersCarrier.send")}
                                 </Button>
                             </div>
                             :

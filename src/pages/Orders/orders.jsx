@@ -6,7 +6,7 @@ import {
     OrdersCard,
     OffersOrders,
     Loading,
-    PaginationFooter,  OffersOrdersCarrier
+    PaginationFooter, OffersOrdersCarrier, NotFound
 } from "../../Components/index.js";
 import {OrdersDropDown} from "../../Components/index.js";
 import TouchRipple from "@mui/material/ButtonBase/TouchRipple";
@@ -286,7 +286,7 @@ function Orders() {
 
                 {
                     loading ? <Loading/> :
-                    orders?.orders?.data?.map((order) => (
+                        orders?.orders?.data?.length === 0 ? <NotFound/> : orders?.orders?.data?.map((order) => (
                         <div>
                             <OrdersCard key={order.id} order={order}/>
                         </div>

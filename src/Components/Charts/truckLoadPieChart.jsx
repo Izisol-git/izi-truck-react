@@ -46,7 +46,7 @@ export default function TruckLoadPieChart({statistics}) {
             < Bar
                 data={data}
                 options={options}
-            />;
+            />
         </div>
     )
 }

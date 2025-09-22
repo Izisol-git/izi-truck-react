@@ -1,7 +1,7 @@
 import React, {useEffect, useState} from 'react';
 import {useDispatch, useSelector} from "react-redux";
 import {closeOffersModal} from "../../features/EmployeSModalToggle/employesModalToggle.js";
-import {InputMUI} from "../index.js";
+import {InputMUI, LoadingCircular} from "../index.js";
 import InputFileUpload from "../Buttons/fileButton.jsx";
 import {Button, Checkbox, FormControlLabel} from "@mui/material";
 import {
@@ -11,15 +11,18 @@ import {
     getSuggestionsUser
 } from "../../features/suggestions/suggestionsThunks.js";
 import {useTranslation} from "react-i18next";
+import useNotify from "../../hooks/UseNotify/useNotify.jsx";
 
 function OffersOrders() {
     const {t} = useTranslation();
     const isOpenOffersModal = useSelector(state => state.employesModal.isOpenOffersModal);
-    const {addLoadingSuggestions ,suggestionsId} = useSelector((state) => state.suggestions);
+    const {addLoadingSuggestionsId, suggestionsId} = useSelector((state) => state.suggestions);
     const {addEditToggleOffers} = useSelector((state) => state.employesModal);
     const {offersId} = useSelector((state) => state.employesModal);
-     const {user} = useSelector((state) => state.auth);
+    const {user} = useSelector((state) => state.auth);
     // const [getSuggestions, setSuggestions] = useState();
+    const [error, setError] = useState(null);
+    const {showMessage} = useNotify()
     const [suggestionsData, setSuggestionsData] = useState({
         route: '',
         cargo_name: '',
@@ -34,19 +37,6 @@ function OffersOrders() {
     };
     const dispatch = useDispatch();
 
-    useEffect(() => {
-        setSuggestionsData({
-            route: '',
-            cargo_name: '',
-            cargo_weight: '',
-            trailer_spec: '',
-            price: ''
-        });
-    }, [isOpenOffersModal]);
-
-
-
-
 
     useEffect(() => {
         if (suggestionsId) {
@@ -60,35 +50,16 @@ function OffersOrders() {
                 }
             )
         }
-    }, [offersId , suggestionsId])
+    }, [offersId, suggestionsId , isOpenOffersModal])
 
     const editSuggestion = async () => {
         try {
-            const res = await dispatch(editSuggestions({offersId, suggestionsData: {...suggestionsData , status : status} })).unwrap();
-            if ( user?.user?.roles[0]?.name === "super-admin") {
-                try {
-                    const res1 = await dispatch(getSuggestionsAdmin({})).unwrap()
-                } catch (err) {
-                    console.log(err);
-                }
-            } else {
-                try {
-                    const res1 = await dispatch(getSuggestionsUser()).unwrap()
-                } catch (err) {
-                    console.log(err);
-                }
-            }
+            const res = await dispatch(editSuggestions({
+                offersId,
+                suggestionsData: {...suggestionsData, status: status}
+            })).unwrap();
             dispatch(closeOffersModal());
-
-            console.log(res);
-        } catch (e) {
-            console.error(e);
-        }
-    }
-    const Suggestions = async () => {
-        try {
-            const res = await dispatch(addSuggestions(suggestionsData)).unwrap();
-
+            showMessage(t('OffersSnackbar.success.edit'));
             if (user?.user?.roles[0]?.name === "super-admin") {
                 try {
                     const res1 = await dispatch(getSuggestionsAdmin({})).unwrap()
@@ -102,15 +73,43 @@ function OffersOrders() {
                     console.log(err);
                 }
             }
-            dispatch(closeOffersModal());
+
             console.log(res);
         } catch (e) {
             console.error(e);
+            showMessage(t('OffersSnackbar.error.edit') , 'error');
+        }
+    }
+    const Suggestions = async () => {
+        try {
+            const res = await dispatch(addSuggestions(suggestionsData)).unwrap();
+            dispatch(closeOffersModal());
+            showMessage(t('OffersSnackbar.success.create'));
+            if (user?.user?.roles[0]?.name === "super-admin") {
+                try {
+                    const res1 = await dispatch(getSuggestionsAdmin({})).unwrap()
+                } catch (err) {
+                    console.log(err);
+                }
+            }
+        } catch (e) {
+            showMessage(t('OffersSnackbar.error.create'), "error");
+            setError(e.errors)
         }
     }
 
 
     useEffect(() => {
+        setError(null);
+        if(addEditToggleOffers){
+            setSuggestionsData({
+                route: '',
+                cargo_name: '',
+                cargo_weight: '',
+                trailer_spec: '',
+                price: ''
+            })
+        }
         document.body.style.overflow = isOpenOffersModal ? "hidden" : "auto";
     }, [isOpenOffersModal]);
 
@@ -142,6 +141,7 @@ function OffersOrders() {
                     {/* Inputs */}
                     <div className={"px-4 py-2"}>
                         <InputMUI
+                            errorMassage={error?.route}
                             value={suggestionsData.route || ""}
                             onChange={(value) =>
                                 setSuggestionsData({...suggestionsData, route: value.target.value})
@@ -152,6 +152,7 @@ function OffersOrders() {
                     </div>
                     <div className={"px-4 py-2"}>
                         <InputMUI
+                            errorMassage={error?.cargo_name}
                             value={suggestionsData.cargo_name || ""}
                             onChange={(value) =>
                                 setSuggestionsData({...suggestionsData, cargo_name: value.target.value})
@@ -162,6 +163,7 @@ function OffersOrders() {
                     </div>
                     <div className={"px-4 py-2"}>
                         <InputMUI
+                            errorMassage={error?.cargo_weight}
                             type={"number"}
                             value={suggestionsData.cargo_weight || ""}
                             onChange={(value) =>
@@ -173,6 +175,7 @@ function OffersOrders() {
                     </div>
                     <div className={"px-4 py-2"}>
                         <InputMUI
+                            errorMassage={error?.trailer_spec}
                             value={suggestionsData.trailer_spec || ""}
                             onChange={(value) =>
                                 setSuggestionsData({...suggestionsData, trailer_spec: value.target.value})
@@ -183,6 +186,7 @@ function OffersOrders() {
                     </div>
                     <div className={"px-4 py-2"}>
                         <InputMUI
+                            errorMassage={error?.price}
                             value={suggestionsData.price || ""}
                             onChange={(value) =>
                                 setSuggestionsData({...suggestionsData, price: value.target.value})
@@ -193,18 +197,18 @@ function OffersOrders() {
                     </div>
 
 
-                  <div className={"px-4 py-2"}>
-                      <FormControlLabel
-                          control={
-                              <Checkbox
-                                  checked={status === -1}     // 1 bo‘lsa belgilangan
-                                  onChange={handleChange}    // almashganda 1 yoki -1 qiladi
-                              />
-                          }
-                          label={`${t('offersOrders.status')}: ${status === 1 ? t('offersOrders.active') : t('offersOrders.inactive')}`}     // ko‘rsatish uchun
-                      />
+                    <div className={"px-4 py-2"}>
+                        <FormControlLabel
+                            control={
+                                <Checkbox
+                                    checked={status === -1}     // 1 bo‘lsa belgilangan
+                                    onChange={handleChange}    // almashganda 1 yoki -1 qiladi
+                                />
+                            }
+                            label={`${t('offersOrders.status')}: ${status === 1 ? t('offersOrders.active') : t('offersOrders.inactive')}`}     // ko‘rsatish uchun
+                        />
 
-                  </div>
+                    </div>
                     {/* File Upload */}
                     <div className={"px-4 py-2"}>
                         <InputFileUpload/>
@@ -228,7 +232,7 @@ function OffersOrders() {
                                 addEditToggleOffers ? Suggestions() : editSuggestion()
                             }}
                         >
-                            {addLoadingSuggestions ? t("offersOrders.sending") : t("offersOrders.send")}
+                            {addLoadingSuggestionsId ? <LoadingCircular/> : t("offersOrders.send")}
                         </Button>
                     </div>
                 </div>

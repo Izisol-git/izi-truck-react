@@ -5,6 +5,7 @@ const suggestionsSlice = createSlice({
     name: "suggestions",
     initialState: {
         suggestions: [],
+        addSuggestionsDate: [],
         suggestionsId: [],
         addLoadingSuggestions: false,
         addLoadingSuggestionsId: false,
@@ -18,13 +19,13 @@ const suggestionsSlice = createSlice({
     extraReducers: (builder) => {
         builder
             .addCase(addSuggestions.pending, (state) => {
-                state.addLoadingSuggestions = true;
+                state.addLoadingSuggestionsId = true;
             })
             .addCase(addSuggestions.fulfilled, (state, action) => {
-                state.addLoadingSuggestions = false;
+                state.addLoadingSuggestionsId = false;
             })
             .addCase(addSuggestions.rejected, (state) => {
-                state.addLoadingSuggestions = false;
+                state.addLoadingSuggestionsId = false;
             })
 
 
@@ -35,6 +36,7 @@ const suggestionsSlice = createSlice({
             .addCase(getSuggestionsAdmin.fulfilled, (state, action) => {
                 state.suggestions = action.payload;
                 state.addLoadingSuggestions = false;
+                state.addSuggestionsDate = new Date()
             })
             .addCase(getSuggestionsAdmin.rejected, (state) => {
                 state.addLoadingSuggestions = false;
@@ -61,6 +63,7 @@ const suggestionsSlice = createSlice({
             .addCase(getSuggestionsUser.fulfilled, (state, action) => {
                 state.suggestions = action.payload;
                 state.addLoadingSuggestions = false;
+                state.addSuggestionsDate = new Date()
             })
             .addCase(getSuggestionsUser.rejected, (state) => {
                 state.addLoadingSuggestions = false;

@@ -36,7 +36,6 @@ export {default as PaginationFooter} from "./Pagination/paginationFooter/paginat
 export {default as UserPagination} from "./Pagination/userPagination.jsx";
 export {default as DriversPagination} from "./Pagination/DriversPagination.jsx";
 export {default as CustomersPagination} from "./Pagination/CustomersPagination.jsx";
-export {default as AddCustomersModal} from "./Modal/addCustomersModal.jsx";
 export {default as ActData} from "./Modal/actData.jsx";
 export {default as OffersOrdersCarrier} from "./Modal/offersOrdersCarrier.jsx";
 export {default as excelModal} from "./Modal/excelModal.jsx";
@@ -52,3 +51,5 @@ export {default as QueriesFrom} from "./QueriesFrom/queriesFrom.jsx";
 export {default as LogisticsInterface} from "./Modal/queriesShow.jsx";
 export {default as StatisticsFilter} from "./StatisticsFilter/statisticsFilter.jsx";
 export {default as OffersCard} from "./Offerscard/offerscard.jsx";
+export {default as LoadingCircular} from "./Loading/LoadingCircular.jsx";
+export {default as NotFound} from "./NotFound/notFound.jsx";

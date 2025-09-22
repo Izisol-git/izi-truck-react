@@ -4,13 +4,15 @@ import {OrdersChartPlaceholder, StatisticsFilter, TruckLoadPieChart} from "../..
 import {useDispatch, useSelector} from "react-redux";
 import {getStatistics} from "../../features/Statistics/statisticsThunks.js";
 import {AdapterDayjs} from "@mui/x-date-pickers/AdapterDayjs";
-import {Box, Button, Chip} from "@mui/material";
 import {DatePicker} from "@mui/x-date-pickers/DatePicker";
 import dayjs from "dayjs";
 import {LocalizationProvider} from "@mui/x-date-pickers/LocalizationProvider";
 import {useTranslation} from "react-i18next";
 import {BookUser, Clipboard, FileText, Folders, Moon, Users, UsersRound} from "lucide-react";
-
+import {
+    Table, TableBody, TableCell, TableContainer,
+    TableHead, TableRow, Paper , Box, Button, Chip
+} from "@mui/material";
 
 function Counter({target}) {
     const [count, setCount] = useState(0);
@@ -72,33 +74,34 @@ function SuperAdminDashboard() {
     const dashboardCard = [
         {
             title: t("dashboard.totalOrders"),
-            icon: <Folders className="w-8 h-8 text-primary"/>,
+            icon: <Folders className="w-8 h-8 text-brandBlue-600" />,
             amount: `${statistics?.total_orders || 0}`,
             data: t("dashboard.inLastWeek"),
             percent: "20%",
         },
         {
             title: t("dashboard.totalDrivers"),
-            icon: <Users className="w-8 h-8 text-secondary"/>,
+            icon: <Users className="w-8 h-8 text-orange-600" />,
             amount: `${statistics?.total_drivers || 0}`,
             data: t("dashboard.inLastWeek"),
             percent: "1.8%",
         },
         {
             title: t("dashboard.totalClients"),
-            icon: <BookUser className="w-8 h-8 text-warning"/>,
+            icon: <BookUser className="w-8 h-8 text-yellow-500" />,
             amount: `${statistics?.total_clients || 0}`,
             data: t("dashboard.inLastWeek"),
             percent: "1.8%",
         },
         {
             title: t("dashboard.totalEmployees"),
-            icon: <UsersRound className="w-8 h-8 text-success"/>,
+            icon: <UsersRound className="w-8 h-8 text-green-600" />,
             amount: `${statistics?.total_employees || 0}`,
             data: t("dashboard.inLastWeek"),
             percent: "1.2%",
         },
     ];
+
     return (
         <div className="bg-bacWhite dark:bg-darkBg">
             {/* HEADER */}
@@ -159,11 +162,12 @@ function SuperAdminDashboard() {
             </div>
 
             {/* CARDS */}
-            <div className="w-[90%] pb-5 mx-auto grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4">
+            <div className="w-[90%] pb-5 mx-auto grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-4">
+                {/* DASHBOARD CARDS */}
                 {dashboardCard.map((item, index) => (
                     <div
                         key={index}
-                        className="bg-white rounded shadow-sm p-4 flex flex-col gap-3 w-full max-w-sm border border-gray-100 dark:bg-darkBgTwo dark:border-navBgHover"
+                        className="bg-white rounded shadow-sm p-4 flex flex-col gap-3 border border-gray-100 dark:bg-darkBgTwo dark:border-navBgHover"
                     >
                         <div className="flex items-start justify-between">
                             <div className="flex items-center gap-3">
@@ -171,7 +175,7 @@ function SuperAdminDashboard() {
                                     {item.icon}
                                 </div>
                                 <p className="text-sm text-gray-600 font-medium dark:text-darkText">
-                                    {t(item.title)} {/* tarjima */}
+                                    {t(item.title)}
                                 </p>
                             </div>
                             <div
@@ -190,7 +194,8 @@ function SuperAdminDashboard() {
                 ))}
 
                 {/* CHART */}
-                <div className="bg-white rounded shadow-sm col-span-2 p-4 flex flex-col gap-3 w-full dark:bg-darkBgTwo">
+                <div
+                    className="bg-white rounded shadow-sm col-span-1 md:col-span-2 lg:col-span-2 p-4 flex flex-col gap-3 dark:bg-darkBgTwo">
                     <h2 className="text-lg text-center text-blue font-semibold mb-4 dark:text-darkText">
                         {t("dashboard.orders")}
                     </h2>
@@ -198,7 +203,8 @@ function SuperAdminDashboard() {
                 </div>
 
                 {/* TRUCK LOAD */}
-                <div className="bg-white rounded shadow-sm col-span-2 p-4 flex flex-col gap-3 w-full dark:bg-darkBgTwo">
+                <div
+                    className="bg-white rounded shadow-sm col-span-1 md:col-span-2 lg:col-span-2 p-4 flex flex-col gap-3 dark:bg-darkBgTwo">
                     <h2 className="text-lg text-center text-blue font-semibold mb-4 dark:text-darkText">
                         {t("dashboard.queries")}
                     </h2>
@@ -206,73 +212,59 @@ function SuperAdminDashboard() {
                 </div>
 
                 {/* RECENT ORDERS */}
-                <div className="bg-white rounded shadow-sm col-span-4 p-4 flex flex-col gap-3 w-full dark:bg-darkBgTwo">
+                <div
+                    className="bg-white rounded shadow-sm col-span-1 md:col-span-2 lg:col-span-4 p-4 flex flex-col gap-3 dark:bg-darkBgTwo">
                     <h2 className="text-lg text-center text-blue font-semibold mb-4 dark:text-darkText">
                         {t("dashboard.recentOrders")}
                     </h2>
                     <div className="overflow-x-auto rounded-lg dark:bg-darkBgTwo bg-base-100">
-                        <table className="table dark:text-darkText">
-                            <thead className="dark:text-darkText dark:font-bold">
-                            <tr>
-                                <th>{t("dashboard.table.id")}</th>
-                                <th>{t("dashboard.table.address")}</th>
-                                <th>{t("dashboard.table.cargo_name")}</th>
-                                <th>{t("dashboard.table.tr_number")}</th>
-                                <th>{t("dashboard.table.date")}</th>
-                                <th>{t("dashboard.table.status")}</th>
-                            </tr>
-                            </thead>
-                            <tbody>
-                            {
-                                statistics?.last_orders?.map((item, index) => (
-                                    <tr>
-                                        <th>{index + 1}</th>
-                                        <td>{item.destination_location.replace(',', '  →  ')}</td>
-                                        <td>{item.nature_of_cargo}</td>
-                                        <td>{item.tr_number}</td>
+                        <TableContainer component={Paper} sx={{ borderRadius: "12px", overflowX: "auto" }}>
+                            <Table>
+                                <TableHead>
+                                    <TableRow>
+                                        <TableCell>{t("dashboard.table.id")}</TableCell>
+                                        <TableCell>{t("dashboard.table.address")}</TableCell>
+                                        <TableCell>{t("dashboard.table.cargo_name")}</TableCell>
+                                        <TableCell>{t("dashboard.table.tr_number")}</TableCell>
+                                        <TableCell>{t("dashboard.table.date")}</TableCell>
+                                        <TableCell>{t("dashboard.table.status")}</TableCell>
+                                    </TableRow>
+                                </TableHead>
 
-                                        <td>{new Date(item.created_at).ddmmyyyy()}</td>
-                                        <td>
-                                            {
-                                                item.status === 0 ?
-                                                    <Chip size={'small'} className="text-" variant={'filled'}
-                                                          color={'warning'}
-                                                          label={t("ordersTranslation.ordersCard.unknown")}/>
-                                                    :
-                                                    <Chip size={'small'} className="text-" variant={'filled'}
-                                                          color={'success'}
-                                                          label={t("ordersTranslation.ordersCard.driver_assigned")}/>
-                                            }
-                                        </td>
-                                    </tr>
-                                ))
-                            }
-                            </tbody>
-                        </table>
+                                <TableBody>
+                                    {statistics?.last_orders?.map((item, index) => (
+                                        <TableRow key={index}>
+                                            <TableCell>{index + 1}</TableCell>
+                                            <TableCell>{item.destination_location.replace(",", " → ")}</TableCell>
+                                            <TableCell>{item.nature_of_cargo}</TableCell>
+                                            <TableCell>{item.tr_number}</TableCell>
+                                            <TableCell>{new Date(item.created_at).ddmmyyyy()}</TableCell>
+                                            <TableCell>
+                                                {item.status === 0 ? (
+                                                    <Chip
+                                                        size="small"
+                                                        variant="filled"
+                                                        color="warning"
+                                                        label={t("ordersTranslation.ordersCard.unknown")}
+                                                    />
+                                                ) : (
+                                                    <Chip
+                                                        size="small"
+                                                        variant="filled"
+                                                        color="success"
+                                                        label={t("ordersTranslation.ordersCard.driver_assigned")}
+                                                    />
+                                                )}
+                                            </TableCell>
+                                        </TableRow>
+                                    ))}
+                                </TableBody>
+                            </Table>
+                        </TableContainer>
                     </div>
                 </div>
-
-                {/*/!* DRIVERS STATUS *!/*/}
-                {/*<div className="bg-white rounded shadow-sm col-span-2 p-4 flex flex-col gap-3 w-full dark:bg-darkBgTwo">*/}
-                {/*    <h2 className="text-lg text-blue text-center font-semibold mb-4 dark:text-darkText">*/}
-                {/*        {t("dashboard.driversStatus")}*/}
-                {/*    </h2>*/}
-                {/*    <div className="p-2 flex flex-col gap-3">*/}
-                {/*        <div className="flex items-center justify-between w-full">*/}
-                {/*            <p className="font-semibold text-blue dark:text-darkText">👷 Sh.Ergashev</p>*/}
-                {/*            <p className="text-[#16a34a]">{t("dashboard.drivers.busy")}</p>*/}
-                {/*        </div>*/}
-                {/*        <div className="flex items-center justify-between w-full">*/}
-                {/*            <p className="font-semibold text-blue dark:text-darkText">👷 N.Karimov</p>*/}
-                {/*            <p className="text-yellow-500">{t("dashboard.drivers.waiting")}</p>*/}
-                {/*        </div>*/}
-                {/*        <div className="flex items-center justify-between w-full">*/}
-                {/*            <p className="font-semibold text-blue dark:text-darkText">👷 D.Saidov</p>*/}
-                {/*            <p className="text-red-500">{t("dashboard.drivers.vacation")}</p>*/}
-                {/*        </div>*/}
-                {/*    </div>*/}
-                {/*</div>*/}
             </div>
+
         </div>
     );
 }

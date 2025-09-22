@@ -1,11 +1,12 @@
 import {createSlice} from "@reduxjs/toolkit";
-import {GetQueriesId ,  getQueriesAll, updateQueries} from "./queriesThunks.js";
+import {GetQueriesId, getQueriesAll, updateQueries, CreateQueries, exportQueriesExcel} from "./queriesThunks.js";
 
 const initialState = {
     queries: [],
     addQueriesDate: [],
     queriesId: [],
     loading: false,
+    queriesExporting: false,
     error: null,
 };
 
@@ -18,6 +19,18 @@ const queriesSlice = createSlice({
         }
     },
     extraReducers: (builder) => {
+        // CreateQueries
+        builder.addCase(CreateQueries.pending, (state) => {
+            state.loading = true;
+            state.error = null;
+        });
+        builder.addCase(CreateQueries.fulfilled, (state, action) => {
+            state.loading = false;
+        });
+        builder.addCase(CreateQueries.rejected, (state, action) => {
+            state.loading = false;
+            state.error = action.payload;
+        });
         // GET queries
         builder.addCase(getQueriesAll.pending, (state) => {
             state.loading = true;
@@ -34,15 +47,15 @@ const queriesSlice = createSlice({
         });
         // GET GetQueriesId
         builder.addCase(GetQueriesId.pending, (state) => {
-            state.loading = true;
+            // state.loading = true;
             state.error = null;
         });
         builder.addCase(GetQueriesId.fulfilled, (state, action) => {
-            state.loading = false;
+            // state.loading = false;
             state.queriesId = action.payload.query;
         });
         builder.addCase(GetQueriesId.rejected, (state, action) => {
-            state.loading = false;
+            // state.loading = false;
             state.error = action.payload;
         });
         // // GET selectedQueries
@@ -69,6 +82,19 @@ const queriesSlice = createSlice({
         });
         builder.addCase(updateQueries.rejected, (state, action) => {
             state.loading = false;
+            state.error = action.payload;
+        });
+
+        // exportQueriesExcel
+        builder.addCase(exportQueriesExcel.pending, (state) => {
+            state.queriesExporting = true;
+            state.error = null;
+        });
+        builder.addCase(exportQueriesExcel.fulfilled, (state, action) => {
+            state.queriesExporting = false;
+         });
+        builder.addCase(exportQueriesExcel.rejected, (state, action) => {
+            state.queriesExporting = false;
             state.error = action.payload;
         });
 

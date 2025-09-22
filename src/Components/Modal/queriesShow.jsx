@@ -6,6 +6,7 @@ import {deleteQueries, getQueriesAll, GetQueriesId} from "../../features/Queries
 import {useNavigate} from "react-router-dom";
 import {openQueriesShow} from "../../features/EmployeSModalToggle/employesModalToggle.js";
 import {useTranslation} from "react-i18next";
+import useNotify from "../../hooks/UseNotify/useNotify.jsx";
 
 const StatusId = ({id}) => {
     const {t} = useTranslation();
@@ -54,6 +55,8 @@ export default function LogisticsInterface() {
     const [allselect, setAllselect] = useState([]);
     const [data, setData] = useState();
 
+    const {showMessage} = useNotify()
+
     const isOpen = useSelector((state) => state.employesModal.isOpenQueriesShow);
     const id = useSelector((state) => state.employesModal.queriesId);
 
@@ -72,6 +75,7 @@ export default function LogisticsInterface() {
         try {
             const res = await dispatch(deleteQueries(id)).unwrap()
             dispatch(openQueriesShow())
+            showMessage(t('QueriesSnackbar.success.delete'));
             try {
                 const res2 = await dispatch(getQueriesAll({
                     pageqq: 1, search: {
@@ -86,6 +90,7 @@ export default function LogisticsInterface() {
             }
         } catch (error) {
             console.log(error);
+            showMessage(t('QueriesSnackbar.error.delete') , "error" );
         }
     }
 

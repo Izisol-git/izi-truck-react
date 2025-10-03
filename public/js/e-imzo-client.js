@@ -1,3 +1,6 @@
+
+/* global CAPIWS */
+
 Date.prototype.yyyymmdd = function () {
     var yyyy = this.getFullYear().toString();
     var mm = (this.getMonth() + 1).toString(); // getMonth() is zero-based
@@ -10,104 +13,51 @@ Date.prototype.ddmmyyyy = function () {
     var dd = this.getDate().toString();
     return (dd[1] ? dd : "0" + dd[0]) + "." + (mm[1] ? mm : "0" + mm[0]) + "." + yyyy; // padding
 };
-var dates = {
-    convert: function (d) {
-        // Converts the date in d to a date-object. The input can be:
-        //   a date object: returned without modification
-        //  an array      : Interpreted as [year,month,day]. NOTE: month is 0-11.
-        //   a number     : Interpreted as number of milliseconds
-        //                  since 1 Jan 1970 (a timestamp) 
-        //   a string     : Any format supported by the javascript engine, like
-        //                  "YYYY/MM/DD", "MM/DD/YYYY", "Jan 31 2009" etc.
-        //  an object     : Interpreted as an object with year, month and date
-        //                  attributes.  **NOTE** month is 0-11.
-        return (
-                d.constructor === Date ? d :
-                d.constructor === Array ? new Date(d[0], d[1], d[2]) :
-                d.constructor === Number ? new Date(d) :
-                d.constructor === String ? new Date(d) :
-                typeof d === "object" ? new Date(d.year, d.month, d.date) :
-                NaN
-                );
-    },
-    compare: function (a, b) {
-        // Compare two dates (could be of any type supported by the convert
-        // function above) and returns:
-        //  -1 : if a < b
-        //   0 : if a = b
-        //   1 : if a > b
-        // NaN : if a or b is an illegal date
-        // NOTE: The code inside isFinite does an assignment (=).
-        return (
-                isFinite(a = this.convert(a).valueOf()) &&
-                isFinite(b = this.convert(b).valueOf()) ?
-                (a > b) - (a < b) :
-                NaN
-                );
-    },
-    inRange: function (d, start, end) {
-        // Checks if date in d is between dates in start and end.
-        // Returns a boolean or NaN:
-        //    true  : if d is between start and end (inclusive)
-        //    false : if d is before start or after end
-        //    NaN   : if one or more of the dates is illegal.
-        // NOTE: The code inside isFinite does an assignment (=).
-        return (
-                isFinite(d = this.convert(d).valueOf()) &&
-                isFinite(start = this.convert(start).valueOf()) &&
-                isFinite(end = this.convert(end).valueOf()) ?
-                start <= d && d <= end :
-                NaN
-                );
-    }
-};
+
+
+
 String.prototype.splitKeep = function (splitter, ahead) {
-    var self = this;
-    var result = [];
-    if (splitter != '') {
-        // Substitution of matched string
-        function getSubst(value) {
-            var substChar = value[0] == '0' ? '1' : '0';
-            var subst = '';
-            for (var i = 0; i < value.length; i++) {
-                subst += substChar;
-            }
-            return subst;
-        };
-        var matches = [];
-        // Getting mached value and its index
-        var replaceName = splitter instanceof RegExp ? "replace" : "replaceAll";
-        var r = self[replaceName](splitter, function (m, i, e) {
-            matches.push({value: m, index: i});
-            return getSubst(m);
-        });
-        // Finds split substrings
-        var lastIndex = 0;
-        for (var i = 0; i < matches.length; i++) {
-            var m = matches[i];
-            var nextIndex = ahead == true ? m.index : m.index + m.value.length;
-            if (nextIndex != lastIndex) {
-                var part = self.substring(lastIndex, nextIndex);
-                result.push(part);
-                lastIndex = nextIndex;
-            }
-        };
-        if (lastIndex < self.length) {
-            var part = self.substring(lastIndex, self.length);
-            result.push(part);
-        };
-    } else {
-        result.add(self);
-    };
+    let self = this;
+    let result = [];
+
+    if (!splitter) return [self];
+
+    function getSubst(value) {
+        let substChar = value[0] === '0' ? '1' : '0';
+        return substChar.repeat(value.length);
+    }
+
+    let matches = [];
+    let replaceName = splitter instanceof RegExp ? "replace" : "replace";
+    self[replaceName](splitter, function (m, i) {
+        matches.push({ value: m, index: i });
+        return getSubst(m);
+    });
+
+    let lastIndex = 0;
+    for (let m of matches) {
+        let nextIndex = ahead ? m.index : m.index + m.value.length;
+        if (nextIndex !== lastIndex) {
+            result.push(self.substring(lastIndex, nextIndex));
+            lastIndex = nextIndex;
+        }
+    }
+
+    if (lastIndex < self.length) {
+        result.push(self.substring(lastIndex));
+    }
+
     return result;
 };
+
 
 const EIMZOClient = {
     NEW_API: false,
     NEW_API2: false,
     API_KEYS: [
         'localhost', '96D0C1491615C82B9A54D9989779DF825B690748224C2B04F500F370D51827CE2644D8D4A82C18184D73AB8530BB8ED537269603F61DB0D03D2104ABF789970B',
-        '127.0.0.1', 'A7BCFA5D490B351BE0754130DF03A068F855DB4333D43921125B9CF2670EF6A40370C646B90401955E1F7BC9CDBF59CE0B2C5467D820BE189C845D0B79CFC96F'
+        '127.0.0.1', 'A7BCFA5D490B351BE0754130DF03A068F855DB4333D43921125B9CF2670EF6A40370C646B90401955E1F7BC9CDBF59CE0B2C5467D820BE189C845D0B79CFC96F',
+        'izitruck.uz', '18B9B80F384B799487E2095BFDF34D3D1CD28B93A6F567F0005EF19B0DBE1D561D0BC473F98B8A4EA89ED6F52DCAF3FEB0267A21A58708650AF39263DBC0F496'
     ],
     checkVersion: function(success, fail){
         CAPIWS.version(function (event, data) {
@@ -357,8 +307,11 @@ const EIMZOClient = {
                         name: el.name,
                         alias: el.alias,
                         serialNumber: EIMZOClient._getX500Val(x500name_ex, "SERIALNUMBER"),
-                        validFrom: new Date(EIMZOClient._getX500Val(x500name_ex, "VALIDFROM").replace(/\./g, "-").replace(" ", "T")),
-                        validTo: new Date(EIMZOClient._getX500Val(x500name_ex, "VALIDTO").replace(/\./g, "-").replace(" ", "T")),
+                        validFrom: new Date(EIMZOClient._getX500Val(x500name_ex, "VALIDFROM")
+                            .replace(/\./g, "-").replace(/ /g, "T")),
+                        validTo: new Date(EIMZOClient._getX500Val(x500name_ex, "VALIDTO")
+                            .replace(/\./g, "-").replace(/ /g, "T")),
+
                         CN: EIMZOClient._getX500Val(x500name_ex, "CN"),
                         TIN: (EIMZOClient._getX500Val(x500name_ex, "INN") ? EIMZOClient._getX500Val(x500name_ex, "INN") : EIMZOClient._getX500Val(x500name_ex, "UID")),
                         UID: EIMZOClient._getX500Val(x500name_ex, "UID"),

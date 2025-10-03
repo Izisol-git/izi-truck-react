@@ -6,15 +6,13 @@ import {
     MyCalendar,
     NotFound,
     PaginationFooter,
-    QueriesCard,
-    SelectMUI
+    QueriesCard
 } from "../../Components/index.js";
 import {useNavigate, useSearchParams} from "react-router-dom";
 import {useDispatch, useSelector} from "react-redux";
 import {getQueriesAll} from "../../features/Queries/queriesThunks.js";
 import {LogisticsInterface} from "../../Components/index.js";
 import {openExcelModal} from "../../features/EmployeSModalToggle/employesModalToggle.js";
-import TouchRipple from "@mui/material/ButtonBase/TouchRipple";
 import ExcelModal from "../../Components/Modal/excelModal.jsx";
 import {useTranslation} from "react-i18next";
 import dayjs from "dayjs";
@@ -28,6 +26,8 @@ function Queries() {
     const pageqq = searchParams.get("page") || 1;
     const {queries, addQueriesDate} = useSelector((state) => state.queries);
     const {loading} = useSelector((state) => state.queries);
+    const [showSearch, setShowSearch] = useState(false);
+
     const [filters, setFilters] = useState({
         search: "",
         from: '',
@@ -35,8 +35,6 @@ function Queries() {
     });
     const [selectedKeys, setSelectedKeys] = useState([]);
     const {t} = useTranslation();
-
-    // console.log(filters);
 
     const getQueries = async (pageqq, filters) => {
         try {
@@ -47,13 +45,11 @@ function Queries() {
                     to: filters.to ? dayjs(filters.to).format("YYYY-MM-DD") : "",
                 }
             })).unwrap()
-            console.log(res)
         } catch (error) {
             console.log(error);
         }
     }
 
-    // console.log(queries?.data)
 
     useEffect(() => {
         const now = Date.now()
@@ -93,42 +89,79 @@ function Queries() {
         {id: "to_city", value: "queriesTranslation.to_city"},
     ];
 
-
     return (
-        <div className="bg-bacWhite dark:bg-darkBg min-h-[calc(100dvh-70px)]">
-            <div className="w-[90%] mx-auto py-5 ">
+        <div className="bg-bacWhite dark:bg-darkBg min-h-[calc(100dvh-70px)]    ">
+            <div className="w-[95%] mx-auto py-5 ">
+                <div
+                    className={"w-full flex items-center justify-between  mb-1  "}>
+                    <p className={'text-2xl text-blue font-semibold dark:text-darkText'}>{t('queriesTranslation.queries')}</p>
+                    <div className={'flex items-center gap-2 '}>
+                        <Button
+                            variant="contained"
+                            size="small"
+                            color={'success'}
+                            onClick={() => {
+                                dispatch(openExcelModal())
+                            }}
+                        >
+                            <i className="fa-solid fa-table mr-2"></i> excel
+
+                        </Button>
+                        <Button
+                            variant="contained"
+                            size="small"
+                            color={'success'}
+                            sx={{
+                                background: "#5E83D4"
+                            }}
+                            onClick={() => navigate("/queries/create")}
+                        >
+                            <i className={'fas fa-plus mr-2'}></i>{t('queriesTranslation.add')}
+                        </Button>
+                        <Button
+                            variant="contained"
+                            size="small"
+                            color={'success'}
+                            sx={{
+                                background: "#1D2D5B"
+                            }}
+                            onClick={() => {
+                                setShowSearch(prev => !prev);
+                            }}
+                        >
+                            {t("ordersTranslation.search_show")} <i className={`fa-solid fa-angle-right ${showSearch ? 'transition-transform rotate-90' : ''} transition duration-300 ease-in-out `}></i>
+                        </Button>
+                    </div>
+
+
+                </div>
 
 
                 <div
-                    className={"w-full flex items-center justify-between bg-white overflow-hidden p-4  rounded-lg mb-4    dark:bg-darkBgTwo "}>
-
-                    <div className={' flex items-center   flex-1 gap-2 '}>
-                        <div className={'w-[20%]'}>
+                    className={` ${showSearch ? 'max-h-96' : 'max-h-0'} transition-all   mx-auto my-4   duration-500 ease-in-out  bg-white dark:bg-darkBgTwo rounded-lg center overflow-hidden `}>
+                    <div className={"w-full overflow-hidden p-4  dark:bg-darkBgTwo"}>
+                        <div className={' grid grid-cols-3 flex-1 gap-2 '}>
                             <InputMUI
                                 value={filters?.search}
                                 onChange={(e) => setFilters({...filters, search: e.target.value})}
                                 variant={'outlined'} label={t("queriesTranslation.filters.search")}/>
-                        </div>
-
-                        <div className={'relative w-[20%]'}>
                             <MyCalendar
                                 label={t("queriesTranslation.filters.arrival_time")}
                                 value={filters?.from}
                                 onChange={(val) => setFilters({...filters, from: val})}
                             />
 
-                        </div>
-                        <div className={'relative w-[20%]'}>
                             <MyCalendar
+                                size={'small'}
                                 label={t("queriesTranslation.filters.departure_time")}
                                 value={filters?.to}
                                 onChange={(val) => setFilters({...filters, to: val})}
                             />
-
-
                         </div>
-                        <div className={'flex items-center gap-2 '}>
-                            <button
+                        <div className={'  w-max mx-auto    flex items-center gap-2 mt-3  '}>
+                            <Button className={'dark:hover:bg-navBgHover dark:border-darkText dark:text-darkText'}
+                                variant="outlined"
+                                color={'myPurple'}
                                 onClick={() => {
                                     setFilters({
                                         search: "",
@@ -141,64 +174,39 @@ function Queries() {
                                         }
                                     )
                                 }}
-                                className="relative overflow-hidden rounded font-semibold bg-transparent border-2 text-blue border-blue   transition-all duration-300 ease-in-out  hover:text-white hover:bg-blue py-[6px] px-3 dark:hover:bg-navBgHover dark:border-darkText dark:text-darkText"
+
                             >
                                 {t("queriesTranslation.filters.clear_input")}
 
-                            </button>
-                            <button
+                            </Button>
+                            <Button className={'dark:hover:bg-navBgHover dark:border-darkText dark:text-darkText'}
+                                variant="outlined"
+                                color={'myPurple'}
                                 onClick={() => getQueries(pageqq, filters)}
 
-                                className="  relative overflow-hidden rounded font-semibold bg-transparent border-2 text-blue border-blue transition-all duration-300 ease-in-out  hover:text-white hover:bg-blue py-[6px] px-3 dark:hover:bg-navBgHover dark:border-darkText dark:text-darkText"
-                            >
+                             >
                                 <i className="fa-solid fa-magnifying-glass mr-2"></i>
                                 {t("queriesTranslation.filters.search")}
 
-                            </button>
+                            </Button>
                         </div>
+
                     </div>
-
-                    <div className={'flex items-center gap-2'}>
-                        <Button
-                            variant="contained"
-                            size="large"
-                            color={'success'}
-                            onClick={() => {
-                                dispatch(openExcelModal())
-                            }}
-                        >
-                            <i className="fa-solid fa-table mr-2"></i> excel
-
-                        </Button>
-                        <Button
-                            variant="contained"
-                            size="large"
-                            color={'success'}
-                            sx={{
-                                background: "#1D2D5B"
-                            }}
-                            onClick={() => navigate("/queries/create")}
-                        >
-                            <i className={'fas fa-plus mr-2'}></i>{t('queriesTranslation.add')}
-                        </Button>
-                    </div>
-
 
                 </div>
 
-                <div className={'grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3  gap-4'}>
+
+                <div className={'grid grid-cols-1 md:grid-cols-2 xl:grid-cols-3 2xl:grid-cols-4   gap-4'}>
                     {loading ? <Loading/> :
                         queries?.data?.length === 0 ? <NotFound/> : queries?.data?.map((item, index) => (
-                            <QueriesCard transaction={item} index={index}/>
+                            <QueriesCard key={item.id || index} transaction={item} index={index}/>
                         ))
                     }
-
-
                 </div>
             </div>
 
             <div className="flex items-center justify-end w-[90%] mx-auto pb-5">
-                <PaginationFooter total={queries}/>
+                <PaginationFooter total={queries} search={filters} onClick={getQueries}/>
             </div>
 
             <LogisticsInterface/>

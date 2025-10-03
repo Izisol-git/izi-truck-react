@@ -16,8 +16,7 @@ function CustomersDetail() {
        try {
            const res = await dispatch(ClientId(id)).unwrap()
            setData(res.data)
-           console.log(res)
-       }
+        }
        catch(e) {
            console.log(e)
        }

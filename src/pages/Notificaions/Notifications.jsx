@@ -22,8 +22,7 @@ function Notifications(props) {
     const getAll = async () => {
         try {
             const  res = await dispatch(getNotifications()).unwrap();
-            console.log(res)
-            // setNotificationData(res.messages);
+             // setNotificationData(res.messages);
         }catch(err){
             console.log(err);
         }
@@ -31,18 +30,15 @@ function Notifications(props) {
     const getAllChats = async () => {
         try {
             const  res = await dispatch(getCahts()).unwrap();
-            console.log(res)
-            setTotal(res)
+             setTotal(res)
             setNotificationData(res);
         }catch(err){
             console.log(err);
         }
     }
-    // console.log(notificationData);
 
     useEffect(()=>{
-        console.log('ishladi')
-        getAll()
+         getAll()
         getAllChats()
     } , [])
 

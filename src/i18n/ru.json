@@ -56,6 +56,8 @@
   "export": "Экспорт",
   "export_to_excel": "Скачать в Excel",
   "ordersTranslation" : {
+    "no_data": "Не указано",
+
     "driver": "Bодитель",
     "carrier": "Перевозчик",
     "sending": "Отправка...",
@@ -161,6 +163,7 @@
   },
 
   "queriesTranslation" : {
+    "queries": "Запросы",
 
     "_comment": "*************************** Bu qism excel uchun  *******************************",
 
@@ -631,6 +634,8 @@
     }
   },
   "OrdersSnackbar": {
+    "invalid_document": "Неверный JSON документа. Ключ не совпал",
+
     "success": {
       "appointDriverSuccess": "Водитель успешно назначен",
       "create": "Заказ успешно создан!",

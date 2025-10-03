@@ -39,11 +39,13 @@ const Invoices = () => {
             const res = await dispatch(getInvoices(obj)).unwrap()
             setTotal(res);
             setEmployeesData(res);
-            if (res?.success === false) {
-                dispatch(openInvoicesModal());
-            }
+            console.log(res)
+
         } catch (e) {
             console.log("error", e);
+            if (e?.success === false) {
+                dispatch(openInvoicesModal());
+            }
         }
     };
 
@@ -63,9 +65,10 @@ const Invoices = () => {
     async  function handleSignSuccess({ pkcs7, hex, tin }) {
         console.log("✅ Imzo muvaffaqiyatli", { pkcs7, hex, tin });
         const sendData = { data: pkcs7, hex: hex, tin: tin };
-        try{
+         try{
             const res = await dispatch(EimzoConnection(sendData)).unwrap()
-            if (res.data?.success === true) {
+            console.log(res)
+            if (res?.success === true) {
                 fetchInvoices();
             }
         }
@@ -118,7 +121,7 @@ const Invoices = () => {
     return (
         <div className={"bg-bacWhite min-h-[calc(100dvh-70px)] dark:bg-darkBg"}>
             <div className={"w-[90%] mx-auto flex items-center py-5 justify-between"}>
-                <p className={"text-2xl text-blue font-semibold"}>{t('invoices.invoices')}</p>
+                <p className={"text-2xl text-blue font-semibold dark:text-darkText"}>{t('invoices.invoices')}</p>
                 <button
                     onClick={() => dispatch(openInvoicesModal())}
                     className={

@@ -7,6 +7,7 @@ const employesModalSlice = createSlice({
         isClose: false,
         isOpenQueriesShow : false,
         isOpenHistory: false,
+        isOpenNavbarY: JSON.parse(localStorage.getItem("navbarY")) ?? false,
         isCloseHistory: false,
         isOpenComments: false,
         isCloseComments: false,
@@ -16,7 +17,6 @@ const employesModalSlice = createSlice({
         isCloseOffersModal: false,
         isOpenExcelModal: false,
         isCloseExcelModal: false,
-        employeesPaginationPage : localStorage.getItem('EmployeesPge'),
         addEditToggle: true,
         addEditToggleDrivers: true,
         clientsUpdetId:null,
@@ -47,6 +47,14 @@ const employesModalSlice = createSlice({
             state.isOpenHistory = true;
             state.isCloseHistory = false;
         },
+        openCloseNavbarY: (state) => {
+            localStorage.setItem('navbarY' , !state.isOpenNavbarY);
+            state.isOpenNavbarY = !state.isOpenNavbarY;
+         },
+        CloseNavbarY: (state) => {
+            localStorage.setItem('navbarY' , false);
+            state.isOpenNavbarY = false;
+         },
         closeModalHistory: (state) => {
             state.isCloseHistory = true;
             state.isOpenHistory = false;
@@ -79,31 +87,19 @@ const employesModalSlice = createSlice({
             state.isOpenExcelModal = true;
             state.isCloseExcelModal = false;
         },
-        closeContractsModal: (state) => {
-            state.addContractsModal = false;
-        },
-        openContractsModal: (state) => {
-            state.addContractsModal = true;
-        },
+
         closeExcelModal: (state) => {
             state.isCloseExcelModal = true;
             state.isOpenExcelModal = false;
         },
-        changeEmployeesPge: (state , action) => {
-            state.employeesPaginationPage = action.payload;
-            localStorage.setItem('EmployeesPage' , action.payload);
-            console.log(action);
-            console.log(state.employeesPaginationPage);
-        },
+
         EditToggle: (state) => {
             state.addEditToggle = false;
         },
         AddToggle: (state) => {
             state.addEditToggle = true;
         },
-        EditToggleDrivers: (state) => {
-            state.addEditToggleDrivers = false;
-        },
+
         AddToggleDrivers: (state) => {
             state.addEditToggleDrivers = true;
         },
@@ -119,15 +115,11 @@ const employesModalSlice = createSlice({
         ClientsUpdetId: (state , action) => {
             state.clientsUpdetId = action.payload;
         },
-        AddEmployeesId: (state , action) => {
-            state.employeesId= action.payload;
-        },
+
         AddOffersId: (state , action) => {
             state.offersId= action.payload;
         },
-        AddCustomersId: (state , action) => {
-            state.customersId= action.payload;
-        },
+
         AddQueriesId: (state , action) => {
             state.queriesId= action.payload;
         },
@@ -137,5 +129,5 @@ const employesModalSlice = createSlice({
     },
 });
 
-export const {openQueriesShow ,AddOffersId, AddToggleOffers ,EditToggleOffers,   AddQueriesId,  openModal ,AddEmployeesId,changeDbOrders ,  AddCustomersId,closeContractsModal , openContractsModal , openExcelModal , closeExcelModal ,  closeModal,DriversId, ClientsUpdetId,EditToggleDrivers , AddToggleDrivers, changeEmployeesPge, AddToggle , EditToggle, closeOffersModal , openOffersModal, closeInvoicesModal , openInvoicesModal, closeModalHistory , openModalHistory , closeModalComments , openModalComments } = employesModalSlice.actions;
+export const {openQueriesShow , openCloseNavbarY , CloseNavbarY, AddOffersId, AddToggleOffers ,EditToggleOffers,   AddQueriesId,  openModal ,changeDbOrders  , openExcelModal , closeExcelModal ,  closeModal,DriversId, ClientsUpdetId , AddToggleDrivers, AddToggle , EditToggle, closeOffersModal , openOffersModal, closeInvoicesModal , openInvoicesModal, closeModalHistory , openModalHistory , closeModalComments , openModalComments } = employesModalSlice.actions;
 export default employesModalSlice.reducer;

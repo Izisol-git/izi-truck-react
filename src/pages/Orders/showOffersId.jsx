@@ -1,8 +1,5 @@
 import React, {useEffect} from 'react';
 import {
-    OffersCard,
-    OffersOrders,
-    OffersOrdersCarrier,
     PaginationFooter,
     ShowOffersTable
 } from "../../Components/index.js";
@@ -22,8 +19,7 @@ function ShowOffersId() {
     const getSuggestionId = async (offersId) => {
         try {
             const res = await dispatch(getSuggestionsId(offersId)).unwrap()
-            console.log(res);
-        }catch (error) {
+         }catch (error) {
             console.log(error);
         }
     }
@@ -38,8 +34,8 @@ function ShowOffersId() {
 
     return (
 
-        <div className={'bg-bacWhite w-full min-h-[calc(100dvh-70px)] py-5'}>
-            <div className={'w-[90%] bg-white px-4 mx-auto py-5 rounded-md shadow'}>
+        <div className={'bg-bacWhite w-full min-h-[calc(100dvh-70px)] py-5 dark:bg-darkBg'}>
+            <div className={'w-[90%] bg-white px-4 mx-auto py-5 rounded-md shadow dark:bg-darkBgTwo'}>
                 <div className={'h-[40px] gap-4 relative    text-center  center w-full  '}>
                     <div className={'w-max absolute top-0  left-0'} onClick={() => navigate(-1)}>
                         <Button
@@ -52,16 +48,16 @@ function ShowOffersId() {
                             {t("ordersTranslation.back_to_orders")}
                         </Button>
                     </div>
-                    <p className={'text-blue font-bold text-xl '}>
+                    <p className={'text-blue font-bold text-xl dark:text-darkText '}>
                         {t('offersOrdersCarrier.answered_suggestions')}
                     </p>
                 </div>
 
             </div>
-            <div className={'w-[90%] mx-auto bg-white px-4 py-5  mt-5 rounded-md shadow'}>
-                <div>
+            <div className={'w-[90%] mx-auto bg-white   mt-5 rounded-md shadow dark:bg-darkBg'}>
+                {/*<div>*/}
                     <ShowOffersTable data={suggestionsId}/>
-                </div>
+                {/*</div>*/}
             </div>
             <div className={'w-[90%] mx-auto  mt-5'}>
 

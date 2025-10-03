@@ -30,7 +30,7 @@ const {t} = useTranslation();
                 onClick={() => {
                     setActiveStatus('');
                     setFilters({ ...filters, search_status: 2 });
-                    onClick({ ...filters, search_status: 2 }, pageqq);
+                    onClick(pageqq , { ...filters, search_status: 2 });
                 }}
                 sx={{
                     px: "15px",
@@ -63,7 +63,7 @@ const {t} = useTranslation();
                 onClick={() => {
                     setActiveStatus(0);
                     setFilters({ ...filters, search_status: 0 });
-                    onClick({ ...filters, search_status: 0 }, pageqq);
+                    onClick(pageqq ,{ ...filters, search_status: 0 });
                 }}
                 sx={{
                     px: "15px",
@@ -96,7 +96,7 @@ const {t} = useTranslation();
                 onClick={() => {
                     setActiveStatus(1);
                     setFilters({ ...filters, search_status: 1 });
-                    onClick({ ...filters, search_status: 1 }, pageqq);
+                    onClick(pageqq ,{ ...filters, search_status: 1 });
                 }}
                 sx={{
                     px: "15px",

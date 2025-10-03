@@ -74,7 +74,6 @@ const  ExcelModal =({data , mode , selectedKeys , setSelectedKeys , page , searc
         }
     };
 
-    console.log(selectedKeys);
 
 
     useEffect(() => {

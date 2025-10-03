@@ -119,7 +119,7 @@ function OffersOrdersCarrier({mode, indexData}) {
         })
         setError(null);
         document.body.style.overflow = isOpenOffersModal ? "hidden" : "auto";
-    }, [isOpenOffersModal]);
+    }, []);
 
     return (
         <>
@@ -153,7 +153,7 @@ function OffersOrdersCarrier({mode, indexData}) {
                             onClick={() => dispatch(closeOffersModal())}
                             className="w-[30px] center h-[30px] hover:bg-gray-200 dark:hover:bg-gray-700 rounded"
                         >
-                            <i className="fa-solid fa-xmark text-blue"></i>
+                            <i className="fa-solid fa-xmark text-blue dark:text-darkText"></i>
                         </div>
                     </div>
 

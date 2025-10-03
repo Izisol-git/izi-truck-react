@@ -19,8 +19,7 @@ function NotificationsDetails() {
     const getAll = async () => {
         try {
             const res = await dispatch(getNotifications()).unwrap();
-            console.log(res)
-            // setNotificationData(res.messages);
+             // setNotificationData(res.messages);
         } catch (err) {
             console.log(err);
         }
@@ -29,8 +28,7 @@ function NotificationsDetails() {
     const getChatsId = async () => {
         try {
             const res = await dispatch(getAllChatsID(id)).unwrap();
-            console.log(res);
-            setChatsData(res.messages);
+             setChatsData(res.messages);
             setChatUser(res.chat);
         } catch (error) {
             console.log(error);

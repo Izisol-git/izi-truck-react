@@ -47,12 +47,15 @@ export default function OrderLogisticsCard({order}) {
 
     return (
         <Card
-            onDoubleClick={() => {
-                navigate(`/orders/${order?.id}`)
-                dispatch(changeDbOrders(order?.source))
-                localStorage.setItem("dbOrders", order?.source)
-            }}
-            className="mx-auto rounded-xl"
+            // sx={{
+            //     background:'green'
+            // }}
+            // onDoubleClick={() => {
+            //     navigate(`/orders/${order?.id}`)
+            //     dispatch(changeDbOrders(order?.source))
+            //     localStorage.setItem("dbOrders", order?.source)
+            // }}
+            className="mx-auto rounded-xl "
         >
             {/* Header */}
             <div className="bg-gradient-to-r bg-[#DBE3F5] text-white p-2 flex justify-between items-center rounded-br-lg rounded-bl-lg dark:bg-navBgHover">
@@ -65,8 +68,8 @@ export default function OrderLogisticsCard({order}) {
                 <Chip label={`${dayjs(order?.created_at).fromNow()}`} color="error" />
             </div>
 
-            <CardContent>
-                <div className="grid grid-cols-1 md:grid-cols-2 xl:grid-cols-3 gap-4">
+            <CardContent className={` ${order?.act_date ? 'bg-green-200' : ''} `}  >
+                <div className="grid grid-cols-1 md:grid-cols-2 xl:grid-cols-3 gap-4 ">
                     {/* Order Details */}
                     <div className="flex flex-col h-full">
                         <div className="flex items-center gap-2 font-semibold text-blue pb-2 whitespace-nowrap dark:text-darkText">
@@ -169,7 +172,7 @@ export default function OrderLogisticsCard({order}) {
                                             <div className="flex items-center gap-2 mb-1">
                         <span className="font-semibold text-gray-900 dark:text-darkText">
                           {order?.created_at
-                              ? new Date(order.created_at).toLocaleDateString("ru-RU")
+                              ? new Date(order.shipment_date).toLocaleDateString("ru-RU")
                               : "----"}
                         </span>
                                                 <Chip
@@ -188,9 +191,9 @@ export default function OrderLogisticsCard({order}) {
                                         <div className="flex-1 pt-1">
                                             <div className="flex items-center gap-2 mb-1">
                         <span className="font-semibold text-gray-900 dark:text-darkText">
-                          {order?.updated_at
-                              ? new Date(order.updated_at).toLocaleDateString("ru-RU")
-                              : "----"}
+                         {order?.act_date
+                             ? new Date(order.act_date).toLocaleDateString("ru-RU")
+                             : t('ordersTranslation.no_data')}
                         </span>
                                                 <Chip
                                                     size="small"
@@ -210,7 +213,7 @@ export default function OrderLogisticsCard({order}) {
                 </div>
             </CardContent>
 
-            <div className="bg-[#DBE3F5] mt-4 rounded-tr-lg rounded-tl-lg overflow-hidden text-center flex items-center justify-between dark:bg-navBgHover">
+            <div className="bg-[#DBE3F5]   rounded-tr-lg rounded-tl-lg overflow-hidden text-center flex items-center justify-between dark:bg-navBgHover">
                 <div className="flex items-center gap-5 px-4 py-2 ">
                     <p className="text-sm font-semibold text-blue dark:text-darkText">
                         {t("ordersTranslation.ordersCard.payment")}

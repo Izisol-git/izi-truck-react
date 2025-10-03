@@ -7,6 +7,7 @@ import {addDidoxId} from "../../features/orders/ordersThunks.js";
 import Stack from "@mui/material/Stack";
 import Alert from "@mui/material/Alert";
 import {useTranslation} from "react-i18next";
+import useNotify from "../../hooks/UseNotify/useNotify.jsx";
 
 // import { Label } from "@/components/ui/label"
 
@@ -19,6 +20,8 @@ function Didox() {
     const dbOrders = localStorage.getItem("dbOrders");
     const {addDidox} = useSelector((state) => state.orders);
     const [message, setMessage] = React.useState("");
+    const {showMessage} = useNotify()
+
 
 
     const [error, setError] = React.useState(null);
@@ -74,8 +77,7 @@ function Didox() {
 
 
     const didox = async () => {
-        console.log(didoxData);
-        const newObj = {
+         const newObj = {
             type: 'reimbursement_carrier',
             ikpu: didoxData?.ikpus?.id,
             factura_type: didoxData?.factura_types?.id,
@@ -85,10 +87,10 @@ function Didox() {
             nds12: didoxData?.nds12,
             lgota_id: didoxData?.lgota_id,
         }
-        console.log(newObj);
-        try {
+         try {
             const res = await dispatch(addDidoxId({id, obj: newObj})).unwrap()
             setMessage("Ma'lumot muvaffaqiyatli saqlandi ✅");
+
             setDidoxData({
                 factura_types: null,
                 ikpus: null,
@@ -101,13 +103,9 @@ function Didox() {
         } catch (err) {
             console.log(err);
             setError(err.errors);
-
+             showMessage(t('OrdersSnackbar.invalid_document') , "error")
         }
     }
-    console.log(error);
-
-
-    console.log(didoxData);
 
 
     return (

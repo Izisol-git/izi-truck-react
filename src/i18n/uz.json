@@ -53,6 +53,7 @@
   "export": "Yuklab olish",
   "export_to_excel": "Excelga yuklab olish",
   "ordersTranslation": {
+    "no_data": "Ma'lum emas",
     "driver": "Haydovchi",
     "carrier": "Yuk tashuvchi",
     "sending": "Yuborilmoqda...",
@@ -155,7 +156,7 @@
     "sent_documents": "Yuborilgan hujjatlar"
   },
   "queriesTranslation": {
-
+    "queries": "So'rovlar",
     "_comment": "*************************** Bu qism excel uchun  *******************************",
 
     "id": "ID",
@@ -620,6 +621,7 @@
     }
   },
   "OrdersSnackbar": {
+    "invalid_document": "Xato hujjat JSON. Kalit mos kelmadi",
     "success": {
       "appointDriverSuccess": "Haydovchi biriktirildi",
       "create": "Buyurtma muvaffaqiyatli yaratildi!",

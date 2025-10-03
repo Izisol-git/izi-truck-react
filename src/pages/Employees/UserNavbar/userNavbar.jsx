@@ -15,8 +15,7 @@ const UserNavbar = ({value, columnsArry, setColumnsArry, openModal}) => {
         const newArray = [...columnsArry]
         newArray[index].active = !newArray[index].active;
         setColumnsArry(newArray);
-        console.log(newArray);
-    }
+     }
 
     const title =()=>{
         if(value === "Customers" ){

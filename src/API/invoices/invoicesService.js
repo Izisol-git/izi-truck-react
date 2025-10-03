@@ -16,7 +16,7 @@ class InvoiceService {
         return res.data;
     }
     async logout() {
-        const res = await axios.delete(`/invoices/logout`);
+        const res = await axios.get(`/invoices/logout`);
         return res.data;
     }
 }

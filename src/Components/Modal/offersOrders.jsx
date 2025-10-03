@@ -74,8 +74,7 @@ function OffersOrders() {
                 }
             }
 
-            console.log(res);
-        } catch (e) {
+         } catch (e) {
             console.error(e);
             showMessage(t('OffersSnackbar.error.edit') , 'error');
         }
@@ -129,12 +128,12 @@ function OffersOrders() {
                 <div className={"pb-4"}>
                     {/* Header */}
                     <div className={"flex items-center justify-between p-4"}>
-                        <p className={"text-blue font-bold"}>{addEditToggleOffers ? t("offersOrders.writeYourOffer") : "Edit"}</p>
+                        <p className={"text-blue font-bold dark:text-darkText"}>{addEditToggleOffers ? t("offersOrders.writeYourOffer") : "Edit"}</p>
                         <div
                             onClick={() => dispatch(closeOffersModal())}
                             className={"w-[30px] center h-[30px] hover:bg-gray-200 dark:hover:bg-gray-700 rounded"}
                         >
-                            <i className="fa-solid fa-xmark text-blue"></i>
+                            <i className="fa-solid fa-xmark text-blue dark:text-darkText"></i>
                         </div>
                     </div>
 
@@ -224,7 +223,7 @@ function OffersOrders() {
                         >
                             {t("offersOrders.close")}
                         </Button>
-                        <Button
+                        <Button className={'dark:hover:bg-navBgHover dark:border-darkText dark:text-darkText'}
                             sx={{borderColor: "#1D2D5B", width: "50%", color: "#1D2D5B"}}
                             variant="outlined"
                             color="primary"

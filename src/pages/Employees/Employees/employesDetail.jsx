@@ -15,7 +15,6 @@ function EmployesDetail() {
         try {
             const res = await dispatch(EmployeesId(id)).unwrap()
             setData(res.data)
-            console.log(res)
 
         }catch(err){
             console.log(err)

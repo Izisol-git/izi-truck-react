@@ -4,9 +4,9 @@ import { AdapterDateFns } from '@mui/x-date-pickers/AdapterDateFns';
 import { DatePicker } from '@mui/x-date-pickers/DatePicker';
 import TextField from '@mui/material/TextField';
 
-function MyCalendar({ label, value, onChange, disabled, disablePortal = false, errorMessage }) {
+function MyCalendar({ label, value, onChange, disabled, disablePortal = false, errorMessage , size }) {
     return (
-        <LocalizationProvider dateAdapter={AdapterDateFns}>
+        <LocalizationProvider   dateAdapter={AdapterDateFns}>
             <DatePicker
                 disablePortal={disablePortal}
                 disabled={disabled}
@@ -14,7 +14,7 @@ function MyCalendar({ label, value, onChange, disabled, disablePortal = false, e
                 value={value ? new Date(value) : null}
                 onChange={onChange}
                 slotProps={{
-                    textField: {
+                     textField: {
                         size: "small",
                         fullWidth: true,
                         error: !!errorMessage,

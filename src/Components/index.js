@@ -2,7 +2,8 @@ export {default as Input} from "./Inputs/input.jsx";
 export {default as LanguageDropdown} from "./lng/lng.jsx";
 export {default as ProfileDropdown} from "./Profile/profile.jsx";
 export {default as Button} from "./Buttons/button.jsx";
-export {default as Navbar} from "./Navbar/navbarY.jsx";
+export {default as Navbar} from "./Navbar/navbarX.jsx";
+export {default as NavbarY} from "./Navbar/navbarY.jsx";
 export {default as TruckLoadPieChart} from "./Charts/truckLoadPieChart.jsx";
 export {default as OrdersChartPlaceholder} from "./Charts/ordersChartPlaceholder.jsx";
 export {default as EmployeesPagination} from "./Pagination/EmployeesPagination.jsx";
@@ -53,3 +54,4 @@ export {default as StatisticsFilter} from "./StatisticsFilter/statisticsFilter.j
 export {default as OffersCard} from "./Offerscard/offerscard.jsx";
 export {default as LoadingCircular} from "./Loading/LoadingCircular.jsx";
 export {default as NotFound} from "./NotFound/notFound.jsx";
+export {default as DateRange} from "./DateRange/DateRange.jsx";

@@ -40,6 +40,8 @@ function Root() {
     const theme = useMemo(
         () =>
             createTheme({
+
+
                 palette: {
                     mode,
                     primary: { main: "#1976d2" },
@@ -50,11 +52,55 @@ function Root() {
                             paper: "#303030",
                         },
                     }),
+                    myPurple: {
+                        main: '#1D2D5B',
+                        contrastText: '#fff',
+                    },
+                },
+                typography: {
+                    fontSize: 16, // default font-size
                 },
                 components: {
-                    MuiButton: {
+                    MuiCssBaseline: {
                         styleOverrides: {
                             root: { fontWeight: 500 },
+
+                            body: {
+                                fontSize: "16px",
+                                "@media (max-width:1024px)": {
+                                    fontSize: "12px",
+                                },
+                            },
+                        },
+                    },
+                    MuiInputBase: {
+                        styleOverrides: {
+                            root: {
+                                fontSize: "16px",
+                                "@media (max-width:1024px)": {
+                                    fontSize: "12px",
+                                },
+                            },
+                        },
+                    },
+                    MuiInputLabel: {
+                        styleOverrides: {
+                            root: {
+                                fontSize: "16px",
+                                "@media (max-width:1024px)": {
+                                    fontSize: "12px", // label text
+                                },
+                            },
+                        },
+                    },
+                    MuiButton: {
+                        styleOverrides: {
+                            root: {
+                                fontSize: "16px",
+                                "@media (max-width:1024px)": {
+                                    fontSize: "12px",
+                                },
+                            },
                         },
                     },
                 },

@@ -13,7 +13,6 @@ import {CurrencyInput, InputMUI, LoadingCircular, MyCalendar, SelectMUI} from ".
 import {Button, TextareaAutosize} from "@mui/material";
 import {useTranslation} from "react-i18next";
 import useNotify from "../../hooks/UseNotify/useNotify.jsx";
-import {LoaderCircle} from "lucide-react";
 
 function QueriesFrom({mode}) {
     const {id} = useParams();
@@ -51,8 +50,7 @@ function QueriesFrom({mode}) {
             const res = await dispatch(getAllSelect(
                 {params: `?country_of_departure=${formData?.country_of_departure}&region_of_departure=${formData?.region_of_departure}&city_of_departure${formData?.city_of_departure}&country_of_destination=${formData?.country_of_destination}&region_of_destination=${formData?.region_of_destination}&city_of_destination${formData?.city_of_destination}`}
             )).unwrap()
-            console.log(res)
-            setAllSelect(res)
+             setAllSelect(res)
         } catch (error) {
             console.error(error);
         }
@@ -73,7 +71,6 @@ function QueriesFrom({mode}) {
                         to: ''
                     }
                 })).unwrap()
-                // console.log(res2)
 
             } catch (error) {
                 console.error(error)
@@ -86,8 +83,7 @@ function QueriesFrom({mode}) {
     useEffect(() => {
 
         if (queriesId && mode === "edit") {
-            console.log(queriesId);
-            setFormData({
+             setFormData({
                 client_id: queriesId?.client_id || "",
                 title: queriesId?.title || "",
                 status_of_cargo: queriesId?.status_of_cargo || 0,
@@ -113,8 +109,7 @@ function QueriesFrom({mode}) {
     const getQueriesId = async () => {
         try {
             const res = await dispatch(GetQueriesId(id)).unwrap()
-            // console.log(res.query);
-            try {
+             try {
                 const res2 = await dispatch(getAllSelect(
                     {
                         params: `?country_of_departure=${queriesId?.from_address[0]?.from_country}&region_of_departure=${queriesId?.from_address[0]?.from_region}&city_of_departure=${queriesId?.from_address[0]?.from_city}&country_of_destination=${queriesId?.to_address[0]?.to_country}&region_of_destination=${queriesId?.to_address[0]?.to_region}&city_of_destination=${queriesId?.to_address[0]?.to_city}`
@@ -132,8 +127,7 @@ function QueriesFrom({mode}) {
     useEffect(() => {
         if (mode === 'edit' && !queriesId?.id) {
             getQueriesId()
-            console.log('ishladi')
-        }
+         }
     }, [])
 
 
@@ -159,11 +153,6 @@ function QueriesFrom({mode}) {
         formData?.region_of_destination,
         formData?.city_of_destination
     ])
-    // useEffect(() => {
-    //         if (mode === 'edit') {
-    //             getQueriesSelect()
-    //         }
-    //     },[])
 
 
     const createQuerie = async () => {
@@ -184,9 +173,6 @@ function QueriesFrom({mode}) {
                         to: ''
                     }
                 })).unwrap()
-                // console.log(res2)
-
-
             } catch (error) {
                 console.error(error)
             }
@@ -212,8 +198,6 @@ function QueriesFrom({mode}) {
                         to: ''
                     }
                 })).unwrap()
-                // console.log(res2)
-
             } catch (error) {
                 console.error(error)
             }

@@ -4,9 +4,8 @@ import {
     InputMUI,
     SelectMUI,
     OrdersCard,
-    OffersOrders,
-    Loading,
-    PaginationFooter, OffersOrdersCarrier, NotFound
+     Loading,
+    PaginationFooter, NotFound
 } from "../../Components/index.js";
 import {OrdersDropDown} from "../../Components/index.js";
 import TouchRipple from "@mui/material/ButtonBase/TouchRipple";
@@ -19,16 +18,13 @@ import {useTranslation} from "react-i18next";
 
 
 function Orders() {
-    const {user} = useSelector((state) => state.auth);
     const {t} = useTranslation();
     const [activeStatus, setActiveStatus] = useState();
     const [showSearch, setShowSearch] = useState('false');
     const navigate = useNavigate();
     const dispatch = useDispatch();
-    const [suggestions, setSuggestions] = useState();
     const [searchParams] = useSearchParams();
     const pageqq = searchParams.get("page") || 1;
-    // const [ordersData, setOrdersData] = useState();
     const {orders , addOrdersDate} = useSelector((state) => state.orders);
     const {loading} = useSelector((state) => state.orders);
     const [selectedKeys, setSelectedKeys] = useState([]);
@@ -46,7 +42,7 @@ function Orders() {
         to_date: "",
     });
 
-    const findOrders = async (filters, pageqq) => {
+    const findOrders = async ( pageqq ,filters) => {
        try {
            const res = await dispatch(getFilteredOrders({filters: filters, pageqq: pageqq})).unwrap()
        }
@@ -58,9 +54,8 @@ function Orders() {
         const now = Date.now()
         const lastFetch = addOrdersDate ? new Date(addOrdersDate).getTime() : Number(localStorage.getItem("refreshValue"));
         const diff = now - lastFetch;
-
         if(orders.length === 0 || diff >= Number(localStorage.getItem("refreshValue"))) {
-          findOrders(filters, pageqq)
+          findOrders(pageqq ,filters)
         }
     }, [pageqq]);
 
@@ -152,7 +147,7 @@ function Orders() {
                                 handleClick(e, rippleRefs.add)
                                 navigate('/orders/create')
                             }}
-                            className="relative overflow-hidden rounded bg-[#A855F7] dark:bg-btnBgDark text-white py-2 px-3"
+                            className="relative overflow-hidden rounded bg-violet-500 dark:bg-btnBgDark text-white py-2 px-3"
                         >
                             <i className="fas fa-plus mr-2"></i> {t("ordersTranslation.add")}
                             <TouchRipple ref={rippleRefs.add} center={false}/>
@@ -239,14 +234,14 @@ function Orders() {
                     <button
                         onClick={() => {
                             findOrders({
+                                 pageqq,
                                 filters: {
                                     search: "",
                                     search_status: null,
                                     db: "",
                                     from_date: "",
                                     to_date: ""
-                                },
-                                pageqq
+                                }
                             })
                             setActiveStatus("")
                             setFilters({
@@ -272,7 +267,7 @@ function Orders() {
                             {t("ordersTranslation.filters.close")}
                         </button>
                         <button
-                            onClick={() => findOrders(filters, pageqq)}
+                            onClick={() => findOrders(pageqq ,filters)}
                             className="w-36 relative overflow-hidden rounded font-semibold bg-transparent border-2 text-blue border-blue transition-all duration-300 ease-in-out hover:text-white hover:bg-blue py-2 px-3 dark:hover:bg-navBgHover dark:border-darkText dark:text-darkText"
                         >
                             {t("ordersTranslation.filters.search")}
@@ -281,6 +276,8 @@ function Orders() {
                 </div>
 
             </div>
+
+
             <div className={'w-[90%] mx-auto pb-5 grid grid-cols-2 3xl:grid-cols-3 gap-4'}>
 
 
@@ -295,7 +292,7 @@ function Orders() {
 
             </div>
             <div className={'flex items-center justify-end w-[90%] mx-auto pb-5'}>
-                <PaginationFooter filters={filters} onClick={findOrders} total={orders}/>
+                <PaginationFooter search={filters} onClick={findOrders} total={orders} />
             </div>
 
             <ExcelModal search={filters} selectedKeys={selectedKeys} setSelectedKeys={setSelectedKeys}

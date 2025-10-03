@@ -53,6 +53,8 @@
   "export": "Юклаб олиш",
   "export_to_excel": "Excelга юклаб олиш",
   "ordersTranslation": {
+    "no_data": "Маълум эмас",
+
     "driver": "Хайдовчи",
     "carrier": "Юк ташувчи",
     "sending": "Юборилмоқда...",
@@ -158,6 +160,7 @@
   },
 
   "queriesTranslation" : {
+    "queries": "Сўровлар",
 
     "_comment": "*************************** Bu qism excel uchun  *******************************",
 
@@ -628,6 +631,8 @@
     }
   },
   "OrdersSnackbar": {
+    "invalid_document": "Хато ҳужжат JSON. Калит мос келмади",
+
     "success": {
       "appointDriverSuccess": "Ҳaydовчи бириктирилди",
       "create": "Буюртма муваффақиятли яратилди!",

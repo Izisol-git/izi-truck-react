@@ -17,11 +17,9 @@ import FormControlLabel from "@mui/material/FormControlLabel";
 import Radio from "@mui/material/Radio";
 import FormControl from "@mui/material/FormControl";
 import {isArray} from "chart.js/helpers";
-import {getQueriesAll} from "../../features/Queries/queriesThunks.js";
 import {Button} from "@mui/material";
 import {useTranslation} from "react-i18next";
 import FileButton from "../Buttons/fileButton.jsx";
-import api from "../../API/api.js";
 import useNotify from "../../hooks/UseNotify/useNotify.jsx";
 
 function OrdersFrom({mode}) {
@@ -68,8 +66,6 @@ function OrdersFrom({mode}) {
         nature_of_cargo: "",
         palets: "",
         special_conditions: "",
-        // points: {},
-        // point: {},
         sender_contact: "",
         receiver_contact: "",
         carrier_currency_transfer: "",
@@ -82,18 +78,11 @@ function OrdersFrom({mode}) {
         degree_of_danger: "",
         status_of_cargo_file: "",
     });
-    const [rows, setRows] = useState([]);
     const {ordersId} = useSelector((state) => state.orders);
     const allSelect = useSelector((state) => state.orders.ordersSelect);
     const {user} = useSelector((state) => state.auth);
     const [errors, setErrors] = useState({});
-    // const [formApPoint, setFormApPoint] = useState({
-    //     status_of_cargo_file:  '',
-    //     degree_of_danger:  '',
-    // });
-
     const getSelectAll = async (params) => {
-        // if(mode !== "show"){
         try {
             const res = await dispatch(ordersSelect(
                 {params}
@@ -174,7 +163,6 @@ function OrdersFrom({mode}) {
 
     const EditOrder = async (id, formData) => {
 
-
         const obj = {
             ...formData,
             carrier_id: user?.user?.id,
@@ -241,7 +229,6 @@ function OrdersFrom({mode}) {
 
 
     const addOrders = async () => {
-        // console.log(formData)
         const obj = {
             // ...formData,
             trailer_floor_volume: formData.trailer_floor_volume,
@@ -294,10 +281,6 @@ function OrdersFrom({mode}) {
             degree_of_danger: formData.degree_of_danger?.id,
             status_of_cargo_file: formData.status_of_cargo_file[0],
         }
-        // rows.forEach((row, index) => {
-        //     if (row.point && row.point.id) obj[`point[${index}]`] = row.point.id;
-        //     if (row.point_price) obj[`point_price[${index}]`] = row.point_price;
-        // });
 
         try {
             const res = await dispatch(addOrder(obj)).unwrap()
@@ -379,7 +362,6 @@ function OrdersFrom({mode}) {
             console.log(error);
         }
     }
-console.log(formData)
 
     const nds = [
         {title: "без ндс", value: 'without_nds'},
@@ -428,13 +410,7 @@ console.log(formData)
         {value: 3, title: "Ярим перечисления"},
     ];
 
-    // const handleAdd = () => {
-    //     setRows([...rows, {id: Date.now(), point: '', point_price: "", value: ''}]);
-    // };
 
-    // const handleRemove = (id) => {
-    //     setRows(rows.filter(row => row.id !== id));
-    // };
 
     // Har bir button uchun alohida ref
     const rippleRefs = {

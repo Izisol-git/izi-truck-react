@@ -1,4 +1,4 @@
-import React, {useEffect, useState} from "react";
+import React from "react";
 import {
     Table,
     TableBody,
@@ -8,7 +8,6 @@ import {
     TableRow,
     Paper,
     TableSortLabel,
-    TablePagination,
     TextField,
 } from "@mui/material";
 import {
@@ -84,14 +83,13 @@ const UserPagination = ({arry, navigateURL, data,onClick,  search, setEmployeesI
                                 dark:[&_.MuiInputLabel-root.Mui-focused]:text-white
                               "
                     />
-
                     {
                         navigateURL !== "invoices"
                             ?
                             <div className="flex items-center ">
                                 <img onClick={() => {
                                     dispatch(openExcelModal())
-                                }} className={'w-8 h-8 cursor-pointer'} src="/public/xls.png" alt="excel"/>
+                                }} className={'w-8 h-8 cursor-pointer'} src="/xls.png " alt="excel"/>
                             </div>
                             :
                             ''
@@ -229,7 +227,6 @@ const UserPagination = ({arry, navigateURL, data,onClick,  search, setEmployeesI
                                             />
                                         )
                                     ))}
-
                                     {data && data.length === 0 && (
                                         <TableRow>
                                             <TableCell colSpan={arry.length + 1} align="center">
@@ -239,10 +236,8 @@ const UserPagination = ({arry, navigateURL, data,onClick,  search, setEmployeesI
                                     )}
                                 </TableBody>
                         }
-
                     </Table>
                 </TableContainer>
-
                 <div className={'py-4 flex items-center justify-end px-4'}>
                     <PaginationFooter onClick={onClick} search={search} total={data}/>
                 </div>

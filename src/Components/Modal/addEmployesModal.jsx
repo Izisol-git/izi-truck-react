@@ -264,7 +264,7 @@ function AddEmployesModal({h1, inputModalArray = [], id , search=''}) {
 
             </div>
             <div
-                className={`${isOpen ? "w-1/3 opacity-1" : "w-0 opacity-0"}   fixed overflow-scroll  scrollbar-hide top-0 right-0 bottom-0 h-[100dvh] bg-white shadow-2xl z-10   transition-all duration-300 ease-in-out   flex flex-col justify-between items-start dark:bg-darkBgTwo dark:shadow-none `}>
+                className={`${isOpen ? "w-[700px] opacity-1" : "w-0 opacity-0"}   fixed overflow-scroll  scrollbar-hide top-0 right-0 bottom-0 h-[100dvh] bg-white shadow-2xl z-10   transition-all duration-300 ease-in-out   flex flex-col justify-between items-start dark:bg-darkBgTwo dark:shadow-none `}>
                 <div className={'w-full px-6 '}>
                     <div
                         className={"flex items-center justify-between border-b     border-blue p-4 dark:border-darkText"}>

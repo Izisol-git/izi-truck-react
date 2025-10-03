@@ -1,4 +1,4 @@
-import { useEffect, useState } from "react";
+import {useEffect, useRef, useState} from "react";
 import {useDispatch, useSelector} from "react-redux";
 import {closeInvoicesModal} from "../../features/EmployeSModalToggle/employesModalToggle.js";
 import {getInvoices, LogoutInvoice} from "../../features/Invoices/invoicesThunks.js";
@@ -13,6 +13,7 @@ export default function ImzoComponent({  onSignSuccess }) {
     const EIMZO_MAJOR = 3;
     const EIMZO_MINOR = 27;
     const {t} = useTranslation();
+
 
     useEffect(() => {
         if (isOpen) {
@@ -104,11 +105,13 @@ export default function ImzoComponent({  onSignSuccess }) {
             alert("Iltimos, sertifikat tanlang!");
             return;
         }
+        EimzoLogout()
         window.EIMZOClient.loadKey(selectedKey, function (keyId) {
             window.EIMZOClient.createPkcs7(keyId, selectedKey.TIN, null, function (pkcs7, hex) {
+
                 if (onSignSuccess) {
                     onSignSuccess({ pkcs7, hex, tin: selectedKey.TIN });
-                    EimzoLogout()
+                    console.log({ pkcs7, hex, tin: selectedKey.TIN })
                 }
                 dispatch(closeInvoicesModal())
             }, wsError);
@@ -129,11 +132,20 @@ export default function ImzoComponent({  onSignSuccess }) {
         return `${dd}.${mm}.${yyyy}`;
     }
 
+
+
+
+
     if (!isOpen) return null;
 
+
+
     return (
-        <div className="fixed inset-0 z-50 flex items-center justify-center bg-black bg-opacity-50">
+        <div onClick={()=> dispatch(closeInvoicesModal())} className="fixed inset-0 z-50 flex items-center justify-center bg-black bg-opacity-50">
             <div
+                onClick={(e)=>{
+                    e.stopPropagation();
+                }}
                 className="bg-white text-black dark:bg-gray-800 dark:text-white p-6 rounded-xl w-full max-w-xl shadow-lg relative">
                 <h2 className="text-xl font-bold mb-4">
                     {t("invoices.modal.title")}
@@ -142,7 +154,9 @@ export default function ImzoComponent({  onSignSuccess }) {
                 {loading ? (
                     <p>⏳ {t("invoices.modal.loading")}</p>
                 ) : (
-                    <div>{certs.map((cert) => cert.html)}</div>
+                    <div className={' overflow-y-auto max-h-[50vh] scrollbar-hide'}>
+                        {certs.map((cert) => cert.html)}
+                    </div>
                 )}
 
                 <div className="mt-4 flex justify-end gap-2">

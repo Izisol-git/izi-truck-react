@@ -8,7 +8,7 @@ import {
     Stack,
     Divider,
     Avatar,
-    alpha, Button,
+    alpha, Button, Grid,
 } from "@mui/material";
 import {
     Person,
@@ -29,6 +29,7 @@ import {useDispatch} from "react-redux";
 import React from "react";
 import {useTranslation} from "react-i18next";
 import {AddQueries} from "../../features/Queries/queriesSlice.js";
+import PauseIcon from "@mui/icons-material/Pause";
 
 export default function QueriesCard({transaction}) {
     const dispatch = useDispatch();
@@ -89,24 +90,45 @@ export default function QueriesCard({transaction}) {
                     </Avatar>
                 }
                 title={
-                    <Box display="flex" alignItems="center" gap={1}>
-                        <Typography color="text.secondary" variant="subtitle1" fontWeight={600}>
-                            {transaction?.from_address[0]?.city?.title}
-                        </Typography>
+                    <Box display={'flex'} container gap={1} alignItems="center">
+                        {/* Icon */}
                         <RouteOutlined color="secondary" fontSize="small"/>
-                        <Typography color="text.secondary" variant="subtitle1" fontWeight={600}>
-                            {transaction?.to_address[0]?.city?.title}
-                        </Typography>
+
+                        {/* Text */}
+                        <Grid container direction="column" spacing={0.5}>
+                            <Grid item>
+                                <Typography
+                                    fontSize={14}
+                                    color="text.secondary"
+                                    variant="subtitle1"
+                                    fontWeight={600}
+                                >
+                                    {transaction?.from_address[0]?.city?.title}
+                                </Typography>
+                            </Grid>
+                            <Grid item>
+                                <Typography
+                                    fontSize={14}
+                                    color="text.secondary"
+                                    variant="subtitle1"
+                                    fontWeight={600}
+                                >
+                                    {transaction?.to_address[0]?.city?.title}
+                                </Typography>
+                            </Grid>
+                        </Grid>
                     </Box>
                 }
                 action={
                     <Chip
-                        icon={<AccessTime sx={{fontSize: 16}}/>}
+                        icon={<AccessTime/>}
+                        fontSize='10'
                         label={dayjs(transaction?.created_at).fromNow()}
                         size="small"
                         color="warning"
                         variant="soft"
                         sx={{
+                            fontSize: 11,
                             fontWeight: 500,
                             display: "flex",
                             alignItems: "center",
@@ -122,10 +144,8 @@ export default function QueriesCard({transaction}) {
                 }}
             />
 
-            <CardContent sx={{pt: 1.5}}>
-                <Stack spacing={2} paddingX={2}>
-
-
+            <CardContent sx={{pt: 0}}>
+                <Stack spacing={1} paddingX={1}>
                     {/* Main Info */}
                     <Box display="grid" gridTemplateColumns="1fr" gap={1}>
                         <Box display="flex" justifyContent="space-between" alignItems="center">
@@ -141,7 +161,7 @@ export default function QueriesCard({transaction}) {
                                 <LocalShipping color="success" fontSize="small"/>
                                 {t("queriesTranslation.queriesCard.cargo")}
                             </Typography>
-                            <Typography variant="body1" fontWeight={600} color="text.secondary">
+                            <Typography fontSize={16} variant="body1" fontWeight={600} color="text.secondary">
                                 {transaction?.title}
                             </Typography>
                         </Box>
@@ -159,7 +179,7 @@ export default function QueriesCard({transaction}) {
                                 <Payment color="success" fontSize="small"/>
                                 {t("queriesTranslation.queriesCard.payment_type")}
                             </Typography>
-                            <Typography variant="body1" fontWeight={600} color="text.secondary">
+                            <Typography fontSize={16} variant="body1" fontWeight={600} color="text.secondary">
                                 {getPaymentMethodLabel(transaction?.payment_method)}
                             </Typography>
                         </Box>
@@ -177,7 +197,7 @@ export default function QueriesCard({transaction}) {
                                 <Person color="success" fontSize="small"/>
                                 {t("queriesTranslation.queriesCard.client")}
                             </Typography>
-                            <Typography variant="body1" fontWeight={600} color="text.secondary">
+                            <Typography fontSize={16} variant="body1" fontWeight={600} color="text.secondary">
                                 {transaction?.client?.fio}
                             </Typography>
                         </Box>
@@ -195,7 +215,7 @@ export default function QueriesCard({transaction}) {
                                 <PriceChangeOutlined color="success" fontSize="small"/>
                                 {t("queriesTranslation.queriesCard.client_price")}
                             </Typography>
-                            <Typography variant="body1" fontWeight={600} color="text.secondary">
+                            <Typography fontSize={16} variant="body1" fontWeight={600} color="text.secondary">
                                 {transaction?.client_enumeration_price}{" "}
                                 {transaction?.client_enumeration_currency?.toUpperCase()}
                             </Typography>
@@ -214,8 +234,36 @@ export default function QueriesCard({transaction}) {
                                 <Scale color="success" fontSize="small"/>
                                 {t("queriesTranslation.queriesCard.weight")}
                             </Typography>
-                            <Typography variant="body1" fontWeight={600} color="text.secondary">
+                            <Typography fontSize={16} variant="body1" fontWeight={600} color="text.secondary">
                                 {transaction?.weight}
+                            </Typography>
+                        </Box>
+                        <Box display="flex" justifyContent="space-between" alignItems="center">
+                            <Typography
+                                variant="caption"
+                                color="text.secondary"
+                                display="flex"
+                                alignItems="center"
+                                gap={0.5}
+                                fontSize={14}
+                                fontWeight={600}
+                            >
+                                <PauseIcon color="success" fontSize="small"/>
+                                {t("queriesTranslation.queriesCard.status")}
+                            </Typography>
+                            <Typography fontSize={16} variant="body1" fontWeight={600} color="text.secondary">
+                                <Chip
+                                    label={status.label}
+                                    color={status.color}
+                                    variant="soft"
+                                    size='small'
+                                    sx={{
+                                        fontWeight: 600,
+                                        textTransform: "uppercase",
+                                        letterSpacing: 0.5,
+                                        fontSize: 12
+                                    }}
+                                />
                             </Typography>
                         </Box>
                     </Box>
@@ -245,53 +293,40 @@ export default function QueriesCard({transaction}) {
                     )}
                 </Stack>
 
-                <Box display="flex" marginTop={2} justifyContent="space-between" alignItems="center">
-                    <Chip
-                        label={status.label}
-                        color={status.color}
-                        variant="soft"
-                        sx={{
-                            fontWeight: 600,
-                            textTransform: "uppercase",
-                            letterSpacing: 0.5,
-                            fontSize : 12
+                <Box width={'100%'} display="flex" marginTop={2} alignItems={"center"} gap={1} justifyContent="end">
+                    <Button
+                        onClick={() => {
+                            dispatch(AddQueriesId(transaction?.id));
+                            dispatch(AddQueries(transaction))
+                            dispatch(openQueriesShow());
+
                         }}
-                    />
+                        variant="contained"
+                        color="info"
+                        sx={{
+                            fontSize: '12px',
+                            fontWeight: 600,
+                        }}
+                    >
+                        <i className="fa-solid fa-eye mr-2"></i>
+                        {t("queriesTranslation.queriesCard.show")}
+                    </Button>
+                    <Button
+                        onClick={() => {
+                            navigate(`/queries/edit/${transaction?.id}`);
+                            dispatch(AddQueries(transaction))
+                        }}
+                        variant="contained"
+                        color="warning"
+                        sx={{
+                            fontSize: '12px',
+                            fontWeight: 600,
+                        }}
+                    >
+                        <i className="fa-solid fa-pen-to-square mr-2"></i>
+                        {t("queriesTranslation.queriesCard.edit")}
+                    </Button>
 
-                    <Box display="flex" gap={1}>
-                        <Button
-                            onClick={() => {
-                                dispatch(AddQueriesId(transaction?.id));
-                                dispatch(AddQueries(transaction))
-                                dispatch(openQueriesShow());
-
-                            }}
-                            variant="contained"
-                            color="info"
-                            sx={{
-                                fontSize:'12px',
-                                fontWeight: 600,
-                            }}
-                        >
-                            <i className="fa-solid fa-eye mr-2"></i>
-                            {t("queriesTranslation.queriesCard.show")}
-                        </Button>
-                        <Button
-                            onClick={() => {
-                                navigate(`/queries/edit/${transaction?.id}`);
-                                dispatch(AddQueries(transaction))
-                            }}
-                            variant="contained"
-                            color="warning"
-                            sx={{
-                                fontSize:'12px',
-                                fontWeight: 600,
-                            }}
-                        >
-                            <i className="fa-solid fa-pen-to-square mr-2"></i>
-                            {t("queriesTranslation.queriesCard.edit")}
-                        </Button>
-                    </Box>
 
                     {transaction.status === 0 && transaction.cancelReason && (
                         <Chip

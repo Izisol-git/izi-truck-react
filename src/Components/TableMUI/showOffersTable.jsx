@@ -33,7 +33,7 @@ const ShowOffersTable = ({data}) => {
         <TableContainer component={Paper}>
             <Table sx={{minWidth: 650}} aria-label="simple table">
                 <TableHead>
-                    <TableRow sx={{background: '#F2F6F9'}}>
+                    <TableRow  >
                         <TableCell>{t("ordersTranslation.table.route")}</TableCell>
                         {/*<TableCell align="left">{t("ordersTranslation.table.carrier")}</TableCell>*/}
                         <TableCell align="left">{t("ordersTranslation.table.price")}</TableCell>

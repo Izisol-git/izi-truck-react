@@ -30,8 +30,7 @@ function ShowOffers() {
         if (user?.user?.roles[0]?.name && user?.user?.roles[0]?.name === "super-admin") {
             try {
                 const res = await dispatch(getSuggestionsAdmin(pageqq)).unwrap()
-                console.log(res)
-                setData(res)
+                 setData(res)
             } catch (err) {
                 console.log(err);
             }
@@ -39,8 +38,7 @@ function ShowOffers() {
         if (user?.user?.roles[0]?.name && user?.user?.roles[0]?.name !== "super-admin") {
             try {
                 const res = await dispatch(getSuggestionsUser(pageqq)).unwrap()
-                console.log(res)
-            } catch (err) {
+             } catch (err) {
                 console.log(err);
             }
         }
@@ -58,8 +56,8 @@ function ShowOffers() {
 
 
     return (
-        <div className={'bg-bacWhite w-full min-h-[calc(100dvh-70px)] py-5'}>
-            <div className={'w-[90%] bg-white px-4 mx-auto py-5 rounded-md shadow'}>
+        <div className={'bg-bacWhite w-full min-h-[calc(100dvh-70px)] py-5 dark:bg-darkBg'}>
+            <div className={'w-[90%] bg-white px-4 mx-auto py-5 rounded-md shadow dark:bg-darkBgTwo'}>
                 <div className={'h-[40px] gap-4 relative    text-center  center w-full  '}>
                     <div className={'w-max absolute top-0  left-0'} onClick={() => navigate(`/orders`)}>
                         <Button
@@ -72,7 +70,7 @@ function ShowOffers() {
                             {t("ordersTranslation.back_to_orders")}
                         </Button>
                     </div>
-                    <p className={'text-blue font-bold text-xl '}>
+                    <p className={'text-blue font-bold text-xl dark:text-darkText '}>
                         {t("ordersTranslation.allOffers")}
                     </p>
                     {
@@ -108,7 +106,7 @@ function ShowOffers() {
                     }
                 </div>
                 <div className={'mt-5 w-full flex items-center justify-end'}>
-                    <PaginationFooter total={suggestions}/>
+                    <PaginationFooter onClick={getSuggestion} total={suggestions} search={''}/>
                 </div>
             </div>
             {

@@ -77,6 +77,7 @@ function OrdersFrom({mode}) {
         tr_number: "",
         degree_of_danger: "",
         status_of_cargo_file: "",
+        driver_id:""
     });
     const {ordersId} = useSelector((state) => state.orders);
     const allSelect = useSelector((state) => state.orders.ordersSelect);
@@ -248,6 +249,7 @@ function OrdersFrom({mode}) {
             point_of_destination: formData.point_of_destination.id,
             service_type: formData.service_type.id,
             shipment_type: formData.shipment_type.id,
+            driver_id: formData.driver_id.id,
             status_of_cargo: formData.status_of_cargo.id,
             transport_type: formData.transport_type.id,
             transport_value: formData.transport_value.title,
@@ -280,6 +282,7 @@ function OrdersFrom({mode}) {
             carrier_additional: formData.carrier_additional,
             degree_of_danger: formData.degree_of_danger?.id,
             status_of_cargo_file: formData.status_of_cargo_file[0],
+
         }
 
         try {
@@ -1009,12 +1012,25 @@ function OrdersFrom({mode}) {
                     <div className={'grid grid-cols-3 gap-4 mt-5'}>
 
                         <div className={""}>
-                            <InputMUI
-                                disabled={mode === 'show'}
-                                type={'number'} errorMassage={errors?.tr_number} value={formData?.tr_number ?? ''}
-                                onChange={(e) =>
-                                    setFormData({...formData, tr_number: e.target.value})
-                                } variant={'outlined'} label={t('queriesTranslation.tr_number')}
+                            <SelectMUI
+
+                                errorMassage={errors?.driver_id}
+                                {...{
+                                    value:
+                                        mode !== "add"
+                                            ? allSelect?.drivers?.find((opt) => opt.id === formData?.driver_id) || null
+                                            : formData?.driver_id,
+                                }}
+                                onChange={(val) => {
+                                    mode !== "add" ? setFormData({
+                                        ...formData,
+                                        driver_id: val.id
+                                    }) : setFormData({...formData, driver_id: val})
+                                }}
+                                options={allSelect?.drivers || []}
+                                variant={'outlined'}
+                                label={t('ordersTranslation.driver')}
+                                placeholder={t('ordersTranslation.driver')}
                             />
                         </div>
                         <div className={""}>

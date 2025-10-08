@@ -93,7 +93,7 @@ export default function OrderLogisticsCard({order}) {
                                     <span className="ml-2">{order?.source || "-"}</span>
                                 </p>
                                 <div className="flex items-center gap-2 mt-2 text-sm font-semibold text-blue dark:text-darkText">
-                                    {t("ordersTranslation.ordersCard.status")}:
+                                    {t("ordersTranslation.ordersCard.status")}
                                     <Chip size="small" label={status.label} color={status.color} />
                                 </div>
                                 <p className="text-sm font-semibold mt-2 text-blue dark:text-darkText">
